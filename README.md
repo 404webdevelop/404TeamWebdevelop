@@ -1,3 +1,3 @@
 # 404TeamWebdevelop
 
-every one enjoy it <[:^)
+CMPUT 404 Winter 2016 Project.
