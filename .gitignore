@@ -13,3 +13,4 @@ build/
 tests/report/
 
 .DS_Store
+.venv
