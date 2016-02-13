@@ -10,5 +10,5 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name='test.html')),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^author/', include('author.urls')),
 ]
