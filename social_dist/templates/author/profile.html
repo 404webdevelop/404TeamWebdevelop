@@ -1,0 +1,11 @@
+
+{% if user %}
+	<p>Hi, {{ user.username }}</p>
+{% else %}
+	<p>template can not access user</p>
+{% endif %}
+
+<form action="logout">
+	Logout:
+	<input type="submit">
+</form>
