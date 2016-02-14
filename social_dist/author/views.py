@@ -1,10 +1,7 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.decorators.http import require_http_methods, require_GET, require_POST
+from django.views.decorators.http import require_http_methods, require_GET
 from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.template import loader
 
 from . import models
 
@@ -16,7 +13,7 @@ def signup_view(request):
         return HttpResponse(render(request, 'author/signup.html'))
     elif request.method == 'POST':
         user = models.signup(request)
-        return redirect('auther')
+        return redirect('/author')
 
 
 @require_http_methods(['GET', 'POST'])
