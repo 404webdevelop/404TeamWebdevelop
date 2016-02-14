@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods, require_GET
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from utils.http import HttpResponseUnauthorized
 
 from . import models
 
@@ -22,13 +23,12 @@ def login_view(request):
         return redirect('author')
     elif request.method == 'POST':
         user =  models.login(request)
-        if user is not None:
-            if user.is_active:
-                return redirect('/author/profile')
+        if user is None:
+            return HttpResponseUnauthorized("Unauthorized")
+        if not user.is_active:
             return HttpResponse('login success, but user is not active')
-        res = HttpResponse("Unauthrized")
-        res.status_code = 401
-        return res
+        return redirect('/author/profile')
+        
 
 
 @require_GET
