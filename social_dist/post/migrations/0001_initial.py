@@ -16,9 +16,10 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('author_id', models.CharField(max_length=100)),
+                ('author_origin', models.CharField(max_length=1000)),
                 ('content', models.CharField(max_length=1000)),
                 ('date_created', models.DateTimeField()),
-                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

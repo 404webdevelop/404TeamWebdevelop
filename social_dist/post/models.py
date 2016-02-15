@@ -27,10 +27,9 @@ class Image(models.Model):
     date_created = models.DateTimeField()
 
 class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author_id = models.CharField(max_length = 100) # id (could be local or remote) of comment author
+    author_origin = models.CharField(max_length = 1000) # hostname of comment author's home server
+    parent = models.ForeignKey(Post, on_delete=models.CASCADE) # post that this comment belongs to
     content = models.CharField(max_length = 1000)
     date_created = models.DateTimeField()
-
-    # TODO: do we want to allow editing of comments?
-    # last_modified = models.DateTimeField()
+    last_modified = models.DateTimeField()
