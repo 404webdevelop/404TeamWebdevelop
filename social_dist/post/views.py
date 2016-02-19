@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 
 from .models import Post, Image, Comment
 from .serializers import PostSerializer, CommentSerializer, ImageSerializer
@@ -31,25 +32,16 @@ class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all().order_by('-date_created')
     serializer_class = ImageSerializer
 
-    parser_classes = (MultiPartParser, FormParser)
-
     # def retrieve(self, request, pk=None):
     #     queryset = Image.objects.all()
     #     image = get_object_or_404(queryset, pk=pk)
     #     serializer = ImageSerializer(image)
     #     return Response(serializer.data)
 
-    # def get(self, request, pk, format=None):
-    #     image = get_object_or_404(Image, pk=pk)
-    #     serializer = ImageSerializer(image)
-    #     return Response(data=serializer.data)
-    #
-    # def post(self, request, format=None):
-    #     fileData = request.FILES['file']
-    #     serializer = ImageSerializer(fileData)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #     return Response('Uploaded', status.HTTP_201_CREATED)
+@login_required
+def upload_image(request):
+    context = {'user_id': request.user.id}
+    return render(request, 'post/upload_image.html', context=context)
 
 # @require_http_methods(['GET', 'POST'])
 # def image_view(request, image_id):
