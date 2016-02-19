@@ -22,9 +22,10 @@ class Post(models.Model):
     # image = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL)
 
 class Image(models.Model):
+    uploader = models.ForeignKey(User, on_delete = models.CASCADE)
     file_type = models.CharField(max_length = 50)
     image_data = models.BinaryField()
-    date_created = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True, blank=True)
 
 class Comment(models.Model):
     author_id = models.CharField(max_length = 100) # id (could be local or remote) of comment author

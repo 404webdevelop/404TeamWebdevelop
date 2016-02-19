@@ -3,12 +3,13 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from rest_framework import routers
 
-from post.views import PostViewSet, CommentViewSet
+from post.views import PostViewSet, CommentViewSet, ImageViewSet
 from author.views import UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'post/posts', PostViewSet)
 router.register(r'post/comments', CommentViewSet)
+router.register(r'post/images', ImageViewSet)
 router.register(r'author/authors', UserViewSet)
 
 urlpatterns = [
@@ -21,5 +22,4 @@ urlpatterns = [
     url(r'^author/', include('author.urls')),
 
     url(r'^api/', include(router.urls)),
-    url(r'^api/post/', include('post.urls')),
 ]
