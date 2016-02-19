@@ -5,16 +5,13 @@ from django.contrib.auth.decorators import login_required
 from utils.http import HttpResponseUnauthorized
 
 from rest_framework import viewsets
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from serializers import UserSerializer
 
 from . import models
 
 # for rest framework
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Posts to be viewed or edited.
-    """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
