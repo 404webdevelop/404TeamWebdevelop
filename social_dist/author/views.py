@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods, require_GET
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from utils.http import HttpResponseUnauthorized
 
@@ -42,9 +42,17 @@ def login_view(request):
 
 @require_GET
 @login_required
-def profile_view(request):
+def home_view(request):
     posts = Post.objects.all()
-    return render(request, 'author/profile.html', {
+    return render(request, 'author/index.html', {
             'user': request.user,
             'posts': posts
         })
+
+@require_GET
+def public_profile(request, author_id):
+    author = get_object_or_404(User, id=author_id)
+    return render(request, 'author/profile.html', {
+        'author': author
+    })
+

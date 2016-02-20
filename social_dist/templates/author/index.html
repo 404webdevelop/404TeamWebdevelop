@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome!</h1>
+<a href="{% url 'authors:password_change' %}">[Change Password]</a>
+<ul>
+{% for p in posts %}
+    <li>{{ p.title }}</li>
+{% endfor %}
+</ul>
 {% endblock %}

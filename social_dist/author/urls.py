@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.views.generic import TemplateView
 from django.contrib.auth.views import login, logout, password_change, password_change_done
 
 
@@ -8,7 +7,8 @@ from . import views
 urlpatterns = [
     url(
         r'^$',
-        TemplateView.as_view(template_name='author/index.html')
+        views.home_view,
+        name="home"
     ),
     url(
         r'^signup/$',
@@ -45,8 +45,8 @@ urlpatterns = [
         kwargs={'next_page': '/author/'}
     ),
     url(
-        r'^profile/$',
-        views.profile_view,
-        name="profile"
+        r'^(?P<author_id>[0-9]+)/$',
+        views.public_profile,
+        name='public'
     ),
 ]
