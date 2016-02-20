@@ -28,6 +28,17 @@ Deactivate:
 
 ```$ deactivate```
 
+##Login
+	
+###Server Admin
+
+[127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+###Author
+
+[127.0.0.1:8000/author/login/](http://127.0.0.1:8000/author/login/)
+
+
 ## URL's
 
 REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)

@@ -37,7 +37,6 @@ def login_view(request):
         return redirect('/author/profile')
         
 
-
 @require_GET
 @login_required(login_url="author")
 def profile_view(request):

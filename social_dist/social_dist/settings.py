@@ -109,3 +109,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
 )
+
+#authentication 
+LOGIN_REDIRECT_URL = '/author/profile/'
+
