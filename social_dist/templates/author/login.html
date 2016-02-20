@@ -15,7 +15,7 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<form method="post" action="{% url 'authors:login' %}">
 {% csrf_token %}
 <table>
 <tr>
@@ -29,7 +29,7 @@
 </table>
 
 <input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
+<input type="hidden" name="next" value="/author/profile/" />
 </form>
 
 {% endblock %}

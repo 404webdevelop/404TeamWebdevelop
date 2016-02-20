@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^author/', include('author.urls')),
+    url(r'^author/', include('author.urls', namespace='authors')),
     url(r'^post/debug/', include('post.debug_urls')),
 ]

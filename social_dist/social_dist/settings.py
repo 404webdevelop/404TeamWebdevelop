@@ -112,4 +112,6 @@ STATICFILES_DIRS = (
 
 #authentication 
 LOGIN_REDIRECT_URL = '/author/profile/'
+LOGIN_URL = '/author/login/'
+LOGOUT_URL = '/author/logout/'
 

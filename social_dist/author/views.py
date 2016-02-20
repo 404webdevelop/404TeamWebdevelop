@@ -7,13 +7,16 @@ from utils.http import HttpResponseUnauthorized
 from rest_framework import viewsets
 from django.contrib.auth.models import User, Group
 from serializers import UserSerializer
+from post.models import Post
 
 from . import models
+
 
 # for rest framework
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+
 
 @require_http_methods(['GET', 'POST'])
 def signup_view(request):
@@ -29,7 +32,7 @@ def login_view(request):
     if request.method == 'GET':
         return redirect('author')
     elif request.method == 'POST':
-        user =  models.login(request)
+        user = models.login(request)
         if user is None:
             return HttpResponseUnauthorized("Unauthorized")
         if not user.is_active:
@@ -38,14 +41,10 @@ def login_view(request):
         
 
 @require_GET
-@login_required(login_url="author")
+@login_required
 def profile_view(request):
+    posts = Post.objects.all()
     return render(request, 'author/profile.html', {
-            'user': request.user
+            'user': request.user,
+            'posts': posts
         })
-
-
-@require_GET
-def logout(request):
-    models.logout(request)
-    return redirect('/author')        

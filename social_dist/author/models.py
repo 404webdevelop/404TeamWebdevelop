@@ -3,7 +3,6 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 
 
-
 def signup(request):
     username = request.POST['username']
     email = request.POST['email']

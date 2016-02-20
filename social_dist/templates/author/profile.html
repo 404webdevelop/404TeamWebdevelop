@@ -1,11 +1,10 @@
+{% extends "base.html" %}
 
-{% if user %}
-	<p>Hi, {{ user.username }}</p>
-{% else %}
-	<p>template can not access user</p>
-{% endif %}
-
-<form action="logout">
-	Logout:
-	<input type="submit">
-</form>
+{% block content %}
+<a href="{% url 'authors:password_change' %}">[Change Password]</a>
+<ul>
+{% for p in posts %}
+    <li>{{ p.title }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -28,15 +28,20 @@ Deactivate:
 
 ```$ deactivate```
 
-##Login
-	
-###Server Admin
+##Server Admin
 
 [127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
-###Author
+##Author
+
+login:
 
 [127.0.0.1:8000/author/login/](http://127.0.0.1:8000/author/login/)
+
+profile:
+
+[127.0.0.1:8000/author/profile/](127.0.0.1:8000/author/profile/)
+
 
 
 ## URL's
