@@ -7,7 +7,7 @@ from utils.http import HttpResponseUnauthorized
 from rest_framework import viewsets
 from django.contrib.auth.models import User, Group
 from serializers import UserSerializer
-from post.models import Post
+from post.models import get_post_for_author
 
 from . import models
 
@@ -43,16 +43,18 @@ def login_view(request):
 @require_GET
 @login_required
 def home_view(request):
-    posts = Post.objects.all()
+    posts = get_post_for_author(request.user)
     return render(request, 'author/index.html', {
             'user': request.user,
             'posts': posts
         })
 
+
 @require_GET
 def public_profile(request, author_id):
     author = get_object_or_404(User, id=author_id)
     return render(request, 'author/profile.html', {
-        'author': author
+        'author': author,
+        'github_username': 'wyushi'
     })
 

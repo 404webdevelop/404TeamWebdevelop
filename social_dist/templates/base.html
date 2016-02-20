@@ -1,9 +1,13 @@
-{% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}  <a href="{% url 'authors:logout' %}">[logout]</a></p>
-{% else %}
-    <p>Welcome, Guest <a href="{% url 'authors:login' %}">[login]</a> Or
-        <a href="{% url 'authors:signup' %}">[Signup]</a></p>
-{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
 
-{% block content %}
+{% block workspace %}
 {% endblock %}
+
+</body>
+</html>
