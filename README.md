@@ -28,6 +28,12 @@ Deactivate:
 
 ```$ deactivate```
 
+## URL's
+
+REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
+
+Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
+
 ##Contributors
 
   * Qiang Yu
