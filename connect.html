@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 
-	<head>
-		<title>404webdevelp's connect page</title>
-	</head>
-	<link rel="stylesheet" type="text/css" href="default.css">
+  <head>
+    <title>404webdevelp's home page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <link rel="stylesheet" type="text/css" href="default.css">
+  <script async="" type="text/javascript" src="home.js" ></script>
 
-	 <!-- Bootstrap core CSS -->
+
+   <!-- Bootstrap core CSS -->
     <link href="./Bootstrap_files/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="./Bootstrap_files/bootstrap-theme.min.css" rel="stylesheet">
@@ -26,16 +32,10 @@
 
           <ul id="welcomeitem" class="nav navbar-nav">
 
-            <li class="active"><a href="home.html">Home</a></li>
-            <li><a href="about.html">About us</a></li>
-            <li><a href="connect.html">Connect</a></li>
           </ul>
-	  <ul id="loginbutton"class="nav navbar-nav">
-	          <a href="profile.html"><u>[ YU ]</u></a>
-            <a href="profile.html"> <img id="userimage" src="image/Yu.jpg"></a>
-            <button type="button" class="btn btn-xs btn-warning">Logout</button>
-            
-            
+         <ul id="loginbutton"class="nav navbar-nav">
+      
+          
           </ul>
             </li>
           </ul>
@@ -45,10 +45,35 @@
       
     </nav>
 
-	<body>
-		
-	</body>
-	<!-- Bootstrap core JavaScript
+  <body>
+    
+  
+<div data-role="page">
+  <div data-role="header">
+    <h1>Welcome To 404webdevelop</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    
+
+    <div data-role="popup" id="myPopupDialog">
+      <div data-role="header">
+        <h1>Sign in</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+ 
+        <p>user name:</p><input name="username" type="textbox" placeholder="xxxx@e-mail.com"> 
+        
+        <p>pass word:</p><input name="password" type="textbox" placeholder="xxxxxxxx"> 
+        <input id="username-str" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b ui-icon-back ui-btn-icon-left" type="submit" value="Sign in">
+        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Go Back</a>
+        
+      </div>
+
+</div> 
+  </body>
+  <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
