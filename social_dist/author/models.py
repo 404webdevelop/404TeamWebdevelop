@@ -3,11 +3,16 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 
 
+class Author(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    github = models.CharField(max_length=1024)
+
+
 def signup(request):
     username = request.POST['username']
     email = request.POST['email']
     password = request.POST['password']
-    user = User.objects.create_user(username, email, password)
+    user = Author.objects.create_user(username, email, password)
     user.is_active = False
     user.save()
     return user
