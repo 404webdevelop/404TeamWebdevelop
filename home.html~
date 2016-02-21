@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-  <head>
-    <title>404webdevelp's posted page</title>
-  </head>
-  <link rel="stylesheet" type="text/css" href="good-default.css">
+	<head>
+		<title>404webdevelp's home page</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="default.css">
 
-   <!-- Bootstrap core CSS -->
+	 <!-- Bootstrap core CSS -->
     <link href="./Bootstrap_files/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="./Bootstrap_files/bootstrap-theme.min.css" rel="stylesheet">
@@ -30,10 +30,12 @@
             <li><a href="#">posted</a></li>
             <li><a href="#">profile</a></li>
             <li><a href="#">favourite</a></li>
-
-
-
-              </ul>
+          </ul>
+	  <ul id="loginbutton"class="nav navbar-nav">
+	    <button id="signup"type="button" class="btn btn-lg btn-primary">Sign up</button>sdf
+            <button id="signin"type="button" class="btn btn-lg btn-default">Sign in</button>dfg
+            
+          </ul>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -42,10 +44,10 @@
       
     </nav>
 
-  <body>
-    
-  </body>
-  <!-- Bootstrap core JavaScript
+	<body>
+		
+	</body>
+	<!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
