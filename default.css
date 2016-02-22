@@ -9,3 +9,15 @@
 #textuser{
 	font-size: 30px;
 }
+#searchbut{
+	position: absolute;
+	right: 0;
+}
+
+.ui-page{
+	background-color: lightblue;
+}
+#navbar1{
+	height: 4%;
+	background-color: white;
+}
