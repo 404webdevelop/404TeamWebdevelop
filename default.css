@@ -15,16 +15,17 @@
 }
 
 .ui-page{
-	background-color: lightblue;
+	background-color: grey;
 }
-#navbar1{
-	background-color:grey;
-	position: fixed;
-	width: 100%;
-	bottom: 0;
-	left: 0;
+#postbody{
+	background-color: lightgrey;
 
+	margin-left: 4%;
+	margin-right: 4%;
+	margin-top: 1%;
+	margin-bottom: 3%;
 }
+
 
 .invlist{
 		visibility: hidden;
@@ -34,7 +35,7 @@
 
 	}
 
-.nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important;position: fixed;bottom: 0; }
+.nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
 		.nav-glyphish-example .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; position: fixed; bottom: 0;}
 		#chat .ui-icon { background:  url(glyphish-icons/09-chat2.png) 50% 50% no-repeat; background-size: 24px 22px; }
 		#email .ui-icon { background:  url(glyphish-icons/18-envelope.png) 50% 50% no-repeat; background-size: 24px 16px;  }
@@ -42,3 +43,14 @@
 		#beer .ui-icon { background:  url(glyphish-icons/88-beermug.png) 50% 50% no-repeat;  background-size: 22px 27px; }
 		#coffee .ui-icon { background:  url(glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
 		#skull .ui-icon { background:  url(glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
+
+#fot{
+	position:  fixed;bottom: 0;
+	width: 100%;
+	left: 0;
+	height: 60px;
+}
+#user_name_input{
+	font-size: 20px;
+	right:30px;
+}

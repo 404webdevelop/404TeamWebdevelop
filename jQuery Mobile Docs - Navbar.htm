@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="ui-mobile"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><!-- base href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/docs-navbar.html" -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>jQuery Mobile Docs - Navbar</title> 
+	<link rel="stylesheet" href="jQuery%20Mobile%20Docs%20-%20Navbar_files/jquery.css">  
+	<link rel="stylesheet" href="jQuery%20Mobile%20Docs%20-%20Navbar_files/jqm-docs.css">
+
+	<script src="jQuery%20Mobile%20Docs%20-%20Navbar_files/jquery-1.js"></script>
+	<script src="jQuery%20Mobile%20Docs%20-%20Navbar_files/jqm-docs.js"></script>
+	<script src="jQuery%20Mobile%20Docs%20-%20Navbar_files/jquery.js"></script>
+
+</head> 
+<body class="ui-mobile-viewport ui-overlay-c"> 
+
+	<div style="min-height: 838px;" tabindex="0" data-url="/1.2.0/docs/toolbars/docs-navbar.html" data-role="page" class="type-interior ui-page ui-body-c ui-page-active">
+
+		<div role="banner" class="ui-header ui-bar-f" data-role="header" data-theme="f">
+		<h1 aria-level="1" role="heading" class="ui-title">Navbar</h1>
+		<a title="Home" data-theme="f" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" class="ui-btn-left ui-btn ui-btn-up-f ui-shadow ui-btn-corner-all ui-btn-icon-notext" href="https://demos.jquerymobile.com/1.2.0/" data-icon="home" data-iconpos="notext" data-direction="reverse"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
+		<a title="Search" data-theme="f" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" class="ui-btn-right ui-btn ui-btn-up-f ui-shadow ui-btn-corner-all ui-btn-icon-notext" href="https://demos.jquerymobile.com/1.2.0/docs/nav.html" data-icon="search" data-iconpos="notext" data-rel="dialog" data-transition="fade"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Search</span><span class="ui-icon ui-icon-search ui-icon-shadow">&nbsp;</span></span></a>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" data-role="content">
+		<div class="content-primary">		
+	<h2>Simple navbar</h2>
+	
+	<p>jQuery Mobile has a very basic navbar widget that is useful for 
+providing up to 5 buttons with optional icons in a bar, typically within
+ a header or footer. There is also a <a class="ui-link" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/footer-persist-a.html">persistent navbar</a> variation that works more like a tab bar that stays fixed as you navigate across pages.</p>
+	<p>A navbar is coded as an unordered list of links wrapped in a container element that has the <code> data-role="navbar"</code> attribute. This is an example of a two-button navbar:</p>
+	
+<pre><code>
+<strong>&lt;div data-role="navbar"&gt;</strong>
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href="a.html"&gt;One&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="b.html"&gt;Two&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+<strong>&lt;/div&gt;&lt;!-- /navbar --&gt;</strong>
+</code></pre>
+
+	<p>When a link in the navbar is clicked it gets the active (selected) state. The <code>ui-btn-active</code>
+ class is first removed from all anchors in the navbar before it is 
+added to the activated link. If this is a link to another page, the 
+class will be removed again after the transition has completed.</p>
+	
+	<p>To set an item to the active state upon initialization of the navbar, add <code>class="ui-btn-active"</code> to the corresponding anchor in your markup. Additionaly add a class of <code>ui-state-persist</code>
+ to make the framework restore the active state each time the page is 
+shown while it exists in the DOM. The example below shows a navbar with 
+item "One" set to active:</p>
+
+<pre><code>
+<strong>&lt;div data-role="navbar"&gt;</strong>
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href="a.html" class="ui-btn-active ui-state-persist"&gt;One&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="b.html"&gt;Two&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+<strong>&lt;/div&gt;&lt;!-- /navbar --&gt;</strong>
+</code></pre>
+
+	<p>The navbar items are set to divide the space evenly so in this case, each button is 1/2 the width of the browser window:</p>
+
+
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-a">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-up-c ui-btn-inline"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+
+	
+	<p>Adding a third item will automatically make each button 1/3 the width of the browser window:</p>
+
+
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-inline ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+
+	
+	<p>Adding a fourth more item will automatically make each button 1/4 the width of the browser window:</p>
+
+
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar" data-grid="c">
+			<ul class="ui-grid-c">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-up-c ui-btn-inline"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+				<li class="ui-block-d"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Four</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+
+
+	<p>The navbar maxes out with 5 items, each 1/5 the width of the browser window:</p>
+
+
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar" data-grid="d">
+			<ul class="ui-grid-d">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-inline ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+				<li class="ui-block-d"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Four</span></span></a></li>
+				<li class="ui-block-e"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Five</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+
+	
+	<p>If more than 5 items are added, the navbar will simply wrap to multiple lines:</p>
+	
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-duo ui-grid-a">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-up-c ui-btn-inline"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Four</span></span></a></li>
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Five</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Six</span></span></a></li>
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Seven</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Eight</span></span></a></li>
+				<li class="ui-block-a"><a class="ui-btn ui-btn-inline ui-btn-up-c" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Nine</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-c ui-btn-inline" data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Ten</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	
+	<p>Navbars with 1 item will simply render as 100%.</p>
+	
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-solo">
+				<li class="ui-block-a"><a data-inline="true" data-theme="c" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-btn-active ui-btn ui-btn-inline ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	
+	<h2>Navbars in headers</h2>
+	
+	<p>If you want to add a navbar to the top of the page, you can still 
+have a page title and buttons. Just add the navbar container inside the 
+header block, right after the title and buttons in the source order.</p>
+
+	<div role="banner" class="ui-header ui-bar-a" data-role="header">
+		<h1 aria-level="1" role="heading" class="ui-title">I'm a header</h1>
+		<a data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/index.html" data-icon="gear" class="ui-btn-right ui-btn ui-btn-up-a ui-shadow ui-btn-corner-all ui-btn-icon-left"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Options</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+				
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /header -->
+	
+	<h2>Navbars in footers</h2>
+	
+	<p>If you want to add a navbar to the bottom of the page so it acts 
+more like a tab bar, simply wrap the navbar in a container with a <code>data-role="footer"</code></p>
+<pre><code>
+&lt;div data-role="footer"&gt;		
+	&lt;div data-role="navbar"&gt;
+		&lt;ul&gt;
+			&lt;li&gt;&lt;a href="#"&gt;One&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="#"&gt;Two&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="#"&gt;Three&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;&lt;!-- /navbar --&gt;
+&lt;/div&gt;&lt;!-- /footer --&gt;
+</code></pre>
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">		
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">One</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Two</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline" data-inline="true" data-theme="a" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#"><span class="ui-btn-inner"><span class="ui-btn-text">Three</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+	
+	<h2>Icons in navbars</h2>
+	
+	<p>Icons can be added to navbar items by adding the <code> data-icon</code> attribute specifying a <a class="ui-link" href="https://demos.jquerymobile.com/1.2.0/docs/buttons/buttons-icons.html">standard mobile icon</a> to each anchor. By default, icons are added above the text (<code>data-iconpos="top"</code>). The following examples add icons to a navbar in a footer.</p>
+
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">Summary</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star" class="ui-btn-active ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top"><span class="ui-btn-inner"><span class="ui-btn-text">Favs</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">Setup</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+	
+	<p>The icon position is set <em>on the navbar container</em> instead of for individual links within for visual consistency. For example, to place the icons below the labels, add the <code> data-iconpos="bottom"</code> attribute to the navbar container.</p>
+<pre><code>
+&lt;div data-role="navbar" <strong>data-iconpos="bottom"</strong>&gt;
+</code></pre>
+	<p>This will result in a bottom icon alignment:</p>
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar" data-iconpos="bottom">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-bottom" data-inline="true" data-theme="a" data-iconpos="bottom" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">Summary</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a data-inline="true" data-theme="a" data-iconpos="bottom" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star" class="ui-btn-active ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-bottom"><span class="ui-btn-inner"><span class="ui-btn-text">Favs</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-bottom" data-inline="true" data-theme="a" data-iconpos="bottom" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">Setup</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+	
+	<p>The icon position can be set to <code>data-iconpos="left"</code>:</p>
+
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar" data-iconpos="left">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-left" data-inline="true" data-theme="a" data-iconpos="left" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">Summary</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a data-inline="true" data-theme="a" data-iconpos="left" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star" class="ui-btn-active ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-left"><span class="ui-btn-inner"><span class="ui-btn-text">Favs</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-left" data-inline="true" data-theme="a" data-iconpos="left" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">Setup</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+	
+	<p>Or the icon position can be set to <code>data-iconpos="right"</code>:</p>
+
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar" data-iconpos="right">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-right" data-inline="true" data-theme="a" data-iconpos="right" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">Summary</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a data-inline="true" data-theme="a" data-iconpos="right" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star" class="ui-btn-active ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-right"><span class="ui-btn-inner"><span class="ui-btn-text">Favs</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-right" data-inline="true" data-theme="a" data-iconpos="right" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">Setup</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+	
+	<h2>Using 3rd party icon sets</h2>
+	
+	<p>You can add any of the popular icon libraries like <a class="ui-link" href="http://glyphish.com/">Glyphish</a>
+ to achieve the iOS style tab that has large icons stacked on top of 
+text labels. All that is required is a bit of custom styles to link to 
+the icons and position them in the navbar. Here is an example using 
+Glyphish icons and custom styles (view page source for styles) in our 
+navbar:</p>
+	
+	
+	<style>	
+		.nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+		.nav-glyphish-example .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+		#chat .ui-icon { background:  url(glyphish-icons/09-chat2.png) 50% 50% no-repeat; background-size: 24px 22px; }
+		#email .ui-icon { background:  url(glyphish-icons/18-envelope.png) 50% 50% no-repeat; background-size: 24px 16px;  }
+		#login .ui-icon { background:  url(glyphish-icons/30-key.png) 50% 50% no-repeat;  background-size: 12px 26px; }
+		#beer .ui-icon { background:  url(glyphish-icons/88-beermug.png) 50% 50% no-repeat;  background-size: 22px 27px; }
+		#coffee .ui-icon { background:  url(glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
+		#skull .ui-icon { background:  url(glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
+	</style>
+	
+	<div role="contentinfo" data-role="footer" class="nav-glyphish-example ui-footer ui-bar-a">
+		<div role="navigation" data-role="navbar" class="nav-glyphish-example ui-navbar ui-mini" data-grid="d">
+		<ul class="ui-grid-d">
+			<li class="ui-block-a"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" id="chat" data-icon="custom"><span class="ui-btn-inner"><span class="ui-btn-text">Chat</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+			<li class="ui-block-b"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" id="email" data-icon="custom"><span class="ui-btn-inner"><span class="ui-btn-text">Email</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+			<li class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" id="skull" data-icon="custom"><span class="ui-btn-inner"><span class="ui-btn-text">Danger</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+			<li class="ui-block-d"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" id="beer" data-icon="custom"><span class="ui-btn-inner"><span class="ui-btn-text">Beer</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+			<li class="ui-block-e"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" id="coffee" data-icon="custom"><span class="ui-btn-inner"><span class="ui-btn-text">Coffee</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+		</ul>
+		</div>
+	</div>
+	
+	<p>Icons by Joseph Wain / <a class="ui-link" href="http://glyphish.com/">glyphish.com</a>. Licensed under the <a class="ui-link" href="http://creativecommons.org/licenses/by/3.0/us/">Creative Commons Attribution 3.0 United States License</a>.</p>
+
+
+	<h2>Theming navbars</h2>
+	
+	<p>Navbars inherit the theme swatch from their parent container, just 
+like buttons. If a navbar is placed in the header or footer toolbar, it 
+will inherit the default toolbar swatch "a" for bars unless you set this
+ in the markup. </p>
+	<p>Here are a few examples of navbars in various container swatches 
+that automatically inherit their parent's swatch letter. Note that in 
+these examples, instead of using a <code>data-theme</code> attribute, we're manually adding the swatch classes to apply the body swatch (<code>ui-body-a</code>) and the class to add the standard body padding (ui-body), but the inheritance works the same way:</p>
+
+	<div class="ui-body-a ui-body">
+		<h3>Swatch "a"</h3>
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-d">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">A</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">B</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">C</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-d"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-l"><span class="ui-btn-inner"><span class="ui-btn-text">D</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-e"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-r"><span class="ui-btn-inner"><span class="ui-btn-text">E</span><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /container -->
+	
+	<div class="ui-body-d ui-body">
+		<h3>Swatch "b"</h3>
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-d">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-d ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="d" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid"><span class="ui-btn-inner"><span class="ui-btn-text">A</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-d ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="d" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">B</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-d" data-inline="true" data-theme="d" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear"><span class="ui-btn-inner"><span class="ui-btn-text">C</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-d"><a class="ui-btn ui-btn-up-d ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="d" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-l"><span class="ui-btn-inner"><span class="ui-btn-text">D</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-e"><a class="ui-btn ui-btn-up-d ui-btn-inline ui-btn-icon-top" data-inline="true" data-theme="d" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-r"><span class="ui-btn-inner"><span class="ui-btn-text">E</span><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /container -->
+	
+<p>To set the theme color for a navbar item, add the <code>data-theme</code> attribute to the individual links and specify a theme swatch. Note that applying a theme swatch to the navbar container is <em>not</em> supported.</p>
+	<div role="contentinfo" class="ui-footer ui-bar-a" data-role="footer">
+		<div role="navigation" class="ui-navbar ui-mini" data-role="navbar">
+			<ul class="ui-grid-d">
+				<li class="ui-block-a"><a class="ui-btn ui-btn-up-a ui-btn-inline ui-btn-icon-top" data-inline="true" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="grid" data-theme="a"><span class="ui-btn-inner"><span class="ui-btn-text">A</span><span class="ui-icon ui-icon-grid ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-b"><a class="ui-btn ui-btn-up-b ui-btn-inline ui-btn-icon-top" data-inline="true" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="star" data-theme="b"><span class="ui-btn-inner"><span class="ui-btn-text">B</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-c"><a class="ui-btn ui-btn-up-c ui-btn-inline ui-btn-icon-top" data-inline="true" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="gear" data-theme="c"><span class="ui-btn-inner"><span class="ui-btn-text">C</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-d"><a class="ui-btn ui-btn-up-d ui-btn-inline ui-btn-icon-top" data-inline="true" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-l" data-theme="d"><span class="ui-btn-inner"><span class="ui-btn-text">D</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a></li>
+				<li class="ui-block-e"><a class="ui-btn ui-btn-up-e ui-btn-inline ui-btn-icon-top" data-inline="true" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" data-icon="arrow-r" data-theme="e"><span class="ui-btn-inner"><span class="ui-btn-text">E</span><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></span></a></li>
+			</ul>
+		</div><!-- /navbar -->
+	</div><!-- /footer -->
+					
+
+		</div><!--/content-primary -->		
+
+		<div class="content-secondary">
+
+			<div class="ui-collapsible ui-collapsible-inset ui-collapsible-collapsed" data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d"><h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed"><a data-mini="false" data-theme="b" data-iconpos="left" data-icon="plus" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-up-b ui-fullsize ui-btn-icon-left ui-corner-top ui-corner-bottom"><span class="ui-btn-inner ui-corner-top ui-corner-bottom"><span class="ui-btn-text">More in this section<span class="ui-collapsible-heading-status"> click to expand contents</span></span><span class="ui-icon ui-icon-plus ui-icon-shadow">&nbsp;</span></span></a></h3><div aria-hidden="true" class="ui-collapsible-content ui-body-d ui-collapsible-content-collapsed">
+
+					
+
+					<ul class="ui-listview" data-role="listview" data-theme="c" data-dividertheme="d">
+
+						<li class="ui-li ui-li-divider ui-bar-d" role="heading" data-role="list-divider">Toolbars</li>
+						<li class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-c" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/docs-bars.html">Toolbar basics</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-c" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/docs-headers.html">Header bars</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/docs-footers.html">Footer bars</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-a" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false" data-theme="a"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/docs-navbar.html">Navbars</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-c" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/bars-fixed.html">Fixed positioning</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/footer-persist-a.html">Persistent toolbars</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+						<li class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-li-last" data-theme="c" data-iconpos="right" data-icon="arrow-r" data-wrapperels="div" data-iconshadow="true" data-shadow="false" data-corners="false"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a class="ui-link-inherit" href="https://demos.jquerymobile.com/1.2.0/docs/toolbars/bars-themes.html">Theming toolbars</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+
+					</ul>
+			</div></div>
+		</div>		
+
+	</div><!-- /content -->
+
+	<div role="contentinfo" data-role="footer" class="footer-docs ui-footer ui-bar-c" data-theme="c">
+		<p class="jqm-version">Version 1.2.0 Final</p>
+		<p>© 2012 jQuery Foundation and other contributors</p>
+	</div>
+
+	</div><!-- /page -->
+
+	
+	<div class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon ui-icon-loading"></span><h1>loading</h1></div></body></html>
