@@ -9,7 +9,6 @@ function logout(){
 
 function signinbox(){
 
-
 }
 function signuppage(){
 	window.location="signup.html";
