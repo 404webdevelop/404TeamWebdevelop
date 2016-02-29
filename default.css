@@ -1,0 +1,82 @@
+#loginbutton{
+	position: absolute;
+	right: 0;
+}
+#userimage{
+	width: 37;
+	height: 37;
+}
+#textuser{
+	font-size: 30px;
+}
+#searchbut{
+	position: absolute;
+	right: 0;
+}
+
+.ui-page{
+	background-color: grey;
+}
+#postbody{
+	background-color: lightgrey;
+
+	margin-left: 4%;
+	margin-right: 4%;
+	margin-top: 1%;
+	margin-bottom: 3%;
+}
+#holder{
+
+	width: 20px;
+	height: 100px;
+}
+
+
+
+.invlist{
+		visibility: hidden;
+
+}
+#userintroduction{
+	height: 100px;
+	width: 100%;
+}
+
+#test{
+	position: absolute;
+	right: 3px;
+	}
+
+.nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+		.nav-glyphish-example .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; position: fixed; bottom: 0;}
+		#chat .ui-icon { background:  url(glyphish-icons/09-chat2.png) 50% 50% no-repeat; background-size: 24px 22px; }
+		#email .ui-icon { background:  url(glyphish-icons/18-envelope.png) 50% 50% no-repeat; background-size: 24px 16px;  }
+		#login .ui-icon { background:  url(glyphish-icons/30-key.png) 50% 50% no-repeat;  background-size: 12px 26px; }
+		#beer .ui-icon { background:  url(glyphish-icons/88-beermug.png) 50% 50% no-repeat;  background-size: 22px 27px; }
+		#coffee .ui-icon { background:  url(glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
+		#skull .ui-icon { background:  url(glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
+
+#fot{
+	position:  fixed;bottom: 0;
+	width: 100%;
+	left: 0;
+	height: 60px;
+}
+#user_name_input{
+	font-size: 20px;
+	right:30px;
+}
+#postlink{
+	height: 200px;
+}
+#imagetag{
+	height: 100%;
+	width: 100%;
+}
+.ui-li-heading{
+	color:Black;
+}
+#view_list_style{
+	margin-right: 7%;
+	margin-left: 7%;
+}
