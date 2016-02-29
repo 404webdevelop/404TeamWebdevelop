@@ -25,14 +25,26 @@
 	margin-top: 1%;
 	margin-bottom: 3%;
 }
+#holder{
+
+	width: 20px;
+	height: 100px;
+}
+
 
 
 .invlist{
 		visibility: hidden;
+
+}
+#userintroduction{
+	height: 100px;
+	width: 100%;
 }
 
-#friends{
-
+#test{
+	position: absolute;
+	right: 3px;
 	}
 
 .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
@@ -63,4 +75,8 @@
 }
 .ui-li-heading{
 	color:Black;
+}
+#view_list_style{
+	margin-right: 7%;
+	margin-left: 7%;
 }
