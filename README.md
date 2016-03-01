@@ -38,12 +38,12 @@ Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000
 
 ## Having problems with migrations/weird errors? Try this
 
-* Delete post/migrations/0001_initial.py
-* Delete db.sqlite3
-* python `manage.py makemigrations post`
-* python `manage.py makemigrations author`
-* python `manage.py migrate`
-* python `manage.py createsuperuser`
+* Delete `post/migrations/0001_initial.py`
+* Delete `db.sqlite3`
+* `python manage.py makemigrations post`
+* `python manage.py makemigrations author`
+* `python manage.py migrate`
+* `python manage.py createsuperuser`
 
 ##Contributors
 
