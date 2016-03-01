@@ -18,7 +18,15 @@ urlpatterns = [
     # url(r'^$', 'social_dist.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', TemplateView.as_view(template_name='test.html')),
+    url(r'^$', TemplateView.as_view(template_name='home.html'), name="home"),
+    url(r'^about$', TemplateView.as_view(template_name='about.html'), name="about"),
+    url(r'^addfriends$', TemplateView.as_view(template_name='addfriends.html'), name="addfriends"),
+    url(r'^connect$', TemplateView.as_view(template_name='connect.html'), name="connect"),
+    url(r'^createpost$', TemplateView.as_view(template_name='createpost.html'), name="createpost"),
+    url(r'^friends$', TemplateView.as_view(template_name='friends.html'), name="friends"),
+    url(r'^posted$', TemplateView.as_view(template_name='posted.html'), name="posted"),
+    url(r'^profile$', TemplateView.as_view(template_name='profile.html'), name="profile"),
+
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^accounts/login/.*', login),
