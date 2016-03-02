@@ -13,12 +13,17 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
     serializer_class = AuthorSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, ]
 
     def get_permissions(self):
         if self.action == 'list':
             self.permission_classes = [AllowAny, ]
         elif self.action == 'create':
             self.permission_classes = [AllowAny, ]
+        elif self.action == 'update':
+            self.permission_classes = [IsAuthenticated, ]
+        elif self.action == 'retrieve':
+            self.permission_classes = [IsAuthenticated, ]
         elif self.action == 'profile':
             self.permission_classes = [AllowAny, ]
         else:

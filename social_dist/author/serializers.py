@@ -14,7 +14,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('url', 'username', 'github')
+        fields = ('id', 'url', 'username', 'email', 'github')
 
     def get_github(self, obj):
         return obj.author.github
@@ -23,11 +23,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 class AuthorShortSerializer(AuthorSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'is_active')
+        fields = ('id', 'url', 'username')
 
 
 class AuthorProfileSerializer(AuthorSerializer):
 
     class Meta:
         model = User
-        fields = ('url', 'username', 'date_joined', 'github')
+        fields = ('id', 'url', 'username', 'date_joined', 'github')
