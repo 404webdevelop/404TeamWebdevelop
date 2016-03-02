@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,14 +10,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AuthorSerializer(serializers.ModelSerializer):
+    github = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('url', 'username')
+        fields = ('url', 'username', 'github')
+
+    def get_github(self, obj):
+        return obj.author.github
 
 
-class AuthorProfileSerializer(serializers.ModelSerializer):
+class AuthorProfileSerializer(AuthorSerializer):
 
     class Meta:
         model = User
-        fields = ('url', 'username', 'date_joined')
+        fields = ('url', 'username', 'date_joined', 'github')
