@@ -1,8 +1,9 @@
-# 404TeamWebdevelop
+# CMPUT 404 Winter 2016 Project.
 
-CMPUT 404 Winter 2016 Project.
+[Development Setup](https://github.com/404webdevelop/404TeamWebdevelop/wiki/Development-Setup)
 
-## URL's
+
+## Useful URLs
 
 Homepage: [127.0.0.1:8000/](http://127.0.0.1:8000/)
 
@@ -10,7 +11,7 @@ REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
 
 Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
 
-## Having problems with migrations/weird errors? Try this
+### Having problems with migrations/weird errors? Try this
 
 * Delete `post/migrations/0001_initial.py`
 * Delete `db.sqlite3`
@@ -19,31 +20,65 @@ Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000
 * `python manage.py migrate`
 * `python manage.py createsuperuser`
 
-##Development Setup
+##APIs
 
-```$ cd project/root```
+*URLs are not made as link, because most of them would use GET method, accessing with single click.
 
-Install virtual environment:
+###Token & Login:
+(POST only)
 
-```$ virtualenv .venv```
+```
+    http://localhost:8000/auth-token/
+```
 
-The reason I suggest making our virtual env called ```.venv``` is it is in the ```.gitignore``` file
+If authenticated, it will return
 
-Activate virtual env:
+```
+{
+  "token": "781d26b5b7ae0a88b7ec2e3563a3ad5deebf1219"
+}
+```
 
-```$ source .venv/bin/activate```
+Otherwise, it will give you related error message.
 
-Install dependencies:
+This also can be a will to login. In this way, login does not redirect to anywhere. Front-end application need to take care of redirection after successful login.
 
-```$ pip install -r requirements.txt```
 
-Test whether the virtual env is working:
+###Authentication
 
-```$ which python```
+Server now supports Basic Auth, Token Auth and Session Auth.
 
-Deactivate:
+Session Auth is not recommended. It's add because browsable API site needs it. 
 
-```$ deactivate```
+For how to make Basic Auth request with jquery, click [here](http://stackoverflow.com/a/5507289)
+
+For how to make Token Auth request with jquery, add following to request header.
+
+```
+Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+```
+*Replace 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b with token you get.
+
+###Authors
+
+Author API uses [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter) from django REST frame work.
+ 
+```
+    http://localhost:8000/api/authors/
+```
+- GET: return a list of short version of authors
+- POST: create a new author
+
+```
+    http://localhost:8000/api/authors/:id/
+```
+- GET: return detail info for author with id
+- PUT, PATCH: (auth) update author, logged in author can only update his/her own info
+
+##Frameworks & Libraries
+
+[jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)
+[Django REST framework](https://github.com/tomchristie/django-rest-framework/tree/master)
 
 ##Contributors
 
