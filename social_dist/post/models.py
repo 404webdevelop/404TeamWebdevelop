@@ -28,8 +28,10 @@ class Image(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, blank=True)
 
 class Comment(models.Model):
-    author_id = models.CharField(max_length = 100) # id (could be local or remote) of comment author
-    author_origin = models.CharField(max_length = 1000, default='', blank=True) # hostname of comment author's home server
+    local_author = models.ForeignKey(User, on_delete = models.CASCADE, blank=True, null=True)
+    remote_author_name = models.CharField(max_length = 100, default='', blank=True)
+    remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
+
     parent = models.ForeignKey(Post, on_delete=models.CASCADE) # post that this comment belongs to
     content = models.CharField(max_length = 1000)
     date_created = models.DateTimeField(auto_now_add=True, blank=True)

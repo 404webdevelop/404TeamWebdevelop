@@ -16,11 +16,12 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('author_id', models.CharField(max_length=100)),
-                ('author_origin', models.CharField(default=b'', max_length=1000, blank=True)),
+                ('remote_author_name', models.CharField(default=b'', max_length=100, blank=True)),
+                ('remote_author_url', models.CharField(default=b'', max_length=1000, blank=True)),
                 ('content', models.CharField(max_length=1000)),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('last_modified', models.DateTimeField(auto_now_add=True)),
+                ('local_author', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
         ),
         migrations.CreateModel(
