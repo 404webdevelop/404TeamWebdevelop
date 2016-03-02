@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from serializers import AuthorSerializer, AuthorShortSerializer, AuthorProfileSerializer
 
 from django.contrib.auth.models import User
@@ -13,21 +13,11 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
     serializer_class = AuthorSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action == 'create':
             self.permission_classes = [AllowAny, ]
-        elif self.action == 'create':
-            self.permission_classes = [AllowAny, ]
-        elif self.action == 'update':
-            self.permission_classes = [IsAuthenticated, ]
-        elif self.action == 'retrieve':
-            self.permission_classes = [IsAuthenticated, ]
-        elif self.action == 'profile':
-            self.permission_classes = [AllowAny, ]
-        else:
-            self.permission_classes = [IsAuthenticated, ]
         return super(AuthorViewSet, self).get_permissions()
 
     def list(self, request):
