@@ -20,6 +20,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         return obj.author.github
 
 
+class AuthorShortSerializer(AuthorSerializer):
+    class Meta:
+        model = User
+        fields = ('url', 'username', 'is_active')
+
+
 class AuthorProfileSerializer(AuthorSerializer):
 
     class Meta:
