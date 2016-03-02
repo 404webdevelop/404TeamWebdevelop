@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'author',
     'post',
     'rest_framework',
+    'rest_framework.authtoken',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -109,3 +111,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
 )
+
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
