@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Post(models.Model):
     title = models.CharField(max_length = 300)
     content = models.CharField(max_length = 5000)
@@ -21,11 +22,13 @@ class Post(models.Model):
     # TODO: one post one image? or just insert an embed code for the user maybe
     # image = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL)
 
+
 class Image(models.Model):
     uploader = models.ForeignKey(User, on_delete = models.CASCADE)
     file_type = models.CharField(max_length = 50)
     image_data = models.BinaryField()
     date_created = models.DateTimeField(auto_now_add=True, blank=True)
+
 
 class Comment(models.Model):
     local_author = models.ForeignKey(User, on_delete = models.CASCADE, blank=True, null=True)
@@ -36,3 +39,7 @@ class Comment(models.Model):
     content = models.CharField(max_length = 1000)
     date_created = models.DateTimeField(auto_now_add=True, blank=True)
     last_modified = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+def get_post_for_author(author):
+    return Post.objects.all().filter(author=author)
