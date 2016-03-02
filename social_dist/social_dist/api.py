@@ -1,5 +1,5 @@
 from rest_framework import routers
-from author.views import AuthorViewSet
+from author.api.views import AuthorViewSet
 from post.views import PostViewSet, CommentViewSet, ImageViewSet
 
 
