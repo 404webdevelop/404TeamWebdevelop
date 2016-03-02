@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'author',
     'post',
     'rest_framework',
+    'rest_framework.authtoken',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,8 +111,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
 )
 
-#authentication 
-LOGIN_REDIRECT_URL = '/author/profile/'
-LOGIN_URL = '/author/login/'
-LOGOUT_URL = '/author/logout/'
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
