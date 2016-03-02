@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'author',
     'post',
+    'follower',
     'rest_framework',
     'rest_framework.authtoken',
 
