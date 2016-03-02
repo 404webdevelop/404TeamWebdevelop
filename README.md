@@ -2,6 +2,23 @@
 
 CMPUT 404 Winter 2016 Project.
 
+## URL's
+
+Homepage: [127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
+
+Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
+
+## Having problems with migrations/weird errors? Try this
+
+* Delete `post/migrations/0001_initial.py`
+* Delete `db.sqlite3`
+* `python manage.py makemigrations post`
+* `python manage.py makemigrations author`
+* `python manage.py migrate`
+* `python manage.py createsuperuser`
+
 ##Development Setup
 
 ```$ cd project/root```
@@ -27,31 +44,6 @@ Test whether the virtual env is working:
 Deactivate:
 
 ```$ deactivate```
-
-## URL's
-
-REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
-
-Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
-
-###Server Admin
-
-[127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-
-###Author
-
-login:
-
-[127.0.0.1:8000/author/login/](http://127.0.0.1:8000/author/login/)
-
-home:
-
-[127.0.0.1:8000/author/](http://127.0.0.1:8000/author/)
-
-profile: (public)
-
-[127.0.0.1:8000/author/1](http://127.0.0.1:8000/author/1)
-
 
 ##Contributors
 

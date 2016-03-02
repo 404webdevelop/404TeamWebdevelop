@@ -47,6 +47,7 @@
 	right: 3px;
 	}
 
+/*
 .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
 		.nav-glyphish-example .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; position: fixed; bottom: 0;}
 		#chat .ui-icon { background:  url(glyphish-icons/09-chat2.png) 50% 50% no-repeat; background-size: 24px 22px; }
@@ -55,6 +56,7 @@
 		#beer .ui-icon { background:  url(glyphish-icons/88-beermug.png) 50% 50% no-repeat;  background-size: 22px 27px; }
 		#coffee .ui-icon { background:  url(glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
 		#skull .ui-icon { background:  url(glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
+*/
 
 #fot{
 	position:  fixed;bottom: 0;
@@ -79,4 +81,10 @@
 #view_list_style{
 	margin-right: 7%;
 	margin-left: 7%;
+}
+#content_input_style{
+	background-color: white;
+	color:black;
+}
+#title_input_style{color:black;
 }

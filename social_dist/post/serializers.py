@@ -12,7 +12,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('content', 'author_id', 'author_origin', 'parent', 'date_created', 'last_modified')
+        fields = ('content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):
