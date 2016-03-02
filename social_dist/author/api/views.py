@@ -1,11 +1,10 @@
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import detail_route
-from rest_framework.authentication import BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
-from serializers import AuthorSerializer, AuthorShortSerializer, AuthorProfileSerializer
-
 from django.contrib.auth.models import User
+from rest_framework import viewsets
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.decorators import detail_route
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.response import Response
+from social_dist.author.api.serializers import AuthorSerializer, AuthorShortSerializer, AuthorProfileSerializer
 
 
 # for rest framework
