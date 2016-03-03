@@ -21,7 +21,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def list(self, request):
-        serializer = UserShortSerializer(self.queryset, many=True, context={'request': request})
+        queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
+        serializer = UserShortSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     @detail_route(methods=['POST'])
