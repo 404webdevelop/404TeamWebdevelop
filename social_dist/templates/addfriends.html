@@ -14,7 +14,7 @@ $(document).ready(function(){
   $("button").click(function(){
     console.log(123);
     $.getJSON("http://127.0.0.1:8000/api/authors/2/?format=json",function(result){
-        $("p").append(result.username);
+        $("p").append(result);
       });
     });
   });
