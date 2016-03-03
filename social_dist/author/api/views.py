@@ -24,6 +24,13 @@ class AuthorViewSet(viewsets.ModelViewSet):
         serializer = UserShortSerializer(self.queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    @detail_route()
-    def change_password(self):
-        pass
+    @detail_route(methods=['POST'])
+    def change_password(self, request, **kwargs):
+        user = request.user
+        data = request.data
+        if data.get('password', None):
+            password = data.get('password', None)
+            user.set_password(password)
+            user.save()
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
