@@ -5,13 +5,13 @@ from rest_framework.decorators import detail_route
 from rest_framework.permissions import AllowAny
 from permissions import IsAdminOrSelfOrReadOnly
 from rest_framework.response import Response
-from serializers import AuthorSerializer, AuthorShortSerializer
+from serializers import UserSerializer, UserShortSerializer
 
 
 # for rest framework
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
-    serializer_class = AuthorSerializer
+    serializer_class = UserSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
 
@@ -21,7 +21,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def list(self, request):
-        serializer = AuthorShortSerializer(self.queryset, many=True, context={'request': request})
+        serializer = UserShortSerializer(self.queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     @detail_route()

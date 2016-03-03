@@ -1,42 +1,49 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from ..models import Author
+
+
+class AuthorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ('github', )
 
 
 class UserSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'username', 'email')
-
-
-class AuthorSerializer(serializers.ModelSerializer):
-    github = serializers.SerializerMethodField()
+    author = AuthorProfileSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'url', 'username', 'email', 'github', 'password', 'is_active', 'first_name', 'last_name',
+        fields = ('id', 'url', 'username', 'email', 'author', 'password', 'is_active', 'first_name', 'last_name',
                   'date_joined')
         extra_kwargs = {
             'password': {'write_only': True},
+            'id': {'read_only': True},
+            'url': {'read_only': True},
+            'username': {'read_only': True},
             'is_active': {'read_only': True},
             'date_joined': {'read_only': True},
         }
 
-        write_only_fields = ('password',)
-        read_only_fields = ('is_active', 'date_joined',)
-
     def update(self, instance, validated_data):
-        user = super(AuthorSerializer, self).update(instance, validated_data)
-        user.set_password(validated_data['password'])
+        author_data = validated_data.pop('author')
+
+        user = super(UserSerializer, self).update(instance, validated_data)
+        if validated_data.get('password', None):
+            user.set_password(validated_data['password'])
         user.save()
+
+        author = instance.author
+        author.github = author_data.get('github', author.github)
+        author.save()
         return user
 
-    def get_github(self, obj):
-        return obj.author.github
 
+class UserShortSerializer(serializers.ModelSerializer):
 
-class AuthorShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'url', 'username', 'is_active')
+
 
