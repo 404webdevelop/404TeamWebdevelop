@@ -88,3 +88,33 @@
 }
 #title_input_style{color:black;
 }
+#div1 {
+    width: 20%;
+    overflow: auto;
+    height:  600px;
+    padding: 1px;
+    border: 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+
+}
+
+
+#div2 {
+    height:  600px;
+    overflow: auto;
+    width: 80%;
+    border: 2px 2px 2px 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+}
+#search_friend{
+	width: 100%;
+}
+#searchbutton{
+	background-color: lightgreen;
+};

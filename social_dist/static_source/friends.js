@@ -17,24 +17,6 @@ var post_item={
 };
 
 
-var post_list=[];
-
-function setpostitem(title,text,image,date,autor){
-	post_item.post_title = title;
-	post_item.post_text = text;
-	post_item.post_image = image;
-	post_item.post_date = date;
-	post_item.post_autor=autor;
-	post_list.push(post_item);
-
-};
-
-
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-
 
 
 
@@ -50,24 +32,13 @@ function signuppage(){
 	window.location="signup";
 }
 
-function setdynamic(img,tit,tex,date,autor){
-	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><h2 class=\"ui-li-heading\"><u>"+tit+"</u>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">[posted-by: "+autor+" post-date: "+date+"]</span></h2><p class=\"ui-li-desc\"><em>"+tex+"</em></p></a></div>&nbsp;</div></li>"
-	return string;
-};
+
 
 function setifor(img,username,intro){
 	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+username+"</h1></div><div class=\"well\"><p>"+intro+"</p></div></td></tr></table>";
 	return string;
 };
 
-function loaddynamic(number){
-	var st="";
-	for(i = 0 ;i<number;i++){
-		st = st+setdynamic(post_list[i].post_image,post_list[i].post_title,post_list[i].post_text,post_list[i].post_date,post_list[i].post_autor);
-
-	}
-	return st
-};
 
 
 
@@ -77,12 +48,11 @@ if (data.username == "None"){
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>Can't loaded!</strong> You might not signin <br> or <br> you might not connected to the server</center></div>";
 	
 }else{
-	var number = post_list.length;
-	var st= loaddynamic(number)
+
 	var head = setifor(data.userphoto,data.username,data.intro)
 	document.getElementById("welcomeitem").innerHTML ="<li class=\"active\"><a href=\"/\">Home</a></li><li><a href=\"posted\">Posted</a></li><li><a href=\"about\">About us</a></li><li><a href=\"connect\">Connect</a></li>";
 	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" onclick=\"logout()\" class=\"btn btn-lg btn-warning\">Logout</button>";
-	document.getElementById("list_post_view").innerHTML = st;
+
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can veiw your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>";
 
@@ -93,7 +63,5 @@ if (data.username == "None"){
      // <li class=\"ui-block-e\"><a class=\"ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a\" data-inline="true" data-theme=\"a\" data-iconpos=\"top\" data-wrapperels=\"span\" data-iconshadow=\"true\" data-shadow=\"false\" data-corners=\"false\" href=\"addfriends.html\" id=\"coffee\" data-icon=\"plus\"><span class=\"ui-btn-inner\"><span class=\ui-btn-text\">Add Friends</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
 
 };
-
-
 
 
