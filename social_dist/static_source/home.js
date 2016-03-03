@@ -3,7 +3,7 @@
 
 var data= {"username":"Yu",
 		   "userpassworld":"123456789",
-		   "userphoto":"/static/image/Yu.jpg",
+		   "userphoto":"../static/image/Yu.jpg",
 		   "intro": "good luck"
 			 };
 
@@ -13,7 +13,7 @@ var post_item={
 		"post_text" :"good is god",
 		"post_autor":"hoho",
 		"post_date":"2012",
-		"post_image":"/static/image/Yu.jpg"
+		"post_image":"../static/image/Yu.jpg"
 };
 
 
