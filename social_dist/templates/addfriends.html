@@ -2,22 +2,42 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+<script src="/static/json2.js"></script>
+<!--source from https://github.com/douglascrockford/JSON-js/blob/master/json2.js -->
 </head>
 
 <body>
-
 <button>获得 JSON 数据</button>
 <p></p>
+
+<p id="show_json"></p>
+<p><input id = "username"type="text" name="login" value="" placeholder="Username or Email"></p>
+<p><input id= "password"type="password" name="password" value="" placeholder="Password"></p>
+<button id="but">Default Button</button>
+data shows:
+<p id= "show"></p>
+error shows:
+<p id= "error"></p>
+response:
+<p id= "response"></p>
+
 <script type="text/javascript">
 $(document).ready(function(){
-  $("button").click(function(){
-    console.log(123);
-    $.getJSON("http://127.0.0.1:8000/api/authors/2/?format=json",function(result){
-        $("p").append(result.username);
-      });
+    $("#but").click(function(){
+        var data = {"username": "admin", "password": "0000"};
+        console.log(data);
+        var url = "http://localhost:8000/api-token/";
+        $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+        })
+         .done(function (data) {
+            console.log(data)
+         });
     });
-  });
+});
 </script>
+
 </body>
 </html>
