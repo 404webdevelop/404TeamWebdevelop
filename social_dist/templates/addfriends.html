@@ -20,10 +20,14 @@ error shows:
 <p id= "error"></p>
 response:
 <p id= "response"></p>
+username:
+<p id= "u"></p>
+pass:
+<p id= "p"></p>
 
 <script type="text/javascript">
 var token ;
-$(document).ready(function(){
+/*$(document).ready(function(){
     $("#but").click(function(data){
         var data = {"username": "zuo2", "password": "zuoyu1039"};
         //console.log(data);
@@ -43,7 +47,76 @@ $(document).ready(function(){
     $("#error").html(JSON.stringify(token));
 
 });
-$("#error").html(JSON.stringify(data));
+$("#error").html(JSON.stringify(data));*/
+
+var username = "zuo2";
+var password =  "zuoyu1039";
+
+
+
+
+$(document).ready(function(){
+    $("#but").click(function(data){
+
+        
+        var data = {"username": "zuo2", "password": "zuoyu1039"};
+        //console.log(data);
+        var url = "api-token/";
+        var callback = "";
+        getlogin(url,data,callback);
+        console.log(callback);
+         
+    });
+    
+
+});
+
+
+
+
+
+var username = "zuo2";
+var password =  "zuoyu1039";
+var url = "api-token/";
+var data = {"username": "zuo2", "password": "zuoyu1039"};
+
+
+
+
+
+
+function resetuser(username){
+  username = "";
+  return username;
+}
+
+
+function resetuser(password){
+  password = "";
+  return password;
+}
+
+
+
+function getlogin(url,data,callback){
+  var val;
+  $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+
+        })
+         .done(function (callback) {
+            
+            console.log(callback);
+            $("#show").html(JSON.stringify(callback));
+
+         });
+  
+  //return callback;
+
+};
+
 </script>
 
 </body>
