@@ -22,21 +22,28 @@ response:
 <p id= "response"></p>
 
 <script type="text/javascript">
+var token ;
 $(document).ready(function(){
-    $("#but").click(function(){
-        var data = {"username": "admin", "password": "0000"};
-        console.log(data);
-        var url = "http://localhost:8000/api-token/";
+    $("#but").click(function(data){
+        var data = {"username": "zuo2", "password": "zuoyu1039"};
+        //console.log(data);
+        var url = "api-token/";
         $.ajax({
           method: "POST",
           url: url,
           data: data,
+
         })
          .done(function (data) {
-            console.log(data)
+            console.log(data);
+            $("#show").html(JSON.stringify(data));
+
          });
     });
+    $("#error").html(JSON.stringify(token));
+
 });
+$("#error").html(JSON.stringify(data));
 </script>
 
 </body>
