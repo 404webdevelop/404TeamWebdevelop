@@ -6,7 +6,7 @@ from ..models import Author
 class AuthorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ('github', )
+        fields = ('github',)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,32 +17,31 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'url', 'username', 'email', 'author', 'password', 'is_active', 'first_name', 'last_name',
                   'date_joined')
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'id': {'read_only': True},
-            'url': {'read_only': True},
-            'username': {'read_only': True},
-            'is_active': {'read_only': True},
-            'date_joined': {'read_only': True},
-        }
+        read_only_fields = ('id', 'url', 'is_active', 'date_joined')
+        extra_kwargs = {'password': {'write_only': True}}
 
-    def update(self, instance, validated_data):
-        print validated_data.pop('password')
-        author_data = validated_data.pop('author')
-
-        user = super(UserSerializer, self).update(instance, validated_data)
-        user.save()
-
-        author = instance.author
-        author.github = author_data.get('github', author.github)
+    def create(self, validated_data):
+        author_data = validated_data.pop('author', None)
+        username = validated_data.pop('username')
+        email = validated_data.pop('email')
+        password = validated_data.pop('password')
+        user = User.objects.create_user(username, email, password, **validated_data)
+        author = Author.objects.create(user=user, github=author_data.get('github', ""))
         author.save()
+        user.author = author
+        user.is_active = False
+        user.save()
         return user
 
+    def update(self, instance, validated_data):
+        author_data = validated_data.pop('author', None)
+        user = super(UserSerializer, self).update(instance, validated_data)
 
-class UserShortSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'username', 'is_active')
+        author = instance.author
+        if author_data:
+            author.github = author_data.get('github', author.github)
+            author.save()
+        user.save()
+        return user
 
 

@@ -26,7 +26,7 @@ $(document).ready(function(){
     $("#but").click(function(){
         var data = {"username": "admin", "password": "0000"};
         console.log(data);
-        var url = "http://localhost:8000/api-token/";
+        var url = "api-token/";
         $.ajax({
           method: "POST",
           url: url,

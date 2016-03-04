@@ -5,7 +5,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.permissions import AllowAny
 from permissions import IsAdminOrSelfOrReadOnly
 from rest_framework.response import Response
-from serializers import UserSerializer, UserShortSerializer
+from serializers import UserSerializer
 
 
 # for rest framework
@@ -19,11 +19,6 @@ class AuthorViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [AllowAny, ]
         return super(AuthorViewSet, self).get_permissions()
-
-    def list(self, request):
-        queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
-        serializer = UserShortSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)
 
     @detail_route(methods=['POST'])
     def change_password(self, request, **kwargs):
