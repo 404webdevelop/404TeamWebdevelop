@@ -54,7 +54,6 @@ var password =  "zuoyu1039";
 
 
 
-
 $(document).ready(function(){
     $("#but").click(function(data){
 
@@ -64,10 +63,14 @@ $(document).ready(function(){
         var url = "api-token/";
         var callback = "";
         getlogin(url,data,callback);
-        console.log(callback);
+        var token=getCookie("token");
+        console.log(token);
+        $("#error").html(token);
+
+
          
     });
-    
+
 
 });
 
@@ -96,6 +99,25 @@ function resetuser(password){
   return password;
 }
 
+function setCookie(username,password,token){
+  document.cookie = "username = "+username+"; token="+token;
+};
+
+function getCookie(cname) {
+    var name = cname + "=";
+    console.log(name);
+    var ca = document.cookie.split(';');
+    console.log(ca);
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 
 
 function getlogin(url,data,callback){
@@ -107,9 +129,16 @@ function getlogin(url,data,callback){
 
         })
          .done(function (callback) {
+            username = "zuo2";
+            password = "zuoyu1039";
             
-            console.log(callback);
-            $("#show").html(JSON.stringify(callback));
+            //console.log(callback);
+            var token =JSON.stringify(callback);
+           // console.log(username);
+            //console.log(password);
+            //console.log(token);
+            setCookie(username,password,token);
+
 
          });
   
