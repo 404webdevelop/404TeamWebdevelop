@@ -20,10 +20,6 @@ class AuthorViewSet(viewsets.ModelViewSet):
             self.permission_classes = [AllowAny, ]
         return super(AuthorViewSet, self).get_permissions()
 
-    def list(self, request):
-        queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
-        serializer = UserShortSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)
 
     @detail_route(methods=['POST'])
     def change_password(self, request, **kwargs):

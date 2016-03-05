@@ -25,6 +25,11 @@ from follower.models import Follower
 
 class CurrentUserSerializer(serializers.ModelSerializer):
 	followers = serializers.StringRelatedField(many=True)
+	following = serializers.StringRelatedField(many=True)
 	class Meta:
 		model = User
-		fields = ('username', 'followers')
+		fields = ('username', 'followers', 'following')
+
+		extra_kwargs = {
+			'username': {'read_only': True},
+            }
