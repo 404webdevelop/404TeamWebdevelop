@@ -3,7 +3,7 @@
 
 var data= {"username":"Yu",
 		   "userpassworld":"123456789",
-		   "userphoto":"/static/image/Yu.jpg",
+		   "userphoto":"../static/image/Yu.jpg",
 		   "intro": "good luck"
 			 };
 
@@ -12,8 +12,13 @@ var post_item={
 		"post_title":"Lorem",
 		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 		"post_autor":"hoho",
+<<<<<<< HEAD
 		"post_date":"October 14, 2012",
 		"post_image":"/static/image/Yu.jpg"
+=======
+		"post_date":"2012",
+		"post_image":"../static/image/Yu.jpg"
+>>>>>>> 0dda992fc5b9e133338a1bd61ada9a946992253a
 };
 
 
@@ -84,7 +89,7 @@ if (data.username == "None"){
 	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" onclick=\"logout()\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("list_post_view").innerHTML = st;
 	document.getElementById("info").innerHTML = head;
-	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can viww your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
+	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
 
       //<li class=\"ui-block-a\"><a  href=\"#\" id=\"load\" data-icon=\"refresh\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Load more</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
       //<li class=\"ui-block-b\"><a class=\"ui-btn ui-btn-up-a\" href=\"porfile.html\" id=\"pro\" data-icon=\"star\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Porfile</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>

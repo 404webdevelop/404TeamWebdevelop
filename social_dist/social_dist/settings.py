@@ -39,7 +39,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'author',
     'post',
+    'follower',
     'rest_framework',
+    'rest_framework.authtoken',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,6 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'social_dist.disable.DisableCSRF',
 )
 
 ROOT_URLCONF = 'social_dist.urls'
@@ -109,3 +113,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
 )
+
+# Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
