@@ -5,13 +5,13 @@ from rest_framework.decorators import detail_route
 from rest_framework.permissions import AllowAny
 from permissions import IsAdminOrSelfOrReadOnly
 from rest_framework.response import Response
-from serializers import AuthorSerializer, AuthorShortSerializer
+from serializers import UserSerializer, UserShortSerializer
 
 
 # for rest framework
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
-    serializer_class = AuthorSerializer
+    serializer_class = UserSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
 
@@ -21,9 +21,17 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def list(self, request):
-        serializer = AuthorShortSerializer(self.queryset, many=True, context={'request': request})
+        queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
+        serializer = UserShortSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    @detail_route()
-    def change_password(self):
-        pass
+    @detail_route(methods=['POST'])
+    def change_password(self, request, **kwargs):
+        user = request.user
+        data = request.data
+        if data.get('password', None):
+            password = data.get('password', None)
+            user.set_password(password)
+            user.save()
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
