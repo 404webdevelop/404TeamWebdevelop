@@ -2,22 +2,155 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+<!--<script src="/static/json2.js"></script>-->
+<!--source from https://github.com/douglascrockford/JSON-js/blob/master/json2.js -->
 </head>
 
 <body>
-
 <button>获得 JSON 数据</button>
 <p></p>
+
+<p id="show_json"></p>
+<p><input id = "username"type="text" name="login" value="" placeholder="Username or Email"></p>
+<p><input id= "password"type="password" name="password" value="" placeholder="Password"></p>
+
+<button id="but">Default Button</button></a>
+<button id="re">reload Button</button></a>
+data shows:
+<p id= "show"></p>
+error shows:
+<p id= "error"></p>
+response:
+<p id= "response"></p>
+username:
+<p id= "u"></p>
+pass:
+<p id= "p"></p>
+
 <script type="text/javascript">
-$(document).ready(function(){
-  $("button").click(function(){
-    console.log(123);
-    $.getJSON("http://127.0.0.1:8000/api/authors/2/?format=json",function(result){
-        $("p").append(result);
-      });
+
+/*$(document).ready(function(){
+    $("#but").click(function(data){
+        var data = {"username": "zuo2", "password": "zuoyu1039"};
+        //console.log(data);
+        var url = "api-token/";
+        $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+
+        })
+         .done(function (data) {
+            console.log(data);
+            $("#show").html(JSON.stringify(data));
+
+         });
     });
-  });
+    $("#error").html(JSON.stringify(token));
+
+});
+$("#error").html(JSON.stringify(data));*/
+var token=getCookie("token");
+console.log(token);
+$("#p").html(token);
+
+$("#but").click(function(){
+    var username = $("#username").val();
+    var password = $("#password").val();
+
+    
+    var data = {"username": username, "password": password};
+    //console.log(data);
+    var url = "api-token/";
+    var callback = "";
+    getlogin(url,data,callback);
+    var token=getCookie("token");
+   
+    console.log(token);
+    $("#response").html(token);
+
+
+  
+    
+});
+
+$("#re").click(function(){
+    location.reload();
+  
+    
+});
+
+
+
+
+
+
+
+function resetuser(username){
+  username = "";
+  return username;
+}
+
+
+function resetuser(password){
+  password = "";
+  return password;
+}
+
+function setCookie(token){
+  document.cookie = " token="+token;
+};
+function clearCookie(token){
+  setCookie(token,"",-1);
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    //console.log(name);
+    var ca = document.cookie.split(';');
+    //console.log(ca);
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+
+function getlogin(url,data,callback){
+  var val;
+  var username = data.username;
+  //console.log(username);
+  var password = data.password;
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            var token =JSON.stringify(callback);
+
+            setCookie(token);
+            
+         });
+  request.fail(function () {
+            //console.log(callback);
+            clearCookie();
+         });
+
+         
+  
+  //return callback;
+
+};
+
 </script>
+
 </body>
 </html>
