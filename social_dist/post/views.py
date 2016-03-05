@@ -79,6 +79,11 @@ class ImageViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
 
+    def get_permissions(self):
+        if self.action == 'create':
+            self.permission_classes = [CreateImagePermission]
+        return super(ImageViewSet, self).get_permissions()
+
     # def retrieve(self, request, pk=None):
     #     queryset = Image.objects.all()
     #     image = get_object_or_404(queryset, pk=pk)

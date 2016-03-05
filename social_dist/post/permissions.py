@@ -85,6 +85,24 @@ class CommentPermission(permissions.BasePermission):
 
         return False
 
+class CreateImagePermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        print(request.data)
+        try:
+            uploader = request.data.dict()['uploader']
+        except:
+            return True
+        if uploader != '':
+            if request.user.is_anonymous():
+                return False
+            pk = [x.strip() for x in uploader.split('/') if x.strip() != ''][-1] # bad hack
+            requestedUser = User.objects.get(pk=pk)
+            if requestedUser is None:
+                return False
+            if request.user.id != requestedUser.id:
+                return False
+        return True
+
 class ImagePermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         assert isinstance(obj, Image)
