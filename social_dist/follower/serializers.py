@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from follower.models import Follower
+from follower.models import Follow
 
 
 
@@ -22,14 +22,26 @@ from follower.models import Follower
 
 
 
-
+class FollowerListSerializer(serializers.ListField):
+	follower = serializers.CharField()
+	
 class CurrentUserSerializer(serializers.ModelSerializer):
-	followers = serializers.StringRelatedField(many=True)
-	following = serializers.StringRelatedField(many=True)
-	class Meta:
-		model = User
-		fields = ('username', 'followers', 'following')
 
-		extra_kwargs = {
-			'username': {'read_only': True},
-            }
+	follower = FollowerListSerializer()
+	following = FollowerListSerializer()
+	class Meta:
+		model = Follow
+		fields = ('url', 'username', 'follower', 'following')
+
+	def create(self, validated_data):
+		username = validated_data.pop('username')
+		follower = validated_data.pop('follower')
+		following = validated_data.pop('following')
+		follow = Follow.objects.create(username=username, follower=follower,following=following)
+		follow.save()
+		return follow
+class AllFollowList(serializers.ModelSerializer):
+	aggregateList = CurrentUserSerializer(many=True)
+	class Meta:
+		fields = ("aggregateList")
+			

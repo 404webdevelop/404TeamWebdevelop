@@ -9,11 +9,12 @@ var data= {"username":"Yu",
 
 
 var post_item={
-		"post_title":"good",
-		"post_text" :"good is god",
+		"post_title":"Lorem",
+		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 		"post_autor":"hoho",
-		"post_date":"2012",
-		"post_image":"../static/image/Yu.jpg"
+		"post_date":"October 14, 2012",
+		"post_image":"/static/image/Yu.jpg"
+
 };
 
 
@@ -50,8 +51,8 @@ function signuppage(){
 	window.location="signup";
 }
 
-function setdynamic(img,tit,tex,date,autor){
-	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><h2 class=\"ui-li-heading\"><u>"+tit+"</u>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">[posted-by: "+autor+" post-date: "+date+"]</span></h2><p class=\"ui-li-desc\"><em>"+tex+"</em></p></a></div>&nbsp;</div></li>"
+function setdynamic(img,tit,tex,date,author){
+	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
 	return string;
 };
 
@@ -72,7 +73,7 @@ function loaddynamic(number){
 
 
 if (data.username == "None"){
-	document.getElementById("welcomeitem").innerHTML ="<li class=\"active\"><a href=\"/\">Home</a></li><li><a href=\"about\">About us</a></li><li><a href=\"connect\">Connect</a></li>";
+	
 	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>Can't loaded!</strong> You might not signin <br> or <br> you might not connected to the server</center></div>";
 	
@@ -80,11 +81,11 @@ if (data.username == "None"){
 	var number = post_list.length;
 	var st= loaddynamic(number)
 	var head = setifor(data.userphoto,data.username,data.intro)
-	document.getElementById("welcomeitem").innerHTML ="<li class=\"active\"><a href=\"/\">Home</a></li><li><a href=\"posted\">Posted</a></li><li><a href=\"about\">About us</a></li><li><a href=\"connect\">Connect</a></li>";
+	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" onclick=\"logout()\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("list_post_view").innerHTML = st;
 	document.getElementById("info").innerHTML = head;
-	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can veiw your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>";
+	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
 
       //<li class=\"ui-block-a\"><a  href=\"#\" id=\"load\" data-icon=\"refresh\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Load more</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
       //<li class=\"ui-block-b\"><a class=\"ui-btn ui-btn-up-a\" href=\"porfile.html\" id=\"pro\" data-icon=\"star\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Porfile</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>

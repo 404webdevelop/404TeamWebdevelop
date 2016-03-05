@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework.decorators import detail_route
 from rest_framework.permissions import AllowAny
 from permissions import IsAdminOrSelfOrReadOnly
 from rest_framework.response import Response
-from serializers import UserSerializer, UserShortSerializer
+from serializers import UserSerializer
+from django.core.servers.basehttp import FileWrapper
 
 
 # for rest framework
@@ -21,6 +23,16 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
 
+    def create(self, request, *args, **kwargs):
+        print request.data
+        return super(AuthorViewSet, self).create(request, args, kwargs)
+
+    @detail_route(methods=["GET"])
+    def profile_picture(self, request, **kwargs):
+        user = User.objects.get(id=kwargs['pk'])
+        response = HttpResponse(FileWrapper(user.author.picture), content_type='image')
+        return response
+
     @detail_route(methods=['POST'])
     def change_password(self, request, **kwargs):
         user = request.user
@@ -31,3 +43,4 @@ class AuthorViewSet(viewsets.ModelViewSet):
             user.save()
         serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
+
