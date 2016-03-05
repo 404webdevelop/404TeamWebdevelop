@@ -75,9 +75,21 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - GET: return detail info for author with id
 - PUT, PATCH: (auth) update author, logged in author can only update his/her own info
 
+Here is a ajax post example for 
+{% gist wyushi/6aa73ae671fe6fa15526 %}
+
+
+```
+    http://localhost:8000/api/authors/:id/profile_picutre/
+```
+- GET: get profile picture for author with id (no auth)
+- (For update and change use PUT and PATCH on api/authors/:id/)
+
+
 ##Frameworks & Libraries
 
 [jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)
+
 [Django REST framework](https://github.com/tomchristie/django-rest-framework/tree/master)
 
 ##Contributors
