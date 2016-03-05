@@ -22,9 +22,11 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^accounts/login/.*', 'django.contrib.auth.views.login', kwargs={'template_name': 'user/login.html'}, ),
+    url(r'^accounts/signup/.*', TemplateView.as_view(template_name='signup.html'), name="signup"),
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', name="reset_password"),
 
     url(r'^api-token/', views.obtain_auth_token),
+
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
 

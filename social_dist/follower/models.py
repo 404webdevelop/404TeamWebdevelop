@@ -4,8 +4,10 @@ import author
 from datetime import datetime  
 
 # Create your models here.
-class UserFollower(models.Model):
-	username = models.CharField(max_length=100,  default='userB')
-	date_created = models.DateTimeField(default=datetime.now, blank=True)
-	followings = models.ManyToManyField('self', related_name='following', symmetrical=False)
-	followers = models.ManyToManyField('self', related_name='follower', symmetrical=False)
+class Follower(models.Model):
+	user = models.OneToOneField(User, primary_key=True)
+	date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+
+class followers(models.Model):
+    current_user= models.ForeignKey(Follower, related_name='followers')
