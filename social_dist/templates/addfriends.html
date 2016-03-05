@@ -2,7 +2,7 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="/static/json2.js"></script>
+<!--<script src="/static/json2.js"></script>-->
 <!--source from https://github.com/douglascrockford/JSON-js/blob/master/json2.js -->
 </head>
 
@@ -13,7 +13,9 @@
 <p id="show_json"></p>
 <p><input id = "username"type="text" name="login" value="" placeholder="Username or Email"></p>
 <p><input id= "password"type="password" name="password" value="" placeholder="Password"></p>
-<button id="but">Default Button</button>
+
+<button id="but">Default Button</button></a>
+<button id="re">reload Button</button></a>
 data shows:
 <p id= "show"></p>
 error shows:
@@ -26,7 +28,7 @@ pass:
 <p id= "p"></p>
 
 <script type="text/javascript">
-var token ;
+
 /*$(document).ready(function(){
     $("#but").click(function(data){
         var data = {"username": "zuo2", "password": "zuoyu1039"};
@@ -48,40 +50,36 @@ var token ;
 
 });
 $("#error").html(JSON.stringify(data));*/
+var token=getCookie("token");
+console.log(token);
+$("#p").html(token);
 
-var username = "zuo2";
-var password =  "zuoyu1039";
+$("#but").click(function(){
+    var username = $("#username").val();
+    var password = $("#password").val();
 
-
-
-$(document).ready(function(){
-    $("#but").click(function(data){
-
-        
-        var data = {"username": "zuo2", "password": "zuoyu1039"};
-        //console.log(data);
-        var url = "api-token/";
-        var callback = "";
-        getlogin(url,data,callback);
-        var token=getCookie("token");
-        console.log(token);
-        $("#error").html(token);
-
-
-         
-    });
+    
+    var data = {"username": username, "password": password};
+    //console.log(data);
+    var url = "api-token/";
+    var callback = "";
+    getlogin(url,data,callback);
+    var token=getCookie("token");
+   
+    console.log(token);
+    $("#response").html(token);
 
 
+  
+    
 });
 
+$("#re").click(function(){
+    location.reload();
+  
+    
+});
 
-
-
-
-var username = "zuo2";
-var password =  "zuoyu1039";
-var url = "api-token/";
-var data = {"username": "zuo2", "password": "zuoyu1039"};
 
 
 
@@ -99,15 +97,18 @@ function resetuser(password){
   return password;
 }
 
-function setCookie(username,password,token){
-  document.cookie = "username = "+username+"; token="+token;
+function setCookie(token){
+  document.cookie = " token="+token;
 };
+function clearCookie(token){
+  setCookie(token,"",-1);
+}
 
 function getCookie(cname) {
     var name = cname + "=";
-    console.log(name);
+    //console.log(name);
     var ca = document.cookie.split(';');
-    console.log(ca);
+    //console.log(ca);
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
@@ -122,25 +123,28 @@ function getCookie(cname) {
 
 function getlogin(url,data,callback){
   var val;
-  $.ajax({
+  var username = data.username;
+  //console.log(username);
+  var password = data.password;
+  var request = $.ajax({
           method: "POST",
           url: url,
           data: data,
 
-        })
-         .done(function (callback) {
-            username = "zuo2";
-            password = "zuoyu1039";
-            
+        });
+  request.done(function (callback) {
             //console.log(callback);
             var token =JSON.stringify(callback);
-           // console.log(username);
-            //console.log(password);
-            //console.log(token);
-            setCookie(username,password,token);
 
-
+            setCookie(token);
+            
          });
+  request.fail(function () {
+            //console.log(callback);
+            clearCookie();
+         });
+
+         
   
   //return callback;
 
