@@ -1,4 +1,4 @@
-<h1>Author Logind</h1>
+<h1>Author Login</h1>
 <form action="login" method="POST">
 	Username:
 	<input type="text" name="username"><br>

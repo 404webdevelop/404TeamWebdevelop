@@ -43,13 +43,14 @@
   <div id="postbody">
        <form method="put">
 	<br>
+	Desired Username<input type="text" placeholder="Eg. johndoeismyname">
 	Password<input type="password" placeholder="Consider using numbers and special characters">
 	github Username<input type="text" placeholder="Eg. jdoe">
 	Display Name<input type="text" placeholder="Eg. John Doe">
-	Change Photo<input type="file">
-	Current Photo:<img height="200px" width="200px">
+	Upload Photo<input type="file">
+	Photo Preview:<img height="200px" width="200px">
 	<br>
-	<button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update Profile</button>
+	<button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Create Account</button>
 	</form>
     </div>
 
@@ -79,8 +80,7 @@
 
     </div>
   <!-- this is the bottom nav bar -->
-  <div id="show">
-      <div role="navigation" data-role="navbar" class="nav-glyphish-example ui-navbar ui-mini" data-grid="d">
+     <div role="navigation" data-role="navbar" class="nav-glyphish-example ui-navbar ui-mini" data-grid="d">
     <ul class="ui-grid-d">
       <li class="ui-block-a"><a  href="/" id="chat" data-icon="home"><span class="ui-btn-inner"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
       <li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-down-a" href="profile" id="email" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">Profile</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
@@ -91,7 +91,6 @@
     </div>
 </div>
 </div>
-  </div>
   
 
 
