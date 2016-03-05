@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^api-token/', views.obtain_auth_token),
 
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name="home"),
+    url(r'^signup$', TemplateView.as_view(template_name='user/signup.html'), name='signup'),
     url(r'^about$', login_required(TemplateView.as_view(template_name='about.html')), name="about"),
     url(r'^addfriends$', login_required(TemplateView.as_view(template_name='addfriends.html')), name="addfriends"),
     url(r'^connect$', login_required(TemplateView.as_view(template_name='connect.html')), name="connect"),
@@ -29,6 +30,7 @@ urlpatterns = [
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
-
     url(r'^post/debug/', include('post.debug_urls')),
+
+
 ]
