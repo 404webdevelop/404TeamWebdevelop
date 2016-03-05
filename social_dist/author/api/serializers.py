@@ -4,9 +4,11 @@ from ..models import Author
 
 
 class AuthorProfileSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Author
-        fields = ('github',)
+        fields = ('github', 'picture')
+        extra_kwargs = {'picture': {'write_only': True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,11 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         author_data = validated_data.pop('author', None)
-        username = validated_data.pop('username')
-        email = validated_data.pop('email')
-        password = validated_data.pop('password')
-        user = User.objects.create_user(username, email, password, **validated_data)
-        author = Author.objects.create(user=user, github=author_data.get('github', ""))
+        user = User.objects.create_user(**validated_data)
+        author = Author.objects.create(**author_data)
         author.save()
         user.author = author
         user.is_active = False
@@ -37,9 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
         author_data = validated_data.pop('author', None)
         user = super(UserSerializer, self).update(instance, validated_data)
 
-        author = instance.author
         if author_data:
-            author.github = author_data.get('github', author.github)
+            author_serializer = AuthorProfileSerializer()
+            author = author_serializer.update(user.author, author_data)
             author.save()
         user.save()
         return user
