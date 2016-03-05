@@ -75,8 +75,7 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - GET: return detail info for author with id
 - PUT, PATCH: (auth) update author, logged in author can only update his/her own info
 
-Here is a ajax post example for 
-{% gist wyushi/6aa73ae671fe6fa15526 %}
+[Here is a ajax post example for signup a new user](https://gist.github.com/wyushi/6aa73ae671fe6fa15526)
 
 
 ```
