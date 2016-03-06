@@ -1,4 +1,4 @@
-(function () {
+(function (global) {
 
 'use strict';
 
@@ -16,8 +16,8 @@ function requestToken(username, password, callback) {
       'password': password
     }),
     success: function (data) {
-      token = data['token'];
-      user = data['user'];
+      global.token = token = data['token'];
+      global.user = user = data['user'];
       callback(user, token);
     },
     error: function (error) {
@@ -76,4 +76,4 @@ function setup() {
 setup();
 
 
-})();
+})(this);

@@ -5,19 +5,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 </head>
 <body>
-<form method="put">
+<form action="/api/authors/" method="POST" enctype="multipart/form-data">
     <br>
     <div>
         <label>Desired Username</label>
-        <input id="username-input" type="text" placeholder="Eg. johndoeismyname">
+        <input id="username-input" type="text" name="username" placeholder="Eg. johndoeismyname">
     </div>
     <div>
         <label>Password</label>
-        <input id="password-input" type="password" placeholder="Consider using numbers and special characters">
+        <input id="password-input" type="password" name="password" placeholder="Consider using numbers and special characters">
     </div>
     <div>
         <label>Github Username</label>
-        <input id="github-input" type="text" placeholder="Eg. jdoe">
+        <input id="github-input" type="text" name="author.github" placeholder="Eg. jdoe">
     </div>
     <div>
         <label>First Name</label>
@@ -29,10 +29,22 @@
     </div>
 
     <div>
+        <label>Photo:</label>
+        <input name="author.picture" type="file">
+    </div>
+
+    <div>
         <label>Email</label>
         <input id="email-input" type="text" placeholder="Eg. johndoeismyname">
-    </div> 
-    <button id="create-btn" type="button">Create Account</button>
+    </div>
+    <div>
+        <label>create an author with ajax call</label>
+        <button id="create-btn" type="button">Create Account</button>
+    </div>
+    <div>
+        <label>create an author with post form</label>
+        <input type="submit">FormSubmit</input>
+    </div>
 </form>
 <script type="text/javascript" src="static/js/signup.js"></script>
 </body>
