@@ -42,7 +42,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
             user = User.objects.get_by_natural_key(username)
             uploaded_file = request.data.pop('0')[0]
             user.author.picture.save(uploaded_file.name, uploaded_file)
-            return Response({'message': 'Hello World'})
+            image_url = 'api/authors/%d/profile_picture/' % user.id
+            return Response({'url': image_url})
 
     @detail_route(methods=['POST'])
     def change_password(self, request, **kwargs):
