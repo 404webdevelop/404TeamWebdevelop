@@ -60,7 +60,10 @@ class UserTest(APITestCase):
         url = reverse('user-detail', kwargs={'pk': user.id})
         data = {
             "first_name": "User",
-            "last_name": "One"
+            "last_name": "One",
+            "author": {
+                "github": "123123123"
+            }
         }
         self.client.force_authenticate(user=user)
         response = self.client.patch(url, data, format='json')
@@ -68,6 +71,7 @@ class UserTest(APITestCase):
         user = User.objects.get_by_natural_key(user.username)
         self.assertEqual(user.first_name, 'User')
         self.assertEqual(user.last_name, 'One')
+        self.assertEqual(user.author.github, "123123123")
 
 
 
