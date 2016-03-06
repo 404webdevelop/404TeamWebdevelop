@@ -7,7 +7,8 @@
 </head>
 
 <body>
-<button>获得 JSON 数据</button>
+  ----------------------------------------this is login test part---------------------
+<br><button>获得 JSON 数据</button>
 <p></p>
 
 <p id="show_json"></p>
@@ -17,7 +18,8 @@
 <button id="but">Default Button</button></a>
 <button id="re">reload Button</button></a>
 data shows:
-<p id= "show"></p>
+
+<br><p id= "show"></p>
 error shows:
 <p id= "error"></p>
 response:
@@ -26,12 +28,24 @@ username:
 <p id= "u"></p>
 pass:
 <p id= "p"></p>
+---------------------------------------get user infro by token part-----------------<br>
 
 <script type="text/javascript">
 var token=getCookie("token");
 console.log(token);
 $("#p").html(token);
 
+
+
+//--------------------------get infor by token--------------------------
+
+
+
+
+
+
+
+//---------------------user login test done----------------------------------
 $("#but").click(function(){
     var username = $("#username").val();
     var password = $("#password").val();
@@ -45,25 +59,22 @@ $("#but").click(function(){
    
     console.log(token);
     $("#response").html(token);  
+    setTimeout(function(){
+      window.location.reload(1);
+    },2000
+      );
 });
 
 $("#re").click(function(){
     location.reload();
   
-    
+
 });
 
-function resetuser(username){
-  username = "";
-  return username;
-}
 
 
-function resetuser(password){
-  password = "";
-  return password;
-}
 
+//-------------------cookie function done.-----------------------
 function setCookie(token){
   document.cookie = " token="+token;
 };
@@ -86,6 +97,9 @@ function getCookie(cname) {
     return "";
 }
 
+
+
+//---------------------------loging request done.-------------------
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
