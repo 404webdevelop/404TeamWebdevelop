@@ -22,6 +22,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
             self.permission_classes = [AllowAny, ]
         return super(AuthorViewSet, self).get_permissions()
 
+
     def create(self, request, *args, **kwargs):
         print request.data
         return super(AuthorViewSet, self).create(request, args, kwargs)

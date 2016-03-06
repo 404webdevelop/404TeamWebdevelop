@@ -2,23 +2,31 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import datetime
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UserFollower',
+            name='Follows',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('username', models.CharField(default=b'userB', max_length=100)),
-                ('date_created', models.DateTimeField(default=datetime.datetime.now, blank=True)),
-                ('followers', models.ManyToManyField(related_name='follower', to='follower.UserFollower')),
-                ('followings', models.ManyToManyField(related_name='following', to='follower.UserFollower')),
+                ('hide', models.BooleanField(default=False)),
+                ('followed', models.ForeignKey(related_name='followed', to=settings.AUTH_USER_MODEL)),
+                ('follower', models.ForeignKey(related_name='follower', to=settings.AUTH_USER_MODEL)),
             ],
+            options={
+                'verbose_name': 'Following',
+                'verbose_name_plural': 'Followers',
+            },
+        ),
+        migrations.AlterUniqueTogether(
+            name='follows',
+            unique_together=set([('followed', 'follower')]),
         ),
     ]
