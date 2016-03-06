@@ -1,14 +1,11 @@
-from follower.models import Follower
-from follower.serializers import CurrentUserSerializer
+from follower.models import Follows, FollowManager
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
+from follower.serializers import FollowSerializer
 
-class FollowerViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Followers to be viewed or edited.
-    """
-    queryset = Follower.objects.all().order_by('-date_created')
-    serializer_class = CurrentUserSerializer
+class FollowViewSet(viewsets.ModelViewSet):
+    queryset = Follows.followManager.all()
+    serializer_class = FollowSerializer

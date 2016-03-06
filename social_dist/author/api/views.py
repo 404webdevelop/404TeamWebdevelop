@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from rest_framework import viewsets
-from rest_framework.parsers import JSONParser
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny

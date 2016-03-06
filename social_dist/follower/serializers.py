@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from follower.models import Follower
-
+from follower.models import Follows, FollowManager
 
 
 
@@ -18,13 +17,10 @@ from follower.models import Follower
 #	followings = EachUserSerializer(many=True,read_only=True)
 #	class Meta:
 #	    model  = UserFollower
-#	    fields = ('url','username','followers','followings')
+#	    fields = ('url','username','followers','followings
 
 
-
-
-class CurrentUserSerializer(serializers.ModelSerializer):
-	followers = serializers.StringRelatedField(many=True)
-	class Meta:
-		model = User
-		fields = ('username', 'followers')
+class FollowSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Follows
+        fields = ('followed', 'follower', 'hide')
