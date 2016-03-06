@@ -2,36 +2,31 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Follow',
+            name='Follows',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('owner_name', models.CharField(default=b'usernameBot', unique=True, max_length=100)),
-                ('date_created', models.DateTimeField(auto_now_add=True, null=True)),
+                ('hide', models.BooleanField(default=False)),
+                ('followed', models.ForeignKey(related_name='followed', to=settings.AUTH_USER_MODEL)),
+                ('follower', models.ForeignKey(related_name='follower', to=settings.AUTH_USER_MODEL)),
             ],
+            options={
+                'verbose_name': 'Following',
+                'verbose_name_plural': 'Followers',
+            },
         ),
-        migrations.CreateModel(
-            name='FollowerName',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('followerName', models.CharField(max_length=100)),
-                ('follow', models.ForeignKey(related_name='follower', to='follower.Follow')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='FollowingName',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('followingName', models.CharField(max_length=100)),
-                ('follow', models.ForeignKey(related_name='following', to='follower.Follow')),
-            ],
+        migrations.AlterUniqueTogether(
+            name='follows',
+            unique_together=set([('followed', 'follower')]),
         ),
     ]
