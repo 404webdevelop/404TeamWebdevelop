@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from follower.models import Follow
-
+from follower.models import FollowingName
+from follower.models import FollowerName
 
 
 
@@ -19,27 +20,17 @@ from follower.models import Follow
 #	class Meta:
 #	    model  = UserFollower
 #	    fields = ('url','username','followers','followings')
-
-
-
-class FollowerListSerializer(serializers.ListField):
-	follower = serializers.CharField()
-	
+		
 class CurrentUserSerializer(serializers.ModelSerializer):
+	following  = serializers.StringRelatedField(many=True)
 
-	follower = FollowerListSerializer()
-	following = FollowerListSerializer()
+	follower  = serializers.StringRelatedField(many=True)
+
 	class Meta:
 		model = Follow
-		fields = ('url', 'username', 'follower', 'following')
+		fields = ('url', 'owner_name', 'follower', 'following')
 
-	def create(self, validated_data):
-		username = validated_data.pop('username')
-		follower = validated_data.pop('follower')
-		following = validated_data.pop('following')
-		follow = Follow.objects.create(username=username, follower=follower,following=following)
-		follow.save()
-		return follow
+
 class AllFollowList(serializers.ModelSerializer):
 	aggregateList = CurrentUserSerializer(many=True)
 	class Meta:

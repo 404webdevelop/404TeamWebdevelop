@@ -5,8 +5,17 @@ from datetime import datetime
 
 # Create your models here.
 class Follow(models.Model):
-	username = models.CharField(max_length = 100, default='usernameBot')
+	owner_name = models.CharField(max_length = 100, default='usernameBot', unique=True)
 	date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-	follower= models.CharField(max_length=100, default = 'followerBot')
-	following= models.CharField(max_length = 100, default='followingBot')
 
+
+class FollowingName(models.Model):
+	follow = models.ForeignKey(Follow, related_name = 'following')
+	followingName= models.CharField(max_length=100)
+	def __unicode__(self):
+		return '%s' % (self.followingName)   
+class FollowerName(models.Model):
+	follow = models.ForeignKey(Follow, related_name = 'follower')
+	followerName= models.CharField(max_length=100)
+	def __unicode__(self):
+		return '%s' % (self.followerName)  
