@@ -25,21 +25,58 @@ error shows:
 response:
 <p id= "response"></p>
 username:
-<p id= "u"></p>
+<p id= "u"></p>;;
 pass:
 <p id= "p"></p>
----------------------------------------get user infro by token part-----------------<br>
+---------------------------------------get user infro by token part-----------------
+<br>
+<button id="post"> post</button>
+<br>
+<p id="posttext"> </p>
+
+
+
 
 <script type="text/javascript">
 var token=getCookie("token");
+var u=getCookie("username");
 console.log(token);
 $("#p").html(token);
+console.log(u);
+$("#u").html(u);
 
-
+getpost(username,token);
 
 //--------------------------get infor by token--------------------------
+/*        the code below need help  */
+
+function getpost(username,token){
+
+  var url = "api/authors/";
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          headers:{"Authorization":"Token 53d66f417fcbb26a588099eed19b6fb9840f31a7"},
+          //data: data,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback.length);
+            
+            console.log(callback[0].author);
+            console.log(callback[0].title);
+            console.log(callback[0].content);
 
 
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
 
 
 
@@ -57,8 +94,8 @@ $("#but").click(function(){
     getlogin(url,data,callback);
     var token=getCookie("token");
    
-    console.log(token);
-    $("#response").html(token);  
+    //console.log(token);
+    //$("#response").html(token);  
     setTimeout(function(){
       window.location.reload(1);
     },2000
@@ -75,9 +112,12 @@ $("#re").click(function(){
 
 
 //-------------------cookie function done.-----------------------
-function setCookie(token){
+function setCookie(username,token){
   document.cookie = " token="+token;
+  document.cookie = "username = "+username;
 };
+
+
 function clearCookie(token){
   setCookie(token,"",-1);
 }
@@ -115,7 +155,7 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            setCookie(token);
+            setCookie(username,token);
             
          });
   request.fail(function () {
