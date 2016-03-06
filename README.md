@@ -90,7 +90,9 @@ Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to 
     http://localhost:8000/api/authors/:id/profile_picutre/
 ```
 - GET: get profile picture for author with id (no auth)
-- (For update and change use PUT and PATCH on api/authors/:id/)
+- POST: post image file to replace auhtor's profile picture (need auth). 
+
+Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
 
 
 ##Frameworks & Libraries
