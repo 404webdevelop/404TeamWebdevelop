@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login to Update</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+<form>
+    <br>
+    <div>
+        <label>username</label>
+        <input id="username-input" type="text" placeholder="Eg. johndoeismyname">
+    </div>
+    <div>
+        <label>password</label>
+        <input id="password-input" type="password" placeholder="Consider using numbers and special characters">
+    </div>
+    <button id="token-btn" type="button">Get Token</button>
+</form>
+<div id="displayer">
+    <label>Token: </label><p id="token-display"></p>
+    <label>User:</label><p id="user-display"></p>
+</div>
+
+<form id="update-form">
+    <div>
+        <label>First Name</label>
+        <input id="first-name-input" type="text" placeholder="Eg. johndoeismyname">
+    </div>
+    <div>
+        <label>Last Name</label>
+        <input id="last-name-input" type="text" placeholder="Eg. johndoeismyname">
+    </div>
+    <button id="update-btn" type="button">Patial Update</button>
+</form>
+
+<script type="text/javascript" src="static/js/update.js"></script>
+
+</body>
+</html>
