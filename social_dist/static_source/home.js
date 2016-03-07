@@ -1,13 +1,12 @@
 
 
 
-var data= {"username":"Yu",
-		   "userpassworld":"123456789",
+var data= {"username":getCookie("username"),
 		   "userphoto":"../static/image/Yu.jpg",
 		   "intro": "good luck"
 			 };
 
-
+console.log(getCookie("username"));
 var post_item={
 		"post_title":"Lorem",
 		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
@@ -39,14 +38,8 @@ setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_i
 
 
 
-function logout(){
-	
 
-};
 
-function signinbox(){
-
-}
 function signuppage(){
 	window.location="signup";
 }
@@ -72,7 +65,7 @@ function loaddynamic(number){
 
 
 
-if (data.username == "None"){
+if (data.username == "undefined" || data.username == "" ){
 	
 	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>Can't loaded!</strong> You might not signin <br> or <br> you might not connected to the server</center></div>";
@@ -82,7 +75,7 @@ if (data.username == "None"){
 	var st= loaddynamic(number)
 	var head = setifor(data.userphoto,data.username,data.intro)
 	
-	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" onclick=\"logout()\" class=\"btn btn-lg btn-warning\">Logout</button>";
+	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("list_post_view").innerHTML = st;
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
@@ -94,6 +87,96 @@ if (data.username == "None"){
      // <li class=\"ui-block-e\"><a class=\"ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a\" data-inline="true" data-theme=\"a\" data-iconpos=\"top\" data-wrapperels=\"span\" data-iconshadow=\"true\" data-shadow=\"false\" data-corners=\"false\" href=\"addfriends.html\" id=\"coffee\" data-icon=\"plus\"><span class=\"ui-btn-inner\"><span class=\ui-btn-text\">Add Friends</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
 
 };
+
+function setCookie(key,value){
+  document.cookie = key+"="+value;
+  //document.cookie = "username = "+username;
+};
+
+
+function clearCookie(token){
+  setCookie(token,"undefined",-1);
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    //console.log(name);
+    var ca = document.cookie.split(';');
+    //console.log(ca);
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function getlogin(url,data,callback){
+  var val;
+  var username = data.username;
+  //console.log(username);
+  var password = data.password;
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            var token =JSON.stringify(callback);
+
+            
+            setCookie("username",username);
+            setCookie("token",token);
+            
+         });
+  request.fail(function () {
+            //console.log(callback);
+            clearCookie("username");
+            clearCookie("token");
+            clearCookie("url");
+         });
+  //return callback;
+
+};
+
+$("#login_submit").click(function(){
+    var username = $("#username").val();
+    var password = $("#password").val();
+
+    var data = {"username": username, "password": password};
+    //console.log(data);
+    var url = "api-token/";
+    var callback = "";
+    getlogin(url,data,callback);
+    var token=getCookie("token");
+   
+    //console.log(token);
+    //$("#response").html(token);  
+    setTimeout(function(){
+      window.location.href = "home";
+    },1000
+      );
+});
+
+
+
+
+$("#logoutbutton").click(function(){
+ 	clearCookie("username");
+    clearCookie("token");
+    clearCookie("url");
+  	
+    setTimeout(function(){
+      window.location.href = "home";
+    },1000
+      );
+
+
+});
 
 
 

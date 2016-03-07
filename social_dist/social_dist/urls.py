@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^api-token/', views.obtain_auth_token),
 
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name="home"),
+    url(r'^home$', login_required(TemplateView.as_view(template_name='home.html')), name="home"),
     url(r'^about$', login_required(TemplateView.as_view(template_name='about.html')), name="about"),
     url(r'^addfriends$', login_required(TemplateView.as_view(template_name='addfriends.html')), name="addfriends"),
     url(r'^connect$', login_required(TemplateView.as_view(template_name='connect.html')), name="connect"),
