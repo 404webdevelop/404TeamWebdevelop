@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from follower.models import Follows, FollowManager
+from follower.models import Follows, FollowManager, Friends
 
 
 
@@ -21,6 +21,15 @@ from follower.models import Follows, FollowManager
 
 
 class FollowSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Follows
-        fields = ('followed', 'follower', 'hide')
+	class Meta:
+		model = Follows
+		fields = ('followed', 'follower', 'hide')
+
+
+class FriendsSerializer(serializers.HyperlinkedModelSerializer):
+
+	friends = serializers.CharField(source='approvedrequest')
+
+	class Meta:
+		model = Friends
+		fields = ('initiator', 'reciever', 'fof_private', 'friend_private', 'own_private', 'remote_private', 'friends')
