@@ -166,7 +166,7 @@ $("#login_submit").click(function(){
 
 
 $("#logoutbutton").click(function(){
- 	clearCookie("username");
+ 	  clearCookie("username");
     clearCookie("token");
     clearCookie("url");
   	
@@ -177,6 +177,27 @@ $("#logoutbutton").click(function(){
 
 
 });
+
+$("#connect_friends").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "friends";
+    },1000
+      );
+
+
+});
+
+$("#connect_home").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "home";
+    },1000
+      );
+
+
+});
+
 
 
 
