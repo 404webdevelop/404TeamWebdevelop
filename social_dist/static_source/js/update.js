@@ -34,6 +34,7 @@ function patchProfile(firstName, lastName, callback) {
     data: JSON.stringify({
       'first_name': firstName,
       'last_name': lastName
+
     }),
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', 'Token ' + token);

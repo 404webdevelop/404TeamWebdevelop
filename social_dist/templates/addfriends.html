@@ -39,34 +39,78 @@ pass:
 
 <script type="text/javascript">
 var token=getCookie("token");
-var u=getCookie("username");
+//var user=getCookie("username");
 console.log(token);
-$("#p").html(token);
-console.log(u);
-$("#u").html(u);
 
-getpost(username,token);
+var user=getCookie("username");
+console.log(user);
 
-//--------------------------get infor by token--------------------------
-/*        the code below need help  */
+var user_url = getCookie("url");
+console.log(user_url);
+//var postlist = JSON.stringify(getpost());
 
-function getpost(username,token){
+
+//getuserurl();
+getpost();
+
+//-----------------------------------find all the users-------------------
+function getuserurl(callback){
 
   var url = "api/authors/";
   var request = $.ajax({
-          method: "POST",
+          method: "GET",
           url: url,
-          headers:{"Authorization":"Token 53d66f417fcbb26a588099eed19b6fb9840f31a7"},
-          //data: data,
 
         });
   request.done(function (callback) {
             //console.log(callback);
-            console.log(callback.length);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == getCookie("username")){
+                console.log(userobj[i].url);
+                setCookie("url",userobj[i].url);
+              }
+            }
+
+
+   
+
             
-            console.log(callback[0].author);
-            console.log(callback[0].title);
-            console.log(callback[0].content);
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+//--------------------------get infor by token--------------------------
+/*        the code below need help  */
+
+function getpost(){
+
+  var url = "api/post/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var postobj = callback;
+            for(i = 0; i < postobj.length; i++){
+              if (postobj[i].author == getCookie("url")){
+                console.log(postobj[i].author);
+                console.log(postobj[i].title);
+                console.log(postobj[i].content);
+                console.log(postobj[i].date_created);
+
+              }
+            }
 
 
             
@@ -105,21 +149,20 @@ $("#but").click(function(){
 $("#re").click(function(){
     location.reload();
   
-
 });
 
 
 
 
 //-------------------cookie function done.-----------------------
-function setCookie(username,token){
-  document.cookie = " token="+token;
-  document.cookie = "username = "+username;
+function setCookie(key,value){
+  document.cookie = key+"="+value;
+  //document.cookie = "username = "+username;
 };
 
 
 function clearCookie(token){
-  setCookie(token,"",-1);
+  setCookie(token,"undefined",-1);
 }
 
 function getCookie(cname) {
@@ -155,12 +198,16 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            setCookie(username,token);
+            
+            setCookie("username",username);
+            setCookie("token",token);
             
          });
   request.fail(function () {
             //console.log(callback);
-            clearCookie();
+            clearCookie("username");
+            clearCookie("token");
+            clearCookie("url");
          });
   //return callback;
 
