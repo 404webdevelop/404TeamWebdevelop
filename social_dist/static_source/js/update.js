@@ -26,12 +26,13 @@ function requestToken(username, password, callback) {
   });
 }
 
-function patchProfile(firstName, lastName, callback) {
+function patchProfile(username,firstName, lastName, callback) {
   $.ajax({
     method: 'PATCH',
     url: user.url,
     contentType:"application/json; charset=utf-8",
     data: JSON.stringify({
+      'username': username,
       'first_name': firstName,
       'last_name': lastName
 
@@ -63,7 +64,7 @@ function setup() {
       $('#update-btn').click(function () {
         var firstName = $('#first-name-input').val(),
             lastName = $('#last-name-input').val();
-        patchProfile(firstName, lastName, function (data) {
+        patchProfile(username,firstName, lastName, function (data) {
           $('#user-display').append('<br><br>');
           $('#user-display').append(JSON.stringify(data));
           console.log(data);
