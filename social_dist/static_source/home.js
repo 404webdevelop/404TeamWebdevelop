@@ -165,6 +165,65 @@ function getuserurl(callback){
 
 
 
+//need to copy patchprofile and click button to each page.
+
+function patchProfile(username,firstName, lastName, callback) {
+
+  var token = JSON.parse(getCookie("token"));
+  console.log(token.token);
+
+
+  $.ajax({
+    method: 'PATCH',
+    url: getCookie("url"),
+    contentType:"application/json; charset=utf-8",
+    data: JSON.stringify({
+      'username': username,
+      'first_name': firstName,
+      'last_name': lastName
+
+    }),
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
+    },
+    success: function (data) {
+      //callback(data);
+      clearCookie("username");
+      clearCookie("token");
+      clearCookie("url");
+      setTimeout(function(){
+      window.location.href = "home";
+        },1000
+      );
+
+
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  })
+}
+
+
+
+
+$("#update_submit").click(function(){
+
+    var username_input = $("#user-name-input").val();
+    var firstname_input = $('#first-name-input').val();
+    var lastname_input = $('#last-name-input').val();
+
+    patchProfile(username_input,firstname_input, lastname_input);
+    //$("#response").html(token);  
+    
+});
+
+
+
+
+
+
+
 
 function getlogin(url,data,callback){
   var val;
@@ -195,6 +254,12 @@ function getlogin(url,data,callback){
   //return callback;
 
 };
+
+
+
+
+
+
 
 $("#login_submit").click(function(){
     var username = $("#username").val();
