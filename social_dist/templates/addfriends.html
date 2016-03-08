@@ -41,21 +41,217 @@ pass:
 getuserurl();
 var token=getCookie("token");
 //var user=getCookie("username");
-console.log(token);
+//console.log(token);
 
 var user=getCookie("username");
-console.log(user);
+//console.log(user);
 
 var user_url = getCookie("url");
-console.log(user_url);
+console.log("user is :"+user_url);
 
 var user_id = getCookie("id");
-console.log(user_id);
+//console.log(user_id);
 //var postlist = JSON.stringify(getpost());
 
-
-
+//getfollowers(user_url);
+//getfollowings(user_url);
+//var thename = "ggg";
+//searchfriend(thename);
+findfriends();
 getpost();
+//----------------------------find friends-------------------
+function findfriends(){
+
+  url = "api/follows";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            //console.log(callback);
+
+            var follower_list=[];
+            var following_list=[];
+            var friends_list=[];
+
+
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+              //var follower_list=[];
+              //var following_list=[];
+              if (followersobj[i].followed == getCookie("url")){
+                  follower_list.push(followersobj[i].follower);
+                  console.log(followersobj[i].follower);
+                }
+              if (followersobj[i].follower == getCookie("url")){
+                  following_list.push(followersobj[i].followed);
+                   console.log(followersobj[i].followed);
+                }
+
+              });
+              
+            console.log(follower_list);
+            console.log(following_list);
+
+            $.each(follower_list, function (i, value) {
+
+              $.each(following_list, function (j, value) {
+                if (follower_list[i] == following_list[j])
+                  friends_list.push(follower_list[i]);
+
+              });
+
+
+
+            });
+            console.log(friends_list);
+
+            $.each(friends_list,function (i,value){
+              $.getJSON(friends_list[i],function(data){
+                    
+                    data = data.username;
+                    console.log(data);
+                    
+                    //console.log("follower: "+data);
+                });
+
+
+            });
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+
+            console.log(callback);
+         });
+
+
+}
+
+
+
+
+
+
+
+
+//--------------get list of friends---------------------------
+function searchfriend(username){
+    var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == username){
+                console.log("find::"+userobj[i].username);
+                
+              }
+            }
+
+
+   
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+
+
+//------------------get list of followers -------------------------------
+
+function getfollowers(url_user){
+
+  url = "api/follows";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            //console.log(callback);
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+              //console.log(followersobj[i]);
+              if (followersobj[i].followed == getCookie("url")){
+                var data = {};
+
+                
+                
+                $.getJSON(followersobj[i].follower,function(data){
+                    
+                    data = data.username;
+                    //console.log("follower: "+data);
+                });
+              }
+            });
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+//----------------------get list of followerings------------------------
+function getfollowings(url_user){
+
+  url = "api/follows";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            //console.log(callback);
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+              //console.log(followersobj[i]);
+              if (followersobj[i].follower == getCookie("url")){
+                var data = {};
+
+                
+                
+                $.getJSON(followersobj[i].followed,function(data){
+                    
+                    data = data.username;
+                    //console.log("following: "+data);
+                });
+              }
+            });
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
 
 //-----------------------------------find all the users-------------------
 function getuserurl(callback){
@@ -68,11 +264,11 @@ function getuserurl(callback){
         });
   request.done(function (callback) {
             //console.log(callback);
-            console.log(callback);
+            //console.log(callback);
             var userobj = callback;
             for(i = 0; i < userobj.length; i++){
               if (userobj[i].username == getCookie("username")){
-                console.log(userobj[i].url);
+                //console.log(userobj[i].url);
                 setCookie("url",userobj[i].url);
                 setCookie("id",userobj[i].id);
               }
@@ -115,7 +311,7 @@ function getpost(){
 
   request.done(function (callback) {
             //console.log(callback);
-            console.log(callback);
+            //console.log(callback);
             var postobj = callback;
             $.each(postobj, function (i, value) {
               if (postobj[i].author == getCookie("url")){
@@ -123,7 +319,7 @@ function getpost(){
                 var time = postobj[i].date_created;
                 //console.log(time);
                 var new_time = findtime(time);
-                console.log(new_time);
+                //console.log(new_time);
                 //console.log("that"+i+"f   ="+postobj[i].author);
                 //console.log("that"+i+"f   ="+postobj[i].title);
                 //console.log("that"+i+"f   ="+postobj[i].content);
