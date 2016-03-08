@@ -188,9 +188,7 @@ function patchProfile(username,firstName, lastName, callback) {
     },
     success: function (data) {
       //callback(data);
-      clearCookie("username");
-      clearCookie("token");
-      clearCookie("url");
+      setCookie("username",username);
       setTimeout(function(){
       window.location.href = "home";
         },1000
@@ -315,6 +313,18 @@ $("#connect_home").click(function(){
 
 
 });
+
+$("#connect_prof").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "posted";
+    },1000
+      );
+
+
+});
+
+
 
 
 
