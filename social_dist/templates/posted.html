@@ -22,7 +22,8 @@
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">            
           </button>
-          <a class="navbar-brand" href="#body1">404webdevelop</a>
+          <a class="navbar-brand" href="home">404 Web Project</a>
+	  <a class="navbar-brand" href="about">About Us</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="welcomeitem" class="nav navbar-nav"></ul>
@@ -43,7 +44,7 @@
   <div id="postbody">
     <div data-role="content">
             <div id="info"class="info">
-              <center><p>什么都没有 哈哈哈</p></center>
+              <center><p>Looks like there isn't anything here.</p></center>
 
           </div>
     </div>
@@ -83,6 +84,52 @@
 
 
     </div>
+<br>
+	
+<div data-role="popup" id="myProfileDialog" >
+
+      <div  data-role="header" >
+        <h1>Edit Profile</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+ 
+        Update Password<input type="password" placeholder="Consider using numbers and special characters">
+	github Username<input type="text" placeholder="Eg. jdoe">
+	Display Name<input type="text" placeholder="Eg. John Doe">
+	<br>
+        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Cancel</a>
+        
+      </div>
+      
+
+
+    </div>
+
+
+<div data-role="popup" id="myProfileDialog" >
+
+      <div  data-role="header" >
+        <h1>Edit Profile</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+ 
+        Update Password<input type="password" placeholder="Consider using numbers">
+	github Username<input type="text" placeholder="Eg. jdoe">
+	Display Name<input type="text" placeholder="Eg. John Doe">
+	<br>
+        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Cancel</a>
+        
+      </div>
+</div>
+
+
+
+
+
 
     <div data-role="popup" id="mypost" data-theme="b" >
 
@@ -123,16 +170,16 @@
   <div id="fot" role="contentinfo" data-role="footer" class="nav-glyphish-example ui-footer ui-bar-a">
     <div role="navigation" data-role="navbar" class="nav-glyphish-example ui-navbar ui-mini" data-grid="d">
     <ul class="ui-grid-d">
-      <li class="ui-block-a"><a  href="/" id="chat" data-icon="home"><span class="ui-btn-inner"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
-      <li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-down-a" href="profile" id="email" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">Profile</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+      <li class="ui-block-a"><a  href="home" id="connect_home" id="chat" data-icon="home"><span class="ui-btn-inner"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+      <li class="ui-block-d"><a class="ui-btn ui-btn-inline ui-btn-icon-top " data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="posted" id="beer" data-icon="tag"><span class="ui-btn-inner"><span class="ui-btn-text">My Profile</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+     
       <li  class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="b" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#mypost" data-rel="popup" data-position-to="window" data-transition="fade"id="skull" data-icon="edit"><span class="ui-btn-inner"><span class="ui-btn-text"><strong>POST</strong></span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
-      <li class="ui-block-d"><a class="ui-btn ui-btn-inline ui-btn-icon-top " data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="posted" id="beer" data-icon="tag"><span class="ui-btn-inner"><span class="ui-btn-text">Posted</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
-      <li class="ui-block-e"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="addfriends" id="coffee" data-icon="user"><span class="ui-btn-inner"><span class="ui-btn-text">Friends</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+       <li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-down-a" href="network" id="email" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">My Network</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+      <li class="ui-block-e"><a id="connect_friends" class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" id="coffee" data-icon="user"><span class="ui-btn-inner"><span class="ui-btn-text">Find Friends</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
     </ul>
     </div>
   </div>
   </div>
-  
 
 
 
