@@ -1,11 +1,14 @@
 
 
 
-var data= {"username":"James",
+var data= {"username":getCookie("username"),
 		   "userphoto":"../static/image/Yu.jpg",
 		   "followers":"50",
 		   "following":"77",
-		   "friends":"112"
+		   "friends":"112",
+		   "followlist":["Following1","Following2"],
+		   "friendlist":["Friend1","Friend2"],
+		   "fanlist":["Follower1","Follower2"]
 			 };
 
 
