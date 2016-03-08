@@ -20,6 +20,7 @@ console.log(getCookie("username"));
 };
 */
 
+
 //var post_list=[];
 
 /*function setpostitem(title,text,image,date,autor){
