@@ -57,7 +57,10 @@
 		#coffee .ui-icon { background:  url(glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
 		#skull .ui-icon { background:  url(glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
 */
-
+#myfriend{
+	color:red;
+	background-color:green;
+}
 #fot{
 	position:  fixed;bottom: 0;
 	width: 100%;
@@ -111,6 +114,19 @@
     box-sizing:border-box;
     background-color: white;
     margin-bottom: 6%;
+}
+
+#div3 {
+    width: 33%;
+    overflow: auto;
+    height:  600px;
+    padding: 1px;
+    border: 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+
 }
 #search_friend{
 	width: 100%;

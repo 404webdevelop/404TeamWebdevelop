@@ -5,7 +5,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from ..models import Author
 
-
+#http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
 class UserTest(APITestCase):
     count = 0
 
