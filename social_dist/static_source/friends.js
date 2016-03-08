@@ -165,8 +165,8 @@ function findfriends(){
                     
                     data = data.username;
                     console.log(data);
-                    $("#friends_list_view").append("<li><a href=\"#\">sdfsdf</a></li>");
-                    $("#friends_list_view").append("<li><a href=\"#\">sdfsdf</a></li>");
+                    $("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
+                    
                     //document.getElementById("friends_list_view").innerHTML = "<li><a href=\"#\">sdfsdf</a></li>";
                     //console.log("follower: "+data);
                 });
