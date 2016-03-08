@@ -6,13 +6,14 @@ var data= {"username":getCookie("username"),
 		   "intro": "good luck"
 			 };
 
-
+console.log(getCookie("username"));
 var post_item={
-		"post_title":"Test Data",
-		"post_text" :"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-		"post_autor":"Me!",
-		"post_date":"August 1st, 2012",
+		"post_title":"Lorem",
+		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+		"post_autor":"hoho",
+		"post_date":"October 14, 2012",
 		"post_image":"/static/image/Yu.jpg"
+
 };
 
 
@@ -37,20 +38,14 @@ setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_i
 
 
 
-function logout(){
-	
 
-};
 
-function signinbox(){
-
-}
 function signuppage(){
 	window.location="signup";
 }
 
 function setdynamic(img,tit,tex,date,author){
-	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><h2 class=\"ui-li-heading\"><u>"+tit+"</u></a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal'>"+tex+"</p></div>&nbsp;</div></li>"
+	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
 	return string;
 };
 
@@ -72,9 +67,8 @@ function loaddynamic(number){
 
 if (data.username == "undefined" || data.username == "" ){
 	
-	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
+	document.getElementById("loginbutton").innerHTML =" <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
-	
 	
 }else{
 	var number = post_list.length;
@@ -82,9 +76,9 @@ if (data.username == "undefined" || data.username == "" ){
 	var head = setifor(data.userphoto,data.username,data.intro)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
-	document.getElementById("list_post_view").innerHTML = st;
 	document.getElementById("info").innerHTML = head;
-	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><button id=\"AddFriendbutton\" type=\"button\" onclick=\"addFriend()\" class=\"btn btn-lg btn-success\">Add Friend</button>   Yu is following you</div>";
+	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
+	document.getElementById("list_post_view").innerHTML = st;
 
 
 };
@@ -198,6 +192,7 @@ $("#connect_home").click(function(){
 
 
 });
+
 
 
 
