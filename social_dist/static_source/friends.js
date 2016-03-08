@@ -9,7 +9,7 @@ var data= {"username":getCookie("username"),
 			 };
 console.log(data);
 
-
+findfriends();
 
 function logout(){
 	
@@ -113,6 +113,81 @@ function patchProfile(username,firstName, lastName, callback) {
     }
   })
 }
+
+function findfriends(){
+
+  url = "api/follows";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            //console.log(callback);
+
+            var follower_list=[];
+            var following_list=[];
+            var friends_list=[];
+
+
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+              //var follower_list=[];
+              //var following_list=[];
+              if (followersobj[i].followed == getCookie("url")){
+                  follower_list.push(followersobj[i].follower);
+                  console.log(followersobj[i].follower);
+                }
+              if (followersobj[i].follower == getCookie("url")){
+                  following_list.push(followersobj[i].followed);
+                   console.log(followersobj[i].followed);
+                }
+
+              });
+              
+            console.log(follower_list);
+            console.log(following_list);
+
+            $.each(follower_list, function (i, value) {
+
+              $.each(following_list, function (j, value) {
+                if (follower_list[i] == following_list[j])
+                  friends_list.push(follower_list[i]);
+
+              });
+
+
+
+            });
+            console.log(friends_list);
+
+            $.each(friends_list,function (i,value){
+              $.getJSON(friends_list[i],function(data){
+                    
+                    data = data.username;
+                    console.log(data);
+                    $("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
+                    
+                    //document.getElementById("friends_list_view").innerHTML = "<li><a href=\"#\">sdfsdf</a></li>";
+                    //console.log("follower: "+data);
+                });
+
+
+            });
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+
+            console.log(callback);
+         });
+
+
+}
+
+
 
 
 

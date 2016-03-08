@@ -7,12 +7,14 @@ from datetime import datetime
 class FollowManager(models.Manager):
 
 	#call this by Follows.objects.getFollowers(user id)
+
+	
 	def getFollowers(self, followed):
-		#returns the followers of the arguement
+
 		return self.get_queryset().filter(followed=followed)
 
 	def getFollowing(self, follower):
-		#returns the argument is following
+
 		return self.get_queryset().filter(follower=follower)
 	def mutualFollow(self, follower1, follower2):
 
@@ -80,6 +82,7 @@ class Follows(models.Model):
 	def __unicode__(self):  #For Python 2, use __str__ on Python 3
 		try:
 			return "{sender} is followed by {reciever}\n".format(sender=self.followed, reciever=self.follower)
+			#return "{reciever\n}".format(reciever=self.reciever)
 		except:
 			return "{solo} prob has no followers)".format(solo=self.followed)
 
