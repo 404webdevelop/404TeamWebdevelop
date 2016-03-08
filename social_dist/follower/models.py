@@ -42,12 +42,12 @@ class FollowManager(models.Manager):
 		else:
 			print("dont add any")
 
-		def follow(self, follower1, follower2):
-			try:
-				self.create(followed = follower1, follower = follower2)
-				return True
-			except:
-				return False
+	def follow(self, follower1, follower2):
+		try:
+			self.create(followed = follower1, follower = follower2)
+			return True
+		except:
+			return False
 
 	def unfollow(self, follower1, follower2):
 		try:
