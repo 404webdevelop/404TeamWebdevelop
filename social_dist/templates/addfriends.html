@@ -48,6 +48,9 @@ console.log(user);
 
 var user_url = getCookie("url");
 console.log(user_url);
+
+var user_id = getCookie("id");
+console.log(user_id);
 //var postlist = JSON.stringify(getpost());
 
 
@@ -71,6 +74,7 @@ function getuserurl(callback){
               if (userobj[i].username == getCookie("username")){
                 console.log(userobj[i].url);
                 setCookie("url",userobj[i].url);
+                setCookie("id",userobj[i].id);
               }
             }
 

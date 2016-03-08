@@ -10,7 +10,7 @@ console.log(getCookie("username"));
 console.log(getCookie("token"));
 console.log(getCookie("url"));
 console.log(getCookie("username"));
-
+console.log(getCookie("id"));
 
 getpost();
 
@@ -151,6 +151,7 @@ function getuserurl(callback){
               if (userobj[i].username == getCookie("username")){
                 console.log(userobj[i].url);
                 setCookie("url",userobj[i].url);
+                setCookie("id",userobj[i].id);
               }
             }
 
@@ -190,7 +191,7 @@ function patchProfile(username,firstName, lastName, callback) {
       //callback(data);
       setCookie("username",username);
       setTimeout(function(){
-      window.location.href = "home";
+      window.location.href = "posted";
         },1000
       );
 
