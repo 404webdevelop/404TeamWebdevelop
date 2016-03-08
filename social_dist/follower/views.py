@@ -21,6 +21,19 @@ class FollowViewSet(viewsets.ModelViewSet):
 		response = HttpResponse(follower, content_type='json')
 		return response
 
+	@detail_route(methods=["GET"])
+	def friends(self, request, **kwargs):
+		follower = Follows.objects.getFollowing(self.kwargs['pk'])
+		followed = Follows.objects.getFollowers(self.kwargs['pk'])
+		friend_list = list()
+		for i in range(len(followed)):
+			print i
+			for j in range(len(follower)):	
+				if followed[i].follower.username == follower[j].followed.username:
+					friend_list.append(followed[i].follower.username)
+
+		response = HttpResponse(friend_list, content_type='json')
+		return response
 
 
 
