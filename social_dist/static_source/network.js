@@ -1,7 +1,7 @@
 
 
 
-var data= {"username":getCookie("username"),
+var data= {"username":"James",
 		   "userphoto":"../static/image/Yu.jpg",
 		   "followers":"50",
 		   "following":"77",

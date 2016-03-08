@@ -3,13 +3,32 @@
 
 var data= {"username":getCookie("username"),
 		   "userphoto":"../static/image/Yu.jpg",
-		   "intro": "good luck"
+		   "followers":"50",
+		   "following":"77",
+		   "friends":"112"
 			 };
 
 console.log(getCookie("username"));
 console.log(getCookie("token"));
 console.log(getCookie("url"));
 console.log(getCookie("username"));
+
+
+
+
+
+
+//var post_list=[];
+
+/*function setpostitem(title,text,image,date,autor){
+	post_item.post_title = title;
+	post_item.post_text = text;
+	post_item.post_image = image;
+	post_item.post_date = date;
+	post_item.post_autor=autor;
+	post_list.push(post_item);
+
+};*/
 
 
 getpost();
@@ -28,8 +47,8 @@ function setdynamic(img,tit,tex,date,author){
 	return string;
 };
 
-function setifor(img,username,intro){
-	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+username+"</h1></div><div class=\"well\"><p>"+intro+"</p></div></td></tr></table>";
+function setifor(img,username,following, follower, friends){
+	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
 	return string;
 };
 
