@@ -67,7 +67,15 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
     http://localhost:8000/api/authors/
 ```
 - GET: return a list of short version of authors
-- POST: create a new author
+- POST: create a new author, example: [http://localhost:8000/demo-signup](http://localhost:8000/demo-signup)
+
+
+‘’‘
+    http://localhost:8000/api/authors/me
+’‘’
+- POST: Post with username, password. It will response user object and token.
+
+Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
 
 ```
     http://localhost:8000/api/authors/:id/
@@ -75,9 +83,22 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - GET: return detail info for author with id
 - PUT, PATCH: (auth) update author, logged in author can only update his/her own info
 
+[Here is a ajax post example for signup a new user](https://gist.github.com/wyushi/6aa73ae671fe6fa15526)
+
+
+```
+    http://localhost:8000/api/authors/:id/profile_picutre/
+```
+- GET: get profile picture for author with id (no auth)
+- POST: post image file to replace auhtor's profile picture (need auth). 
+
+Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
+
+
 ##Frameworks & Libraries
 
 [jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)
+
 [Django REST framework](https://github.com/tomchristie/django-rest-framework/tree/master)
 
 ##Contributors

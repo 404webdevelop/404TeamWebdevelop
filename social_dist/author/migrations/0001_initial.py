@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
             name='Author',
             fields=[
                 ('user', models.OneToOneField(primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('github', models.CharField(max_length=1024)),
+                ('github', models.CharField(max_length=1024, blank=True)),
+                ('picture', models.ImageField(default=b'', null=True, upload_to=b'profile_pic/', blank=True)),
             ],
         ),
     ]

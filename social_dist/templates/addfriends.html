@@ -7,7 +7,8 @@
 </head>
 
 <body>
-<button>获得 JSON 数据</button>
+  ----------------------------------------this is login test part---------------------
+<br><button>获得 JSON 数据</button>
 <p></p>
 
 <p id="show_json"></p>
@@ -17,48 +18,141 @@
 <button id="but">Default Button</button></a>
 <button id="re">reload Button</button></a>
 data shows:
-<p id= "show"></p>
+
+<br><p id= "show"></p>
 error shows:
 <p id= "error"></p>
 response:
 <p id= "response"></p>
 username:
-<p id= "u"></p>
+<p id= "u"></p>;;
 pass:
 <p id= "p"></p>
+---------------------------------------get user infro by token part-----------------
+<br>
+<button id="post"> post</button>
+<br>
+<p id="posttext"> </p>
+
+
+
 
 <script type="text/javascript">
-
-/*$(document).ready(function(){
-    $("#but").click(function(data){
-        var data = {"username": "zuo2", "password": "zuoyu1039"};
-        //console.log(data);
-        var url = "api-token/";
-        $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-
-        })
-         .done(function (data) {
-            console.log(data);
-            $("#show").html(JSON.stringify(data));
-
-         });
-    });
-    $("#error").html(JSON.stringify(token));
-
-});
-$("#error").html(JSON.stringify(data));*/
+getuserurl();
 var token=getCookie("token");
+//var user=getCookie("username");
 console.log(token);
-$("#p").html(token);
 
+var user=getCookie("username");
+console.log(user);
+
+var user_url = getCookie("url");
+console.log(user_url);
+//var postlist = JSON.stringify(getpost());
+
+
+
+getpost();
+
+//-----------------------------------find all the users-------------------
+function getuserurl(callback){
+
+  var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == getCookie("username")){
+                console.log(userobj[i].url);
+                setCookie("url",userobj[i].url);
+              }
+            }
+
+
+   
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+//var url = "http://127.0.0.1:8000/api/authors/2/";
+
+//$.getJson(url,function(data){
+// $.("#testbody").html(data.username);
+//});
+
+function findtime(time){
+  time = time.split(".");
+  //time = time.split("-");
+  return time;
+}
+
+
+
+//--------------------------get infor by token--------------------------
+/*        the code below need help  */
+
+function getpost(){
+
+  var url = "api/post/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var postobj = callback;
+            $.each(postobj, function (i, value) {
+              if (postobj[i].author == getCookie("url")){
+                var data = {};
+                var time = postobj[i].date_created;
+                //console.log(time);
+                var new_time = findtime(time);
+                console.log(new_time);
+                //console.log("that"+i+"f   ="+postobj[i].author);
+                //console.log("that"+i+"f   ="+postobj[i].title);
+                //console.log("that"+i+"f   ="+postobj[i].content);
+                //console.log("that"+i+"f   ="+postobj[i].date_created);
+                
+                $.getJSON(postobj[i].author,function(data){
+                    
+                    data = data.username;
+                    //console.log("----"+i+"***"+data);
+                });
+              }
+            });
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+
+//---------------------user login test done----------------------------------
 $("#but").click(function(){
     var username = $("#username").val();
     var password = $("#password").val();
 
-    
     var data = {"username": username, "password": password};
     //console.log(data);
     var url = "api-token/";
@@ -66,42 +160,31 @@ $("#but").click(function(){
     getlogin(url,data,callback);
     var token=getCookie("token");
    
-    console.log(token);
-    $("#response").html(token);
-
-
-  
-    
+    //console.log(token);
+    //$("#response").html(token);  
+    setTimeout(function(){
+      window.location.reload(1);
+    },2000
+      );
 });
 
 $("#re").click(function(){
     location.reload();
   
-    
 });
 
 
 
 
-
-
-
-function resetuser(username){
-  username = "";
-  return username;
-}
-
-
-function resetuser(password){
-  password = "";
-  return password;
-}
-
-function setCookie(token){
-  document.cookie = " token="+token;
+//-------------------cookie function done.-----------------------
+function setCookie(key,value){
+  document.cookie = key+"="+value;
+  //document.cookie = "username = "+username;
 };
+
+
 function clearCookie(token){
-  setCookie(token,"",-1);
+  setCookie(token,"undefined",-1);
 }
 
 function getCookie(cname) {
@@ -121,6 +204,7 @@ function getCookie(cname) {
 
 
 
+//---------------------------loging request done.-------------------
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
@@ -136,16 +220,18 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            setCookie(token);
+            
+            setCookie("username",username);
+            setCookie("token",token);
+
             
          });
   request.fail(function () {
             //console.log(callback);
-            clearCookie();
+            clearCookie("username");
+            clearCookie("token");
+            clearCookie("url");
          });
-
-         
-  
   //return callback;
 
 };

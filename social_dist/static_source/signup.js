@@ -7,10 +7,7 @@ var data= {"username":getCookie("username"),
 			 };
 
 console.log(getCookie("username"));
-console.log(getCookie("token"));
-console.log(getCookie("url"));
-console.log(getCookie("username"));
-/*var post_item={
+var post_item={
 		"post_title":"Lorem",
 		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 		"post_autor":"hoho",
@@ -18,11 +15,11 @@ console.log(getCookie("username"));
 		"post_image":"/static/image/Yu.jpg"
 
 };
-*/
 
-//var post_list=[];
 
-/*function setpostitem(title,text,image,date,autor){
+var post_list=[];
+
+function setpostitem(title,text,image,date,autor){
 	post_item.post_title = title;
 	post_item.post_text = text;
 	post_item.post_image = image;
@@ -30,14 +27,13 @@ console.log(getCookie("username"));
 	post_item.post_autor=autor;
 	post_list.push(post_item);
 
-};*/
+};
 
-getpost();
-//console.log(post_list);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+
+setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
 
 
 
@@ -47,8 +43,6 @@ getpost();
 function signuppage(){
 	window.location="signup";
 }
-
-
 
 function setdynamic(img,tit,tex,date,author){
 	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
@@ -73,18 +67,18 @@ function loaddynamic(number){
 
 if (data.username == "undefined" || data.username == "" ){
 	
-	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
+	document.getElementById("loginbutton").innerHTML =" <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
 	
 }else{
-	//var number = post_list.length;
-	//var st= loaddynamic(number)
+	var number = post_list.length;
+	var st= loaddynamic(number)
 	var head = setifor(data.userphoto,data.username,data.intro)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
-	//document.getElementById("list_post_view").innerHTML = st;
+	document.getElementById("list_post_view").innerHTML = st;
 
 
 };
@@ -114,87 +108,6 @@ function getCookie(cname) {
     return "";
 }
 
-
-
-
-
-function getpost(){
-
-  var url = "api/post/posts/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-
-        });
-
-  request.done(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-            var postobj = callback;
-            $.each(postobj, function (i, value) {
-              if (postobj[i].author == getCookie("url")){
-                var data = {};
-                
-                
-                $.getJSON(postobj[i].author,function(data){
-                    console.log("that"+i+"f   ="+postobj[i].author);
-                  console.log("that"+i+"f   ="+postobj[i].title);
-                  console.log("that"+i+"f   ="+postobj[i].content);
-                  console.log("that"+i+"f   ="+postobj[i].date_created);
-                   
-                    data = data.username;
-                    console.log("this"+i+"f   ="+data);
-                    //setpostitem(postobj[i].title,postobj[i].content,"/static/image/Yu.jpg",postobj[i].date_created,data);
-                    //var number = post_list.length;
-                    var st= setdynamic("/static/image/Yu.jpg",postobj[i].title,postobj[i].content,postobj[i].date_created,data);
-                    $("#list_post_view").append(st);
-                    //document.getElementById("list_post_view").innerHTML = st;
-
-                });
-              }
-            });
-         });
-  request.fail(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-         });
-
-}
-
-
-
-
-function getuserurl(callback){
-
-  var url = "api/authors/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-
-        });
-  request.done(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-            var userobj = callback;
-            for(i = 0; i < userobj.length; i++){
-              if (userobj[i].username == getCookie("username")){
-                console.log(userobj[i].url);
-                setCookie("url",userobj[i].url);
-              }
-            }
-
-         });
-  request.fail(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-         });
-
-}
-
-
-
-
-
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
@@ -210,7 +123,7 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            getuserurl();
+            
             setCookie("username",username);
             setCookie("token",token);
             
@@ -235,7 +148,7 @@ $("#login_submit").click(function(){
     var callback = "";
     getlogin(url,data,callback);
     var token=getCookie("token");
-    getuserurl();
+   
     //console.log(token);
     //$("#response").html(token);  
     setTimeout(function(){

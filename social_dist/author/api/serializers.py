@@ -1,42 +1,46 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from ..models import Author
+
+
+class AuthorProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Author
+        fields = ('github', 'picture')
+        extra_kwargs = {'picture': {'write_only': True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'username', 'email')
-
-
-class AuthorSerializer(serializers.ModelSerializer):
-    github = serializers.SerializerMethodField()
+    author = AuthorProfileSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'url', 'username', 'email', 'github', 'password', 'is_active', 'first_name', 'last_name',
+        fields = ('id', 'url', 'username', 'email', 'author', 'password', 'is_active', 'first_name', 'last_name',
                   'date_joined')
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'is_active': {'read_only': True},
-            'date_joined': {'read_only': True},
-        }
+        read_only_fields = ('id', 'url', 'is_active', 'date_joined')
+        extra_kwargs = {'password': {'write_only': True}}
 
-        write_only_fields = ('password',)
-        read_only_fields = ('is_active', 'date_joined',)
-
-    def update(self, instance, validated_data):
-        user = super(AuthorSerializer, self).update(instance, validated_data)
-        user.set_password(validated_data['password'])
+    def create(self, validated_data):
+        author_data = validated_data.pop('author', None)
+        user = User.objects.create_user(**validated_data)
+        author = Author.objects.create(**author_data)
+        author.save()
+        user.author = author
+        user.is_active = False
         user.save()
         return user
 
-    def get_github(self, obj):
-        return obj.author.github
+    def update(self, instance, validated_data):
+        author_data = validated_data.pop('author', None)
+        user = super(UserSerializer, self).update(instance, validated_data)
 
+        if author_data:
+            author_serializer = AuthorProfileSerializer()
+            author = author_serializer.update(user.author, author_data)
+            author.save()
+        user.save()
+        return user
 
-class AuthorShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'url', 'username', 'is_active')
 

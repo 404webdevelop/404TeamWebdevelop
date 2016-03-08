@@ -39,9 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'author',
     'post',
+    'follower',
     'rest_framework',
     'rest_framework.authtoken',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,6 +108,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_DIR = 'static_source/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
+# Media files like images
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
