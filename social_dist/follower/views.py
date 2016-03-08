@@ -12,9 +12,15 @@ class FollowViewSet(viewsets.ModelViewSet):
 	serializer_class = FollowSerializer
 	@detail_route(methods=["GET"])
 	def followers(self, request, **kwargs):
-		user = Follows.objects.getFollowers(self.kwargs['pk'])
-		response = HttpResponse(user, content_type='json')
+		follower = Follows.objects.getFollowers(self.kwargs['pk'])
+		response = HttpResponse(follower, content_type='json')
 		return response
+	@detail_route(methods=["GET"])
+	def followings(self, request, **kwargs):
+		follower = Follows.objects.getFollowing(self.kwargs['pk'])
+		response = HttpResponse(follower, content_type='json')
+		return response
+
 
 
 

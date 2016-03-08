@@ -79,7 +79,7 @@ class Follows(models.Model):
 
 	def __unicode__(self):  #For Python 2, use __str__ on Python 3
 		try:
-			return "{sender} is followed by {reciever}".format(sender=self.followed, reciever=self.follower)
+			return "{sender} is followed by {reciever}\n".format(sender=self.followed, reciever=self.follower)
 		except:
 			return "{solo} prob has no followers)".format(solo=self.followed)
 
