@@ -23,6 +23,10 @@ urlpatterns = [
     url(r'^demo-signup$', TemplateView.as_view(template_name='user/signup.html'), name='signup'),
     url(r'^demo-update$', TemplateView.as_view(template_name='user/update.html'), name='update'),
 
+    url(r'^follower-list$', TemplateView.as_view(template_name='myfollows.html'), name='followers'),
+    url(r'^friend-list$', TemplateView.as_view(template_name='myfriends.html'), name='friends'),
+    url(r'^following-list$', TemplateView.as_view(template_name='myfans.html'), name='following'),
+
 
 
     url(r'^admin/', include(admin.site.urls)),
