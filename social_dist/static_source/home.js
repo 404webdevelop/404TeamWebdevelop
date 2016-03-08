@@ -10,36 +10,9 @@ console.log(getCookie("username"));
 console.log(getCookie("token"));
 console.log(getCookie("url"));
 console.log(getCookie("username"));
-/*var post_item={
-		"post_title":"Lorem",
-		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-		"post_autor":"hoho",
-		"post_date":"October 14, 2012",
-		"post_image":"/static/image/Yu.jpg"
 
-};
-*/
-
-//var post_list=[];
-
-/*function setpostitem(title,text,image,date,autor){
-	post_item.post_title = title;
-	post_item.post_text = text;
-	post_item.post_image = image;
-	post_item.post_date = date;
-	post_item.post_autor=autor;
-	post_list.push(post_item);
-
-};*/
 
 getpost();
-//console.log(post_list);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-
-
 
 
 
@@ -77,21 +50,19 @@ if (data.username == "undefined" || data.username == "" ){
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
 	
 }else{
-	//var number = post_list.length;
-	//var st= loaddynamic(number)
+
 	var head = setifor(data.userphoto,data.username,data.intro)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
-	//document.getElementById("list_post_view").innerHTML = st;
+
 
 
 };
 
 function setCookie(key,value){
   document.cookie = key+"="+value;
-  //document.cookie = "username = "+username;
 };
 
 
@@ -194,6 +165,65 @@ function getuserurl(callback){
 
 
 
+//need to copy patchprofile and click button to each page.
+
+function patchProfile(username,firstName, lastName, callback) {
+
+  var token = JSON.parse(getCookie("token"));
+  console.log(token.token);
+
+
+  $.ajax({
+    method: 'PATCH',
+    url: getCookie("url"),
+    contentType:"application/json; charset=utf-8",
+    data: JSON.stringify({
+      'username': username,
+      'first_name': firstName,
+      'last_name': lastName
+
+    }),
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
+    },
+    success: function (data) {
+      //callback(data);
+      clearCookie("username");
+      clearCookie("token");
+      clearCookie("url");
+      setTimeout(function(){
+      window.location.href = "home";
+        },1000
+      );
+
+
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  })
+}
+
+
+
+
+$("#update_submit").click(function(){
+
+    var username_input = $("#user-name-input").val();
+    var firstname_input = $('#first-name-input').val();
+    var lastname_input = $('#last-name-input').val();
+
+    patchProfile(username_input,firstname_input, lastname_input);
+    //$("#response").html(token);  
+    
+});
+
+
+
+
+
+
+
 
 function getlogin(url,data,callback){
   var val;
@@ -224,6 +254,12 @@ function getlogin(url,data,callback){
   //return callback;
 
 };
+
+
+
+
+
+
 
 $("#login_submit").click(function(){
     var username = $("#username").val();
