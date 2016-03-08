@@ -18,6 +18,7 @@ console.log(getCookie("username"));
 
 
 
+
 //var post_list=[];
 
 /*function setpostitem(title,text,image,date,autor){
@@ -30,6 +31,9 @@ console.log(getCookie("username"));
 
 };*/
 
+
+
+console.log(getCookie("id"));
 
 getpost();
 
@@ -47,9 +51,10 @@ function setdynamic(img,tit,tex,date,author){
 	return string;
 };
 
-function setifor(img,username,following, follower, friends){
-	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
+function setifor(img,username,followers, following, friends){
+	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+username+"</h1></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
 	return string;
+
 };
 
 function loaddynamic(number){
@@ -70,7 +75,7 @@ if (data.username == "undefined" || data.username == "" ){
 	
 }else{
 
-	var head = setifor(data.userphoto,data.username,data.intro)
+	var head = setifor(data.userphoto,data.username,data.following, data.followers, data.friends)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("info").innerHTML = head;
@@ -170,6 +175,7 @@ function getuserurl(callback){
               if (userobj[i].username == getCookie("username")){
                 console.log(userobj[i].url);
                 setCookie("url",userobj[i].url);
+                setCookie("id",userobj[i].id);
               }
             }
 
@@ -207,9 +213,7 @@ function patchProfile(username,firstName, lastName, callback) {
     },
     success: function (data) {
       //callback(data);
-      clearCookie("username");
-      clearCookie("token");
-      clearCookie("url");
+      setCookie("username",username);
       setTimeout(function(){
       window.location.href = "home";
         },1000
@@ -334,6 +338,18 @@ $("#connect_home").click(function(){
 
 
 });
+
+$("#connect_prof").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "posted";
+    },1000
+      );
+
+
+});
+
+
 
 
 

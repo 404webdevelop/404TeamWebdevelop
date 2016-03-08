@@ -3,7 +3,9 @@
 
 var data= {"username":getCookie("username"),
 		   "userphoto":"../static/image/Yu.jpg",
-		   "intro": "good luck"
+		   "followers":"50",
+		   "following":"77",
+		   "friends":"112"
 			 };
 console.log(data);
 
@@ -23,11 +25,11 @@ function signuppage(){
 
 
 
-function setifor(img,username,intro){
-	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+data.username+"</h1></div><div class=\"well\"><p>"+intro+"</p></div></td></tr></table>";
+function setifor(img,username,followers, following, friends){
+	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+username+"</h1></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
 	return string;
-};
 
+};
 
 
 
@@ -38,7 +40,7 @@ if (data.username == "undefined" || data.username == "" ){
 	
 }else{
 
-	var head = setifor(data.userphoto,data.username,data.intro)
+	var head = setifor(data.userphoto,data.username,data.following, data.followers, data.friends)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 
@@ -98,11 +100,9 @@ function patchProfile(username,firstName, lastName, callback) {
     },
     success: function (data) {
       //callback(data);
-      clearCookie("username");
-      clearCookie("token");
-      clearCookie("url");
+      setCookie("username",username);
       setTimeout(function(){
-      window.location.href = "home";
+      window.location.href = "friends";
         },1000
       );
 
@@ -219,4 +219,12 @@ $("#connect_home").click(function(){
 
 });
 
+$("#connect_prof").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "posted";
+    },1000
+      );
 
+
+});

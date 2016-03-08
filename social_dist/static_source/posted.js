@@ -9,91 +9,65 @@ var data= {"username":getCookie("username"),
 			 };
 
 
-var post_item={
-		"post_title":"Test Data",
-		"post_text" :"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-		"post_autor":"Me!",
-		"post_date":"August 1st, 2012",
-		"post_image":"/static/image/Yu.jpg"
-};
+console.log(getCookie("username"));
+console.log(getCookie("token"));
+console.log(getCookie("url"));
+console.log(getCookie("username"));
+console.log(getCookie("id"));
 
-
-var post_list=[];
-
-function setpostitem(title,text,image,date,autor){
-	post_item.post_title = title;
-	post_item.post_text = text;
-	post_item.post_image = image;
-	post_item.post_date = date;
-	post_item.post_autor=autor;
-	post_list.push(post_item);
-
-};
-
-
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+getpost();
 
 
 
 
-function logout(){
-	
-
-};
-
-function signinbox(){
-
-}
 function signuppage(){
-	window.location="signup";
+  window.location="signup";
 }
+
+
 
 function setdynamic(img,tit,tex,date,author){
-	var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><h2 class=\"ui-li-heading\"><u>"+tit+"</u></a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal'>"+tex+"</p></div>&nbsp;</div></li>"
-	return string;
+  var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
+  return string;
 };
+
 
 function setifor(img,username,followers, following, friends){
 	var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+username+"</h1></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
 	return string;
+
 };
 
 function loaddynamic(number){
-	var st="";
-	for(i = 0 ;i<number;i++){
-		st = st+setdynamic(post_list[i].post_image,post_list[i].post_title,post_list[i].post_text,post_list[i].post_date,post_list[i].post_autor);
+  var st="";
+  for(i = 0 ;i<number;i++){
+    st = st+setdynamic(post_list[i].post_image,post_list[i].post_title,post_list[i].post_text,post_list[i].post_date,post_list[i].post_autor);
 
-	}
-	return st
+  }
+  return st
 };
 
 
 
 if (data.username == "undefined" || data.username == "" ){
-	
-	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
-	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
-	
-	
+  
+  document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
+  document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
+  
 }else{
-	var number = post_list.length;
-	var st= loaddynamic(number)
-	var head = setifor(data.userphoto,data.username,data.intro)
-	
-	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
-	document.getElementById("list_post_view").innerHTML = st;
-	document.getElementById("info").innerHTML = head;
-	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><button id=\"AddFriendbutton\" type=\"button\" onclick=\"addFriend()\" class=\"btn btn-lg btn-success\">Add Friend</button>   Yu is following you</div>";
+
+  var head = setifor(data.userphoto,data.username,data.following, data.followers, data.friends)
+  
+  document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
+  document.getElementById("info").innerHTML = head;
+  document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"AddFriendbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">AddFriend</button>   Yu is following you </div></div>";
+
 
 
 };
 
 function setCookie(key,value){
   document.cookie = key+"="+value;
-  //document.cookie = "username = "+username;
 };
 
 
@@ -116,6 +90,145 @@ function getCookie(cname) {
     return "";
 }
 
+
+
+
+
+function getpost(){
+
+  var url = "api/post/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var postobj = callback;
+            $.each(postobj, function (i, value) {
+              if (postobj[i].author == getCookie("url")){
+                var data = {};
+                
+                
+                $.getJSON(postobj[i].author,function(data){
+                    console.log("that"+i+"f   ="+postobj[i].author);
+                  console.log("that"+i+"f   ="+postobj[i].title);
+                  console.log("that"+i+"f   ="+postobj[i].content);
+                  console.log("that"+i+"f   ="+postobj[i].date_created);
+                   
+                    data = data.username;
+                    console.log("this"+i+"f   ="+data);
+                    //setpostitem(postobj[i].title,postobj[i].content,"/static/image/Yu.jpg",postobj[i].date_created,data);
+                    //var number = post_list.length;
+                    var st= setdynamic("/static/image/Yu.jpg",postobj[i].title,postobj[i].content,postobj[i].date_created,data);
+                    $("#list_post_view").append(st);
+                    //document.getElementById("list_post_view").innerHTML = st;
+
+                });
+              }
+            });
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+function getuserurl(callback){
+
+  var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == getCookie("username")){
+                console.log(userobj[i].url);
+                setCookie("url",userobj[i].url);
+                setCookie("id",userobj[i].id);
+              }
+            }
+
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+//need to copy patchprofile and click button to each page.
+
+function patchProfile(username,firstName, lastName, callback) {
+
+  var token = JSON.parse(getCookie("token"));
+  console.log(token.token);
+
+
+  $.ajax({
+    method: 'PATCH',
+    url: getCookie("url"),
+    contentType:"application/json; charset=utf-8",
+    data: JSON.stringify({
+      'username': username,
+      'first_name': firstName,
+      'last_name': lastName
+
+    }),
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
+    },
+    success: function (data) {
+      //callback(data);
+      setCookie("username",username);
+      setTimeout(function(){
+      window.location.href = "posted";
+        },1000
+      );
+
+
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  })
+}
+
+
+
+
+$("#update_submit").click(function(){
+
+    var username_input = $("#user-name-input").val();
+    var firstname_input = $('#first-name-input').val();
+    var lastname_input = $('#last-name-input').val();
+
+    patchProfile(username_input,firstname_input, lastname_input);
+    //$("#response").html(token);  
+    
+});
+
+
+
+
+
+
+
+
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
@@ -131,7 +244,7 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            
+            getuserurl();
             setCookie("username",username);
             setCookie("token",token);
             
@@ -146,6 +259,12 @@ function getlogin(url,data,callback){
 
 };
 
+
+
+
+
+
+
 $("#login_submit").click(function(){
     var username = $("#username").val();
     var password = $("#password").val();
@@ -156,7 +275,7 @@ $("#login_submit").click(function(){
     var callback = "";
     getlogin(url,data,callback);
     var token=getCookie("token");
-   
+    getuserurl();
     //console.log(token);
     //$("#response").html(token);  
     setTimeout(function(){
@@ -169,10 +288,10 @@ $("#login_submit").click(function(){
 
 
 $("#logoutbutton").click(function(){
- 	  clearCookie("username");
+    clearCookie("username");
     clearCookie("token");
     clearCookie("url");
-  	
+    
     setTimeout(function(){
       window.location.href = "home";
     },1000
@@ -200,6 +319,17 @@ $("#connect_home").click(function(){
 
 
 });
+
+$("#connect_prof").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "posted";
+    },1000
+      );
+
+
+});
+
 
 
 
