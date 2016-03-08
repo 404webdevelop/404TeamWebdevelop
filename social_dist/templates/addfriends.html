@@ -38,6 +38,7 @@ pass:
 
 
 <script type="text/javascript">
+getuserurl();
 var token=getCookie("token");
 //var user=getCookie("username");
 console.log(token);
@@ -50,7 +51,7 @@ console.log(user_url);
 //var postlist = JSON.stringify(getpost());
 
 
-//getuserurl();
+
 getpost();
 
 //-----------------------------------find all the users-------------------
@@ -86,6 +87,13 @@ function getuserurl(callback){
 }
 
 
+//var url = "http://127.0.0.1:8000/api/authors/2/";
+
+//$.getJson(url,function(data){
+// $.("#testbody").html(data.username);
+//});
+
+
 
 //--------------------------get infor by token--------------------------
 /*        the code below need help  */
@@ -98,22 +106,26 @@ function getpost(){
           url: url,
 
         });
+
   request.done(function (callback) {
             //console.log(callback);
             console.log(callback);
             var postobj = callback;
-            for(i = 0; i < postobj.length; i++){
+            $.each(postobj, function (i, value) {
               if (postobj[i].author == getCookie("url")){
-                console.log(postobj[i].author);
-                console.log(postobj[i].title);
-                console.log(postobj[i].content);
-                console.log(postobj[i].date_created);
-
+                var data = {};
+                console.log("that"+i+"f   ="+postobj[i].author);
+                console.log("that"+i+"f   ="+postobj[i].title);
+                console.log("that"+i+"f   ="+postobj[i].content);
+                console.log("that"+i+"f   ="+postobj[i].date_created);
+                
+                $.getJSON(postobj[i].author,function(data){
+                    
+                    data = data.username;
+                    console.log("----"+i+"***"+data);
+                });
               }
-            }
-
-
-            
+            });
          });
   request.fail(function (callback) {
             //console.log(callback);
@@ -201,6 +213,7 @@ function getlogin(url,data,callback){
             
             setCookie("username",username);
             setCookie("token",token);
+
             
          });
   request.fail(function () {

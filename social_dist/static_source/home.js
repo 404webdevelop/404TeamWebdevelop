@@ -7,7 +7,10 @@ var data= {"username":getCookie("username"),
 			 };
 
 console.log(getCookie("username"));
-var post_item={
+console.log(getCookie("token"));
+console.log(getCookie("url"));
+console.log(getCookie("username"));
+/*var post_item={
 		"post_title":"Lorem",
 		"post_text" :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 		"post_autor":"hoho",
@@ -15,11 +18,11 @@ var post_item={
 		"post_image":"/static/image/Yu.jpg"
 
 };
+*/
 
+//var post_list=[];
 
-var post_list=[];
-
-function setpostitem(title,text,image,date,autor){
+/*function setpostitem(title,text,image,date,autor){
 	post_item.post_title = title;
 	post_item.post_text = text;
 	post_item.post_image = image;
@@ -27,13 +30,14 @@ function setpostitem(title,text,image,date,autor){
 	post_item.post_autor=autor;
 	post_list.push(post_item);
 
-};
+};*/
 
-
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
-setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+getpost();
+//console.log(post_list);
+//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
+//setpostitem(post_item.post_title,post_item.post_text,post_item.post_image,post_item.post_date,post_item.post_autor);
 
 
 
@@ -71,14 +75,14 @@ if (data.username == "undefined" || data.username == "" ){
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>Can't loaded!</strong> You might not signin <br> or <br> you might not connected to the server</center></div>";
 	
 }else{
-	var number = post_list.length;
-	var st= loaddynamic(number)
+	//var number = post_list.length;
+	//var st= loaddynamic(number)
 	var head = setifor(data.userphoto,data.username,data.intro)
 	
 	document.getElementById("loginbutton").innerHTML ="<a href=\"profile\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
-	document.getElementById("list_post_view").innerHTML = st;
+	//document.getElementById("list_post_view").innerHTML = st;
 
       //<li class=\"ui-block-a\"><a  href=\"#\" id=\"load\" data-icon=\"refresh\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Load more</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
       //<li class=\"ui-block-b\"><a class=\"ui-btn ui-btn-up-a\" href=\"porfile.html\" id=\"pro\" data-icon=\"star\"><span class=\"ui-btn-inner\"><span class=\"ui-btn-text\">Porfile</span><span class=\"ui-icon ui-icon-custom ui-icon-shadow\">&nbsp;</span></span></a></li>
@@ -113,6 +117,87 @@ function getCookie(cname) {
     return "";
 }
 
+
+
+
+
+function getpost(){
+
+  var url = "api/post/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var postobj = callback;
+            $.each(postobj, function (i, value) {
+              if (postobj[i].author == getCookie("url")){
+                var data = {};
+                
+                
+                $.getJSON(postobj[i].author,function(data){
+                    console.log("that"+i+"f   ="+postobj[i].author);
+                  console.log("that"+i+"f   ="+postobj[i].title);
+                  console.log("that"+i+"f   ="+postobj[i].content);
+                  console.log("that"+i+"f   ="+postobj[i].date_created);
+                   
+                    data = data.username;
+                    console.log("this"+i+"f   ="+data);
+                    //setpostitem(postobj[i].title,postobj[i].content,"/static/image/Yu.jpg",postobj[i].date_created,data);
+                    //var number = post_list.length;
+                    var st= setdynamic("/static/image/Yu.jpg",postobj[i].title,postobj[i].content,postobj[i].date_created,data);
+                    $("#list_post_view").append(st);
+                    //document.getElementById("list_post_view").innerHTML = st;
+
+                });
+              }
+            });
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+function getuserurl(callback){
+
+  var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == getCookie("username")){
+                console.log(userobj[i].url);
+                setCookie("url",userobj[i].url);
+              }
+            }
+
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
+
+
+
+
+
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
@@ -128,7 +213,7 @@ function getlogin(url,data,callback){
             //console.log(callback);
             var token =JSON.stringify(callback);
 
-            
+            getuserurl();
             setCookie("username",username);
             setCookie("token",token);
             
@@ -153,7 +238,7 @@ $("#login_submit").click(function(){
     var callback = "";
     getlogin(url,data,callback);
     var token=getCookie("token");
-   
+    getuserurl();
     //console.log(token);
     //$("#response").html(token);  
     setTimeout(function(){
