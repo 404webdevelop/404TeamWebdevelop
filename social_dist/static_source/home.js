@@ -339,6 +339,17 @@ $("#connect_home").click(function(){
 
 });
 
+
+$("#connect_net").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "network";
+    },1000
+      );
+
+
+});
+
 $("#connect_prof").click(function(){
     
     setTimeout(function(){

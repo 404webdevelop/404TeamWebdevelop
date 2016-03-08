@@ -330,6 +330,16 @@ $("#connect_prof").click(function(){
 
 });
 
+$("#connect_net").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "network";
+    },1000
+      );
+
+
+});
+
 
 
 
