@@ -13,6 +13,7 @@ console.log(getCookie("token"));
 console.log(getCookie("url"));
 console.log(getCookie("username"));
 
+<<<<<<< HEAD
 
 
 
@@ -31,6 +32,9 @@ console.log(getCookie("username"));
 };*/
 
 
+=======
+console.log(getCookie("id"));
+>>>>>>> 185496cb515dbfd823475a58b9a0f4d593c3472a
 getpost();
 
 
@@ -170,6 +174,7 @@ function getuserurl(callback){
               if (userobj[i].username == getCookie("username")){
                 console.log(userobj[i].url);
                 setCookie("url",userobj[i].url);
+                setCookie("id",userobj[i].id);
               }
             }
 
@@ -207,9 +212,7 @@ function patchProfile(username,firstName, lastName, callback) {
     },
     success: function (data) {
       //callback(data);
-      clearCookie("username");
-      clearCookie("token");
-      clearCookie("url");
+      setCookie("username",username);
       setTimeout(function(){
       window.location.href = "home";
         },1000
@@ -334,6 +337,18 @@ $("#connect_home").click(function(){
 
 
 });
+
+$("#connect_prof").click(function(){
+    
+    setTimeout(function(){
+      window.location.href = "posted";
+    },1000
+      );
+
+
+});
+
+
 
 
 
