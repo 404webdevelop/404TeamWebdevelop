@@ -34,23 +34,54 @@ pass:
 <br>
 <p id="posttext"> </p>
 
+---------------------------------------POST post------------------------------------
 
+    <div>
+
+
+
+      <div data-role="main">
+        <form >
+        <p>Post title:&nbsp;&nbsp;&nbsp;<input id = "title_input_style" name="text_title_input" type="textbox" > </p>
+        
+        <p>Your post content:</p><textarea id="content_input_style" name="text_content_input" cols="150" rows="3"></textarea>
+        <form action="home.html">
+        select the image that you want to post:<input type="file" name="img" multiple>
+ 
+        <center><table >
+        <tr>
+          <td>
+
+        <button type="submit" id='post_post'>Post</button></td>
+        <td>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+        </td>
+      </tr>
+    </table></center>
+    </form>
+      </div>
+---------------------------------------POST post ends------------------------------------
+
+
+    </div>
 
 
 <script type="text/javascript">
 getuserurl();
 var token=getCookie("token");
 //var user=getCookie("username");
-//console.log(token);
+console.log(token);
 
 var user=getCookie("username");
-//console.log(user);
+console.log(user);
 
 var user_url = getCookie("url");
 console.log("user is :"+user_url);
 
 var user_id = getCookie("id");
-//console.log(user_id);
+console.log(user_id);
 //var postlist = JSON.stringify(getpost());
 
 //getfollowers(user_url);
@@ -340,8 +371,48 @@ function getpost(){
 
 }
 
+function postPost(){
+  var url = "api/post/posts/";
+  
+  var post_post= $("#title_input_style").val();
+  console.log(post_post);
+  
+  var post_content= $("#content_input_style").val();
+  console.log(post_content);
+  
+  var post_url= getCookie("url");
+  console.log(post_url);
+ 
+  var data= {
+    "title": post_post,
+    "content": post_content,
+    "author": post_url,
+  };
+
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+        });
 
 
+  //call back
+
+  request.done(function (callback) {
+    console.log(callback)
+    });
+  
+  request.fail(function (callback) {
+            //console.log(callback);
+    console.log(callback);
+    });
+
+
+
+}
+$('#post_post').click(function(){
+    postPost();
+});
 
 
 //---------------------user login test done----------------------------------
