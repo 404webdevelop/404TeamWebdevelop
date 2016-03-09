@@ -208,7 +208,48 @@ function patchProfile(username,firstName, lastName, callback) {
   })
 }
 
+function postPost(){
+  var url = "api/post/posts/";
+  
+  var post_post= $("#title_input_style").val();
+  console.log(post_post);
+  
+  var post_content= $("#content_input_style").val();
+  console.log(post_content);
+  
+  var post_url= getCookie("url");
+  console.log(post_url);
+ 
+  var data= {
+    "title": post_post,
+    "content": post_content,
+    "author": post_url,
+  };
 
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+        });
+
+
+  //call back
+
+  request.done(function (callback) {
+    console.log(callback)
+    });
+  
+  request.fail(function (callback) {
+            //console.log(callback);
+    console.log(callback);
+    });
+
+
+
+}
+$('#post_post').click(function(){
+    postPost();
+});
 
 
 $("#update_submit").click(function(){
