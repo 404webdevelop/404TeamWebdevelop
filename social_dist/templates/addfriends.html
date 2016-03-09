@@ -62,11 +62,30 @@ pass:
     </table></center>
     </form>
       </div>
+    </div>
 ---------------------------------------POST post ends------------------------------------
 
 
+---------------------------------------POST Comment------------------------------------
+    <div>
+      <div data-role="main">
+        <form >
+        <p>Your post content:</p><textarea id="comment_content_input" name="comment_content_input" cols="150" rows="3"></textarea>
+        <table >
+        <tr>
+          <td>
+        <button type="submit" id='post_comment'>Post</button></td>
+        <td>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td>
+        </td>
+      </tr>
+    </table></center>
+    </form>
+      </div>
     </div>
-
+---------------------------------------POST Comment ends------------------------------------
 
 <script type="text/javascript">
 getuserurl();
@@ -412,6 +431,47 @@ function postPost(){
 }
 $('#post_post').click(function(){
     postPost();
+});
+
+function postComment(){
+  var url = "api/post/comments/";
+  
+  var post_comment= $("#comment_content_input").val();
+  console.log(post_comment);
+  
+
+  
+  var comment_author_url= getCookie("url");
+  console.log(comment_author_url);
+ 
+  var data= {
+    'content': post_comment,
+    'local_author': comment_author_url,
+    'remote_author_name': 'new shit',
+    'remote_author_url': 'http://localhost:8000/api/authors/2/',
+    'parent': 'http://localhost:8000/api/post/posts/3/'
+  };
+
+  var request = $.ajax({
+          method: "POST",
+          url: url,
+          data: data,
+        });
+
+
+  //call back
+
+  request.done(function (callback) {
+    console.log(callback)
+    });
+  
+  request.fail(function (callback) {
+            //console.log(callback);
+    console.log(callback);
+    });
+}
+$('#post_comment').click(function(){
+    postComment();
 });
 
 
