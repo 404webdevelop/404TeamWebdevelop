@@ -1,4 +1,6 @@
 from follower.models import Follows, FollowManager
+from author.models import  Author 
+from author.api.serializers import UserSerializer
 from django.http import HttpResponse
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -41,23 +43,23 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def followings(self, request, **kwargs):
-        follower = Follows.objects.getFollowing(self.kwargs['pk'])
-        response = HttpResponse(follower, content_type='json')
-        return response
+        queryset = Follows.objects.getFollowing(self.kwargs['pk'])
+        serializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @detail_route(methods=["GET"])
     def friends(self, request, **kwargs):
-        follower = Follows.objects.getFollowing(self.kwargs['pk'])
-        followed = Follows.objects.getFollowers(self.kwargs['pk'])
+        follower_queryset = Follows.objects.getFollowing(self.kwargs['pk'])
+        followed_queryset = Follows.objects.getFollowers(self.kwargs['pk'])
         friend_list = list()
-        for i in range(len(followed)):
-            print i
-            for j in range(len(follower)):
-                if followed[i].follower.username == follower[j].followed.username:
-                    friend_list.append(followed[i].follower.username)
-
-        response = HttpResponse(friend_list, content_type='json')
-        return response
+        for i in range(len(followed_queryset)):
+            for j in range(len(follower_queryset)):
+                if followed_queryset[i].follower.username == follower_queryset[j].followed.username:
+                    friend_list.append(followed_queryset[i].follower.username)
+        for friend_name in friend_list:
+            friend = User.objects.get_by_natural_key(friend_name)
+            serializer = UserSerializer(friend, context={'request': request})
+        return Response(serializer.data)
 
     @list_route(methods=["GET"])
     def is_friend(self, request, **kwargs):
