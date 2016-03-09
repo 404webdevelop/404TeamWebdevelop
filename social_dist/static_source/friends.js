@@ -48,7 +48,7 @@ if (data.username == "undefined" || data.username == "" ){
 
 	document.getElementById("info").innerHTML = head;
 	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>";
-
+  
      
 
 };
