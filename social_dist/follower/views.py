@@ -35,9 +35,9 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def followers(self, request, **kwargs):
-        follower = Follows.objects.getFollowers(self.kwargs['pk'])
-        response = HttpResponse(follower, content_type='json')
-        return response
+        queryset = Follows.objects.getFollowers(self.kwargs['pk'])
+        serializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @detail_route(methods=["GET"])
     def followings(self, request, **kwargs):
@@ -58,4 +58,10 @@ class FollowViewSet(viewsets.ModelViewSet):
 
         response = HttpResponse(friend_list, content_type='json')
         return response
+
+    @list_route(methods=["GET"])
+    def is_friend(self, request, **kwargs):
+        request.GET["user1"]
+        request.GET["user2"]
+        pass
 

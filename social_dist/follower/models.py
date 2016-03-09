@@ -7,11 +7,17 @@ from datetime import datetime
 class FollowManager(models.Manager):
     # call this by Follows.objects.getFollowers(user id)
 
-    def getFollowers(self, followed):
-        return self.get_queryset().filter(followed=followed)
+    def getFollowers(self, user):
+        return self.get_queryset().filter(followed=user)
 
-    def getFollowing(self, follower):
-        return self.get_queryset().filter(follower=follower)
+    def getFollowing(self, user):
+        return self.get_queryset().filter(follower=user)
+
+    def is_friends(self, user1, user2):
+        return False
+
+    def get_friends(self, user):
+        return []
 
     def mutualFollow(self, follower1, follower2):
         firstcase = self.isFollowing(follower1, follower2)
@@ -54,10 +60,14 @@ class FollowManager(models.Manager):
 
     def isFollowing(self, follower1, follower2):
         self.get_queryset().filter(followed=follower1, follower=follower2).exists()
+        return False
 
 
 class Follows(models.Model):
+    # a -> b
+    # b
     followed = models.ForeignKey(User, related_name='followed')
+    # a
     follower = models.ForeignKey(User, related_name='follower')
 
     hide = models.BooleanField(default=False)
