@@ -52,7 +52,7 @@ if (data.username == "undefined" || data.username == "" ){
      
 
 };
-
+//console.log($("myFilter").val());
 
 function setCookie(key,value){
   document.cookie = key+"="+value;
@@ -190,6 +190,11 @@ function findfriends(){
 }
 
 
+$("#searchbutton").click(function(){
+    console.log($('#myFilter').val());
+    searchfriend($('#myFilter').val());
+    
+});
 
 
 
@@ -207,6 +212,38 @@ $("#update_submit").click(function(){
 
 
 
+function searchfriend(username){
+    var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+
+        });
+  request.done(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+            var userobj = callback;
+            for(i = 0; i < userobj.length; i++){
+              if (userobj[i].username == username){
+                console.log("find::"+userobj[i].username);
+                //"<li class =\"ui-first-child ui-last-child\"><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\" href=\"#\">Adele</a></li>"
+                $("#search_listview").html("<li id=\"searched_friend\"class =\"ui-first-child ui-last-child\"><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\" href=\"#\">"+userobj[i].username+"</a></li>");
+
+                
+              }
+            }
+
+
+   
+
+            
+         });
+  request.fail(function (callback) {
+            //console.log(callback);
+            console.log(callback);
+         });
+
+}
 
 
 
