@@ -1,6 +1,7 @@
 import base64
 import imghdr
 from rest_framework import serializers
+from permissions import *
 
 from .models import Post, Image, Comment
 
@@ -18,6 +19,11 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
         fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+
+    def validate_parent(self, value):
+        if not CanViewPost(value, self.context['request'].user):
+            raise serializers.ValidationError('Attempted to create Comment with parent you cannot view')
+        return value
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
