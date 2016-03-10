@@ -21,7 +21,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('post', 'url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
 
     def validate_parent(self, value):
         if not CanViewPost(value, self.context['request'].user):

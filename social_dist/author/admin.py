@@ -13,5 +13,6 @@ class UserAdmin(BaseUserAdmin):
     inlines = (AuthorInline, )
 
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+# admin.site.unregister(User)
+# admin.site.register(User, UserAdmin)
+admin.site.register(Author)

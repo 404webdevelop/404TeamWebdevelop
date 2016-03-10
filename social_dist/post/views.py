@@ -11,6 +11,7 @@ from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from collections import OrderedDict
+from author.models import Author
 
 from .models import Post, Image, Comment
 from .serializers import *
@@ -94,7 +95,7 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
 
     def list(self, request, author_id):
         try:
-            user = User.objects.get(pk = author_id)
+            user = Author.objects.get(pk = author_id)
         except:
             serializer = PostSerializer([], many=True, context={'request': request})
             return Response(serializer.data)

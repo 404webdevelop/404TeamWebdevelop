@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from .models import Post, Image, Comment
 from django.contrib.auth.models import AnonymousUser
-from django.contrib.auth.models import User
+from author.models import Author as User
 
 def CanViewPost(post, user):
     if user.is_superuser:

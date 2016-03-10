@@ -44,6 +44,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
 )
 
+AUTH_USER_MODEL = 'author.Author'
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
