@@ -6,7 +6,7 @@
 
 
 var cookie = global.cookie_setting;
-
+var clicks = global.button_click;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -30,7 +30,7 @@ function setifor(img,username,followers, following, friends){
 };
 
 
-function setup(data){
+function setup(clicks,data){
   if (data.username == "undefined" || data.username == undefined ){
   	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
   	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
@@ -81,44 +81,7 @@ function setup(data){
   });
 
 
-  $("#logoutbutton").click(function(){
-        cookie.clear("username");
-        cookie.clear("token");
-        cookie.clear("url");
-        setTimeout(function(){
-          window.location.href = "home";
-        },0
-          );
-    });
-
-  $("#connect_friends").click(function(){
-      
-      setTimeout(function(){
-        window.location.href = "friends";
-      },0);
-  });
-
-  $("#connect_home").click(function(){
-      
-      setTimeout(function(){
-        window.location.href = "home";
-      },0);
-  });
-
-  $("#connect_prof").click(function(){
-      
-      setTimeout(function(){
-        window.location.href = "posted";
-      },0);
-  });
-
-  $("#connect_net").click(function(){
-      
-      setTimeout(function(){
-        window.location.href = "network";
-      },0);
-  });
-
+  clicks.clickbtn();
 };
 
 function getuserurl(username,callback){
@@ -311,7 +274,7 @@ function postPost(data){
 
 
 
-setup(data);
+setup(clicks,data);
 findfriends(data);
 
 

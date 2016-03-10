@@ -6,7 +6,7 @@
 
 
 var cookie = global.cookie_setting;
-
+var clicks = global.button_click;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -252,7 +252,7 @@ function setifor(img,username,followers, following, friends){
 
 
 
-function setup(data){
+function setup(clicks,data){
     if (data.username == "undefined" || data.username == "" ){
       
       document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
@@ -268,9 +268,6 @@ function setup(data){
       document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<center><button id=\"Reloadbutton\" type=\"button\" onclick=\"javascript:history.go(0)\" class=\"btn btn-lg btn-success\">Refresh Feed</button> </div></div>";
 
     };
-
-
-
 
 
     $('#post_post').click(function(){
@@ -301,47 +298,14 @@ function setup(data){
     });
 
 
-    $("#logoutbutton").click(function(){
-        cookie.clear("username");
-        cookie.clear("token");
-        cookie.clear("url");
-        setTimeout(function(){
-          window.location.href = "home";
-        },0
-          );
-    });
+    clicks.clickbtn();
 
-    $("#connect_friends").click(function(){
-        setTimeout(function(){
-          window.location.href = "friends";
-        },0);
-    });
-
-    $("#connect_home").click(function(){
-        setTimeout(function(){
-          window.location.href = "home";
-        },0);
-    });
-
-
-    $("#connect_net").click(function(){
-        
-        setTimeout(function(){
-          window.location.href = "network";
-        },0);
-    });
-
-    $("#connect_prof").click(function(){
-        setTimeout(function(){
-          window.location.href = "posted";
-        },0);
-    });
 
 };
 
 
 
-setup(data);
+setup(clicks,data);
 
 findfriends(data);
 getfollowers(data);
