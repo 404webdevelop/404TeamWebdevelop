@@ -8,10 +8,39 @@ from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 from django.http import QueryDict
 from rest_framework import mixins
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
+from collections import OrderedDict
 
 from .models import Post, Image, Comment
 from .serializers import *
 from .permissions import *
+
+class PostPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('query', 'posts'),
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('posts', data)
+        ]))
+
+class CommentPagination(PostPagination):
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('query', 'comments'),
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('comments', data)
+        ]))
 
 class JSONResponse(HttpResponse):
     """
@@ -22,40 +51,91 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-class PostByAuthor(viewsets.ViewSet):
+class PagedViewMixin(object):
+    @property
+    def paginator(self):
+        """
+        The paginator instance associated with the view, or `None`.
+        """
+        if not hasattr(self, '_paginator'):
+            if self.pagination_class is None:
+                self._paginator = None
+            else:
+                self._paginator = self.pagination_class()
+        return self._paginator
+
+    def paginate_queryset(self, queryset):
+        """
+        Return a single page of results, or `None` if pagination is disabled.
+        """
+        if self.paginator is None:
+            return None
+        return self.paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        """
+        Return a paginated style `Response` object for the given output data.
+        """
+        assert self.paginator is not None
+        return self.paginator.get_paginated_response(data)
+
+class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
     """
     API endpoint that allows Posts to be viewed by author
 
     Usage: \n
-      - /api/post/posts/author/?username=username
-      - /api/post/posts/author/?userid=pk
+      - GET /api/author/<author_id\>/posts
+        - returns all visible posts made by the specified author
     """
-    def list(self, request):
-        if 'username' in request.query_params:
-            user = User.objects.get(username = request.query_params['username'])
-        elif 'userid' in request.query_params:
-            user = User.objects.get(pk = request.query_params['userid'])
-        else:
+    serializer_class = PostSerializer
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    permission_classes = [PostPermission]
+    pagination_class = PostPagination
+
+    def list(self, request, author_id):
+        try:
+            user = User.objects.get(pk = author_id)
+        except:
             serializer = PostSerializer([], many=True, context={'request': request})
             return Response(serializer.data)
         queryset = Post.objects.all().order_by('-date_created').filter(author=user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 class MyPosts(PostByAuthor):
     """
     API endpoint for viewing Posts authored by current user
+
+    Usage: \n
+      - GET /api/author/myposts
     """
+    permission_classes = [permissions.IsAuthenticated, PostPermission]
+
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 class PostViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Posts to be viewed or edited.
+    API endpoint that allows Posts to be viewed, edited, and deleted
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - any author can create a post
@@ -67,6 +147,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [PostPermission]
+    pagination_class = PostPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -76,20 +157,27 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created')
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-class CommentByPost(viewsets.ViewSet):
+class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
     API endpoint that allows Comments to be listed/created (nested in /posts/)
 
     Usage: \n
-      - GET /api/post/posts/<post_id\>/comments
-      - POST /api/post/posts/<post_id\>/comments
+      - GET /api/posts/<post_id\>/comments
+      - POST /api/posts/<post_id\>/comments
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [CommentPermission]
+    pagination_class = CommentPagination
 
     def list(self, request, post_id):
         queryset = Comment.objects.all().order_by('-date_created')
@@ -98,6 +186,12 @@ class CommentByPost(viewsets.ViewSet):
         except:
             queryset = []
         queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = CommentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -110,7 +204,10 @@ class CommentByPost(viewsets.ViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be viewed or edited.
+    API endpoint that allows Comments to be created and viewed
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - anyone can create a comment, even if not logged in
@@ -122,6 +219,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [CommentPermission]
+    pagination_class = CommentPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -131,22 +229,21 @@ class CommentViewSet(viewsets.ModelViewSet):
     def list(self, request):
         queryset = Comment.objects.all().order_by('-date_created')
         queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    # def create(self, request, *args, **kwargs):
-    #     local_author = request.data.dict()['local_author']
-    #     if local_author != '':
-    #         if request.user.is_anonymous():
-    #             pass
-    #         pk = [x.strip() for x in request.user.split('/') if x.strip() != ''][-1] # bad hack
-    #         if request.user != Post.objects.get(pk):
-    #             pass
-    #     return super(CommentViewSet, self).create(request, *args, **kwargs)
-
 class ImageViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be viewed or edited.
+    API endpoint that allows Images to be uploaded, viewed, and deleted
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - any author can upload
@@ -161,12 +258,6 @@ class ImageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
-
-    # def retrieve(self, request, pk=None):
-    #     queryset = Image.objects.all()
-    #     image = get_object_or_404(queryset, pk=pk)
-    #     serializer = ImageSerializer(image)
-    #     return Response(serializer.data)
 
 @login_required
 def upload_image(request):
