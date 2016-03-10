@@ -116,6 +116,8 @@ class MyPosts(PostByAuthor):
     Usage: \n
       - GET /api/author/myposts
     """
+    permission_classes = [permissions.IsAuthenticated, PostPermission]
+
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
