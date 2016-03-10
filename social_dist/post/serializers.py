@@ -12,6 +12,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         data = super(PostSerializer, self).to_representation(obj)
         data['comments'] = data['url'] + 'comments/'
+        data['username'] = obj.author.username
         return data
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
