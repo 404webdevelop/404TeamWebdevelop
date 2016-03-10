@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from ..models import Author
-
+from django.core.urlresolvers import reverse
+from django.http import HttpRequest
 
 class AuthorProfileSerializer(serializers.ModelSerializer):
 
@@ -43,4 +44,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
+    def to_representation(self, obj):
+        data = super(UserSerializer, self).to_representation(obj)
+        request = self.context['request']
+        data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args = (obj.id,)))
+        return data

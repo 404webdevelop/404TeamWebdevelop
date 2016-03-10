@@ -1,18 +1,41 @@
 import base64
 import imghdr
 from rest_framework import serializers
+from permissions import *
 
 from .models import Post, Image, Comment
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+
+    def to_representation(self, obj):
+        data = super(PostSerializer, self).to_representation(obj)
+        data['comments'] = data['url'] + 'comments/'
+        data['username'] = obj.author.username
+        return data
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+
+    def validate_parent(self, value):
+        if not CanViewPost(value, self.context['request'].user):
+            raise serializers.ValidationError('Attempted to create Comment with parent you cannot view')
+        return value
+
+class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
+
+    def create(self, validated_data):
+        post_id = self.context['parent']
+        validated_data['parent'] = Post.objects.get(pk=post_id)
+        comment = Comment.objects.create(**validated_data)
+        return comment
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):
@@ -41,4 +64,4 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
     image_data = Base64Field()
     class Meta:
         model = Image
-        fields = ('uploader', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'uploader', 'file_type', 'image_data', 'date_created')
