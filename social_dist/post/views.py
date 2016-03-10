@@ -7,9 +7,10 @@ from rest_framework.authentication import BasicAuthentication, TokenAuthenticati
 from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 from django.http import QueryDict
+from rest_framework import mixins
 
 from .models import Post, Image, Comment
-from .serializers import PostSerializer, CommentSerializer, ImageSerializer
+from .serializers import PostSerializer, CommentSerializer, ImageSerializer, CommentByPostSerializer
 from .permissions import *
 
 class JSONResponse(HttpResponse):
@@ -78,6 +79,35 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
+class CommentByPost(viewsets.ViewSet):
+    """
+    API endpoint that allows Comments to be listed/created (nested in /posts/)
+
+    Usage: \n
+      - GET /api/post/posts/<post_id\>/comments
+      - POST /api/post/posts/<post_id\>/comments
+    """
+    serializer_class = CommentByPostSerializer
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    permission_classes = [CommentPermission]
+
+    def list(self, request, post_id):
+        queryset = Comment.objects.all().order_by('-date_created')
+        try:
+            queryset = [comment for comment in queryset if comment.parent.id == Post.objects.get(pk=post_id).id]
+        except:
+            queryset = []
+        queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+        serializer = CommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, post_id):
+        serializer = CommentByPostSerializer(data=request.data, context={'request': request, 'parent': post_id})
+        # serializer.initial_data.parent = Post.objects.get(pk=post_id)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 class CommentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Comments to be viewed or edited.
@@ -97,6 +127,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateCommentPermission]
         return super(CommentViewSet, self).get_permissions()
+
+    def list(self, request):
+        queryset = Comment.objects.all().order_by('-date_created')
+        queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+        serializer = CommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
     # def create(self, request, *args, **kwargs):
     #     local_author = request.data.dict()['local_author']
