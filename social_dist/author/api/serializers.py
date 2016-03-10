@@ -8,7 +8,7 @@ class AuthorProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ('github', 'picture')
+        fields = ('id', 'github', 'picture')
         extra_kwargs = {'picture': {'write_only': True}}
 
 
@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         author_data = validated_data.pop('author', None)
         user = User.objects.create_user(**validated_data)
+        author_data['user'] = user
         author = Author.objects.create(**author_data)
         author.save()
         user.author = author
@@ -48,4 +49,9 @@ class UserSerializer(serializers.ModelSerializer):
         data = super(UserSerializer, self).to_representation(obj)
         request = self.context['request']
         data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args = (obj.id,)))
+        # if data['author'] is not None:
+        #     authorDict = dict(data['author'])
+        #     data['id'] = authorDict['id']
+        #     data['github'] = authorDict['github']
+        #     del data['author']
         return data

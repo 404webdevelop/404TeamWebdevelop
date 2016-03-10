@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
+import uuid
 
 
 class Migration(migrations.Migration):
@@ -15,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('guid', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('remote_author_name', models.CharField(default=b'', max_length=100, blank=True)),
                 ('remote_author_url', models.CharField(default=b'', max_length=1000, blank=True)),
                 ('content', models.CharField(max_length=1000)),
@@ -37,8 +38,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Post',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.UUIDField(default=uuid.uuid4, serialize=False, editable=False, primary_key=True)),
                 ('title', models.CharField(max_length=300)),
+                ('description', models.CharField(max_length=1000)),
                 ('content', models.CharField(max_length=5000)),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('last_modified', models.DateTimeField(auto_now_add=True)),
