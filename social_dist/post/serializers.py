@@ -8,18 +8,20 @@ from .models import Post, Image, Comment
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
 
     def to_representation(self, obj):
         data = super(PostSerializer, self).to_representation(obj)
         data['comments'] = data['url'] + 'comments/'
         data['username'] = obj.author.username
+        data['source'] = data['url']
+        data['origin'] = data['url']
         return data
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('post', 'url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
 
     def validate_parent(self, value):
         if not CanViewPost(value, self.context['request'].user):

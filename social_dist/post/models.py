@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import uuid
 
 class Post(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length = 300)
+    description = models.CharField(max_length = 1000)
     content = models.CharField(max_length = 5000)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True, blank=True)
@@ -31,6 +33,8 @@ class Image(models.Model):
 
 
 class Comment(models.Model):
+    guid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     local_author = models.ForeignKey(User, on_delete = models.CASCADE, blank=True, null=True)
     remote_author_name = models.CharField(max_length = 100, default='', blank=True)
     remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
