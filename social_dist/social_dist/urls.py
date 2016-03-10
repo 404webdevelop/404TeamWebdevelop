@@ -20,8 +20,9 @@ urlpatterns = [
     url(r'^signup$', login_required(TemplateView.as_view(template_name='signup.html')), name="signup"),
     url(r'^demo-signup$', TemplateView.as_view(template_name='user/signup.html'), name='signup'),
     url(r'^demo-update$', TemplateView.as_view(template_name='user/update.html'), name='update'),
-
     url(r'^network$', TemplateView.as_view(template_name='network.html'), name='my-netowkr'),
+
+    url(r'^posts', TemplateView.as_view(template_name='post/post_list.html'), name='my-post'),
 
 
 
@@ -32,10 +33,7 @@ urlpatterns = [
     url(r'^accounts/password_reset/$', 'django.contrib.auth.views.password_reset', name="reset_password"),
 
     url(r'^api-token/', views.obtain_auth_token),
-
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
     url(r'^post/debug/', include('post.debug_urls')),
-
-
 ]
