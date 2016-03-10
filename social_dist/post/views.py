@@ -9,6 +9,8 @@ from rest_framework.renderers import JSONRenderer
 from django.http import QueryDict
 from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
+from collections import OrderedDict
 
 from .models import Post, Image, Comment
 from .serializers import *
@@ -19,10 +21,24 @@ class PostPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
-class CommentPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 1000
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('posts', data)
+        ]))
+
+class CommentPagination(PostPagination):
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('comments', data)
+        ]))
 
 class JSONResponse(HttpResponse):
     """
@@ -57,11 +73,38 @@ class PostByAuthor(viewsets.ViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = PostSerializer(page, many=True, context={'request': request})
             return self.get_paginated_response(serializer.data)
 
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
+
+    @property
+    def paginator(self):
+        """
+        The paginator instance associated with the view, or `None`.
+        """
+        if not hasattr(self, '_paginator'):
+            if self.pagination_class is None:
+                self._paginator = None
+            else:
+                self._paginator = self.pagination_class()
+        return self._paginator
+
+    def paginate_queryset(self, queryset):
+        """
+        Return a single page of results, or `None` if pagination is disabled.
+        """
+        if self.paginator is None:
+            return None
+        return self.paginator.paginate_queryset(queryset, self.request, view=self)
+
+    def get_paginated_response(self, data):
+        """
+        Return a paginated style `Response` object for the given output data.
+        """
+        assert self.paginator is not None
+        return self.paginator.get_paginated_response(data)
 
 class MyPosts(PostByAuthor):
     """
@@ -70,15 +113,13 @@ class MyPosts(PostByAuthor):
     Usage: \n
       - GET /api/author/myposts
     """
-    pagination_class = PostPagination
-
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = PostSerializer(page, many=True, context={'request': request})
             return self.get_paginated_response(serializer.data)
 
         serializer = PostSerializer(queryset, many=True, context={'request': request})
@@ -114,7 +155,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = PostSerializer(page, many=True, context={'request': request})
             return self.get_paginated_response(serializer.data)
 
         serializer = PostSerializer(queryset, many=True, context={'request': request})
@@ -143,7 +184,7 @@ class CommentByPost(viewsets.ViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = CommentSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
