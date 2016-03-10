@@ -13,7 +13,20 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
         data = super(PostWriteSerializer, self).to_representation(obj)
-        data['comments'] = data['url'] + 'comments/'
+
+        request = self.context['request']
+        queryset = Comment.objects.all().order_by('-date_created')
+        try:
+            queryset = [comment for comment in queryset if comment.parent.id == obj.id]
+        except:
+            queryset = []
+        queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+        commentSerializer = CommentReadSerializer(data = queryset, many = True, context = {'request': request})
+        commentSerializer.is_valid()
+        data['comments'] = commentSerializer.data
+
+        data['comments_list'] = data['url'] + 'comments/'
+
         data['username'] = obj.author.username
         data['source'] = data['url']
         data['origin'] = data['url']
