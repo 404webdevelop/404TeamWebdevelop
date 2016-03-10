@@ -8,10 +8,21 @@ from rest_framework import permissions
 from rest_framework.renderers import JSONRenderer
 from django.http import QueryDict
 from rest_framework import mixins
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Post, Image, Comment
 from .serializers import *
 from .permissions import *
+
+class PostPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+class CommentPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 class JSONResponse(HttpResponse):
     """
@@ -33,6 +44,7 @@ class PostByAuthor(viewsets.ViewSet):
     serializer_class = PostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [PostPermission]
+    pagination_class = PostPagination
 
     def list(self, request, author_id):
         try:
@@ -42,6 +54,12 @@ class PostByAuthor(viewsets.ViewSet):
             return Response(serializer.data)
         queryset = Post.objects.all().order_by('-date_created').filter(author=user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -52,9 +70,17 @@ class MyPosts(PostByAuthor):
     Usage: \n
       - GET /api/author/myposts
     """
+    pagination_class = PostPagination
+
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -75,6 +101,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [PostPermission]
+    pagination_class = PostPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -84,6 +111,12 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created')
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -98,6 +131,7 @@ class CommentByPost(viewsets.ViewSet):
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [CommentPermission]
+    pagination_class = CommentPagination
 
     def list(self, request, post_id):
         queryset = Comment.objects.all().order_by('-date_created')
@@ -106,6 +140,12 @@ class CommentByPost(viewsets.ViewSet):
         except:
             queryset = []
         queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -133,6 +173,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [CommentPermission]
+    pagination_class = CommentPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -142,6 +183,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     def list(self, request):
         queryset = Comment.objects.all().order_by('-date_created')
         queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
