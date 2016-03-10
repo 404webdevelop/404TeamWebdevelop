@@ -24,7 +24,7 @@ function getCookie(cname) {
 }
 
 
-global.cookie_seting = {
+global.cookie_setting = {
 	set:setCookie,
 	get:getCookie,
 	clear:clearCookie,

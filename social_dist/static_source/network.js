@@ -1,19 +1,31 @@
+(function (global) {
+
+'use strict';
 
 
-var data= {"username":getCookie("username"),
+
+
+var cookie = global.cookie_setting;
+
+
+var data= {"username":cookie.get("username"),
+       "url":cookie.get("url"),
+       "token":cookie.get("token"),
        "userphoto":"../static/image/Yu.jpg",
        "followers":"50",
        "following":"77",
        "friends":"112"
        };
-
+console.log(data.url);
+console.log(data.username);
+console.log(data.token);
 
 function signuppage(){
   window.location="signup";
 }
 
-function getfollowings(){
-  url = "api/follows";
+function getfollowings(data){
+  var url = "api/follows";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -21,7 +33,7 @@ function getfollowings(){
   request.done(function (callback) {
             var followersobj = callback;
             $.each(followersobj, function (i, value) {;
-              if (followersobj[i].follower == getCookie("url")){
+              if (followersobj[i].follower == data.url){
                 $.getJSON(followersobj[i].followed,function(data){
                     data = data.username;
                     $("#f1").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
@@ -39,8 +51,8 @@ function getfollowings(){
 
 
 
-function getfollowers(){
-  url = "api/follows";
+function getfollowers(data){
+  var url = "api/follows";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -48,8 +60,9 @@ function getfollowers(){
   request.done(function (callback) {
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == getCookie("url")){
-                var data = {};
+              if (followersobj[i].followed == data.url){
+                console.log(followersobj[i].followed);
+                console.log(data.url);
                 $.getJSON(followersobj[i].follower,function(data){
                     data = data.username;
                     $("#f3").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\"href=\"#\">"+data+"</a></li>");
@@ -62,9 +75,9 @@ function getfollowers(){
          });
 }
 
-function findfriends(){
+function findfriends(data){
 
-  url = "api/follows";
+  var url = "api/follows";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -75,13 +88,13 @@ function findfriends(){
             var friends_list=[];
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == getCookie("url")){
+              if (followersobj[i].followed == data.url){
                   follower_list.push(followersobj[i].follower);
-                  console.log(followersobj[i].follower);
+                  //console.log(followersobj[i].follower);
                 }
-              if (followersobj[i].follower == getCookie("url")){
+              if (followersobj[i].follower == data.url){
                   following_list.push(followersobj[i].followed);
-                   console.log(followersobj[i].followed);
+                   //console.log(followersobj[i].followed);
                 }
               });
 
@@ -106,89 +119,25 @@ function findfriends(){
 
 
 
-function setCookie(key,value){
-  document.cookie = key+"="+value;
-};
 
-
-function clearCookie(token){
-  setCookie(token,"undefined",-1);
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    //console.log(name);
-    var ca = document.cookie.split(';');
-    //console.log(ca);
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-}
-
-function getpost(){
-
-  var url = "api/post/posts/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-
-        });
-
-  request.done(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-            var postobj = callback;
-            $.each(postobj, function (i, value) {
-              if (postobj[i].author == getCookie("url")){
-                var data = {};
-                
-                
-                $.getJSON(postobj[i].author,function(data){
-                    console.log("that"+i+"f   ="+postobj[i].author);
-                  console.log("that"+i+"f   ="+postobj[i].title);
-                  console.log("that"+i+"f   ="+postobj[i].content);
-                  console.log("that"+i+"f   ="+postobj[i].date_created);
-                   
-                    data = data.username;
-                    console.log("this"+i+"f   ="+data);
-                    var st= setdynamic("/static/image/Yu.jpg",postobj[i].title,postobj[i].content,postobj[i].date_created,data);
-                    $("#list_post_view").append(st);
-                });
-              }
-            });
-         });
-  request.fail(function (callback) {
-            //console.log(callback);
-            console.log(callback);
-         });
-}
-
-
-
-
-function getuserurl(callback){
+function getuserurl(username,callback){
+  var user_name = username;
 
   var url = "api/authors/";
   var request = $.ajax({
           method: "GET",
           url: url,
-
         });
   request.done(function (callback) {
-            //console.log(callback);
-            console.log(callback);
             var userobj = callback;
-            for(i = 0; i < userobj.length; i++){
-              if (userobj[i].username == getCookie("username")){
+            $.each(userobj,function (i,value){
+              if (userobj[i].username == user_name){
+                cookie.set("url",userobj[i].url);
                 console.log(userobj[i].url);
-                setCookie("url",userobj[i].url);
-                setCookie("id",userobj[i].id);
+                cookie.set("id",userobj[i].id);
               }
-            }
+            });
+            
 
          });
   request.fail(function (callback) {
@@ -202,31 +151,27 @@ function getuserurl(callback){
 
 //need to copy patchprofile and click button to each page.
 
-function patchProfile(username,firstName, lastName, callback) {
-
-  var token = JSON.parse(getCookie("token"));
+function patchProfile(data,username,firstName, lastName, callback) {
+  var token = JSON.parse(data.token);
   $.ajax({
     method: 'PATCH',
-    url: getCookie("url"),
+    url: data.url,
     contentType:"application/json; charset=utf-8",
     data: JSON.stringify({
       'username': username,
       'first_name': firstName,
       'last_name': lastName
-
     }),
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', 'Token ' + token.token);
     },
     success: function (data) {
       //callback(data);
-      setCookie("username",username);
+      cookie.set("username",username);
       setTimeout(function(){
       window.location.href = "home";
         },1000
       );
-
-
     },
     error: function (error) {
       console.log(error);
@@ -234,11 +179,17 @@ function patchProfile(username,firstName, lastName, callback) {
   })
 }
 
-function postPost(){
+function postPost(userurl){
   var url = "api/post/posts/";
+  
   var post_post= $("#title_input_style").val();
+  console.log(post_post);
+  
   var post_content= $("#content_input_style").val();
-  var post_url= getCookie("url");
+  console.log(post_content);
+  
+  var post_url= userurl;
+  console.log(post_url);
  
   var data= {
     "title": post_post,
@@ -260,11 +211,13 @@ function postPost(){
             //console.log(callback);
     console.log(callback);
     });
+
 }
 
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
+  //console.log(username);
   var password = data.password;
   var request = $.ajax({
           method: "POST",
@@ -274,14 +227,15 @@ function getlogin(url,data,callback){
         });
   request.done(function (callback) {
             var token =JSON.stringify(callback);
-            getuserurl();
-            setCookie("username",username);
-            setCookie("token",token);       
+            
+            cookie.set("username",username);
+            cookie.set("token",token);
+            
          });
   request.fail(function () {
-            clearCookie("username");
-            clearCookie("token");
-            clearCookie("url");
+            cookie.clear("username");
+            cookie.clear("token");
+            cookie.clear("url");
          });
 };
 
@@ -315,10 +269,13 @@ function setup(data){
 
     };
 
-    $('#post_post').click(function(){
-        postPost();
-    });
 
+
+
+
+    $('#post_post').click(function(){
+        postPost(data.url);
+    });
 
     $("#update_submit").click(function(){
 
@@ -326,17 +283,17 @@ function setup(data){
         var firstname_input = $('#first-name-input').val();
         var lastname_input = $('#last-name-input').val();
 
-        patchProfile(username_input,firstname_input, lastname_input);
+        patchProfile(data,username_input,firstname_input, lastname_input);
     });
     $("#login_submit").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
-        var data = {"username": username, "password": password};
+        var data1 = {"username": username, "password": password};
         var url = "api-token/";
         var callback = "";
-        getlogin(url,data,callback);
-        var token=getCookie("token");
-        getuserurl(); 
+        getlogin(url,data1,callback);
+        
+        getuserurl(username);
         setTimeout(function(){
           window.location.href = "home";
         },1000
@@ -345,12 +302,13 @@ function setup(data){
 
 
     $("#logoutbutton").click(function(){
-        clearCookie("username");
-        clearCookie("token");
-        clearCookie("url");
+        cookie.clear("username");
+        cookie.clear("token");
+        cookie.clear("url");
         setTimeout(function(){
           window.location.href = "home";
-        },0);
+        },0
+          );
     });
 
     $("#connect_friends").click(function(){
@@ -384,12 +342,13 @@ function setup(data){
 
 
 setup(data);
-getpost();
-findfriends();
-getfollowers();
-getfollowings();
+
+findfriends(data);
+getfollowers(data);
+getfollowings(data);
 
 
+})(this);
 
 
 

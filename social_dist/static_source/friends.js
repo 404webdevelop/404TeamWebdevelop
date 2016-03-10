@@ -1,12 +1,24 @@
+(function (global) {
+
+'use strict';
 
 
 
-var data= {"username":getCookie("username"),
-		   "userphoto":"../static/image/Yu.jpg",
-		   "followers":"50",
-		   "following":"77",
-		   "friends":"112"
-			 };
+
+var cookie = global.cookie_setting;
+
+
+var data= {"username":cookie.get("username"),
+       "url":cookie.get("url"),
+       "token":cookie.get("token"),
+       "userphoto":"../static/image/Yu.jpg",
+       "followers":"50",
+       "following":"77",
+       "friends":"112"
+       };
+console.log(data.url);
+console.log(data.username);
+console.log(data.token);
 
 function signuppage(){
 	window.location="signup";
@@ -19,12 +31,13 @@ function setifor(img,username,followers, following, friends){
 
 
 function setup(data){
-  if (data.username == "undefined" || data.username == "" ){
+  if (data.username == "undefined" || data.username == undefined ){
   	document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
   	document.getElementById("connect-infor").innerHTML = "<div id=\"connect-infor\" class=\"alert alert-danger\" ><center><strong>You do not have access to view this page</strong><br>If you are not logged in, please do so now. </center></div>";
   	$("#fot").hide();
     $("#div1").hide();
     $("#div2").hide();
+    $("#div3").hide();
   }else{
   	var head = setifor(data.userphoto,data.username,data.following, data.followers, data.friends);
   	document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
@@ -40,11 +53,13 @@ function setup(data){
       
   });
 
+
+
   $("#update_submit").click(function(){
       var username_input = $("#user-name-input").val();
       var firstname_input = $('#first-name-input').val();
       var lastname_input = $('#last-name-input').val();
-      patchProfile(username_input,firstname_input, lastname_input);
+      patchProfile(data,username_input,firstname_input, lastname_input); 
   });
 
   $('#post_post').click(function(){
@@ -58,6 +73,7 @@ function setup(data){
       var url = "api-token/";
       var callback = "";
       getlogin(url,data,callback);
+      getuserurl();
       var token=getCookie("token"); 
       setTimeout(function(){
         window.location.href = "friends";
@@ -65,15 +81,15 @@ function setup(data){
   });
 
 
-
   $("#logoutbutton").click(function(){
-      clearCookie("username");
-      clearCookie("token");
-      clearCookie("url");
-      setTimeout(function(){
-        window.location.href = "home";
-      },0);
-  });
+        cookie.clear("username");
+        cookie.clear("token");
+        cookie.clear("url");
+        setTimeout(function(){
+          window.location.href = "home";
+        },0
+          );
+    });
 
   $("#connect_friends").click(function(){
       
@@ -105,50 +121,54 @@ function setup(data){
 
 };
 
-function setCookie(key,value){
-  document.cookie = key+"="+value;
-};
+function getuserurl(username,callback){
+  var user_name = username;
 
+  var url = "api/authors/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var userobj = callback;
+            $.each(userobj,function (i,value){
+              if (userobj[i].username == user_name){
+                cookie.set("url",userobj[i].url);
+                console.log(userobj[i].url);
+                cookie.set("id",userobj[i].id);
+              }
+            });
+            
 
-function clearCookie(token){
-  setCookie(token,"undefined",-1);
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+
 }
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-}
 
 //need to copy patchprofile and click button to each page.
 
-function patchProfile(username,firstName, lastName, callback) {
-  var token = JSON.parse(getCookie("token"));
-  console.log(token.token);
+function patchProfile(data,username,firstName, lastName, callback) {
+  var token = JSON.parse(data.token);
   $.ajax({
     method: 'PATCH',
-    url: getCookie("url"),
+    url: data.url,
     contentType:"application/json; charset=utf-8",
     data: JSON.stringify({
       'username': username,
       'first_name': firstName,
       'last_name': lastName
-
     }),
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', 'Token ' + token.token);
     },
     success: function (data) {
       //callback(data);
-      setCookie("username",username);
+      cookie.set("username",username);
       setTimeout(function(){
-      window.location.href = "friends";
+      window.location.href = "home";
         },1000
       );
     },
@@ -158,8 +178,10 @@ function patchProfile(username,firstName, lastName, callback) {
   })
 }
 
-function findfriends(){
-  url = "api/follows";
+
+function findfriends(data){
+
+  var url = "api/follows";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -170,13 +192,13 @@ function findfriends(){
             var friends_list=[];
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == getCookie("url")){
+              if (followersobj[i].followed == data.url){
                   follower_list.push(followersobj[i].follower);
-                  console.log(followersobj[i].follower);
+                  //console.log(followersobj[i].follower);
                 }
-              if (followersobj[i].follower == getCookie("url")){
+              if (followersobj[i].follower == data.url){
                   following_list.push(followersobj[i].followed);
-                   console.log(followersobj[i].followed);
+                   //console.log(followersobj[i].followed);
                 }
               });
 
@@ -186,19 +208,18 @@ function findfriends(){
                   friends_list.push(follower_list[i]);
               });
             });
-            console.log(friends_list);
             $.each(friends_list,function (i,value){
               $.getJSON(friends_list[i],function(data){
                     data = data.username;
                     console.log(data);
                     $("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
                 });
-            });
+            });  
          });
   request.fail(function (callback) {
             console.log(callback);
          });
-}
+};
 
 
 
@@ -211,12 +232,15 @@ function searchfriend(username){
   request.done(function (callback) {
             console.log(callback);
             var userobj = callback;
-            for(i = 0; i < userobj.length; i++){
+
+            $.each(userobj,function (i,value){
               if (userobj[i].username == username){
                 console.log("find::"+userobj[i].username);
                 $("#search_listview").html("<li id=\"searched_friend\"class =\"ui-first-child ui-last-child\"><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\" href=\"#\">"+userobj[i].username+"</a></li>");
               }
-            } 
+
+            })
+            
          });
   request.fail(function (callback) {
             console.log(callback);
@@ -226,49 +250,69 @@ function searchfriend(username){
 function getlogin(url,data,callback){
   var val;
   var username = data.username;
+  //console.log(username);
   var password = data.password;
   var request = $.ajax({
           method: "POST",
           url: url,
           data: data,
+
         });
   request.done(function (callback) {
             var token =JSON.stringify(callback);
-            setCookie("username",username);
-            setCookie("token",token);
+            
+            cookie.set("username",username);
+            cookie.set("token",token);
+            
          });
   request.fail(function () {
-            clearCookie("username");
-            clearCookie("token");
-            clearCookie("url");
+            cookie.clear("username");
+            cookie.clear("token");
+            cookie.clear("url");
          });
 };
 
 
-function postPost(){
+function postPost(data){
+  var userurl = data.url;
   var url = "api/post/posts/";
+  
   var post_post= $("#title_input_style").val();
+  console.log(post_post);
+  
   var post_content= $("#content_input_style").val();
-  var post_url= getCookie("url");
+  console.log(post_content);
+  
+  var post_url= userurl;
+  console.log(post_url);
+ 
   var data= {
     "title": post_post,
     "content": post_content,
     "author": post_url,
   };
+
   var request = $.ajax({
           method: "POST",
           url: url,
           data: data,
         });
+
   request.done(function (callback) {
     console.log(callback)
     });
+  
   request.fail(function (callback) {
+            //console.log(callback);
     console.log(callback);
     });
+
 }
 
 
 
 setup(data);
-findfriends();
+findfriends(data);
+
+
+})(this);
