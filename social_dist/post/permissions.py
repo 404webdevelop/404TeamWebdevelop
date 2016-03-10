@@ -24,7 +24,6 @@ def CanViewPost(post, user):
 
 class CreatePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             author = request.data.dict()['author']
         except:
@@ -56,7 +55,6 @@ class PostPermission(permissions.BasePermission):
 
 class CreateCommentPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             local_author = request.data.dict()['local_author']
         except:
@@ -72,12 +70,16 @@ class CreateCommentPermission(permissions.BasePermission):
                 return False
         return True
 
+def CanViewComment(comment, user):
+    assert isinstance(comment, Comment)
+    return CanViewPost(comment.parent, user)
+
 class CommentPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         assert isinstance(obj, Comment)
 
         if request.method in permissions.SAFE_METHODS:
-            return True
+            return CanViewComment(obj, request.user)
         if obj.local_author is not None and obj.local_author == request.user:
             return True
         if request.user.is_superuser:
@@ -87,7 +89,6 @@ class CommentPermission(permissions.BasePermission):
 
 class CreateImagePermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             uploader = request.data.dict()['uploader']
         except:
