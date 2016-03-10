@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('content', models.CharField(max_length=1000)),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('last_modified', models.DateTimeField(auto_now_add=True)),
-                ('local_author', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('local_author', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True)),
             ],
         ),
         migrations.CreateModel(

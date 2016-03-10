@@ -2,7 +2,6 @@ from rest_framework.test import APITestCase
 from django.core.urlresolvers import reverse
 from rest_framework import status
 
-from django.contrib.auth.models import User
 from ..models import Author
 
 #http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
@@ -12,12 +11,10 @@ class UserTest(APITestCase):
     def create_a_user(self):
         username = 'user_%d' % self.count
         email = 'u%d@email.com' % self.count
-        user = User.objects.create_user(username, email, '0000')
-        author = Author.objects.create(user=user)
+        author = Author.objects.create(username, email, '0000')
         author.save()
-        user.save()
         self.count += 1
-        return user
+        return author
 
     def test_create(self):
         url = reverse('user-list')
@@ -31,8 +28,8 @@ class UserTest(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(User.objects.count(), 1)
-        user = User.objects.get_by_natural_key('user_1')
+        self.assertEqual(Author.objects.count(), 1)
+        user = Author.objects.get_by_natural_key('user_1')
         self.assertEqual(user.email, 'u1@email.com')
         self.assertEqual(user.author.github, 'user1')
 
@@ -68,10 +65,10 @@ class UserTest(APITestCase):
         self.client.force_authenticate(user=user)
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user = User.objects.get_by_natural_key(user.username)
+        user = Author.objects.get_by_natural_key(user.username)
         self.assertEqual(user.first_name, 'User')
         self.assertEqual(user.last_name, 'One')
-        self.assertEqual(user.author.github, "123123123")
+        self.assertEqual(user.github, "123123123")
 
 
 

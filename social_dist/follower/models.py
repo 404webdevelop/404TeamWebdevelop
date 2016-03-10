@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 import author
 from datetime import datetime  
-
+from author.models import Author
 
 class FollowManager(models.Manager):
 
@@ -67,8 +66,8 @@ class FollowManager(models.Manager):
 
 
 class Follows(models.Model):
-	followed = models.ForeignKey(User, related_name='followed')
-	follower = models.ForeignKey(User, related_name='follower')
+	followed = models.ForeignKey(Author, related_name='followed')
+	follower = models.ForeignKey(Author, related_name='follower')
 
 	hide = models.BooleanField(default=False)
 

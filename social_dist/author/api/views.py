@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from author.models import Author
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
@@ -15,7 +15,7 @@ from django.core.servers.basehttp import FileWrapper
 
 # for rest framework
 class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().filter(is_superuser=False).order_by('-date_joined')
+    queryset = Author.objects.all().filter(is_superuser=False).order_by('-date_joined')
     serializer_class = UserSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
@@ -28,20 +28,20 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def create(self, request, *args, **kwargs):
-        print request.data
+        # print request.data
         return super(AuthorViewSet, self).create(request, args, kwargs)
 
     @detail_route(methods=["GET", "POST"])
     def profile_picture(self, request, **kwargs):
         if request.method == "GET":
-            user = User.objects.get(id=kwargs['pk'])
-            response = HttpResponse(FileWrapper(user.author.picture), content_type='image')
+            user = Author.objects.get(id=kwargs['pk'])
+            response = HttpResponse(FileWrapper(user.picture), content_type='image')
             return response
         else:
             username = request.data.pop('user')[0]
-            user = User.objects.get_by_natural_key(username)
+            user = Author.objects.get_by_natural_key(username)
             uploaded_file = request.data.pop('0')[0]
-            user.author.picture.save(uploaded_file.name, uploaded_file)
+            user.picture.save(uploaded_file.name, uploaded_file)
             image_url = 'api/authors/%d/profile_picture/' % user.id
             return Response({'url': image_url})
 
