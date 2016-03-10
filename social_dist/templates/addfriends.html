@@ -369,11 +369,7 @@ function getpost(){
                 var time = postobj[i].date_created;
                 //console.log(time);
                 var new_time = findtime(time);
-                //console.log(new_time);
-                //console.log("that"+i+"f   ="+postobj[i].author);
-                //console.log("that"+i+"f   ="+postobj[i].title);
-                //console.log("that"+i+"f   ="+postobj[i].content);
-                //console.log("that"+i+"f   ="+postobj[i].date_created);
+
                 
                 $.getJSON(postobj[i].author,function(data){
                     
