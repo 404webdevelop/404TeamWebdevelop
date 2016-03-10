@@ -59,8 +59,11 @@ class FollowManager(models.Manager):
             return False
 
     def isFollowing(self, follower1, follower2):
-        self.get_queryset().filter(followed=follower1, follower=follower2).exists()
-        return False
+        follow_exist = self.get_queryset().filter(followed=follower1, follower=follower2).exists()
+        if follow_exist:
+            return True
+        else:
+            return False
 
 
 class Follows(models.Model):

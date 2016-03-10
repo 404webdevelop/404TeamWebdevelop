@@ -56,14 +56,33 @@ class FollowViewSet(viewsets.ModelViewSet):
             for j in range(len(follower_queryset)):
                 if followed_queryset[i].follower.username == follower_queryset[j].followed.username:
                     friend_list.append(followed_queryset[i].follower.username)
+        friend_obj_list = list()
         for friend_name in friend_list:
             friend = User.objects.get_by_natural_key(friend_name)
+
             serializer = UserSerializer(friend, context={'request': request})
-        return Response(serializer.data)
+
+            return Response(serializer)
 
     @list_route(methods=["GET"])
     def is_friend(self, request, **kwargs):
-        request.GET["user1"]
-        request.GET["user2"]
-        pass
+        result = False
+        user_1_name= request.GET["user1"]
+        user_2_name= request.GET["user2"]
+        #print user_1_name
+        #print "\n"+ user_2_name
+        user_1 = User.objects.get_by_natural_key(user_1_name)
+        user_2 = User.objects.get_by_natural_key(user_2_name)
+        print user_1
+        print user_2
+        #print user_2.id
+        result_case_one = Follows.objects.isFollowing(user_1, user_2)
+        #print result_case_one
+        result_case_two = Follows.objects.isFollowing(user_2, user_1)
+        #print result_case_two
+        if result_case_one and result_case_two:
+            result = True
+        else:
+            result = False
+        return HttpResponse(result)
 
