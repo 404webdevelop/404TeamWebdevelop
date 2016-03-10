@@ -24,7 +24,6 @@ def CanViewPost(post, user):
 
 class CreatePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             author = request.data.dict()['author']
         except:
@@ -56,7 +55,6 @@ class PostPermission(permissions.BasePermission):
 
 class CreateCommentPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             local_author = request.data.dict()['local_author']
         except:
@@ -91,7 +89,6 @@ class CommentPermission(permissions.BasePermission):
 
 class CreateImagePermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.data)
         try:
             uploader = request.data.dict()['uploader']
         except:

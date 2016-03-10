@@ -10,7 +10,7 @@ from django.http import QueryDict
 from rest_framework import mixins
 
 from .models import Post, Image, Comment
-from .serializers import PostSerializer, CommentSerializer, ImageSerializer, CommentByPostSerializer
+from .serializers import *
 from .permissions import *
 
 class JSONResponse(HttpResponse):
