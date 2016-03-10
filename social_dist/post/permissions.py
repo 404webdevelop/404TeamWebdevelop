@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from .models import Post, Image, Comment
 from django.contrib.auth.models import AnonymousUser
-from author.models import Author as User
+from author.models import Author
 
 def CanViewPost(post, user):
     if user.is_superuser:
@@ -32,7 +32,7 @@ class CreatePostPermission(permissions.BasePermission):
             if request.user.is_anonymous():
                 return False
             pk = [x.strip() for x in author.split('/') if x.strip() != ''][-1] # bad hack
-            requestedUser = User.objects.get(pk=pk)
+            requestedUser = Author.objects.get(pk=pk)
             if requestedUser is None:
                 return False
             if request.user.id != requestedUser.id:
@@ -63,7 +63,7 @@ class CreateCommentPermission(permissions.BasePermission):
             if request.user.is_anonymous():
                 return False
             pk = [x.strip() for x in local_author.split('/') if x.strip() != ''][-1] # bad hack
-            requestedUser = User.objects.get(pk=pk)
+            requestedUser = Author.objects.get(pk=pk)
             if requestedUser is None:
                 return False
             if request.user.id != requestedUser.id:
@@ -97,7 +97,7 @@ class CreateImagePermission(permissions.BasePermission):
             if request.user.is_anonymous():
                 return False
             pk = [x.strip() for x in uploader.split('/') if x.strip() != ''][-1] # bad hack
-            requestedUser = User.objects.get(pk=pk)
+            requestedUser = Author.objects.get(pk=pk)
             if requestedUser is None:
                 return False
             if request.user.id != requestedUser.id:

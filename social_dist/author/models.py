@@ -4,7 +4,5 @@ import uuid
 
 class Author(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     github = models.CharField(max_length=1024, blank=True, default='')
     picture = models.ImageField(upload_to='profile_pic/', blank=True, null=True, default='')
