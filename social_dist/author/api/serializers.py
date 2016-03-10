@@ -47,5 +47,5 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
         request = self.context['request']
-        data['posts'] = request.build_absolute_uri(reverse('post_by_author-list')) + '?username=' + obj.username
+        data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args = (obj.id,)))
         return data

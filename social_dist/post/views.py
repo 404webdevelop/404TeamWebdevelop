@@ -27,15 +27,17 @@ class PostByAuthor(viewsets.ViewSet):
     API endpoint that allows Posts to be viewed by author
 
     Usage: \n
-      - /api/post/posts/author/?username=username
-      - /api/post/posts/author/?userid=pk
+      - GET /api/author/<author_id\>/posts
+        - returns all visible posts made by the specified author
     """
-    def list(self, request):
-        if 'username' in request.query_params:
-            user = User.objects.get(username = request.query_params['username'])
-        elif 'userid' in request.query_params:
-            user = User.objects.get(pk = request.query_params['userid'])
-        else:
+    serializer_class = PostSerializer
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    permission_classes = [PostPermission]
+
+    def list(self, request, author_id):
+        try:
+            user = User.objects.get(pk = author_id)
+        except:
             serializer = PostSerializer([], many=True, context={'request': request})
             return Response(serializer.data)
         queryset = Post.objects.all().order_by('-date_created').filter(author=user)
@@ -46,6 +48,9 @@ class PostByAuthor(viewsets.ViewSet):
 class MyPosts(PostByAuthor):
     """
     API endpoint for viewing Posts authored by current user
+
+    Usage: \n
+      - GET /api/author/myposts
     """
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
@@ -55,7 +60,10 @@ class MyPosts(PostByAuthor):
 
 class PostViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Posts to be viewed or edited.
+    API endpoint that allows Posts to be viewed, edited, and deleted
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - any author can create a post
@@ -84,8 +92,8 @@ class CommentByPost(viewsets.ViewSet):
     API endpoint that allows Comments to be listed/created (nested in /posts/)
 
     Usage: \n
-      - GET /api/post/posts/<post_id\>/comments
-      - POST /api/post/posts/<post_id\>/comments
+      - GET /api/posts/<post_id\>/comments
+      - POST /api/posts/<post_id\>/comments
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -110,7 +118,10 @@ class CommentByPost(viewsets.ViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be viewed or edited.
+    API endpoint that allows Comments to be created and viewed
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - anyone can create a comment, even if not logged in
@@ -134,19 +145,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer = CommentSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    # def create(self, request, *args, **kwargs):
-    #     local_author = request.data.dict()['local_author']
-    #     if local_author != '':
-    #         if request.user.is_anonymous():
-    #             pass
-    #         pk = [x.strip() for x in request.user.split('/') if x.strip() != ''][-1] # bad hack
-    #         if request.user != Post.objects.get(pk):
-    #             pass
-    #     return super(CommentViewSet, self).create(request, *args, **kwargs)
-
 class ImageViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be viewed or edited.
+    API endpoint that allows Images to be uploaded, viewed, and deleted
+
+    Usage: \n
+      - TODO
 
     Permissions: \n
       - any author can upload
@@ -161,12 +165,6 @@ class ImageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
-
-    # def retrieve(self, request, pk=None):
-    #     queryset = Image.objects.all()
-    #     image = get_object_or_404(queryset, pk=pk)
-    #     serializer = ImageSerializer(image)
-    #     return Response(serializer.data)
 
 @login_required
 def upload_image(request):
