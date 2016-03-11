@@ -248,6 +248,8 @@ class ImageViewSet(viewsets.ModelViewSet):
     Permissions: \n
       - any author can upload
       - uploader/admin can edit/delete
+
+    [a](/post/debug/upload_image)
     """
     queryset = Image.objects.all().order_by('-date_created')
     serializer_class = ImageSerializer
@@ -258,6 +260,11 @@ class ImageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
+
+    def retrieve(self, request, *args, **kwargs):
+        imageModel = self.get_object()
+        content_type = imageModel.file_type
+        return HttpResponse(imageModel.image_data, content_type=content_type)
 
 @login_required
 def upload_image(request):
