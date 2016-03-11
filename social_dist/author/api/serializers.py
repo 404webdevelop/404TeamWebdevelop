@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ..models import Author
 from django.core.urlresolvers import reverse
-from django.http import HttpRequest
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
         request = self.context['request']
-        data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args = (obj.id,)))
+        data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args=(obj.id,)))
         data['displayName'] = data['username']
         if data['github'].find('github.com/') == -1:
             data['github'] = 'http://github.com/' + data['github']
