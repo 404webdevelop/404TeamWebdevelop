@@ -2,11 +2,11 @@
 
 'use strict';
 
-var cookie = global.cookie_setting;
+
 
 function button_click(){
     
-
+    var cookie = global.cookie_setting;
     $("#logoutbutton").click(function(){
         cookie.clear("username");
         cookie.clear("token");
