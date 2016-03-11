@@ -70,9 +70,9 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - POST: create a new author, example: [http://localhost:8000/demo-signup](http://localhost:8000/demo-signup)
 
 
-'''
+```
     http://localhost:8000/api/authors/me
-'''
+```
 - POST: Post with username, password. It will response user object and token.
 
 Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
