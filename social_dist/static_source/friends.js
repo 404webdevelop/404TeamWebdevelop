@@ -7,7 +7,8 @@
 
 var cookie = global.cookie_setting;
 var clicks = global.button_click;
-var set_inf_nav = global.nav_inf;
+var infor_nav = global.nav_inf;
+var login_infor_set = global.login_setting;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -28,9 +29,9 @@ function signuppage(){
 
 
 
-function setup(clicks,data){
+function setup(cookie,login_infor_set,infor_nav,clicks,data){
   var page="friends";
-  set_inf_nav.nav_inf_setting(data,page);
+  infor_nav.nav_inf_setting(data,page);
 
 
   $("#searchbutton").click(function(){
@@ -58,8 +59,8 @@ function setup(clicks,data){
       var data = {"username": username, "password": password};
       var url = "api-token/";
       var callback = "";
-      getlogin(url,data,callback);
-      getuserurl();
+      login_infor_set.userinf_setting(cookie,url,data1,callback);
+      login_infor_set.url_setting(cookie,username);
       var token=getCookie("token"); 
       setTimeout(function(){
         window.location.href = "friends";
@@ -70,31 +71,7 @@ function setup(clicks,data){
   clicks.clickbtn();
 };
 
-function getuserurl(username,callback){
-  var user_name = username;
 
-  var url = "api/authors/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var userobj = callback;
-            $.each(userobj,function (i,value){
-              if (userobj[i].username == user_name){
-                cookie.set("url",userobj[i].url);
-                console.log(userobj[i].url);
-                cookie.set("id",userobj[i].id);
-              }
-            });
-            
-
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-
-}
 
 
 //need to copy patchprofile and click button to each page.
@@ -260,7 +237,7 @@ function postPost(data){
 
 
 
-setup(clicks,data);
+setup(cookie,login_infor_set,infor_nav,clicks,data);
 findfriends(data);
 
 

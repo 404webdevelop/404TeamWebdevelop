@@ -6,7 +6,8 @@
 
 var cookie = global.cookie_setting;
 var clicks = global.button_click;
-var set_inf_nav = global.nav_inf;
+var infor_nav = global.nav_inf;
+var login_infor_set = global.login_setting;
 
 
 var data= {"username":cookie.get("username"),
@@ -157,34 +158,6 @@ function findfriends(data){
 
 
 
-function getuserurl(username,callback){
-  var user_name = username;
-
-  var url = "api/authors/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var userobj = callback;
-            $.each(userobj,function (i,value){
-              if (userobj[i].username == user_name){
-                cookie.set("url",userobj[i].url);
-                console.log(userobj[i].url);
-                cookie.set("id",userobj[i].id);
-              }
-            });
-            
-
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-
-}
-
-
-
 //need to copy patchprofile and click button to each page.
 
 function patchProfile(data,username,firstName, lastName, callback) {
@@ -216,45 +189,21 @@ function patchProfile(data,username,firstName, lastName, callback) {
 }
 
 
-function getlogin(url,data,callback){
-  var val;
-  var username = data.username;
-  //console.log(username);
-  var password = data.password;
-  var request = $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-
-        });
-  request.done(function (callback) {
-            var token =JSON.stringify(callback);
-            
-            cookie.set("username",username);
-            cookie.set("token",token);
-            
-         });
-  request.fail(function () {
-            cookie.clear("username");
-            cookie.clear("token");
-            cookie.clear("url");
-         });
-};
 
 
-function setup(clicks,data){
+function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="posted";
-    set_inf_nav.nav_inf_setting(data,page);
-    
+    infor_nav.nav_inf_setting(data,page);
+
    $("#login_submit").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
         var data1 = {"username": username, "password": password};
         var url = "api-token/";
         var callback = "";
-        getlogin(url,data1,callback);
+        login_infor_set.userinf_setting(cookie,url,data1,callback);
         
-        getuserurl(username);
+        login_infor_set.url_setting(cookie,username);
         setTimeout(function(){
           window.location.href = "home";
         },1000
@@ -278,7 +227,7 @@ function setup(clicks,data){
 
 
 
-setup(clicks,data);
+setup(cookie,login_infor_set,infor_nav,clicks,data);
 getpost(data);
 
 
