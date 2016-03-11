@@ -11,6 +11,8 @@ class MyRouter(routers.DefaultRouter):
 
         class MyAPIRoot(ApiRootClass):
             """
+            _In general, our API matches Abram's example-article.json_
+
             Posts \n
             - create, list, edit, delete: [`/posts`](/api/posts) _<-- try clicking_
             - list all the posts that I authored: [`/author/myposts`](/api/author/myposts)
@@ -29,6 +31,8 @@ class MyRouter(routers.DefaultRouter):
 
             Follows \n
             - ???: [`/follows`](/api/follows)
+
+            _Edit this documentation in `social_dist/social_dist/api.py`_
 
             """
             pass
