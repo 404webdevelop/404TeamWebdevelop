@@ -8,6 +8,8 @@ var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
 var update_and_post = global.update_and_post;
 var load_post = global.load_posts; 
+var frineds_find =global.findfriends;
+
   
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -61,65 +63,14 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     });
 
-
+    frineds_find.friends(data,"home");
 
     clicks.clickbtn();
 };
 
-
-
-
-function findfriends(data){
-  
-
-  var url = "api/follows";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-
-        });
-  request.done(function (callback) {
-            var follower_list=[];
-            var following_list=[];
-            var friends_list=[];
-            var followersobj = callback;
-            $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == data.url){
-                  follower_list.push(followersobj[i].follower);
-                }
-              if (followersobj[i].follower == data.url){
-                  following_list.push(followersobj[i].followed);
-                }
-              });
-              
-
-            $.each(follower_list, function (i, value) {
-
-              $.each(following_list, function (j, value) {
-                if (follower_list[i] == following_list[j])
-                  friends_list.push(follower_list[i]);
-              });
-            });
-
-            $.each(friends_list,function (i,value){
-                  var page = "home";
-                  load_post.posts_load(friends_list[i],data,page);
-            });
-
-            
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-}
-
-
-
-
-
-
 setup(cookie,login_infor_set,infor_nav,clicks,data);
-findfriends(data);
+
+
 
 
 })(this);

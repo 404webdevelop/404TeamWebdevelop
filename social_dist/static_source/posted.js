@@ -1,16 +1,13 @@
-
 (function (global) {
 
 'use strict';
 
-
-var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
 var update_and_post = global.update_and_post;
 var load_post = global.load_posts; 
-
+var cookie = global.cookie_setting;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -34,13 +31,9 @@ function signuppage(){
 /*function setdynamic(img,tit,tex,date,author){
   var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
   return string;
-}*/
+}
 
-
-
-
-
-/*function getpost(data){
+function getpost(data){
   var url = "api/post/posts/";
   var request = $.ajax({
           method: "GET",
@@ -77,14 +70,13 @@ function signuppage(){
 
 
 
-function findfriends(data){
+/*function findfriends(data){
   
 
   var url = "api/follows";
   var request = $.ajax({
           method: "GET",
           url: url,
-
         });
   request.done(function (callback) {
             var follower_list=[];
@@ -109,18 +101,14 @@ function findfriends(data){
                   friends_list.push(follower_list[i]);
               });
             });
-            //console.log(friends_list);
-
-            //$.each(friends_list,function (i,value){
-             //     getpost(friends_list[i]);
-            //});
+            
 
             
          });
   request.fail(function (callback) {
             console.log(callback);
          });
-}
+};*/
 
 
 
@@ -130,7 +118,6 @@ function findfriends(data){
 
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="posted";
-    infor_nav.nav_inf_setting(data,page);
 
    $("#login_submit").click(function(){
         var username = $("#username").val();
@@ -139,7 +126,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         var url = "api-token/";
         var callback = "";
         login_infor_set.userinf_setting(cookie,url,data1,callback);
-        
         login_infor_set.url_setting(cookie,username);
         setTimeout(function(){
           window.location.href = "home";
@@ -151,8 +137,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         update_and_post.post_posts(data.url);
     });
 
-
-
     $("#update_submit").click(function(){
         var username_input = $("#user-name-input").val();
         var firstname_input = $('#first-name-input').val();
@@ -161,13 +145,13 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
 
     clicks.clickbtn();
-};
+    //var page = "posted";
+    var friends_list = [];
+    load_post.posts_load(friends_list[0],data,page);
+    infor_nav.nav_inf_setting(data,page);
+  };
 
+  setup(cookie,login_infor_set,infor_nav,clicks,data);
 
-
-setup(cookie,login_infor_set,infor_nav,clicks,data);
-var page = "posted";
-var friends_list = [];
-load_post.posts_load(friends_list[0],data,page);
 
 })(this);
