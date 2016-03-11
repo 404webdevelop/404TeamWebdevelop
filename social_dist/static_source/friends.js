@@ -3,8 +3,6 @@
 'use strict';
 
 
-
-
 var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;

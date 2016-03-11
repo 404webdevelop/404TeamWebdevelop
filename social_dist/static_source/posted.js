@@ -9,6 +9,7 @@ var clicks = global.button_click;
 var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
 var update_and_post = global.update_and_post;
+var load_post = global.load_posts; 
 
 
 var data= {"username":cookie.get("username"),
@@ -26,20 +27,20 @@ console.log(data.token);
 
 function signuppage(){
   window.location="signup";
-}
-
-
-
-function setdynamic(img,tit,tex,date,author){
-  var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
-  return string;
 };
 
 
 
+/*function setdynamic(img,tit,tex,date,author){
+  var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
+  return string;
+}*/
 
 
-function getpost(data){
+
+
+
+/*function getpost(data){
   var url = "api/post/posts/";
   var request = $.ajax({
           method: "GET",
@@ -70,7 +71,7 @@ function getpost(data){
             //console.log(callback);
             console.log(callback);
          });
-}
+}*/
 
 
 
@@ -110,9 +111,9 @@ function findfriends(data){
             });
             //console.log(friends_list);
 
-            $.each(friends_list,function (i,value){
-                  getpost(friends_list[i]);
-            });
+            //$.each(friends_list,function (i,value){
+             //     getpost(friends_list[i]);
+            //});
 
             
          });
@@ -164,7 +165,8 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
-getpost(data);
-
+var page = "posted";
+var friends_list = [];
+load_post.posts_load(friends_list[0],data,page);
 
 })(this);
