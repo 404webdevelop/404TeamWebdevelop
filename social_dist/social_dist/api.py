@@ -3,7 +3,39 @@ from author.api.views import AuthorViewSet
 from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost
 from follower.views import FollowViewSet
 
-router = routers.DefaultRouter()
+# http://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
+class MyRouter(routers.DefaultRouter):
+    def get_api_root_view(self):
+        api_root_view = super(MyRouter, self).get_api_root_view()
+        ApiRootClass = api_root_view.cls
+
+        class MyAPIRoot(ApiRootClass):
+            """
+            Posts \n
+            - create, list, edit, delete: [`/posts`](/api/posts) _<-- try clicking_
+            - list all the posts that I authored: [`/author/myposts`](/api/author/myposts)
+            - list all the posts I can view: [`/author/posts`](/api/author/posts)
+            - list by author: `/author/{author_id}/posts`
+
+            Comments \n
+            - create, list, edit, delete: [`/comments`](/api/comments)
+            - list, create by parent post: `/api/posts/{post_id}/comments`
+
+            Images \n
+            - create, delete: [`/images`](/api/images)
+
+            Authors \n
+            - create, list, edit, delete: [`/author`](/api/author)
+
+            Follows \n
+            - ???: [`/follows`](/api/follows)
+
+            """
+            pass
+
+        return MyAPIRoot.as_view()
+
+router = MyRouter()
 
 # Post views
 router.register(r'author/posts', PostViewSet, base_name='visible_posts')
