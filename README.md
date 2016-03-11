@@ -70,9 +70,9 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - POST: create a new author, example: [http://localhost:8000/demo-signup](http://localhost:8000/demo-signup)
 
 
-‘’‘
+'''
     http://localhost:8000/api/authors/me
-’‘’
+'''
 - POST: Post with username, password. It will response user object and token.
 
 Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
@@ -94,7 +94,13 @@ Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to 
 
 Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
 
+###Follows
+Follows is a model, representing the 'follow relationship' between two authors. Follows API uses [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter) from Django REST framework.
 
+```
+    http://localhost:8000/api/follows/:id/
+```
+-GET: get a list of all follow relations.
 ##Frameworks & Libraries
 
 [jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)
