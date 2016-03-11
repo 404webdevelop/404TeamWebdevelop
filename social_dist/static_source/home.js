@@ -19,9 +19,6 @@ var data= {"username":cookie.get("username"),
 		   "following":"77",
 		   "friends":"112"
 			 };
-console.log(data.url);
-console.log(data.username);
-console.log(data.token);
 
 
 function signuppage(){
@@ -63,15 +60,12 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     });
 
-    frineds_find.friends(data,"home");
+    frineds_find.friends(data, page);
 
     clicks.clickbtn();
 };
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
-
-
-
 
 })(this);
 
