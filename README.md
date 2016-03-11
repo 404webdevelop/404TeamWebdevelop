@@ -97,10 +97,20 @@ Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to 
 ###Follows
 Follows is a model, representing the 'follow relationship' between two authors. Follows API uses [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter) from Django REST framework.
 
+Follows model has 3 fields in the serializer:
+
+-url: the url related to the pointed follow relation.
+-followed: the Author object being followed in the follow relation.
+-following: the Author object following in the follow relation.
+
 ```
     http://localhost:8000/api/follows/:id/
 ```
 -GET: get a list of all follow relations.
+
+####followers action
+
+
 ##Frameworks & Libraries
 
 [jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)
