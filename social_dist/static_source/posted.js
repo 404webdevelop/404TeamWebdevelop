@@ -8,6 +8,7 @@ var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
+var update_and_post = global.update_and_post;
 
 
 var data= {"username":cookie.get("username"),
@@ -73,40 +74,7 @@ function getpost(data){
 
 
 
-function postPost(userurl){
-  var url = "api/post/posts/";
-  
-  var post_post= $("#title_input_style").val();
-  console.log(post_post);
-  
-  var post_content= $("#content_input_style").val();
-  console.log(post_content);
-  
-  var post_url= userurl;
-  console.log(post_url);
- 
-  var data= {
-    "title": post_post,
-    "content": post_content,
-    "author": post_url,
-  };
 
-  var request = $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-        });
-
-  request.done(function (callback) {
-    console.log(callback)
-    });
-  
-  request.fail(function (callback) {
-            //console.log(callback);
-    console.log(callback);
-    });
-
-}
 
 function findfriends(data){
   
@@ -158,38 +126,6 @@ function findfriends(data){
 
 
 
-//need to copy patchprofile and click button to each page.
-
-function patchProfile(data,username,firstName, lastName, callback) {
-  var token = JSON.parse(data.token);
-  $.ajax({
-    method: 'PATCH',
-    url: data.url,
-    contentType:"application/json; charset=utf-8",
-    data: JSON.stringify({
-      'username': username,
-      'first_name': firstName,
-      'last_name': lastName
-    }),
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
-    },
-    success: function (data) {
-      //callback(data);
-      cookie.set("username",username);
-      setTimeout(function(){
-      window.location.href = "home";
-        },1000
-      );
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  })
-}
-
-
-
 
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="posted";
@@ -211,7 +147,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
 
     $('#post_post').click(function(){
-        postPost(data.url);
+        update_and_post.post_posts(data.url);
     });
 
 
@@ -219,7 +155,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         var username_input = $("#user-name-input").val();
         var firstname_input = $('#first-name-input').val();
         var lastname_input = $('#last-name-input').val();
-        patchProfile(data,username_input,firstname_input, lastname_input); 
+        update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
 
     clicks.clickbtn();

@@ -9,6 +9,7 @@ var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
+var update_and_post = global.update_and_post;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -46,11 +47,11 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
       var username_input = $("#user-name-input").val();
       var firstname_input = $('#first-name-input').val();
       var lastname_input = $('#last-name-input').val();
-      patchProfile(data,username_input,firstname_input, lastname_input); 
+      update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
   });
 
   $('#post_post').click(function(){
-      postPost();
+      update_and_post.post_posts(data.url);
   });
 
   $("#login_submit").click(function(){
@@ -199,41 +200,7 @@ function getlogin(url,data,callback){
 };
 
 
-function postPost(data){
-  var userurl = data.url;
-  var url = "api/post/posts/";
-  
-  var post_post= $("#title_input_style").val();
-  console.log(post_post);
-  
-  var post_content= $("#content_input_style").val();
-  console.log(post_content);
-  
-  var post_url= userurl;
-  console.log(post_url);
- 
-  var data= {
-    "title": post_post,
-    "content": post_content,
-    "author": post_url,
-  };
 
-  var request = $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-        });
-
-  request.done(function (callback) {
-    console.log(callback)
-    });
-  
-  request.fail(function (callback) {
-            //console.log(callback);
-    console.log(callback);
-    });
-
-}
 
 
 

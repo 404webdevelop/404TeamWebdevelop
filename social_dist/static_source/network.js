@@ -9,6 +9,7 @@ var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
 var login_infor_set = global.login_setting;
+var update_and_post = global.update_and_post;
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -124,115 +125,13 @@ function findfriends(data){
 
 
 
-
-
-
-//need to copy patchprofile and click button to each page.
-
-function patchProfile(data,username,firstName, lastName, callback) {
-  var token = JSON.parse(data.token);
-  $.ajax({
-    method: 'PATCH',
-    url: data.url,
-    contentType:"application/json; charset=utf-8",
-    data: JSON.stringify({
-      'username': username,
-      'first_name': firstName,
-      'last_name': lastName
-    }),
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
-    },
-    success: function (data) {
-      //callback(data);
-      cookie.set("username",username);
-      setTimeout(function(){
-      window.location.href = "home";
-        },1000
-      );
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  })
-}
-
-function postPost(userurl){
-  var url = "api/post/posts/";
-  
-  var post_post= $("#title_input_style").val();
-  console.log(post_post);
-  
-  var post_content= $("#content_input_style").val();
-  console.log(post_content);
-  
-  var post_url= userurl;
-  console.log(post_url);
- 
-  var data= {
-    "title": post_post,
-    "content": post_content,
-    "author": post_url,
-  };
-
-  var request = $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-        });
-
-  request.done(function (callback) {
-    console.log(callback)
-    });
-  
-  request.fail(function (callback) {
-            //console.log(callback);
-    console.log(callback);
-    });
-
-}
-
-function getlogin(url,data,callback){
-  var val;
-  var username = data.username;
-  //console.log(username);
-  var password = data.password;
-  var request = $.ajax({
-          method: "POST",
-          url: url,
-          data: data,
-
-        });
-  request.done(function (callback) {
-            var token =JSON.stringify(callback);
-            
-            cookie.set("username",username);
-            cookie.set("token",token);
-            
-         });
-  request.fail(function () {
-            cookie.clear("username");
-            cookie.clear("token");
-            cookie.clear("url");
-         });
-};
-
-function setdynamic(img,tit,tex,date,author){
-  var string = "<li id=\"view_list_style\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+date+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
-  return string;
-};
-
-
-
-
-
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="network";
     infor_nav.nav_inf_setting(data,page);
 
 
     $('#post_post').click(function(){
-        postPost(data.url);
+        update_and_post.post_posts(data.url);
     });
 
     $("#update_submit").click(function(){
@@ -241,7 +140,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         var firstname_input = $('#first-name-input').val();
         var lastname_input = $('#last-name-input').val();
 
-        patchProfile(data,username_input,firstname_input, lastname_input);
+        update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
     $("#login_submit").click(function(){
         var username = $("#username").val();
