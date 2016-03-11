@@ -4,7 +4,6 @@
 var cookie = global.cookie_setting;
 
 function postPost(userurl){
-  var token = JSON.parse(data.token);
   var url = "api/post/posts/";
   
   var post_post= $("#title_input_style").val();
@@ -22,21 +21,20 @@ function postPost(userurl){
     "author": post_url,
   };
 
-  $.ajax({
+  var request = $.ajax({
           method: "POST",
           url: url,
           data: data,
-  }),
-  beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
-    },
-    success: function (data) {
-      console.log(callback)
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  })
+        });
+
+  request.done(function (callback) {
+    console.log(callback)
+    });
+  
+  request.fail(function (callback) {
+            //console.log(callback);
+    console.log(callback);
+    });
 
 }
 
