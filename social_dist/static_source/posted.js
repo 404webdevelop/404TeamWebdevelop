@@ -54,11 +54,11 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         var lastname_input = $('#last-name-input').val();
         update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
-
+    infor_nav.nav_inf_setting(data,page);
     clicks.clickbtn();
     var friends_list = [];
     load_post.posts_load(friends_list[0],data,page);
-    infor_nav.nav_inf_setting(data,page);
+    
   };
 
   setup(cookie,login_infor_set,infor_nav,clicks,data);
