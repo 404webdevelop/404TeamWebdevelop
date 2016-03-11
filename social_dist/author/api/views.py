@@ -1,24 +1,64 @@
-from author.models import Author
 from django.http import HttpResponse
+from django.core.servers.basehttp import FileWrapper
+from collections import OrderedDict
+
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.authtoken.models import Token
+from rest_framework.pagination import PageNumberPagination
 
 from permissions import IsAdminOrSelfOrReadOnly
-from rest_framework.response import Response
 from serializers import UserSerializer
-from django.core.servers.basehttp import FileWrapper
+from author.models import Author
 
+
+class AuthorPagination(PageNumberPagination):
+    page_size = 10
+    page_query_param = 'page_size'
+    max_page_size = 1000
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('query', 'author'),
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('posts', data)
+        ]))
 
 # for rest framework
 class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all().filter(is_superuser=False).order_by('-date_joined')
+    """
+    API endpoint that allows Authors to be created, viewed, and edited
+
+    Usage: \n
+      - /authors/
+        - GET: return a list of active authors
+        - POST: create an author
+      - /authors/{uuid}/
+        - GET: return a single author with uuid
+        - PUT, PATCH (authorized): update an author
+      - /authors/me/
+        - GET (authorized): return logged in user
+
+    Fields:\n
+      - username (required): unique
+      - password (required)
+      - email (required)
+      - *first_name
+      - *last_name
+      - *github: github account, i.e https://github.com/ironman where github account should be ironman
+      - *picture
+
+    """
+    queryset = Author.objects.all().filter(is_superuser=False).filter(is_active=True).order_by('-date_joined')
     serializer_class = UserSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
+    pagination_class = AuthorPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -28,7 +68,6 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def create(self, request, *args, **kwargs):
-        # print request.data
         return super(AuthorViewSet, self).create(request, args, kwargs)
 
     @detail_route(methods=["GET", "POST"])
@@ -56,14 +95,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
-    @list_route(methods=['POST'])
+    @list_route(methods=['GET'])
     def me(self, request, **kwargs):
-        token_serializer = AuthTokenSerializer(data=request.data)
-        token_serializer.is_valid(raise_exception=True)
-        user = token_serializer.validated_data['user']
-        user_serializer = UserSerializer(user, context={'request': request})
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'user': user_serializer.data,
-            'token': token.key
-        })
+        serializer = UserSerializer(request.user, context={'request': request})
+        return Response(serializer.data)
