@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-<script async="" type="text/javascript" src="/static/friends.js" ></script>
+
 <link rel="stylesheet" type="text/css" href="/static/default.css">
 <!-- Bootstrap core CSS -->
     <link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
@@ -51,22 +51,18 @@
     <div id="connect-infor">
       
     </div>
+    
     <div id= "div1">
-      <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true"data-icon="user">
-        <li><a href="#">Adam Kinkaid</a></li>
-        <li><a href="#">Alex Wickerham</a></li>
-        <li><a href="#">Avery Johnson</a></li>
-        <li><a href="#">Bob Cabot</a></li>
-        <li><a href="#">Caleb Booth</a></li>
-        <li><a href="#">Christopher Adams</a></li>
-        <li><a href="#">Culver James</a></li>
-        <li><a href="#">zulver James</a></li>
-        <li><a href="#">Christopher Adams</a></li>
-        <li><a href="#">Culver James</a></li>
-        <li><a href="#">zulver James</a></li> 
-        <li><a href="#">Christopher Adams</a></li>
-        <li><a href="#">Culver James</a></li>
-        <li><a href="#">zulver James</a></li>         
+      <table><tr><td><button>Friends</td><td><button>Following</td><td><button>Followers</td><td><button>Friends of Friends</td></tr></table>
+      <ul id = "friends_list_view"data-role="listview" data-autodividers="true" data-filter="true" data-inset="true"data-icon="user">
+        
+               
+      </ul>
+  </div>
+  <div id= "div_space" class="alert alert-success">
+      
+        
+               
       </ul>
   </div>
   <div id= "div2">
@@ -92,21 +88,8 @@
     </tr>
     </table>
     </form>
-    <ul data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true" data-icon="plus">
-      <li><a href="#">Adele</a></li>
-      <li><a href="#">Agnes</a></li>
-      <li><a href="#">Albert</a></li>
-      <li><a href="#">Billy</a></li>
-      <li><a href="#">Bob</a></li>
-      <li><a href="#">Calvin</a></li>
-      <li><a href="#">Cameron</a></li>
-      <li><a href="#">Chloe</a></li>
-      <li><a href="#">Christina</a></li>
-      <li><a href="#">Diana</a></li>
-      <li><a href="#">Gabriel</a></li>
-      <li><a href="#">Glen</a></li>
-      <li><a href="#">Ralph</a></li>
-      <li><a href="#">Valarie</a></li>
+    <ul id="search_listview" data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true" data-icon="plus">
+     <center> Search you friends</center>
     </ul>
 
   </div>
@@ -176,7 +159,7 @@
         <tr>
           <td>
 
-        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Post</button></td>
+        <button type="submit" id='post_post' class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Post</button></td>
         <td>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -197,11 +180,13 @@
   <div id="fot" role="contentinfo" data-role="footer" class="nav-glyphish-example ui-footer ui-bar-a">
     <div role="navigation" data-role="navbar" class="nav-glyphish-example ui-navbar ui-mini" data-grid="d">
     <ul class="ui-grid-d">
+
       <li class="ui-block-a"><a   id="connect_home" id="chat" data-icon="home"><span class="ui-btn-inner"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
-      <li class="ui-block-d"><a  id ="connect_prof"class="ui-btn ui-btn-inline ui-btn-icon-top " data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false"  id="beer" data-icon="tag"><span class="ui-btn-inner"><span class="ui-btn-text">My Profile</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+      <li class="ui-block-d"><a  id ="connect_prof"class="ui-btn ui-btn-inline ui-btn-icon-top " data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false"  href="#mypost" data-corners="false"  id="beer" data-icon="tag"><span class="ui-btn-inner"><span class="ui-btn-text">My Profile</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+
      
-      <li  class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="b" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" href="#mypost" data-rel="popup" data-position-to="window" data-transition="fade"id="skull" data-icon="edit"><span class="ui-btn-inner"><span class="ui-btn-text"><strong>POST</strong></span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
-       <li class="ui-block-b"><a class="ui-btn ui-btn-up-a ui-btn-down-a" href="network" id="email" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">My Network</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+      <li  class="ui-block-c"><a class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="b" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false"  data-rel="popup" data-position-to="window" data-transition="fade"id="skull" data-icon="edit"><span class="ui-btn-inner"><span class="ui-btn-text"><strong>POST</strong></span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
+       <li class="ui-block-b"><a id="connect_net"class="ui-btn ui-btn-up-a ui-btn-down-a"  id="email" data-icon="star"><span class="ui-btn-inner"><span class="ui-btn-text">My Network</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
       <li class="ui-block-e"><a id="connect_friends" class="ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-inline="true" data-theme="a" data-iconpos="top" data-wrapperels="span" data-iconshadow="true" data-shadow="false" data-corners="false" id="coffee" data-icon="user"><span class="ui-btn-inner"><span class="ui-btn-text">Find Friends</span><span class="ui-icon ui-icon-custom ui-icon-shadow">&nbsp;</span></span></a></li>
     </ul>
     </div>
@@ -210,9 +195,9 @@
   
 
 
-
-
-
+<script async="" type="text/javascript" src="/static/button_click_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/cookie_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/friends.js" ></script>
 
 </body>
 </html>

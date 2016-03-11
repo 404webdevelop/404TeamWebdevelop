@@ -5,20 +5,63 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework import permissions
+from rest_framework.renderers import JSONRenderer
+from django.http import QueryDict
+from rest_framework import mixins
 
 from .models import Post, Image, Comment
-from .serializers import PostSerializer, CommentSerializer, ImageSerializer
+from .serializers import *
 from .permissions import *
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+class PostByAuthor(viewsets.ViewSet):
+    """
+    API endpoint that allows Posts to be viewed by author
+
+    Usage: \n
+      - /api/post/posts/author/?username=username
+      - /api/post/posts/author/?userid=pk
+    """
+    def list(self, request):
+        if 'username' in request.query_params:
+            user = User.objects.get(username = request.query_params['username'])
+        elif 'userid' in request.query_params:
+            user = User.objects.get(pk = request.query_params['userid'])
+        else:
+            serializer = PostSerializer([], many=True, context={'request': request})
+            return Response(serializer.data)
+        queryset = Post.objects.all().order_by('-date_created').filter(author=user)
+        queryset = [post for post in queryset if CanViewPost(post, request.user)]
+        serializer = PostSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+class MyPosts(PostByAuthor):
+    """
+    API endpoint for viewing Posts authored by current user
+    """
+    def list(self, request):
+        queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
+        queryset = [post for post in queryset if CanViewPost(post, request.user)]
+        serializer = PostSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
 class PostViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Posts to be viewed or edited.
 
-    Permissions:
-      any author can create a post
-      cannot impersonate another local user
-      poster/admin can edit/delete
-      list() produces only posts the client can view
+    Permissions: \n
+      - any author can create a post
+      - cannot impersonate another local user
+      - poster/admin can edit/delete
+    - list() produces only posts the client can view
     """
     queryset = Post.objects.all().order_by('-date_created')
     serializer_class = PostSerializer
@@ -36,15 +79,44 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
+class CommentByPost(viewsets.ViewSet):
+    """
+    API endpoint that allows Comments to be listed/created (nested in /posts/)
+
+    Usage: \n
+      - GET /api/post/posts/<post_id\>/comments
+      - POST /api/post/posts/<post_id\>/comments
+    """
+    serializer_class = CommentByPostSerializer
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    permission_classes = [CommentPermission]
+
+    def list(self, request, post_id):
+        queryset = Comment.objects.all().order_by('-date_created')
+        try:
+            queryset = [comment for comment in queryset if comment.parent.id == Post.objects.get(pk=post_id).id]
+        except:
+            queryset = []
+        queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+        serializer = CommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, post_id):
+        serializer = CommentByPostSerializer(data=request.data, context={'request': request, 'parent': post_id})
+        # serializer.initial_data.parent = Post.objects.get(pk=post_id)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 class CommentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Comments to be viewed or edited.
 
-    Permissions:
-      anyone can create a comment, even if not logged in
-      cannot impersonate another local user
-      admin can edit or delete
-      if comment is made by a local user, that user can edit or delete
+    Permissions: \n
+      - anyone can create a comment, even if not logged in
+      - cannot impersonate another local user
+      - admin can edit or delete
+      - if comment is made by a local user, that user can edit or delete
     """
     queryset = Comment.objects.all().order_by('-date_created')
     serializer_class = CommentSerializer
@@ -55,6 +127,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateCommentPermission]
         return super(CommentViewSet, self).get_permissions()
+
+    def list(self, request):
+        queryset = Comment.objects.all().order_by('-date_created')
+        queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
+        serializer = CommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
     # def create(self, request, *args, **kwargs):
     #     local_author = request.data.dict()['local_author']
@@ -70,9 +148,9 @@ class ImageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Comments to be viewed or edited.
 
-    Permissions:
-      any author can upload
-      uploader/admin can edit/delete
+    Permissions: \n
+      - any author can upload
+      - uploader/admin can edit/delete
     """
     queryset = Image.objects.all().order_by('-date_created')
     serializer_class = ImageSerializer
