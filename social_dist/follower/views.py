@@ -29,8 +29,8 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         username = unicode(request.user)
-        me = User.objects.get_by_natural_key(username)
-        following = User.objects.get_by_natural_key(request.data["following"])
+        me = Author.objects.get_by_natural_key(username)
+        following = Author.objects.get_by_natural_key(request.data["following"])
         follow = Follows.objects.follow(me, following)
         follow_serializer = FollowSerializer(follow, context={'request': request})
         return Response(follow_serializer.data)
