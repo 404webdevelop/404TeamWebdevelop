@@ -104,12 +104,26 @@ Follows model has 3 fields in the serializer:
 -following: the Author object following in the follow relation.
 
 ```
-    http://localhost:8000/api/follows/:id/
+    http://localhost:8000/api/follows/
 ```
 -GET: get a list of all follow relations.
+-POST: make a post request: create a new follow relation between current authenticated user and the one being followed
 
 ####followers action
+followers action returns a list of followers from give Author. We use the API format in the [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter): host/{follows}/{id}/{followers}/[.format]. Here is an example:
 
+```
+    http://localhost:8000/api/follows/:id/followers/
+```
+-GET: get the current authenticated author's(id: id) follower list.
+
+####followings action
+followings action returns a list of author of current Author is following. We use the API format in the [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter): host/{follows}/{id}/{followings}/[.format]. Here is an example:
+
+```
+    http://localhost:8000/api/follows/:id/followings/
+```
+-GET: get the current authenticated author's(id: id) following list.
 
 ##Frameworks & Libraries
 
