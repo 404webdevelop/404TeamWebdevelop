@@ -7,7 +7,7 @@
 
 function findfriends(data,page){
   var load_post = global.load_posts; 
-
+  
   var url = "api/follows";
   var request = $.ajax({
           method: "GET",

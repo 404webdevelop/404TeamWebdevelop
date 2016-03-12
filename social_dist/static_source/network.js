@@ -18,21 +18,22 @@ var data= {"username":cookie.get("username"),
        "friends":"112"
        };
 
-function getfollowings(data){
-  var url = "api/follows";
+function getfollowings(cookie,data){
+  var url = "api/follow/"+cookie.get("userid")+"/followings";
   var request = $.ajax({
           method: "GET",
           url: url,
         });
   request.done(function (callback) {
             var followersobj = callback;
-            $.each(followersobj, function (i, value) {;
-              if (followersobj[i].follower == data.url){
+            console.log(callback);
+            $.each(followersobj, function (i, value) {
+             
                 $.getJSON(followersobj[i].followed,function(data){
-                    data = data.username;
-                    $("#f1").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
+                    
+                    $("#f1").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data.username+"</a></li>");
                 });
-              }
+            
             });
          });
   request.fail(function (callback) {
@@ -41,24 +42,28 @@ function getfollowings(data){
 
 }
 
-function getfollowers(data){
-  var url = "api/follows";
+function getfollowers(cookie,data){
+  console.log(cookie.get("userid"));
+  var url = "api/follow/"+cookie.get("userid")+"/followers";
   var request = $.ajax({
           method: "GET",
           url: url,
         });
   request.done(function (callback) {
             var followersobj = callback;
+            //console.log(followersobj);
+
             $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == data.url){
-                console.log(followersobj[i].followed);
-                console.log(data.url);
+            
+            //console.log(followersobj[i].follower);
+            //console.log(data.url);
                 $.getJSON(followersobj[i].follower,function(data){
-                    data = data.username;
-                    $("#f3").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\"href=\"#\">"+data+"</a></li>");
+                    //console.log(data);
+                    //data = data.username;
+                    $("#f3").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\"href=\"#\">"+data.username+"</a></li>");
                 });
-              }
-            });  
+              
+            }); 
          });
   request.fail(function (callback) {
             console.log(callback);
@@ -84,9 +89,9 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     infor_nav.nav_inf_setting(data,page);
     clicks.clickbtn(cookie);
-    frineds_find.friends(data,page);
-    getfollowers(data);
-    getfollowings(data);
+    //frineds_find.friends(data,page);
+    getfollowers(cookie,data);
+    getfollowings(cookie,data);
 };
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
