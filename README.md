@@ -124,6 +124,39 @@ followings action returns a list of author of current Author is following. We us
 ```
 -GET: get the current authenticated author's(id: id) following list.
 
+###Friend
+a reponse if friends or not ask a service GET http://127.0.0.1:8000/friends/<authorid>
+
+{
+  "query":"friends",
+  "author": authorid
+  # Array of Author UUIDs
+  "authors":[
+    "de305124-75c4-431b-adb2-eb6b1231546013",
+    "ae345334-75f4-431b-adb2-fb6b9e12317891"
+  ]
+}
+
+a reponse if two give authors are friends ask a service GET http://127.0.0.1:8000/friends/<authorid2>/<authorid1>
+
+{ "query":"friends",
+
+        # Array of Author UUIDs
+
+        "authors":[
+            #authorid1
+            "de305d54-75b4-431b-adb2-eb6b9e546013",
+            #authorid2
+            "ae345d54-75b4-431b-adb2-fb6b9e547891"
+
+        ],
+
+        # boolean true or false
+
+        "friends": true
+
+}
+
 ##Frameworks & Libraries
 
 [jquery.lightbox_me.js](https://github.com/buckwilson/Lightbox_me)

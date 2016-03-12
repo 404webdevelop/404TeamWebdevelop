@@ -29,8 +29,11 @@ class MyRouter(routers.DefaultRouter):
             ## [Authors](/api/author) \n
             - create, list, edit, delete: [`/author`](/api/author)
 
-            ## [Follows](/api/follows) \n
+            ## [Follow](/api/follow) \n
             - create, list, delete: [`/follow`](/api/follow)
+
+            ## [Friend](/api/friend) \n
+            - list, delete: [`/friend/author_id`](/api/friend)
 
             _Edit this documentation in `social_dist/social_dist/api.py`_
 
