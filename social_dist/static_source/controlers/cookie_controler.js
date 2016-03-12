@@ -6,7 +6,6 @@ function setCookie(key,value){
   document.cookie = key+"="+value;
 };
 
-
 function clearCookie(token){
   setCookie(token,"undefined",-1);
 }

@@ -28,6 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args=(obj.id,)))
         data['displayName'] = data['username']
         if data['github'].find('github.com/') == -1:
-            data['github'] = 'http://api.github.com/users/' + data['github'] + '/events'
+            data['github'] = 'https://api.github.com/users/' + data['github'] + '/events'
         data['host'] = request.get_host()
         return data
