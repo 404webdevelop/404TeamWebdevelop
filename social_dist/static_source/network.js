@@ -26,7 +26,7 @@ function getfollowings(cookie,data){
         });
   request.done(function (callback) {
             var followersobj = callback;
-            console.log(callback);
+            //console.log(callback);
             $.each(followersobj, function (i, value) {
              
                 $.getJSON(followersobj[i].followed,function(data){
@@ -51,15 +51,8 @@ function getfollowers(cookie,data){
         });
   request.done(function (callback) {
             var followersobj = callback;
-            //console.log(followersobj);
-
             $.each(followersobj, function (i, value) {
-            
-            //console.log(followersobj[i].follower);
-            //console.log(data.url);
                 $.getJSON(followersobj[i].follower,function(data){
-                    //console.log(data);
-                    //data = data.username;
                     $("#f3").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\"href=\"#\">"+data.username+"</a></li>");
                 });
               
@@ -89,7 +82,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     infor_nav.nav_inf_setting(data,page);
     clicks.clickbtn(cookie);
-    //frineds_find.friends(data,page);
+    frineds_find.friends(cookie,data,page);
     getfollowers(cookie,data);
     getfollowings(cookie,data);
 };

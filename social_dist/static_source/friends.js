@@ -43,7 +43,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
   infor_nav.nav_inf_setting(data,page);
   clicks.clickbtn(cookie);
-  frineds_find.friends(data,"friends");
+  frineds_find.friends(cookie,data,"friends");
 };
 
 function searchfriend(username){
