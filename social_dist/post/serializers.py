@@ -9,7 +9,13 @@ from .models import Post, Image, Comment
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+
+    def create(self, validated_data):
+        author = self.context['request'].user
+        validated_data['author'] = author
+        post = Post.objects.create(**validated_data)
+        return post
 
     def to_representation(self, obj):
         data = super(PostWriteSerializer, self).to_representation(obj)
@@ -35,10 +41,22 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
 class PostReadSerializer(PostWriteSerializer):
     author = UserSerializer()
 
+    class Meta:
+        model = Post
+        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+
+    def create(self, validated_data):
+        local_author = self.context['request'].user
+        if not local_author.is_anonymous():
+            validated_data['local_author'] = local_author
+        comment = Comment.objects.create(**validated_data)
+        return comment
+
     def validate_parent(self, value):
         if not CanViewPost(value, self.context['request'].user):
             raise serializers.ValidationError('Attempted to create Comment with parent you cannot view')
@@ -46,15 +64,21 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
 
 class CommentReadSerializer(CommentWriteSerializer):
     local_author = UserSerializer()
+    class Meta:
+        model = Comment
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
 
     def create(self, validated_data):
         post_id = self.context['parent']
         validated_data['parent'] = Post.objects.get(pk=post_id)
+        local_author = self.context['request'].user
+        if not local_author.is_anonymous():
+            validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
 
@@ -81,8 +105,39 @@ class Base64Field(serializers.Field):
     def to_representation(self, value):
         return base64.b64encode(value)
 
+class ImageCreateSerializer(serializers.HyperlinkedModelSerializer):
+    image_data = serializers.ImageField()
+    class Meta:
+        model = Image
+        fields = ('url', 'parent_post', 'file_type', 'image_data', 'date_created')
+
+    def create(self, validated_data):
+        uploader = self.context['request'].user
+        validated_data['uploader'] = uploader
+        validated_data['image_data'] = validated_data['image_data'].file.read()
+        image = Image.objects.create(**validated_data)
+        return image
+
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
     image_data = Base64Field()
     class Meta:
         model = Image
-        fields = ('url', 'uploader', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'image_data', 'date_created')
+
+    def to_representation(self, obj):
+        data = super(ImageSerializer, self).to_representation(obj)
+        data['json_url'] = data['url'] + '?json'
+        return data
+
+class ImageSimpleSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Doesn't return image_data at all
+    """
+    class Meta:
+        model = Image
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'date_created')
+
+    def to_representation(self, obj):
+        data = super(ImageSimpleSerializer, self).to_representation(obj)
+        data['json_url'] = data['url'] + '?json'
+        return data

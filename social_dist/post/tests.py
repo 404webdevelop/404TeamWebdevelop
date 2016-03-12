@@ -37,20 +37,22 @@ class PostTest(APITestCase):
         private_post.save()
         return [author_a, author_b, author_c]
 
-    # def test_create(self):
-    #     url = reverse('post-list')
-    #     self.client.force_authenticate(user=self.author_a)
-    #     post = {
-    #         "title": "t1",
-    #         "content": "c1",
-    #         "privacy_level": "pub",
-    #         "privacy_host_only": False
-    #     }
-    #     res = self.client.post(url, post, format='json')
-    #     self.assertEqual(res.status_code)
+    def test_create(self):
+        author_d = Author.objects.create(username="ddd", email="d@404.com", password='0000')
+        url = reverse('post-list')
+        self.client.force_authenticate(user=self.author_d)
+        post = {
+            "title": "t1",
+            "content": "c1",
+            "privacy_level": "",
+            "privacy_host_only": False
+        }
+        res = self.client.post(url, post, format='json')
+        self.assertEqual(res.status_code == status.HTTP_201_CREATED)
+        self.assertTrue(res.data["author"][])
 
     def test_public_post(self):
-        authors = self.setup()
+        self.setup()
         url = reverse('visible_posts-list')
         res = self.client.get(url, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)

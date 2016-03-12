@@ -12,6 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from collections import OrderedDict
 from author.models import Author
+from rest_framework import exceptions
 
 from .models import Post, Image, Comment
 from .serializers import *
@@ -175,11 +176,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
-    API endpoint that allows Comments to be listed/created (nested in /posts/)
+    API endpoint that allows Comments to be listed/created by their parent post
 
     Usage: \n
-      - GET /api/posts/<post_id\>/comments
-      - POST /api/posts/<post_id\>/comments
+      - GET to `/posts/{post_id}/comments`
+      - POST to `/posts/{post_id}/comments`
+
+    Permissions: \n
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -210,16 +217,18 @@ class CommentByPost(viewsets.ViewSet, PagedViewMixin):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be created and viewed
+    API endpoint that allows Comments to be listed/created
 
     Usage: \n
-      - TODO
+      - GET to `/comments/{comment_id}`
+      - POST to `/comments`
+      - GET to `/comments`
 
     Permissions: \n
-      - anyone can create a comment, even if not logged in
-      - cannot impersonate another local user
-      - admin can edit or delete
-      - if comment is made by a local user, that user can edit or delete
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
     """
     queryset = Comment.objects.all().order_by('-date_created')
     serializer_class = CommentWriteSerializer
@@ -249,14 +258,19 @@ class ImageViewSet(viewsets.ModelViewSet):
     API endpoint that allows Images to be uploaded, viewed, and deleted
 
     Usage: \n
-      - TODO
+      - POST to `/images` to create a new image
+      - GET to `/images/{image_id}` to fetch the image (as an image)
+      - GET to `/images/{image_id}/?json` to fetch the image details as JSON
+      - GET to `/images` to list all images (currently non-paginated, which may change)
 
     Permissions: \n
-      - any author can upload
-      - uploader/admin can edit/delete
+      - Any author can upload
+      - Uploader/admin can edit/delete
+      - Each image is associated with one post
+        - Only users who can view the post can view the image
     """
     queryset = Image.objects.all().order_by('-date_created')
-    serializer_class = ImageSerializer
+    serializer_class = ImageCreateSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
 
@@ -264,6 +278,24 @@ class ImageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = [image for image in queryset if CanViewImage(image, request.user)]
+        serializer = ImageSimpleSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not CanViewImage(instance, request.user):
+            raise exceptions.PermissionDenied('You cannot view this image')
+        if 'json' in request.query_params:
+            serializer = ImageSerializer(instance, context={'request': request})
+            return Response(serializer.data)
+        else:
+            imageModel = instance
+            content_type = imageModel.file_type
+            return HttpResponse(imageModel.image_data, content_type=content_type)
 
 @login_required
 def upload_image(request):

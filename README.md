@@ -13,10 +13,9 @@ Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000
 
 ### Having problems with migrations/weird errors? Try this
 
-* Delete `post/migrations/0001_initial.py`
+* In `post/migrations/*`, `author/migrations/*`, `follower/migrations/*`, delete all files __except__ `__init__.py` (the deleted files should all start with `0001` or `0002`)
 * Delete `db.sqlite3`
-* `python manage.py makemigrations post`
-* `python manage.py makemigrations author`
+* `python manage.py makemigrations`
 * `python manage.py migrate`
 * `python manage.py createsuperuser`
 
@@ -70,9 +69,9 @@ Author API uses [default router](http://www.django-rest-framework.org/api-guide/
 - POST: create a new author, example: [http://localhost:8000/demo-signup](http://localhost:8000/demo-signup)
 
 
-‘’‘
+```
     http://localhost:8000/api/authors/me
-’‘’
+```
 - POST: Post with username, password. It will response user object and token.
 
 Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
@@ -94,6 +93,36 @@ Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to 
 
 Check [http://localhost:8000/demo-update](http://localhost:8000/demo-update) to see the example.
 
+###Follows
+Follows is a model, representing the 'follow relationship' between two authors. Follows API uses [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter) from Django REST framework.
+
+Follows model has 3 fields in the serializer:
+
+-url: the url related to the pointed follow relation.
+-followed: the Author object being followed in the follow relation.
+-following: the Author object following in the follow relation.
+
+```
+    http://localhost:8000/api/follows/
+```
+-GET: get a list of all follow relations.
+-POST: make a post request: create a new follow relation between current authenticated user and the one being followed
+
+####followers action
+followers action returns a list of followers from give Author. We use the API format in the [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter): host/{follows}/{id}/{followers}/[.format]. Here is an example:
+
+```
+    http://localhost:8000/api/follows/:id/followers/
+```
+-GET: get the current authenticated author's(id: id) follower list.
+
+####followings action
+followings action returns a list of author of current Author is following. We use the API format in the [default router](http://www.django-rest-framework.org/api-guide/routers/#defaultrouter): host/{follows}/{id}/{followings}/[.format]. Here is an example:
+
+```
+    http://localhost:8000/api/follows/:id/followings/
+```
+-GET: get the current authenticated author's(id: id) following list.
 
 ##Frameworks & Libraries
 
