@@ -26,8 +26,19 @@ class Post(models.Model):
 
 
 class Image(models.Model):
+    parent_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
     uploader = models.ForeignKey(Author, on_delete = models.CASCADE)
-    file_type = models.CharField(max_length = 50)
+
+    FILETYPE_CHOICES = (
+        ('jpeg', 'JPG/JPEG'),
+        ('png', 'PNG'),
+        ('gif', 'GIF'),
+        ('bmp', 'BMP'),
+    )
+
+    file_type = models.CharField(max_length = 50, choices = FILETYPE_CHOICES)
+
     image_data = models.BinaryField()
     date_created = models.DateTimeField(auto_now_add=True, blank=True)
 

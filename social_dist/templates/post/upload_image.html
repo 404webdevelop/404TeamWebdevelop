@@ -57,7 +57,7 @@ function UploadImage()
 
 	fr.onload = function()
 	{
-		data = {uploader: "{% url 'user-detail' user_id %}", file_type: extension, image_data: fr.result};
+		data = {uploader: "{% url 'author-detail' user_id %}", file_type: extension, image_data: fr.result};
 
 		$.ajax({
 			type: "POST",

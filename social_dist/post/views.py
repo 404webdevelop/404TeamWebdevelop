@@ -12,6 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from collections import OrderedDict
 from author.models import Author
+from rest_framework import exceptions
 
 from .models import Post, Image, Comment
 from .serializers import *
@@ -85,8 +86,9 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
     API endpoint that allows Posts to be viewed by author
 
     Usage: \n
-      - GET /api/author/<author_id\>/posts
-        - returns all visible posts made by the specified author
+      - `/author/{author_id}/posts`
+        - GET: list all posts created by one author
+        - you cannot POST to this url
     """
     serializer_class = PostWriteSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -115,7 +117,9 @@ class MyPosts(PostByAuthor):
     API endpoint for viewing Posts authored by current user
 
     Usage: \n
-      - GET /api/author/myposts
+      - `/api/author/myposts`
+        - GET: list all posts by current logged-in author (paginated)
+        - you cannot post to this url
     """
     permission_classes = [permissions.IsAuthenticated, PostPermission]
 
@@ -136,13 +140,29 @@ class PostViewSet(viewsets.ModelViewSet):
     API endpoint that allows Posts to be viewed, edited, and deleted
 
     Usage: \n
-      - TODO
+      - `/posts/{post_id}`
+        - GET: get JSON for one post
+      - `/posts`
+        - POST: create a new post
+        - GET: list all posts (paginated)
+
+    Usage (posts by author) \n
+      - `/author/{author_id}/posts`
+        - GET: list all posts created by one author
+        - you cannot POST to this url
 
     Permissions: \n
-      - any author can create a post
-      - cannot impersonate another local user
-      - poster/admin can edit/delete
-    - list() produces only posts the client can view
+      - Any author can create a post (must be logged in)
+      - The post's author (or any admin) can edit/delete
+
+    Creation fields: \n
+      - `title`: post title
+      - `content`: post content
+      - `privacy_level`: who can view the post?
+        - "pub": Public
+        - "me": Private to me
+        - "friends": Friends only
+        - "fof": Friends of friends
     """
     queryset = Post.objects.all().order_by('-date_created')
     serializer_class = PostWriteSerializer
@@ -169,11 +189,24 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
-    API endpoint that allows Comments to be listed/created (nested in /posts/)
+    API endpoint that allows Comments to be listed/created by their parent post
 
     Usage: \n
-      - GET /api/posts/<post_id\>/comments
-      - POST /api/posts/<post_id\>/comments
+      - `/posts/{post_id}/comments`
+        - GET: list all comments for one post
+        - POST: create a new comment (no need to specify parent post)
+
+    Permissions: \n
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
+
+    Creation fields: \n
+      - `content`: text content of the comment
+      - `remote_author_name`: display name of remote comment author (optional)
+      - `remote_author_url`: url of remote comment author (optional)
+      - `parent`: url of parent post
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -204,16 +237,31 @@ class CommentByPost(viewsets.ViewSet, PagedViewMixin):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be created and viewed
+    API endpoint that allows Comments to be listed/created
 
     Usage: \n
-      - TODO
+      - `/comments/{comment_id}`
+        - GET: get JSON for one comment
+      - `/comments`
+        - POST: create a new comment (must specify parent post)
+        - GET: list all comments (paginated)
+
+    Usage (comments by parent post): \n
+      - `/posts/{post_id}/comments`
+        - GET: list all comments for one post
+        - POST: create a new comment (no need to specify parent post)
 
     Permissions: \n
-      - anyone can create a comment, even if not logged in
-      - cannot impersonate another local user
-      - admin can edit or delete
-      - if comment is made by a local user, that user can edit or delete
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
+
+    Creation fields: \n
+      - `content`: text content of the comment
+      - `remote_author_name`: display name of remote comment author (optional)
+      - `remote_author_url`: url of remote comment author (optional)
+      - `parent`: url of parent post
     """
     queryset = Comment.objects.all().order_by('-date_created')
     serializer_class = CommentWriteSerializer
@@ -243,14 +291,28 @@ class ImageViewSet(viewsets.ModelViewSet):
     API endpoint that allows Images to be uploaded, viewed, and deleted
 
     Usage: \n
-      - TODO
+      - `/images`
+        - GET: list all images (currently non-paginated, which may change)
+        - POST: create a new image
+      - `/images/{image_id}`
+        - GET: fetch the image (as an image)
+      -  `/images/{image_id}/?json`
+        - GET: fetch the image details as JSON
+
 
     Permissions: \n
-      - any author can upload
-      - uploader/admin can edit/delete
+      - Any author can upload
+      - Uploader/admin can edit/delete
+      - Each image is associated with one post
+        - Only users who can view the post can view the image
+
+    Creation fields: \n
+      - `parent_post`: url of parent post
+      - `file_type`: {'jpeg', 'png', 'gif', 'bmp'}
+      - `image_data`: the image being uploaded
     """
     queryset = Image.objects.all().order_by('-date_created')
-    serializer_class = ImageSerializer
+    serializer_class = ImageCreateSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
 
@@ -258,6 +320,24 @@ class ImageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = [image for image in queryset if CanViewImage(image, request.user)]
+        serializer = ImageSimpleSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not CanViewImage(instance, request.user):
+            raise exceptions.PermissionDenied('You cannot view this image')
+        if 'json' in request.query_params:
+            serializer = ImageSerializer(instance, context={'request': request})
+            return Response(serializer.data)
+        else:
+            imageModel = instance
+            content_type = imageModel.file_type
+            return HttpResponse(imageModel.image_data, content_type=content_type)
 
 @login_required
 def upload_image(request):
