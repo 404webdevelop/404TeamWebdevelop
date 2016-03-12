@@ -3,12 +3,12 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from rest_framework.authtoken import views
 from django.contrib.auth.decorators import login_required
-
+import settings
 from api import router
 
 
 urlpatterns = [
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/app/social_dist/staticfiles'}),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^api-token/', views.obtain_auth_token),
 
     url(r'^$', TemplateView.as_view(template_name='home.html'), name="home"),
