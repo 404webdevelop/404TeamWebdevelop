@@ -5,34 +5,38 @@
 
 
 
-function findfriends(data,page){
+function findfriends(cookie,data,page){
   var load_post = global.load_posts; 
-  
-  var url = "api/follows";
+  console.log("yoyo");
+  console.log(cookie.get("userid"));
+  var url = "api/friends/"+cookie.get("userid");
   var request = $.ajax({
           method: "GET",
           url: url,
         });
   request.done(function (callback) {
-            var follower_list=[];
-            var following_list=[];
-            var friends_list=[];
-            var followersobj = callback;
-            $.each(followersobj, function (i, value) {
-              if (followersobj[i].followed == data.url){
-                  follower_list.push(followersobj[i].follower);
-                }
-              if (followersobj[i].follower == data.url){
-                  following_list.push(followersobj[i].followed);
-                }
-              });
+            console.log(callback);
+            var friendsobj = callback;
 
-            $.each(follower_list, function (i, value) {
-              $.each(following_list, function (j, value) {
-                if (follower_list[i] == following_list[j])
-                  friends_list.push(follower_list[i]);
-              });
-            });
+            $.each(friendsobj.authors,function (i,value){
+              console.log("sm++++");
+              console.log(i);
+              var auturl = "api/author/"+friendsobj.authors[i];
+              $.getJSON(auturl,function(data){
+                    
+                    console.log(data);
+                    if(page == "network"){
+                      $("#f2").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data.username+"</a></li>");
+                    }
+                    if(page =="friends" ){
+                      $("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data.username+"</a></li>");
+                    }
+                    
+                    
+                });
+            }); 
+
+            /*
             $.each(friends_list,function (i,value){
               $.getJSON(friends_list[i],function(data){
                     data = data.username;
@@ -48,7 +52,7 @@ function findfriends(data,page){
                     }
                     
                 });
-            });  
+            }); */ 
          });
   request.fail(function (callback) {
             console.log(callback);
