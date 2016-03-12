@@ -86,8 +86,9 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
     API endpoint that allows Posts to be viewed by author
 
     Usage: \n
-      - GET to `/author/{author_id}/posts` to get all posts created by one author
-      - you cannot POST to this url
+      - `/author/{author_id}/posts`
+        - GET: list all posts created by one author
+        - you cannot POST to this url
     """
     serializer_class = PostWriteSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -116,7 +117,9 @@ class MyPosts(PostByAuthor):
     API endpoint for viewing Posts authored by current user
 
     Usage: \n
-      - GET /api/author/myposts to list all posts by current logged-in author (paginated)
+      - `/api/author/myposts`
+        - GET: list all posts by current logged-in author (paginated)
+        - you cannot post to this url
     """
     permission_classes = [permissions.IsAuthenticated, PostPermission]
 
@@ -137,17 +140,29 @@ class PostViewSet(viewsets.ModelViewSet):
     API endpoint that allows Posts to be viewed, edited, and deleted
 
     Usage: \n
-      - GET to `/posts/{post_id}` to get JSON for one post
-      - POST to `/posts` to create a new post
-      - GET to `/posts` list all posts (paginated)
+      - `/posts/{post_id}`
+        - GET: get JSON for one post
+      - `/posts`
+        - POST: create a new post
+        - GET: list all posts (paginated)
 
     Usage (posts by author) \n
-      - GET to `/author/{author_id}/posts` to get all posts created by one author
-      - you cannot POST to this url
+      - `/author/{author_id}/posts`
+        - GET: list all posts created by one author
+        - you cannot POST to this url
 
     Permissions: \n
       - Any author can create a post (must be logged in)
       - The post's author (or any admin) can edit/delete
+
+    Creation fields: \n
+      - `title`: post title
+      - `content`: post content
+      - `privacy_level`: who can view the post?
+        - "pub": Public
+        - "me": Private to me
+        - "friends": Friends only
+        - "fof": Friends of friends
     """
     queryset = Post.objects.all().order_by('-date_created')
     serializer_class = PostWriteSerializer
@@ -178,7 +193,7 @@ class CommentByPost(viewsets.ViewSet, PagedViewMixin):
 
     Usage: \n
       - `/posts/{post_id}/comments`
-        - GET: get all comments for one post
+        - GET: list all comments for one post
         - POST: create a new comment (no need to specify parent post)
 
     Permissions: \n
@@ -233,7 +248,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     Usage (comments by parent post): \n
       - `/posts/{post_id}/comments`
-        - GET: get all comments for one post
+        - GET: list all comments for one post
         - POST: create a new comment (no need to specify parent post)
 
     Permissions: \n

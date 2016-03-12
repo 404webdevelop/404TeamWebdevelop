@@ -13,23 +13,23 @@ class MyRouter(routers.DefaultRouter):
             """
             _In general, our API matches Abram's example-article.json_
 
-            Posts \n
+            ## [Posts](/api/posts) \n
             - create, list, edit, delete: [`/posts`](/api/posts) _<-- try clicking_
             - list all the posts that I authored: [`/author/myposts`](/api/author/myposts)
             - list all the posts I can view: [`/author/posts`](/api/author/posts)
             - list by author: `/author/{author_id}/posts`
 
-            Comments \n
+            ## [Comments](/api/comments) \n
             - create, list, edit, delete: [`/comments`](/api/comments)
             - list, create by parent post: `/api/posts/{post_id}/comments`
 
-            Images \n
+            ## [Images](/api/images) \n
             - create, delete: [`/images`](/api/images)
 
-            Authors \n
+            ## [Authors](/api/author) \n
             - create, list, edit, delete: [`/author`](/api/author)
 
-            Follows \n
+            ## [Follows](/api/follows) \n
             - ???: [`/follows`](/api/follows)
 
             _Edit this documentation in `social_dist/social_dist/api.py`_
