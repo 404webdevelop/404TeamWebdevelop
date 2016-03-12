@@ -51,15 +51,8 @@ function getfollowers(cookie,data){
         });
   request.done(function (callback) {
             var followersobj = callback;
-            //console.log(followersobj);
-
             $.each(followersobj, function (i, value) {
-            
-            //console.log(followersobj[i].follower);
-            //console.log(data.url);
                 $.getJSON(followersobj[i].follower,function(data){
-                    //console.log(data);
-                    //data = data.username;
                     $("#f3").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\"href=\"#\">"+data.username+"</a></li>");
                 });
               
