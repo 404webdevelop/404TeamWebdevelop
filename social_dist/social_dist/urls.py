@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^friends$', login_required(TemplateView.as_view(template_name='friends.html')), name="friends"),
     url(r'^posted$', login_required(TemplateView.as_view(template_name='posted.html')), name="posted"),
     url(r'^profile$', login_required(TemplateView.as_view(template_name='profile.html')), name="profile"),
-    url(r'^signup$', login_required(TemplateView.as_view(template_name='signup.html')), name="signup"),
+    url(r'^signup$', TemplateView.as_view(template_name='signup.html'), name="signup"),
     url(r'^demo-signup$', TemplateView.as_view(template_name='user/signup.html'), name='signup'),
     url(r'^demo-update$', TemplateView.as_view(template_name='user/update.html'), name='update'),
     url(r'^network$', TemplateView.as_view(template_name='network.html'), name='my-netowkr'),

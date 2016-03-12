@@ -20,11 +20,6 @@ var data= {"username":cookie.get("username"),
        "friends":"112"
        };
 
-function signuppage(){
-	window.location="signup";
-}
-
-
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
   var page="friends";
   
@@ -45,22 +40,9 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
       update_and_post.post_posts(data.url);
   });
 
-  $("#login_submit").click(function(){
-      var username = $("#username").val();
-      var password = $("#password").val();
-      var data = {"username": username, "password": password};
-      var url = "api-token/";
-      var callback = "";
-      login_infor_set.userinf_setting(cookie,url,data,callback);
-      login_infor_set.url_setting(cookie,username);
-      var token=cookie.get("token"); 
-      setTimeout(function(){
-        window.location.href = "friends";
-      },1000);
-  });
 
   infor_nav.nav_inf_setting(data,page);
-  clicks.clickbtn();
+  clicks.clickbtn(cookie);
   frineds_find.friends(data,"friends");
 };
 

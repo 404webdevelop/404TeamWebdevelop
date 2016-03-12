@@ -93,6 +93,7 @@
 #title_input_style{color:black;
 }
 #div1 {
+  
     width: 48%;
     overflow: auto;
     height:  600px;
@@ -126,6 +127,12 @@
 
     margin-bottom: 6%;
 }
+
+#dives{
+  margin-right: 30%;
+  margin-left: 30%;
+  background-color: grey;
+};
 
 .divF1 {
     width: 33%;
