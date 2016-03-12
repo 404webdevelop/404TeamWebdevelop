@@ -248,11 +248,13 @@ class ImageViewSet(viewsets.ModelViewSet):
     Permissions: \n
       - any author can upload
       - uploader/admin can edit/delete
+      - each image is associated with one post
+        - only users who can view the post can view the image
 
-    [a](/post/debug/upload_image)
+    [<del>sample uploader</del>](/post/debug/upload_image)
     """
     queryset = Image.objects.all().order_by('-date_created')
-    serializer_class = ImageSerializer
+    serializer_class = ImageCreateSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
 
@@ -261,10 +263,20 @@ class ImageViewSet(viewsets.ModelViewSet):
             self.permission_classes = [CreateImagePermission]
         return super(ImageViewSet, self).get_permissions()
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = ImageSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
     def retrieve(self, request, *args, **kwargs):
-        imageModel = self.get_object()
-        content_type = imageModel.file_type
-        return HttpResponse(imageModel.image_data, content_type=content_type)
+        if 'json' in request.query_params:
+            instance = self.get_object()
+            serializer = ImageSerializer(instance, context={'request': request})
+            return Response(serializer.data)
+        else:
+            imageModel = self.get_object()
+            content_type = imageModel.file_type
+            return HttpResponse(imageModel.image_data, content_type=content_type)
 
 @login_required
 def upload_image(request):

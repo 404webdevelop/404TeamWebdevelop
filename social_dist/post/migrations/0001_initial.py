@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='Image',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('file_type', models.CharField(max_length=50)),
+                ('file_type', models.CharField(max_length=50, choices=[(b'jpeg', b'JPG/JPEG'), (b'png', b'PNG'), (b'gif', b'GIF'), (b'bmp', b'BMP')])),
                 ('image_data', models.BinaryField()),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('uploader', models.ForeignKey(to=settings.AUTH_USER_MODEL)),

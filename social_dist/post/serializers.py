@@ -81,8 +81,26 @@ class Base64Field(serializers.Field):
     def to_representation(self, value):
         return base64.b64encode(value)
 
+class ImageCreateSerializer(serializers.HyperlinkedModelSerializer):
+    image_data = serializers.ImageField()
+    class Meta:
+        model = Image
+        fields = ('url', 'file_type', 'image_data', 'date_created')
+
+    def create(self, validated_data):
+        uploader = self.context['request'].user
+        validated_data['uploader'] = uploader
+        validated_data['image_data'] = validated_data['image_data'].file.read()
+        image = Image.objects.create(**validated_data)
+        return image
+
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
     image_data = Base64Field()
     class Meta:
         model = Image
         fields = ('url', 'uploader', 'file_type', 'image_data', 'date_created')
+
+    def to_representation(self, obj):
+        data = super(ImageSerializer, self).to_representation(obj)
+        data['json_url'] = data['url'] + '?json'
+        return data
