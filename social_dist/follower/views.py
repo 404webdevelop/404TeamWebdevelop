@@ -123,7 +123,7 @@ class FriendViewSet(viewsets.ModelViewSet):
             ]))
 
 
-class FriendlistViewset(viewsets.ModelViewSet):
+class FriendlistViewSet(viewsets.ModelViewSet):
     """
     API endpoint that returns a list of friends.
 
