@@ -9,7 +9,13 @@ from .models import Post, Image, Comment
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+
+    def create(self, validated_data):
+        author = self.context['request'].user
+        validated_data['author'] = author
+        post = Post.objects.create(**validated_data)
+        return post
 
     def to_representation(self, obj):
         data = super(PostWriteSerializer, self).to_representation(obj)
@@ -35,10 +41,22 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
 class PostReadSerializer(PostWriteSerializer):
     author = UserSerializer()
 
+    class Meta:
+        model = Post
+        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+
+    def create(self, validated_data):
+        local_author = self.context['request'].user
+        if not local_author.is_anonymous():
+            validated_data['local_author'] = local_author
+        comment = Comment.objects.create(**validated_data)
+        return comment
+
     def validate_parent(self, value):
         if not CanViewPost(value, self.context['request'].user):
             raise serializers.ValidationError('Attempted to create Comment with parent you cannot view')
@@ -46,15 +64,21 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
 
 class CommentReadSerializer(CommentWriteSerializer):
     local_author = UserSerializer()
+    class Meta:
+        model = Comment
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
 
     def create(self, validated_data):
         post_id = self.context['parent']
         validated_data['parent'] = Post.objects.get(pk=post_id)
+        local_author = self.context['request'].user
+        if not local_author.is_anonymous():
+            validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
 
