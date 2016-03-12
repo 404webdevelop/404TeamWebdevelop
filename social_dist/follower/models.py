@@ -45,7 +45,7 @@ class FollowManager(models.Manager):
             print("dont add any")
 
     def follow(self, follower1, follower2):
-        follow = self.create(followed=follower1, follower=follower2)
+        follow = self.create(followed=follower2, follower=follower1)
         return follow
 
     def unfollow(self, follower1, follower2):
