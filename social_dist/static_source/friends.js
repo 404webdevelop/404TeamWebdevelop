@@ -46,9 +46,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
   frineds_find.friends(data,"friends");
 };
 
-
-
-
 function searchfriend(username){
   var url = "api/authors/";
   var request = $.ajax({

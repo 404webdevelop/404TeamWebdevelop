@@ -21,6 +21,7 @@ function getCookie(cname) {
             return c.substring(name.length, c.length);
         }
     }
+    return " "
 }
 
 
@@ -28,7 +29,6 @@ global.cookie_setting = {
 	set:setCookie,
 	get:getCookie,
 	clear:clearCookie,
-
 }
 
 

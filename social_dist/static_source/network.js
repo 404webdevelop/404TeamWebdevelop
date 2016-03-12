@@ -2,7 +2,6 @@
 
 'use strict';
 
-
 var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
@@ -18,7 +17,6 @@ var data= {"username":cookie.get("username"),
        "following":"77",
        "friends":"112"
        };
-
 
 function getfollowings(data){
   var url = "api/follows";

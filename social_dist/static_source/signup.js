@@ -44,10 +44,7 @@ function setup() {
     $('#create-btn').click(function () {
         var author = getAuthor();
         postAuthor(author);   
-
-
     });
-
 }
 
 setup();

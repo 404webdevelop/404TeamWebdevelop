@@ -15,7 +15,6 @@ function setdynamic(img,tit,tex,date,author,type){
 };
 
 function getpost(data,page){
-	//console.log(data.username);
   var url = "api/posts/";
   var request = $.ajax({
           method: "GET",
@@ -26,10 +25,8 @@ function getpost(data,page){
             var github;
             console.log(postobj.posts);
             if(page == "home"){
-	            $.each(postobj.posts, function (i, value) {
-	            	//console.log(i);
+	            $.each(postobj.posts, function (i, value) {            	
 	                    var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post");
-	                    //console.log(st);
 	                    $("#list_post_view").append(st);
 	            });
             }
@@ -37,16 +34,11 @@ function getpost(data,page){
 	            $.each(postobj.posts, function (i, value) {
 	            	if(data.username == postobj.posts[i].username){
 	                  	var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post");
-	                    //console.log(st);
 	                    github = postobj.posts[0].author.github;
 	                    console.log(postobj.posts[0].author.github);
 	                    $("#list_post_view").append(st);
 	                }
 	            });
-
-	          console.log("this");
-			  console.log(github);
-			  console.log("is");
 			  var request = $.ajax({
 			          method: "GET",
 			          url: github,
@@ -55,10 +47,6 @@ function getpost(data,page){
 			            console.log(callback)
 			            var githubobj = callback;
 			            $.each(githubobj, function (i, value) {
-			            	console.log(githubobj[i].actor.login);
-			            	console.log(githubobj[i].type);
-			            	console.log(githubobj[i].repo.name);
-			            	console.log(githubobj[i].created_at);
 			            	var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git");
 	                    
 	                    	$("#list_post_view").append(st);

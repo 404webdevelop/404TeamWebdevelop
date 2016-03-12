@@ -18,10 +18,8 @@ var data= {"username":cookie.get("username"),
        "friends":"112"
        };
 
-
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="posted";
-
     $('#post_post').click(function(){
         update_and_post.post_posts(data.username);
     });

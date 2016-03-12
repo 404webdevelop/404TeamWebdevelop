@@ -26,20 +26,6 @@ function nav_inf_set(data,page){
     request.fail(function (callback) {
               console.log(callback);
            });
-  
-
-
-    if(page == "friends"){
-      $("#div1").hide();
-      $("#div2").hide();
-      $("#div_space").hide();
-    }
-    if(page=="network"){
-      $("#Following").hide();
-      $("#Followers").hide();
-      $("#Friends").hide();
-    }
-    
 
 }
 
