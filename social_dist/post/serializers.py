@@ -128,3 +128,16 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
         data = super(ImageSerializer, self).to_representation(obj)
         data['json_url'] = data['url'] + '?json'
         return data
+
+class ImageSimpleSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Doesn't return image_data at all
+    """
+    class Meta:
+        model = Image
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'date_created')
+
+    def to_representation(self, obj):
+        data = super(ImageSimpleSerializer, self).to_representation(obj)
+        data['json_url'] = data['url'] + '?json'
+        return data

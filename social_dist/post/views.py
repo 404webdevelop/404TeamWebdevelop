@@ -244,15 +244,16 @@ class ImageViewSet(viewsets.ModelViewSet):
     API endpoint that allows Images to be uploaded, viewed, and deleted
 
     Usage: \n
-      - TODO
+      - POST to `/images` to create a new image
+      - GET to `/images/{image_id}` to fetch the image (as an image)
+      - GET to `/images/{image_id}/?json` to fetch the image details as JSON
+      - GET to `/images` to list all images (currently non-paginated, which may change)
 
     Permissions: \n
-      - any author can upload
-      - uploader/admin can edit/delete
-      - each image is associated with one post
-        - only users who can view the post can view the image
-
-    [<del>sample uploader</del>](/post/debug/upload_image)
+      - Any author can upload
+      - Uploader/admin can edit/delete
+      - Each image is associated with one post
+        - Only users who can view the post can view the image
     """
     queryset = Image.objects.all().order_by('-date_created')
     serializer_class = ImageCreateSerializer
@@ -267,7 +268,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         queryset = [image for image in queryset if CanViewImage(image, request.user)]
-        serializer = ImageSerializer(queryset, many=True, context={'request': request})
+        serializer = ImageSimpleSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
