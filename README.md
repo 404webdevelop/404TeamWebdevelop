@@ -3,7 +3,7 @@
 [Development Setup](https://github.com/404webdevelop/404TeamWebdevelop/wiki/Development-Setup)
 
 
-## Useful URLs
+### Useful URLs
 
 Homepage: [127.0.0.1:8000/](http://127.0.0.1:8000/)
 
@@ -16,6 +16,11 @@ REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
 * `python manage.py makemigrations`
 * `python manage.py migrate`
 * `python manage.py createsuperuser`
+
+### Run the tests
+
+* `python manage.py test`
+* They should all pass all the time
 
 ##APIs
 
