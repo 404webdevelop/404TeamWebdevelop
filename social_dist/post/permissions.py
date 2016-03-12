@@ -20,6 +20,8 @@ def CanViewPost(post, user):
     if post.privacy_level == 'pub':
         return True
     if post.privacy_level == 'friends':
+        if user.is_anonymous():
+            return False
         return AreFriends(post.author, user)
     if post.privacy_level == 'fof':
         pass # TODO
