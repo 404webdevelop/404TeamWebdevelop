@@ -2,6 +2,10 @@ from rest_framework import permissions
 from .models import Post, Image, Comment
 from django.contrib.auth.models import AnonymousUser
 from author.models import Author
+from follower.models import Follows
+
+def AreFriends(user, other_user):
+    return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
 
 def CanViewPost(post, user):
     if user.is_superuser:
@@ -16,7 +20,7 @@ def CanViewPost(post, user):
     if post.privacy_level == 'pub':
         return True
     if post.privacy_level == 'friends':
-        pass # TODO
+        return AreFriends(post.author, user)
     if post.privacy_level == 'fof':
         pass # TODO
 
