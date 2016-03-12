@@ -2,7 +2,6 @@
 
 'use strict';
 
-
 var cookie = global.cookie_setting;
 var clicks = global.button_click;
 var infor_nav = global.nav_inf;
@@ -18,13 +17,6 @@ var data= {"username":cookie.get("username"),
        "following":"77",
        "friends":"112"
        };
-console.log(data.url);
-console.log(data.username);
-console.log(data.token);
-
-function signuppage(){
-  window.location="signup";
-}
 
 function getfollowings(data){
   var url = "api/follows";
@@ -281,22 +273,10 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
 
-    $("#login_submit").click(function(){
-        var username = $("#username").val();
-        var password = $("#password").val();
-        var data1 = {"username": username, "password": password};
-        var url = "api-token/";
-        var callback = "";
-        login_infor_set.userinf_setting(cookie,url,data1,callback);
-        login_infor_set.url_setting(cookie,username);
-        setTimeout(function(){
-          window.location.href = "home";
-        },1000
-          );
-    });
+
 
     infor_nav.nav_inf_setting(data,page);
-    clicks.clickbtn();
+    clicks.clickbtn(cookie);
     frineds_find.friends(data,page);
     getfollowers(data);
     getfollowings(data);
