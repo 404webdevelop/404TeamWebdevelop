@@ -1,7 +1,7 @@
 from rest_framework import routers
 from author.api.views import AuthorViewSet
 from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost
-from follower.views import FollowViewSet
+from follower.views import FollowViewSet, FriendViewSet
 
 # http://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
 class MyRouter(routers.DefaultRouter):
@@ -58,4 +58,5 @@ router.register(r'images', ImageViewSet)
 router.register(r'author', AuthorViewSet)
 
 # Friend views TODO
-router.register(r'follows', FollowViewSet)
+router.register(r'follow', FollowViewSet)
+router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet)

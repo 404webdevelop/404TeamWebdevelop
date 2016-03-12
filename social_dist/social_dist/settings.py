@@ -121,6 +121,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, STATIC_DIR),
 )
 
+# Authen & Login
+LOGIN_REDIRECT_URL = "/"
+
 # Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
