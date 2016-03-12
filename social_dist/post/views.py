@@ -170,11 +170,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
-    API endpoint that allows Comments to be listed/created (nested in /posts/)
+    API endpoint that allows Comments to be listed/created by their parent post
 
     Usage: \n
-      - GET /api/posts/<post_id\>/comments
-      - POST /api/posts/<post_id\>/comments
+      - GET to `/posts/{post_id}/comments`
+      - POST to `/posts/{post_id}/comments`
+
+    Permissions: \n
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
@@ -205,16 +211,18 @@ class CommentByPost(viewsets.ViewSet, PagedViewMixin):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Comments to be created and viewed
+    API endpoint that allows Comments to be listed/created
 
     Usage: \n
-      - TODO
+      - GET to `/comments/{comment_id}`
+      - POST to `/comments`
+      - GET to `/comments`
 
     Permissions: \n
-      - anyone can create a comment, even if not logged in
-      - cannot impersonate another local user
-      - admin can edit or delete
-      - if comment is made by a local user, that user can edit or delete
+      - Anyone can create a comment, even if not logged in
+      - Admin can edit/delete
+      - If comment is made by a local user, that user can edit/delete
+      - Remote commenters cannot edit/delete
     """
     queryset = Comment.objects.all().order_by('-date_created')
     serializer_class = CommentWriteSerializer
