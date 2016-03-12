@@ -16,6 +16,17 @@ from models import Follows
 from collections import OrderedDict
 
 class FollowViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows followers to be viewed by author
+
+    Usage: \n
+      - `/follow/{author_id}/followers`
+        - GET: list all author's followers
+        - you cannot POST to this url
+      - `/follow/{author_id}/followings`
+        - GET: list all author's following author
+        - you cannot POST to this url
+    """
     queryset = Follows.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [AllowAny, ]
@@ -75,6 +86,13 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
 class FriendViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that checks two users relation
+
+    Usage: \n
+      - `/friend/{author_id_1}/{author_id_2}}`
+        - GET: result of two users are friends
+    """
     queryset = Follows.objects.all()
     serializer_class = FollowSerializer
 
@@ -99,4 +117,36 @@ class FriendViewSet(viewsets.ModelViewSet):
             ('authors', authors),
             # boolean true or false
             ('friends', result)
+            ]))
+
+
+class FriendlistViewset(viewsets.ModelViewSet):
+    """
+    API endpoint that returns a list of friends.
+
+    Usage: \n
+      - `/friends/{author_id}`
+        - GET: result of two users are friends
+    """
+    queryset = Follows.objects.all()
+    serializer_class = FollowSerializer
+
+    def list(self, request, author_id):
+        #get all author follower
+        follower = Follows.objects.getFollowing(author_id)
+        #get all author follower
+        followed = Follows.objects.getFollowers(author_id)
+        print followed[0]
+        friend_list = list()
+
+        for i in range(len(followed)):
+            for j in range(len(follower)):  
+                if followed[i].follower.username == follower[j].followed.username:
+                    friend_list.append(followed[i].follower.id)
+        print friend_list
+        return Response(OrderedDict([
+            ('query', 'friends'),
+            ('author', author_id),
+            # Array of Author UUIDs who are friends
+            ('authors', friend_list)
             ]))
