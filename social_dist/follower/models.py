@@ -64,6 +64,7 @@ class FollowManager(models.Manager):
 
 
 class Follows(models.Model):
+    
     followed = models.ForeignKey(Author, related_name='followed')
     follower = models.ForeignKey(Author, related_name='follower')
     objects = FollowManager()

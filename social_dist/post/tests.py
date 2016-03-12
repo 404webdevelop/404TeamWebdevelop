@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.core.urlresolvers import reverse
 from author.models import Author
+from follower.models import Follows
 from models import Post
 
 
@@ -11,6 +12,9 @@ class PostTest(APITestCase):
         author_a = Author.objects.create(username="aaa", email="a@404.com", password='0000')
         author_b = Author.objects.create(username="bbb", email="b@404.com", password='0000')
         author_c = Author.objects.create(username="ccc", email="c@404.com", password='0000')
+        Follows.objects.create(follower=author_a, followed=author_b).save()
+        Follows.objects.create(follower=author_b, followed=author_a).save()
+
         public_post = Post.objects.create(
             title="public_post",
             author=author_a,
@@ -40,7 +44,7 @@ class PostTest(APITestCase):
     def test_create(self):
         author_d = Author.objects.create(username="ddd", email="d@404.com", password='0000')
         url = reverse('post-list')
-        self.client.force_authenticate(user=self.author_d)
+        self.client.force_authenticate(user=author_d)
         post = {
             "title": "t1",
             "content": "c1",
@@ -49,7 +53,7 @@ class PostTest(APITestCase):
         }
         res = self.client.post(url, post, format='json')
         self.assertEqual(res.status_code == status.HTTP_201_CREATED)
-        self.assertTrue(res.data["author"][])
+        self.assertEqual(res.data["author"]['id'], author_d.id)
 
     def test_public_post(self):
         self.setup()
@@ -61,6 +65,7 @@ class PostTest(APITestCase):
         self.assertEqual(title, "public_post")
 
     def test_firend_post(self):
+
         pass
 
     def test_private_post(self):
