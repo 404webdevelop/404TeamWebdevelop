@@ -3,7 +3,7 @@ from rest_framework import status
 from django.core.urlresolvers import reverse
 from author.models import Author
 from follower.models import Follows
-from models import Post
+from models import Post, Comment, Image
 
 
 class PostTest(APITestCase):
@@ -84,13 +84,57 @@ class PostTest(APITestCase):
 
 class CommentTest(APITestCase):
 
-    def test_create(self):
-        author_a = Author.objects.create(username="ddd", email="d@404.com", password='0000')
-        public_post = Post.objects.create(
+    def test_post_list_delete(self):
+        # post
+        author = Author.objects.create(username="ddd", email="d@404.com", password='0000')
+        post = Post.objects.create(
             title="public_post",
-            author=author_a,
+            author=author,
             content="public_post_content",
             privacy_level="pub"
-
         )
-        public_post.save()
+        post.save()
+        commentByPostUrl = reverse('comment_by_post-list', args=(post.id,))
+        self.client.force_authenticate(user=author)
+        args = {'content': 'my comment content'}
+        result = self.client.post(commentByPostUrl, args, format='json')
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+
+        # list
+        result = self.client.get(commentByPostUrl)
+        self.assertEqual(result.data['count'], 1)
+        self.assertEqual(result.data['comments'][0]['content'], 'my comment content')
+
+        # delete
+        commentUrl = result.data['comments'][0]['url']
+        result = self.client.delete(commentUrl)
+        self.assertEqual(result.status_code, status.HTTP_204_NO_CONTENT)
+        result = self.client.get(commentByPostUrl)
+        self.assertEqual(result.data['count'], 0)
+
+    def test_permission_propogation(self):
+        author = Author.objects.create(username="A1", email="A1@404.com", password='0000')
+        other_author = Author.objects.create(username="A2", email="A2@404.com", password='0000')
+        post = Post.objects.create(title='private post', author=author, content='some content', privacy_level='me')
+        post.save()
+        commentByPostUrl = reverse('comment_by_post-list', args=(post.id,))
+        commentListUrl = reverse('comment-list')
+
+        # cannot create comment for unauthorized post (try both comment creation methods)
+        args = {'content': 'my comment content'}
+        result = self.client.post(commentByPostUrl, args, format='json')
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+        args = {'content': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
+        result = self.client.post(commentListUrl, args, format='json')
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+
+        Comment.objects.create(parent = post, content = 'my comment content')
+
+        # cannot read comment under unauthorized post
+        result = self.client.get(commentByPostUrl)
+        self.assertEqual(result.data['count'], 0)
+
+class ImageTest(APITestCase):
+
+    def test_create(self):
+        pass
