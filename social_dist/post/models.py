@@ -26,6 +26,8 @@ class Post(models.Model):
 
 
 class Image(models.Model):
+    parent_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
     uploader = models.ForeignKey(Author, on_delete = models.CASCADE)
 
     FILETYPE_CHOICES = (

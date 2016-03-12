@@ -12,6 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from collections import OrderedDict
 from author.models import Author
+from rest_framework import exceptions
 
 from .models import Post, Image, Comment
 from .serializers import *
@@ -265,16 +266,19 @@ class ImageViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+        queryset = [image for image in queryset if CanViewImage(image, request.user)]
         serializer = ImageSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not CanViewImage(instance, request.user):
+            raise exceptions.PermissionDenied('You cannot view this image')
         if 'json' in request.query_params:
-            instance = self.get_object()
             serializer = ImageSerializer(instance, context={'request': request})
             return Response(serializer.data)
         else:
-            imageModel = self.get_object()
+            imageModel = instance
             content_type = imageModel.file_type
             return HttpResponse(imageModel.image_data, content_type=content_type)
 

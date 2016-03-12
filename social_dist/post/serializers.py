@@ -109,7 +109,7 @@ class ImageCreateSerializer(serializers.HyperlinkedModelSerializer):
     image_data = serializers.ImageField()
     class Meta:
         model = Image
-        fields = ('url', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'parent_post', 'file_type', 'image_data', 'date_created')
 
     def create(self, validated_data):
         uploader = self.context['request'].user
@@ -122,7 +122,7 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
     image_data = Base64Field()
     class Meta:
         model = Image
-        fields = ('url', 'uploader', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'image_data', 'date_created')
 
     def to_representation(self, obj):
         data = super(ImageSerializer, self).to_representation(obj)
