@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from rest_framework.authtoken import views
 from django.contrib.auth.decorators import login_required
-
 from api import router
 
 
