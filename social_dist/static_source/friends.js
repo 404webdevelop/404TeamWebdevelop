@@ -46,26 +46,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
   frineds_find.friends(cookie,data,"friends");
 };
 
-function searchfriend(username){
-  var url = "api/authors/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            console.log(callback);
-            var userobj = callback;
-            $.each(userobj,function (i,value){
-              if (userobj[i].username == username){
-                console.log("find::"+userobj[i].username);
-                $("#search_listview").html("<li id=\"searched_friend\"class =\"ui-first-child ui-last-child\"><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\" href=\"#\">"+userobj[i].username+"</a></li>");
-              }
-            })  
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-}
+
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
 

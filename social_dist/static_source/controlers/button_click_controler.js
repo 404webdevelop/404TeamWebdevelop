@@ -2,6 +2,11 @@
 'use strict';
 var cookie = global.cookie_setting;
 function button_click(cookie){
+
+    
+    
+
+
     $("#connect_friends").click(function(){
         setTimeout(function(){
           window.location.href = "friends";

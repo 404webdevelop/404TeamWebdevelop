@@ -19,40 +19,21 @@ function findfriends(cookie,data,page){
             var friendsobj = callback;
 
             $.each(friendsobj.authors,function (i,value){
-              console.log("sm++++");
-              console.log(i);
+              //console.log("sm++++");
+              //console.log(i);
               var auturl = "api/author/"+friendsobj.authors[i];
               $.getJSON(auturl,function(data){
                     
-                    console.log(data);
+                    //console.log(data);
                     if(page == "network"){
-                      $("#f2").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data.username+"</a></li>");
+                      $("#f2").append("<li class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\" class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
                     }
                     if(page =="friends" ){
-                      $("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data.username+"</a></li>");
-                    }
-                    
-                    
+                      $("#friends_list_view").append("<li class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\" class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
+                    }           
                 });
             }); 
 
-            /*
-            $.each(friends_list,function (i,value){
-              $.getJSON(friends_list[i],function(data){
-                    data = data.username;
-                    console.log(data);
-                    if(page == "network"){
-                    	$("#f2").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
-                    }
-                    if(page =="friends" ){
-                    	$("#friends_list_view").append("<li class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\"href=\"#\">"+data+"</a></li>");
-                    }
-                    if(page =="home"){
-                    	load_post.posts_load(friends_list[i],data,page);
-                    }
-                    
-                });
-            }); */ 
          });
   request.fail(function (callback) {
             console.log(callback);
