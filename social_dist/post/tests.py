@@ -119,6 +119,7 @@ class CommentTest(APITestCase):
         post.save()
         commentByPostUrl = reverse('comment_by_post-list', args=(post.id,))
         commentListUrl = reverse('comment-list')
+        Comment.objects.create(parent = post, content = 'my comment content')
 
         # cannot create comment for unauthorized post (try both comment creation methods)
         args = {'content': 'my comment content'}
@@ -128,13 +129,33 @@ class CommentTest(APITestCase):
         result = self.client.post(commentListUrl, args, format='json')
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
 
-        Comment.objects.create(parent = post, content = 'my comment content')
-
         # cannot read comment under unauthorized post
         result = self.client.get(commentByPostUrl)
         self.assertEqual(result.data['count'], 0)
 
+        self.client.force_authenticate(user=other_author)
+
+        # STILL cannot create comment for unauthorized post (try both comment creation methods)
+        args = {'content': 'my comment content'}
+        result = self.client.post(commentByPostUrl, args, format='json')
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+        args = {'content': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
+        result = self.client.post(commentListUrl, args, format='json')
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+
+        # STILL cannot read comment under unauthorized post
+        result = self.client.get(commentByPostUrl)
+        self.assertEqual(result.data['count'], 0)
+
+        self.client.force_authenticate(user=author)
+
+        # we can read the comment now
+        result = self.client.get(commentByPostUrl)
+        self.assertEqual(result.data['count'], 1)
+
 class ImageTest(APITestCase):
 
     def test_create(self):
-        pass
+        author = Author.objects.create(username="A1", email="A1@404.com", password='0000')
+        post = Post.objects.create(title='public post', author=author, content='some content', privacy_level='pub')
+        post.save()

@@ -9,8 +9,6 @@ Homepage: [127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
 
-Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
-
 ### Having problems with migrations/weird errors? Try this
 
 * In `post/migrations/*`, `author/migrations/*`, and `follower/migrations/*` --> delete all files __except__ `__init__.py` (the deleted files should all start with `0001` or `0002`)

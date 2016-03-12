@@ -11,56 +11,52 @@ class UserTest(APITestCase):
     def create_a_user(self):
         username = 'user_%d' % self.count
         email = 'u%d@email.com' % self.count
-        author = Author.objects.create(username, email, '0000')
+        author = Author.objects.create(username=username, email=email, password='0000')
         author.save()
         self.count += 1
         return author
 
     def test_create(self):
-        url = reverse('user-list')
+        url = reverse('author-list')
         data = {
             "username": "user_1",
             "password": "0000",
             "email": "u1@email.com",
-            "author": {
-                "github": "user1"
-            }
+            "github": "user1"
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Author.objects.count(), 1)
         user = Author.objects.get_by_natural_key('user_1')
         self.assertEqual(user.email, 'u1@email.com')
-        self.assertEqual(user.author.github, 'user1')
+        self.assertEqual(user.github, 'user1')
 
     def test_list(self):
-        url = reverse('user-list')
+        url = reverse('author-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(len(response.data['authors']), 0)
         self.create_a_user()
         self.create_a_user()
         self.create_a_user()
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data['authors']), 3)
 
     def test_authentication(self):
         user = self.create_a_user()
-        url = reverse('user-detail', kwargs={'pk': user.id})
+        url = reverse('author-detail', kwargs={'pk': user.id})
         data = {}
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_patch(self):
         user = self.create_a_user()
-        url = reverse('user-detail', kwargs={'pk': user.id})
+        url = reverse('author-detail', kwargs={'pk': user.id})
         data = {
             "first_name": "User",
             "last_name": "One",
-            "author": {
-                "github": "123123123"
-            }
+            "github": "123123123"
         }
         self.client.force_authenticate(user=user)
         response = self.client.patch(url, data, format='json')
