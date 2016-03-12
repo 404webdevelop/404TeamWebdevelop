@@ -1,3 +1,14 @@
+
+
+function wori(){
+          console.log(document.getElementById("click_target").value);
+          //window.location.href = "posted";        
+      };
+
+
+
+
+
 (function (global) {
 
 'use strict';
@@ -57,7 +68,7 @@ function getfollowers(cookie,data){
                     console.log("sdfsf");
                     console.log(data.id);
                     console.log("------");
-                    $("#f3").append("<li d =\"click_target\" value=\""+data.id+"\"class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                    $("#f3").append("<li class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\" onclick=\"wori()\" class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
                 });
               
             }); 
@@ -71,6 +82,11 @@ function getfollowers(cookie,data){
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="network";
 
+    /*function wori(){
+     
+          window.location.href = "posted";
+        
+    };*/
     $('#post_post').click(function(){
         update_and_post.post_posts(data.url);
     });
@@ -81,12 +97,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         var lastname_input = $('#last-name-input').val();
         update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
-    $("#click_target").click(function(){
-        setTimeout(function(){
-          window.location.href = "posted";
-        },0
-          );
-    });
+    
 
 
 
@@ -96,6 +107,9 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     getfollowers(cookie,data);
     getfollowings(cookie,data);
 };
+
+
+
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
 
