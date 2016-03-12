@@ -5,4 +5,3 @@ Markdown==2.6.5
 Pillow==3.1.1
 wheel==0.26.0
 gunicorn==19.4.5
-whitenoise==2.0.6
