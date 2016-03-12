@@ -2,6 +2,7 @@ import base64
 import imghdr
 from rest_framework import serializers
 from permissions import *
+from rest_framework import exceptions
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
@@ -59,7 +60,7 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
 
     def validate_parent(self, value):
         if not CanViewPost(value, self.context['request'].user):
-            raise serializers.ValidationError('Attempted to create Comment with parent you cannot view')
+            raise exceptions.PermissionDenied('Attempted to create Comment with parent you cannot view')
         return value
 
 class CommentReadSerializer(CommentWriteSerializer):
@@ -75,7 +76,10 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         post_id = self.context['parent']
-        validated_data['parent'] = Post.objects.get(pk=post_id)
+        parent = Post.objects.get(pk=post_id)
+        if not CanViewPost(parent, self.context['request'].user):
+            raise exceptions.PermissionDenied('Attempted to create Comment with parent you cannot view')
+        validated_data['parent'] = parent
         local_author = self.context['request'].user
         if not local_author.is_anonymous():
             validated_data['local_author'] = local_author

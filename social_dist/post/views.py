@@ -44,6 +44,17 @@ class CommentPagination(PostPagination):
             ('comments', data)
         ]))
 
+class ImagePagination(PostPagination):
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('query', 'images'),
+            ('count', self.page.paginator.count),
+            ('size', len(data)),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('images', data)
+        ]))
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -286,7 +297,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer = CommentReadSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-class ImageViewSet(viewsets.ModelViewSet):
+class ImageViewSet(viewsets.ModelViewSet, PagedViewMixin):
     """
     API endpoint that allows Images to be uploaded, viewed, and deleted
 
@@ -315,6 +326,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageCreateSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
+    pagination_class = ImagePagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -324,6 +336,12 @@ class ImageViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         queryset = [image for image in queryset if CanViewImage(image, request.user)]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ImageSimpleSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
         serializer = ImageSimpleSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
