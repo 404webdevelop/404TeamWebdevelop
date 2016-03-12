@@ -8,6 +8,7 @@ from api import router
 
 
 urlpatterns = [
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/app/social_dist/staticfiles'}
     url(r'^api-token/', views.obtain_auth_token),
 
     url(r'^$', TemplateView.as_view(template_name='home.html'), name="home"),
