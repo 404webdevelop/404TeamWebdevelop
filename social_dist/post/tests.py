@@ -42,7 +42,7 @@ class PostTest(APITestCase):
             title="friends_post",
             author=author_a,
             content="friends_post_content",
-            privacy_level="friend"
+            privacy_level="friends"
         )
         friends_post.save()
 
