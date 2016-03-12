@@ -123,6 +123,7 @@ STATICFILES_DIRS = (
 
 # Authen & Login
 LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/login/"
 
 # Rest Framework
 REST_FRAMEWORK = {

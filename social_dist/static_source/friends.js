@@ -20,11 +20,6 @@ var data= {"username":cookie.get("username"),
        "friends":"112"
        };
 
-function signuppage(){
-	window.location="signup";
-}
-
-
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
   var page="friends";
   
@@ -45,48 +40,13 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
       update_and_post.post_posts(data.url);
   });
 
-  $("#login_submit").click(function(){
-      var username = $("#username").val();
-      var password = $("#password").val();
-      var data = {"username": username, "password": password};
-      var url = "api-token/";
-      var callback = "";
-      login_infor_set.userinf_setting(cookie,url,data,callback);
-      login_infor_set.url_setting(cookie,username);
-      var token=cookie.get("token"); 
-      setTimeout(function(){
-        window.location.href = "friends";
-      },1000);
-  });
 
   infor_nav.nav_inf_setting(data,page);
-  clicks.clickbtn();
-  frineds_find.friends(data,"friends");
+  clicks.clickbtn(cookie);
+  frineds_find.friends(cookie,data,"friends");
 };
 
 
-
-
-function searchfriend(username){
-  var url = "api/authors/";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            console.log(callback);
-            var userobj = callback;
-            $.each(userobj,function (i,value){
-              if (userobj[i].username == username){
-                console.log("find::"+userobj[i].username);
-                $("#search_listview").html("<li id=\"searched_friend\"class =\"ui-first-child ui-last-child\"><a class=\"ui-btn ui-btn-icon-right ui-icon-plus\" href=\"#\">"+userobj[i].username+"</a></li>");
-              }
-            })  
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-}
 
 setup(cookie,login_infor_set,infor_nav,clicks,data);
 

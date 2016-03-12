@@ -4,4 +4,3 @@ $.getJson(url,function(data){
 	$.("#testbody").html(data.username);
 });
 
-//document.getElementById("testbody").innerHTML ="sdfsdfdsfdsfsdfsdf";

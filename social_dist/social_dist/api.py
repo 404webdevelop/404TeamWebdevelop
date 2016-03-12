@@ -1,7 +1,7 @@
 from rest_framework import routers
 from author.api.views import AuthorViewSet
 from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost
-from follower.views import FollowViewSet, FriendViewSet, FriendlistViewset
+from follower.views import FollowViewSet, FriendViewSet, FriendlistViewSet
 
 # http://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
 class MyRouter(routers.DefaultRouter):
@@ -29,8 +29,11 @@ class MyRouter(routers.DefaultRouter):
             ## [Authors](/api/author) \n
             - create, list, edit, delete: [`/author`](/api/author)
 
-            ## [Follows](/api/follows) \n
+            ## [Follow](/api/follow) \n
             - create, list, delete: [`/follow`](/api/follow)
+
+            ## [Friend](/api/friend) \n
+            - list, delete: [`/friend/author_id`](/api/friend)
 
             _Edit this documentation in `social_dist/social_dist/api.py`_
 
@@ -60,7 +63,7 @@ router.register(r'author', AuthorViewSet)
 # Friend views TODO
 router.register(r'follow', FollowViewSet)
 
-router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-])', FriendViewSet)
+router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet)
 
-router.register(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewset)
+router.register(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet)
 

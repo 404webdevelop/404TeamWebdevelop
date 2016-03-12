@@ -72,6 +72,44 @@
 	font-size: 20px;
 	right:30px;
 }
+#Following{
+    width: 33%;
+    overflow: auto;
+    height:  600px;
+    padding: 1px;
+    border: 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+
+}
+#Followers{
+    width: 33%;
+    overflow: auto;
+    height:  600px;
+    padding: 1px;
+    border: 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+
+}
+#Friends{
+    width: 33%;
+    overflow: auto;
+    height:  600px;
+    padding: 1px;
+    border: 2px;
+    float:left;
+    box-sizing:border-box;
+    background-color: white;
+    margin-bottom: 6%;
+
+}
+
+
 #postlink{
 	height: 200px;
 }
@@ -93,6 +131,7 @@
 #title_input_style{color:black;
 }
 #div1 {
+  
     width: 48%;
     overflow: auto;
     height:  600px;
@@ -126,6 +165,12 @@
 
     margin-bottom: 6%;
 }
+
+#dives{
+  margin-right: 30%;
+  margin-left: 30%;
+  background-color: grey;
+};
 
 .divF1 {
     width: 33%;

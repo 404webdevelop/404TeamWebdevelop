@@ -26,7 +26,7 @@ class AuthorPagination(PageNumberPagination):
             ('size', len(data)),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
-            ('authors', data)
+            ('data', data)
         ]))
 
 # for rest framework

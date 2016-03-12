@@ -3,22 +3,16 @@
 'use strict';
 var cookie = global.cookie_setting;
 
-function postPost(userurl){
-  var url = "api/post/posts/";
-  
+function postPost(username){
+  var url = "api/posts/";  
   var post_post= $("#title_input_style").val();
-  console.log(post_post);
-  
   var post_content= $("#content_input_style").val();
-  console.log(post_content);
-  
-  var post_url= userurl;
-  console.log(post_url);
- 
+
+  console.log(username);
   var data= {
     "title": post_post,
     "content": post_content,
-    "author": post_url,
+    "author": username,
   };
 
   var request = $.ajax({
@@ -32,42 +26,13 @@ function postPost(userurl){
     });
   
   request.fail(function (callback) {
-            //console.log(callback);
     console.log(callback);
     });
-
 }
 
 function patchProfile(cookie,data,username,firstName, lastName, callback) {
-  var token = JSON.parse(data.token);
-  $.ajax({
-    method: 'PATCH',
-    url: data.url,
-    contentType:"application/json; charset=utf-8",
-    data: JSON.stringify({
-      'username': username,
-      'first_name': firstName,
-      'last_name': lastName
-    }),
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Token ' + token.token);
-    },
-    success: function (data) {
-      cookie.set("username",username);
-      setTimeout(function(){
-      window.location.href = "home";
-        },1000
-      );
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  })
+  //nothing in here first
 }
-
-
-
-
 
 global.update_and_post= {
 	update_profile:patchProfile,
