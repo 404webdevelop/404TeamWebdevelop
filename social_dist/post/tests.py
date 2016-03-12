@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from author.models import Author
 from follower.models import Follows
 from models import Post, Comment, Image
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 class PostTest(APITestCase):
@@ -121,6 +122,8 @@ class CommentTest(APITestCase):
         commentListUrl = reverse('comment-list')
         Comment.objects.create(parent = post, content = 'my comment content')
 
+        self.client.force_authenticate(user=None)
+
         # cannot create comment for unauthorized post (try both comment creation methods)
         args = {'content': 'my comment content'}
         result = self.client.post(commentByPostUrl, args, format='json')
@@ -155,7 +158,75 @@ class CommentTest(APITestCase):
 
 class ImageTest(APITestCase):
 
-    def test_create(self):
+    def test_post_list_get_delete(self):
+        # post
         author = Author.objects.create(username="A1", email="A1@404.com", password='0000')
+        self.client.force_authenticate(user=author)
         post = Post.objects.create(title='public post', author=author, content='some content', privacy_level='pub')
         post.save()
+        imageListUrl = reverse('image-list')
+        image_path = 'post/for_tests/cool.jpg'
+        args = {'parent_post': reverse('post-detail', args=[post.id]), 'file_type': 'jpeg', 'image_data': open(image_path, 'rb')}
+        result = self.client.post(imageListUrl, args, format='multipart')
+        self.assertEqual(result.status_code, status.HTTP_201_CREATED)
+        imageUrl = result.data['url']
+
+        self.client.force_authenticate(user=None)
+
+        # list
+        result = self.client.get(imageListUrl)
+        self.assertEqual(result.data['count'], 1)
+
+        # get
+        result = self.client.get(imageUrl)
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+        result = self.client.get(imageUrl + '?json')
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+        self.assertEqual(result.data['file_type'], 'jpeg')
+
+        self.client.force_authenticate(user=author)
+
+        # delete
+        self.client.delete(imageUrl)
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+        result = self.client.get(imageListUrl)
+        self.assertEqual(result.data['count'], 0)
+
+    def test_permission_propogation(self):
+        author = Author.objects.create(username="A1", email="A1@404.com", password='0000')
+        other_author = Author.objects.create(username="A2", email="A2@404.com", password='0000')
+        self.client.force_authenticate(user=author)
+        post = Post.objects.create(title='private post', author=author, content='some content', privacy_level='me')
+        post.save()
+        imageListUrl = reverse('image-list')
+        image_path = 'post/for_tests/cool.jpg'
+        args = {'parent_post': reverse('post-detail', args=[post.id]), 'file_type': 'jpeg', 'image_data': open(image_path, 'rb')}
+        result = self.client.post(imageListUrl, args, format='multipart')
+        self.assertEqual(result.status_code, status.HTTP_201_CREATED)
+        imageUrl = result.data['url']
+
+        self.client.force_authenticate(user=None)
+
+        # cannot access image
+        result = self.client.get(imageListUrl)
+        self.assertEqual(result.data['count'], 0)
+        result = self.client.get(imageUrl)
+        self.assertEqual(result.status_code, status.HTTP_401_UNAUTHORIZED)
+        result = self.client.get(imageUrl + '?json')
+        self.assertEqual(result.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        self.client.force_authenticate(user=other_author)
+
+        # STILL cannot access image
+        result = self.client.get(imageListUrl)
+        self.assertEqual(result.data['count'], 0)
+        result = self.client.get(imageUrl)
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+        result = self.client.get(imageUrl + '?json')
+        self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
+
+        self.client.force_authenticate(user=author)
+
+        # now we can access the image
+        result = self.client.get(imageUrl)
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
