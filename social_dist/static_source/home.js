@@ -36,7 +36,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
 
     frineds_find.friends(data, page);
-    load_post.posts_load(data,page);
+    load_post.posts_load(data,page,cookie);
     clicks.clickbtn(cookie);
 };
 

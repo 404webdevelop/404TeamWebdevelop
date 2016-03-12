@@ -2,8 +2,6 @@
 
 'use strict';
 
-var cookie = global.cookie_setting;
-
 
 function setdynamic(img,tit,tex,date,author,type){
   if (type == "git"){
@@ -17,7 +15,7 @@ function setdynamic(img,tit,tex,date,author,type){
   return string;
 };
 
-function getpost(data,page){
+function getpost(data,page,cookie){
   var url = "api/posts/";
   var request = $.ajax({
           method: "GET",
