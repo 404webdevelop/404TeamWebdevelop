@@ -44,6 +44,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["GET"])
     def followings(self, request, **kwargs):
         queryset = Follows.objects.getFollowing(self.kwargs['pk'])
+        print queryset
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -56,13 +57,15 @@ class FollowViewSet(viewsets.ModelViewSet):
             for j in range(len(follower_queryset)):
                 if followed_queryset[i].follower.username == follower_queryset[j].followed.username:
                     friend_list.append(followed_queryset[i].follower.username)
-        friend_obj_list = list()
-        for friend_name in friend_list:
-            friend = User.objects.get_by_natural_key(friend_name)
+        follower_queryset.filter(Follows.follower.username in friend_list)
+        print follower_queryset
+#        friend_obj_list = list()
+#        for friend_name in friend_list:
+#            friend = User.objects.get_by_natural_key(friend_name)
 
-            serializer = UserSerializer(friend, context={'request': request})
+#            serializer = UserSerializer(friend, context={'request': request})
 
-            return Response(serializer)
+        return Response('serializer')
 
     @list_route(methods=["GET"])
     def is_friend(self, request, **kwargs):
