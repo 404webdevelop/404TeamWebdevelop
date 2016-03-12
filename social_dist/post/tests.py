@@ -8,6 +8,23 @@ from models import Post
 
 class PostTest(APITestCase):
 
+    def test_create(self):
+        author_d = Author.objects.create(username="ddd", email="d@404.com", password='0000')
+        url = reverse('post-list')
+        self.client.force_authenticate(user=author_d)
+        post = {
+            "title": "t1",
+            "content": "c1",
+            "privacy_level": "me",
+            "privacy_host_only": False
+        }
+        res = self.client.post(url, post, format='json')
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.data["username"], author_d.username)
+
+
+class PostVisibleScopeTest(APITestCase):
+
     def setup(self):
         author_a = Author.objects.create(username="aaa", email="a@404.com", password='0000')
         author_b = Author.objects.create(username="bbb", email="b@404.com", password='0000')
@@ -41,20 +58,6 @@ class PostTest(APITestCase):
         private_post.save()
         return [author_a, author_b, author_c]
 
-    def test_create(self):
-        author_d = Author.objects.create(username="ddd", email="d@404.com", password='0000')
-        url = reverse('post-list')
-        self.client.force_authenticate(user=author_d)
-        post = {
-            "title": "t1",
-            "content": "c1",
-            "privacy_level": "",
-            "privacy_host_only": False
-        }
-        res = self.client.post(url, post, format='json')
-        self.assertEqual(res.status_code == status.HTTP_201_CREATED)
-        self.assertEqual(res.data["author"]['id'], author_d.id)
-
     def test_public_post(self):
         self.setup()
         url = reverse('visible_posts-list')
@@ -64,9 +67,13 @@ class PostTest(APITestCase):
         title = res.data["posts"][0]['title']
         self.assertEqual(title, "public_post")
 
-    def test_firend_post(self):
-
-        pass
+    def test_friend_post(self):
+        authors = self.setup()
+        url = reverse('visible_posts-list')
+        self.client.force_authenticate(user=authors[1])
+        res = self.client.get(url, format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["count"], 2)
 
     def test_private_post(self):
         authors = self.setup()
@@ -74,5 +81,6 @@ class PostTest(APITestCase):
         self.client.force_authenticate(user=authors[0])
         res = self.client.get(url, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertTrue(res.data["count"] == 3)
+        print res.data["count"]
+        self.assertEqual(res.data["count"], 3)
 

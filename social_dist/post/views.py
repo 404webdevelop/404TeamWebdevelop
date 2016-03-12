@@ -175,12 +175,6 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = [CreatePostPermission]
         return super(PostViewSet, self).get_permissions()
 
-    def create(self, request, *args, **kwargs):
-        author = Author.objects.get(request.user)
-        request.data['author'] = author.id
-        return super(PostViewSet, self).create(request, *args, **kwargs)
-
-
     def list(self, request):
         queryset = Post.objects.all().order_by('-date_created')
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
