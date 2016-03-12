@@ -3,13 +3,11 @@
 [Development Setup](https://github.com/404webdevelop/404TeamWebdevelop/wiki/Development-Setup)
 
 
-## Useful URLs
+### Useful URLs
 
 Homepage: [127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
-
-Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000/post/debug/upload_image/)
 
 ### Having problems with migrations/weird errors? Try this
 
@@ -18,6 +16,11 @@ Upload an image: [127.0.0.1:8000/post/debug/upload_image/](http://127.0.0.1:8000
 * `python manage.py makemigrations`
 * `python manage.py migrate`
 * `python manage.py createsuperuser`
+
+### Run the tests
+
+* `python manage.py test`
+* They should all pass all the time
 
 ##APIs
 

@@ -26,7 +26,7 @@ class AuthorPagination(PageNumberPagination):
             ('size', len(data)),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
-            ('posts', data)
+            ('authors', data)
         ]))
 
 # for rest framework
@@ -95,7 +95,10 @@ class AuthorViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
-    @list_route(methods=['GET'])
+    @list_route(methods=['GET', 'POST'])
     def me(self, request, **kwargs):
-        serializer = UserSerializer(request.user, context={'request': request})
-        return Response(serializer.data)
+        if request.method == 'GET':
+            serializer = UserSerializer(request.user, context={'request': request})
+            return Response(serializer.data)
+        else:
+            return super(AuthorViewSet, self).update(request, **kwargs)
