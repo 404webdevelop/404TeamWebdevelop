@@ -8,7 +8,7 @@ from models import Post
 
 class PostTest(APITestCase):
 
-    def test_create(self):
+    def test_create_post(self):
         author_d = Author.objects.create(username="ddd", email="d@404.com", password='0000')
         url = reverse('post-list')
         self.client.force_authenticate(user=author_d)
@@ -21,9 +21,6 @@ class PostTest(APITestCase):
         res = self.client.post(url, post, format='json')
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(res.data["username"], author_d.username)
-
-
-class PostVisibleScopeTest(APITestCase):
 
     def setup(self):
         author_a = Author.objects.create(username="aaa", email="a@404.com", password='0000')
@@ -84,3 +81,16 @@ class PostVisibleScopeTest(APITestCase):
         print res.data["count"]
         self.assertEqual(res.data["count"], 3)
 
+
+class CommentTest(APITestCase):
+
+    def test_create(self):
+        author_a = Author.objects.create(username="ddd", email="d@404.com", password='0000')
+        public_post = Post.objects.create(
+            title="public_post",
+            author=author_a,
+            content="public_post_content",
+            privacy_level="pub"
+
+        )
+        public_post.save()
