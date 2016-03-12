@@ -7,13 +7,6 @@ var data= {"username":getCookie("username"),
        };
 console.log(data);
 
-
-
-
-
-
-
-
 if (data.username == "undefined" || data.username == "" ){
   
   document.getElementById("loginbutton").innerHTML ="<button id=\"signup\" onclick=\"signuppage()\"type=\"button\" class=\"btn btn-lg btn-primary\">Sign up</button> <a href=\"#myPopupDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"signin\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Sign in</button></a>";
@@ -22,20 +15,12 @@ if (data.username == "undefined" || data.username == "" ){
   $("#div2").hide();
 }else{
 
-
-  
   document.getElementById("loginbutton").innerHTML ="<a href=\"posted\" id=\"user_name_input\">[ "+data.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>";
-
-
- 
-     
-
 };
-//console.log($("myFilter").val());
 
 function setCookie(key,value){
   document.cookie = key+"="+value;
-  //document.cookie = "username = "+username;
+
 };
 
 
@@ -45,9 +30,7 @@ function clearCookie(token){
 
 function getCookie(cname) {
     var name = cname + "=";
-    //console.log(name);
     var ca = document.cookie.split(';');
-    //console.log(ca);
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
@@ -58,7 +41,7 @@ function getCookie(cname) {
     return "";
 }
 
-//need to copy patchprofile and click button to each page.
+
 
 function patchProfile(username,firstName, lastName, callback) {
 

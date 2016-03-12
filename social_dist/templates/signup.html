@@ -8,75 +8,49 @@
 <script async="" type="text/javascript" src="/static/signup.js" ></script>
 <link rel="stylesheet" type="text/css" href="/static/default.css">
 <!-- Bootstrap core CSS -->
-    <link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="/static/Bootstrap_files/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="/static/Bootstrap_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
+<link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap theme -->
+<link href="/static/Bootstrap_files/bootstrap-theme.min.css" rel="stylesheet">
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="/static/Bootstrap_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
 </head>
 <!-- this is the top nav bar -->
-    <link href="/static/Bootstrap_files/theme.css" rel="stylesheet">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">            
-          </button>
-          <a class="navbar-brand" href="home">Home</a>
-	    <a class="navbar-brand" href="posted">Profile</a>
-	      <a class="navbar-brand" href="friends">Friends</a>
-	  
-	  <a class="navbar-brand" href="about">About Us</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul id="welcomeitem" class="nav navbar-nav"></ul>
-         <ul id="loginbutton"class="nav navbar-nav"></ul>
-        </div><!--/.nav-collapse -->
-      </div>    
-    </nav>
-
-
-
-
+<link href="/static/Bootstrap_files/theme.css" rel="stylesheet">
 <body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">            
+        </button>
+         <a class="navbar-brand" href="about">About Us</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul id="welcomeitem" class="nav navbar-nav"></ul>
+       <ul id="loginbutton"class="nav navbar-nav"></ul>
+      </div><!--/.nav-collapse -->
+    </div>    
+  </nav>
+
   <div data-role="page" id="onepage">
-   
     <div data-role="header" data-theme="f">
     <h1>welcome</h1>
   </div>
   <div id="postbody">
-   <div id="div1">
-       <form action="/api/authors/" method="POST" enctype="multipart/form-data">
-	 <br>
-	 <h2>Existing User</h2>
-	 Username<input id="username-input"type="text" placeholder="Eg. johndoeismyname">
-	Password<input id="password-input"type="password" placeholder="Consider using numbers and special characters"
-	<br>
-	<button id="create-btn" type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Login</button>
-	</form>
-    </div>
- <div id= "div_space" class="alert alert-success">
-      
-        
-               
-      </ul>
-  </div>
-  <div id="div2">
+ 
+  <div id="dives" >
        <form action="/api/authors/" method="POST" enctype="multipart/form-data">
 	<br>
 	<h2>New User Registration</h2>
-	Desired Username<input id="username-input"type="text" placeholder="Eg. johndoeismyname">
+	Desired Username<input class ="in"id="username-input"type="text" placeholder="Eg. johndoeismyname">
 	Password<input id="password-input"type="password" placeholder="Consider using numbers and special characters">
-	github Username<input id = "github-input"type="text" placeholder="Eg. jdoe">
-	First Name<input id="first-name-input"type="text" placeholder="Eg. John Doe">
-  Last Name<input id="last-name-input"type="text" placeholder="Eg. John@hotmail.com">
-  E-mail <input id="email-input"type="text" placeholder="Eg. John Doe">
+	github Username<input class="in"id = "github-input"type="text" placeholder="Eg. jdoe">
+	First Name<input class="in"id="first-name-input"type="text" placeholder="Eg. John Doe">
+  Last Name<input class="in" id="last-name-input"type="text" placeholder="Eg. John@hotmail.com">
+  E-mail <input class="in" id="email-input"type="text" placeholder="Eg. John Doe">
 	<br>
 	<button id="create-btn" type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Create Account</button>
 	</form>
-    </div>
-
-
+  </div>
 </div>
 
   
@@ -85,52 +59,9 @@
   <div data-role="main" class="ui-content">
     
 
-    <div data-role="popup" id="myPopupDialog" >
-
-      <div  data-role="header" >
-        <h1>Sign in</h1>
-      </div>
-
-      <div data-role="main" class="ui-content">
- 
-        <p>user name:</p><input name="username" type="textbox" placeholder="xxxx@e-mail.com"> 
-        
-        <p>pass word:</p><input name="password" type="textbox" placeholder="xxxxxxxx"> 
-        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Sign in</button>
-        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Go Back</a>
-        
-      </div>
-      
-
-
-    </div>
-<div data-role="popup" id="myProfileDialog" >
-
-      <div  data-role="header" >
-        <h1>Edit Profile</h1>
-      </div>
-
-      <div data-role="main" class="ui-content">
- 
-        Update Password<input type="password" placeholder="Consider using numbers and special characters">
-	github Username<input type="text" placeholder="Eg. jdoe">
-	Display Name<input type="text" placeholder="Eg. John Doe">
-	<br>
-        <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
-        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Cancel</a>
-        
-      </div>
-      
-
 
     </div>
  
   </div>
-
-
-
-
-
-
 </body>
 </html>

@@ -29,10 +29,9 @@ class Migration(migrations.Migration):
             name='Image',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('file_type', models.CharField(max_length=50)),
+                ('file_type', models.CharField(max_length=50, choices=[(b'jpeg', b'JPG/JPEG'), (b'png', b'PNG'), (b'gif', b'GIF'), (b'bmp', b'BMP')])),
                 ('image_data', models.BinaryField()),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
-                ('uploader', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -49,6 +48,16 @@ class Migration(migrations.Migration):
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
                 ('privacy_whitelist', models.ManyToManyField(related_name='+', to=settings.AUTH_USER_MODEL, blank=True)),
             ],
+        ),
+        migrations.AddField(
+            model_name='image',
+            name='parent_post',
+            field=models.ForeignKey(to='post.Post'),
+        ),
+        migrations.AddField(
+            model_name='image',
+            name='uploader',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='comment',

@@ -3,7 +3,7 @@
 
 'use strict';
 
-var url = 'api/authors/'
+var url = 'api/author/'
 
 function postAuthor(author) {
     console.log(author)
@@ -27,14 +27,12 @@ function postAuthor(author) {
 
 function getAuthor() {
     return {
-        "username": value('#username-input') || 'user_99',
-        "password": value('#password-input') || '0000',
-        "email": value('#email-input') || "u1@email.com",
-        "author": {
-            "github": value('#github-input') || "user1"
-        },
-        "first_name": value('#first-name-input') || "Yushi",
-        "last_name": value('#last-name-input') || "Wang"
+        "username": value('#username-input') ,
+        "email": value('#email-input'),
+        "password": value('#password-input') ,
+        "first_name": value('#first-name-input'),
+        "last_name": value('#last-name-input'),
+        "github": value('#github-input')
     };
 }
 
@@ -46,10 +44,7 @@ function setup() {
     $('#create-btn').click(function () {
         var author = getAuthor();
         postAuthor(author);   
-
-
     });
-
 }
 
 setup();
@@ -59,41 +54,6 @@ setup();
 
 })();
 
-
-
-
-$("#logoutbutton").click(function(){
- 	  clearCookie("username");
-    clearCookie("token");
-    clearCookie("url");
-  	
-    setTimeout(function(){
-      window.location.href = "home";
-    },1000
-      );
-
-
-});
-
-$("#connect_friends").click(function(){
-    
-    setTimeout(function(){
-      window.location.href = "friends";
-    },1000
-      );
-
-
-});
-
-$("#connect_home").click(function(){
-    
-    setTimeout(function(){
-      window.location.href = "home";
-    },1000
-      );
-
-
-});
 
 
 

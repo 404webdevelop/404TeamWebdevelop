@@ -1,22 +1,7 @@
 (function (global) {
-
 'use strict';
-
 var cookie = global.cookie_setting;
-
-function button_click(){
-    
-
-    $("#logoutbutton").click(function(){
-        cookie.clear("username");
-        cookie.clear("token");
-        cookie.clear("url");
-        setTimeout(function(){
-          window.location.href = "home";
-        },0
-          );
-    });
-
+function button_click(cookie){
     $("#connect_friends").click(function(){
         setTimeout(function(){
           window.location.href = "friends";
@@ -30,7 +15,6 @@ function button_click(){
         },0
           );
     });
-
 
     $("#connect_net").click(function(){
         setTimeout(function(){
@@ -54,7 +38,5 @@ global.button_click = {
 	clickbtn:button_click
 
 }
-
-
 
 })(this);

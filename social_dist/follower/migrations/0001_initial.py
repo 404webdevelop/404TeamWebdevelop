@@ -16,7 +16,6 @@ class Migration(migrations.Migration):
             name='Follows',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('hide', models.BooleanField(default=False)),
                 ('followed', models.ForeignKey(related_name='followed', to=settings.AUTH_USER_MODEL)),
                 ('follower', models.ForeignKey(related_name='follower', to=settings.AUTH_USER_MODEL)),
             ],

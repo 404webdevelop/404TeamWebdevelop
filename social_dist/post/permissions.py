@@ -2,6 +2,10 @@ from rest_framework import permissions
 from .models import Post, Image, Comment
 from django.contrib.auth.models import AnonymousUser
 from author.models import Author
+from follower.models import Follows
+
+def AreFriends(user, other_user):
+    return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
 
 def CanViewPost(post, user):
     if user.is_superuser:
@@ -16,7 +20,9 @@ def CanViewPost(post, user):
     if post.privacy_level == 'pub':
         return True
     if post.privacy_level == 'friends':
-        pass # TODO
+        if user.is_anonymous():
+            return False
+        return AreFriends(post.author, user)
     if post.privacy_level == 'fof':
         pass # TODO
 
@@ -24,20 +30,10 @@ def CanViewPost(post, user):
 
 class CreatePostPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        try:
-            author = request.data.dict()['author']
-        except:
+        if request.user.is_anonymous():
+            return False
+        else:
             return True
-        if author != '':
-            if request.user.is_anonymous():
-                return False
-            pk = [x.strip() for x in author.split('/') if x.strip() != ''][-1] # bad hack
-            requestedUser = Author.objects.get(pk=pk)
-            if requestedUser is None:
-                return False
-            if request.user.id != requestedUser.id:
-                return False
-        return True
 
 class PostPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -55,19 +51,6 @@ class PostPermission(permissions.BasePermission):
 
 class CreateCommentPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        try:
-            local_author = request.data.dict()['local_author']
-        except:
-            return True
-        if local_author != '':
-            if request.user.is_anonymous():
-                return False
-            pk = [x.strip() for x in local_author.split('/') if x.strip() != ''][-1] # bad hack
-            requestedUser = Author.objects.get(pk=pk)
-            if requestedUser is None:
-                return False
-            if request.user.id != requestedUser.id:
-                return False
         return True
 
 def CanViewComment(comment, user):
@@ -104,12 +87,15 @@ class CreateImagePermission(permissions.BasePermission):
                 return False
         return True
 
+def CanViewImage(image, user):
+    return CanViewPost(image.parent_post, user)
+
 class ImagePermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         assert isinstance(obj, Image)
 
         if request.method in permissions.SAFE_METHODS:
-            return True
+            return CanViewImage(obj, request.user)
         if obj.uploader == request.user:
             return True
         if request.user.is_superuser:
