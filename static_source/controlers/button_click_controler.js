@@ -12,6 +12,9 @@ function button_click(cookie){
           );
 
      });
+    $("#follow_btn").click(function(){
+        $('#follow_btn').text("following");
+    });
 
     $('.target').delegate('li', 'click', function () {
 

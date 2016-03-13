@@ -31,7 +31,11 @@
 	width: 20px;
 	height: 100px;
 }
+#follow_btn{
+  background-color: lightgreen;
+  width: 200px;
 
+}
 
 
 .invlist{
@@ -191,10 +195,14 @@
 	background-color: lightgreen;
 };
 
+#follow_btn{
+  background-color: lightgreen;
+};
+
 #searched_friend{
 	text-align: 50px;
 
-}
+};
 /*http://codepen.io/aakashrodrigues/pen/Gfhjw*/
 /*   yang    : http://codepen.io/LeonardMeagher2/pen/oBxgE*/
 
