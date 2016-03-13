@@ -3,8 +3,23 @@
 var cookie = global.cookie_setting;
 function button_click(cookie){
 
-    
-    
+    $('#list_post_view').delegate('li', 'click', function () {
+         cookie.set("click_id",$(this).attr("value"));
+         setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
+
+     });
+
+    $('.target').delegate('li', 'click', function () {
+
+         cookie.set("click_id",$(this).attr("value"));
+         setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
+     });
 
     $("#connect_friends").click(function(){
         setTimeout(function(){

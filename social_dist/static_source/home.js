@@ -19,9 +19,12 @@ var data= {"username":cookie.get("username"),
 		   "following":"77",
 		   "friends":"112"
 			 };
+
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="home";
     infor_nav.nav_inf_setting(data);
+
+    console.log(cookie.get("userid"));
 
     $('#post_post').click(function(){
         update_and_post.post_posts(data.username);

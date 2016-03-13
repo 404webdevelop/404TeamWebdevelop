@@ -1,10 +1,10 @@
 
 
-function wori(){
+/*function wori(){
           console.log(document.getElementById("click_target").value);
           //window.location.href = "posted";        
       };
-
+*/
 
 
 
@@ -42,7 +42,7 @@ function getfollowings(cookie,data){
              
                 $.getJSON(followersobj[i].followed,function(data){
                     
-                    $("#f1").append("<li class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\" class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
+                    $("#f1").append("<li  value=\""+data.id+"\" class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
                 });
             
             });
@@ -53,6 +53,9 @@ function getfollowings(cookie,data){
 
 }
 
+
+
+
 function getfollowers(cookie,data){
   console.log(cookie.get("userid"));
   var url = "api/follow/"+cookie.get("userid")+"/followers";
@@ -62,13 +65,14 @@ function getfollowers(cookie,data){
         });
   request.done(function (callback) {
             var followersobj = callback;
+            
 
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].follower,function(data){
                     console.log("sdfsf");
                     console.log(data.id);
                     console.log("------");
-                    $("#f3").append("<li class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\" onclick=\"wori()\" class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                    $("#f3").append("<li value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
                 });
               
             }); 
@@ -82,11 +86,7 @@ function getfollowers(cookie,data){
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="network";
 
-    /*function wori(){
-     
-          window.location.href = "posted";
-        
-    };*/
+    
     $('#post_post').click(function(){
         update_and_post.post_posts(data.url);
     });
