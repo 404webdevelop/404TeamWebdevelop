@@ -2,8 +2,9 @@
 
 'use strict';
 var cookie = global.cookie_setting;
+var update_and_post = global.update_and_post;
 
-function postPost(username){
+function postPost(){
   var url = "api/posts/";  
   var post_post= $("#title_input_style").val();
   var post_content= $("#content_input_style").val();
@@ -12,7 +13,6 @@ function postPost(username){
   var data= {
     "title": post_post,
     "content": post_content,
-    "author": username,
   };
 
   var request = $.ajax({
@@ -31,7 +31,6 @@ function postPost(username){
 }
 
 function patchProfile(cookie,data,username,firstName, lastName, callback) {
-  //nothing in here first
 }
 
 global.update_and_post= {

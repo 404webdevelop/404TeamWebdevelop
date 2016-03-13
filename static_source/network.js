@@ -89,9 +89,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="network";
 
     
-    $('#post_post').click(function(){
-        update_and_post.post_posts(data.url);
-    });
+    
 
     $("#update_submit").click(function(){
         var username_input = $("#user-name-input").val();
@@ -100,7 +98,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
     });
     
-
 
 
     infor_nav.nav_inf_setting(cookie,data,page);

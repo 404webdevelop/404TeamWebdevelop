@@ -37,11 +37,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
       update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
   });
 
-  $('#post_post').click(function(){
-      update_and_post.post_posts(data.url);
-  });
-
-
   infor_nav.nav_inf_setting(cookie,data,page);
   clicks.clickbtn(cookie);
   frineds_find.friends(cookie,data,"friends");

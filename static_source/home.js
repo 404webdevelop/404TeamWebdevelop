@@ -26,9 +26,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     console.log(cookie.get("userid"));
 
-    $('#post_post').click(function(){
-        update_and_post.post_posts(data.username);
-    });
 
     $("#update_submit").click(function(){
         var username_input = $("#user-name-input").val();
@@ -39,6 +36,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
 
     //frineds_find.friends(data, page);
+    update_and_post.post_posts();
     load_post.posts_load(data,page,cookie);
     clicks.clickbtn(cookie);
 };
