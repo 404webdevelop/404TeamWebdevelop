@@ -8,8 +8,22 @@ var update_and_post = global.update_and_post;
 
 
 function button_click(cookie){
-    var value = check.checkfollow(cookie);
 
+    $('#logoutbutton').click(function(){
+
+        setTimeout(function(){
+          window.location.href = "logout";
+        },0
+          );  
+    });
+
+    $('#sub_btn').click(function(){
+
+        setTimeout(function(){
+          window.location.href = "home";
+        },0
+          );  
+    });
     $('#post_post').click(function(){
 
         update_and_post.post_posts();
