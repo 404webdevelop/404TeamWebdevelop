@@ -21,9 +21,7 @@ function button_click(cookie){
     $("#follow_btn").click(function(){
       console.log($('#follow_btn').text());
       if ($('#follow_btn').text() == "UNFOLLOW"){
-
-        $('#follow_btn').text("FOLLOW");
-        $('#follow_btn').css("background","lightgreen");
+        check.unfollow_other(cookie);
       }else{
         check.follow_other(cookie);
       }    
