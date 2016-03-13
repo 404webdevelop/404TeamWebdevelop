@@ -22,6 +22,7 @@ urlpatterns = [
 
 
     url(r'^addfriends$', login_required(TemplateView.as_view(template_name='addfriends.html')), name="addfriends"),
+    url(r'^otherposted$', login_required(TemplateView.as_view(template_name='otherposted.html')), name="otherposted"),
     url(r'^friends$', login_required(TemplateView.as_view(template_name='friends.html')), name="friends"),
     url(r'^profile$', login_required(TemplateView.as_view(template_name='profile.html')), name="profile"),
     url(r'^network$', login_required(TemplateView.as_view(template_name='network.html')), name='my-network'),
