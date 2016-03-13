@@ -20,6 +20,10 @@ function getuserlogin(cookie,callback){
         cookie.set("github", userobj.github);
         cookie.set("userid",userobj.id);
         cookie.set("url",userobj.url);
+        cookie.set("firstname",userobj.first_name);
+        console.log(userobj.first_name);
+        cookie.set("lastname",userobj.last_name);
+        console.log(userobj.last_name);
 
     })
     request.fail(function (callback) {
@@ -27,8 +31,6 @@ function getuserlogin(cookie,callback){
          });
     
 }
-
-
 
 
 global.login_setting = {

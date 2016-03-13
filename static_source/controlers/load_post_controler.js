@@ -28,14 +28,14 @@ function setdynamic(img,tit,tex,date,author,type,id){
             if(page == "home"){
                 //console.log(postobj.posts[0].author.id);
                 $.each(postobj.posts, function (i, value) {             
-                        var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
+                        var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
                         $("#list_post_view").append(st);
                 });
             }
             if(page == "posted"){
                 $.each(postobj.posts, function (i, value) {
                     if(data.username == postobj.posts[i].username){
-                        var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
+                        var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
                         console.log(postobj.posts[0].author.github);
                         $("#list_post_view").append(st);
                     }
@@ -66,7 +66,7 @@ function setdynamic(img,tit,tex,date,author,type,id){
                     if(data.username == postobj.posts[i].username){
                         //console.log();
 
-                        var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
+                        var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
                         //console.log(postobj.posts[0].author.github);
                         $("#list_post_view").append(st);
                     }

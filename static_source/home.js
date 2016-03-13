@@ -14,7 +14,9 @@ login_infor_set.infor_setting(cookie);
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
        "token":cookie.get("token"),
-		   "userphoto":"../static/image/Yu.jpg",
+       "firstname":cookie.get("firstname"),
+       "lastname": cookie.get("lastname"),
+		   "userphoto":"/static/image/no_image.jpg",
 		   "followers":"50",
 		   "following":"77",
 		   "friends":"112"

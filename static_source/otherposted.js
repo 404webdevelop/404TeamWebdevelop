@@ -10,10 +10,25 @@ var load_post = global.load_posts;
 var cookie = global.cookie_setting;
 
 
+
+function find_click_user(cookie){
+
+  $.getJSON('api/author/',function(data){
+    $.each(data.data,function (i , value){
+      if(data.data[i].username == cookie.get("click_username")){
+        cookie.set("click_first_name",data.data[i].first_name);
+        cookie.set("click_last_name",data.data[i].last_name);
+      }
+    });
+  });
+}
+find_click_user(cookie);
+
 var data= {"username":cookie.get("click_username"),
-       "url":cookie.get("url"),
        "token":cookie.get("token"),
-       "userphoto":"../static/image/Yu.jpg",
+       "firstname":cookie.get("click_first_name"),
+       "lastname": cookie.get("click_last_name"),
+       "userphoto":"/static/image/no_image.jpg",
        "followers":"50",
        "following":"77",
        "friends":"112"
