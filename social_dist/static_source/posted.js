@@ -36,6 +36,8 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         clicks.clickbtn(cookie);
         var friends_list = [];
         load_post.posts_load(data,page,cookie);
+        console.log("user id is:"+cookie.get("userid"));
+        console.log("target id is:"+cookie.get("click_id"));
     });
   };
 
