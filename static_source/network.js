@@ -74,7 +74,7 @@ function getfollowers(cookie,data){
                     console.log("sdfsf");
                     console.log(data.id);
                     console.log("------");
-                    $("#f3").append("<liid = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                    $("#f3").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
                 });
               
             }); 

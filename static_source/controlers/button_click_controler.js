@@ -13,7 +13,8 @@ function button_click(cookie){
 
      });
     $("#follow_btn").click(function(){
-        $('#follow_btn').text("following");
+        $('#follow_btn').text("UNFOLLOW");
+        $('#follow_btn').css("background","#FF6347");
     });
 
     $('.target').delegate('li', 'click', function () {
