@@ -48,8 +48,12 @@ function getpost(data,page,cookie){
                         console.log(callback)
                         var githubobj = callback;
                         $.each(githubobj, function (i, value) {
-                            var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("userid"));
-                        
+
+                            if (cookie.get("click_id") == "" || cookie.get("click_id")== cookie.get("userid")){
+                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("userid"));
+                            }else{
+                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("click_id"));
+                            }
                             $("#list_post_view").append(st);
                         });
                      });
