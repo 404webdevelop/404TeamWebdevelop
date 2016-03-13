@@ -18,3 +18,5 @@ tests/report/
 .env
 
 *~
+
+db.sqlite*
