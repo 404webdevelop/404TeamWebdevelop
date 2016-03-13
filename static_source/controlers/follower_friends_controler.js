@@ -125,9 +125,27 @@ function findfriends(cookie,data,page){
          });
 };
 
+function search_user(cookie,username){
+  $.getJSON('api/author/',function(data){
+    $.each(data.data,function (i , value){
+      console.log(data.data[i].username);
+      if(data.data[i].username == username){
+        var data_iner = data.data[i];
+        $("#search_listview").append("<li id = \""+data_iner.username+"\"value=\""+data_iner.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\">"+data_iner.username+"</a></li>");
+
+      }
+    })
+    
+  })
+
+
+
+}
+
 global.findfriends= {
   friends:findfriends,
   checkfollow:checkfollowed,
+  search:search_user,
   follow_other:followother,
   unfollow_other:unfollowother
 	

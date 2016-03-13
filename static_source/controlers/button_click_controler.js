@@ -20,6 +20,14 @@ function button_click(cookie){
           );  
     });
 
+    $("#update_submit").click(function(){
+        var email_input = $("e-mail-input").val();
+        var github_input = $("github-input").val();
+        var firstname_input = $('#first-name-input').val();
+        var lastname_input = $('#last-name-input').val();
+        //update_and_post.update_profile(cookie,firstname_input, lastname_input,email_input,github_input); 
+    });
+
 
     $('#list_post_view').delegate('li', 'click', function () {
          cookie.set("click_id",$(this).attr("value"));

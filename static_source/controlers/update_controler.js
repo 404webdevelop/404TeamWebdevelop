@@ -30,7 +30,28 @@ function postPost(){
     });
 }
 
-function patchProfile(cookie,data,username,firstName, lastName, callback) {
+function patchProfile(cookie,firstName, lastName,email,git, callback) {
+  var url = cookie.get("url");
+  var data= {
+    "email": firstName,
+    "first_name": lastName,
+    "last_name":email,
+    "github":git
+  };
+  var request = $.ajax({
+          method: "PATCH",
+          url: url,
+          data: data,
+        });
+  request.done(function (callback) {
+    console.log(callback)
+    });
+  
+  request.fail(function (callback) {
+    console.log(callback);
+    });
+
+
 }
 
 global.update_and_post= {

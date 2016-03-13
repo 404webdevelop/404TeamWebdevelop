@@ -25,17 +25,8 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         update_and_post.post_posts(cookie,data.username);
     });
 
-    $("#update_submit").click(function(){
-        var username_input = $("#user-name-input").val();
-        var firstname_input = $('#first-name-input').val();
-        var lastname_input = $('#last-name-input').val();
-        update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
-    });
-
+    
     $(document).ready(function () {
-
-
-
 
         infor_nav.nav_inf_setting(cookie,data,page);
         clicks.clickbtn(cookie);

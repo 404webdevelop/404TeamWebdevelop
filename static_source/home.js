@@ -27,13 +27,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     console.log(cookie.get("userid"));
 
 
-    $("#update_submit").click(function(){
-        var username_input = $("#user-name-input").val();
-        var firstname_input = $('#first-name-input').val();
-        var lastname_input = $('#last-name-input').val();
-        update_and_post.update_profile(cookie,data,username_input,firstname_input, lastname_input); 
-
-    });
+   
 
     //frineds_find.friends(data, page);
     update_and_post.post_posts();

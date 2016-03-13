@@ -54,7 +54,7 @@
     
     <div id= "div1">
       <table><tr><td><button>Friends</td><td><button>Following</td><td><button>Followers</td><td><button>Friends of Friends</td></tr></table>
-      <ul id = "friends_list_view"data-role="listview" data-autodividers="true" data-filter="true" data-inset="true"data-icon="user">
+      <ul class = "target"id = "friends_list_view"data-role="listview" data-autodividers="true" data-filter="true" data-inset="true"data-icon="user">
         
                
       </ul>
@@ -88,7 +88,7 @@
     </tr>
     </table>
     </form>
-    <ul id="search_listview" data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true" data-icon="plus">
+    <ul class = "target" id="search_listview" data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true" data-icon="plus">
      <center> Search you friends</center>
     </ul>
 
@@ -129,14 +129,18 @@
 
       <div data-role="main" class="ui-content">
  
-        Update Username<input id="user-name-input" type="text" placeholder="Consider using numbers and special characters">
-	Update Firstname<input id="first-name-input"type="text" placeholder="Eg. jdoe">
-	Update Lastname<input id="last-name-input"type="text" placeholder="Eg.  Doe">
-	<br>
-        <button id="update_submit" type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
+        <form >
+        Update Firstname<input id="first-name-input"type="text" placeholder="Eg. jdoe">
+        Update Lastname<input id="last-name-input"type="text" placeholder="Eg.  Doe">
+        Update E-mail<input id="e-mail-input"type="text" placeholder="Eg. jdoe">
+        Updata Github<input id="github-input"type="text" placeholder="Eg. jdoe">
+         <br>
+        <button id="update_submit"type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
+
         <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Cancel</a>
-        
+        </form>
       </div>
+</div>
       
 
 
