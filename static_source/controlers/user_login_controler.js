@@ -19,6 +19,8 @@ function getuserlogin(cookie,callback){
         cookie.set("username",userobj.username);
         cookie.set("github", userobj.github);
         cookie.set("userid",userobj.id);
+        cookie.set("url",userobj.url);
+
     })
     request.fail(function (callback) {
             console.log(callback);

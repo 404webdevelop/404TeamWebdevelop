@@ -3,13 +3,11 @@
 'use strict';
 function checkfollowed(cookie,callback){      
         var url = "api/follow/"+cookie.get("userid")+"/followings";
-        
-        
         $.getJSON(url,function(data){
             console.log(data);
             $.each(data,function (i,value){
               console.log(data[i].followed.split("/")[5]);
-
+              
               console.log("just: "+cookie.get("click_id"));
               if(data[i].followed.split("/")[5] == cookie.get("click_id")){
                 console.log("wo de tiam");
@@ -23,7 +21,35 @@ function checkfollowed(cookie,callback){
             });     
          });
       }
-function followother(){
+function followother(cookie){
+
+  $.getJSON('api/author/',function(data){
+    $.each(data.data,function (i , value){
+      if(data.data[i].username == cookie.get("click_username")){
+
+        var url = 'api/follow/';
+        
+        var request = $.ajax({
+          method: "POST",
+          url: url,
+          data:{
+          "followed":data.data[i].url,
+          "follower":cookie.get("url")
+          } 
+        });
+        request.done(function (callback) {
+          $('#follow_btn').text("UNFOLLOW");
+          $('#follow_btn').css("background","#FF6347");
+
+        });
+        request.fail(function (callback) {
+            console.log(callback);
+         });
+        console.log("hoeee:  "+data.data[i].url);
+      }
+    })
+    
+  })
 
 };
 
@@ -70,7 +96,8 @@ function findfriends(cookie,data,page){
 
 global.findfriends= {
   friends:findfriends,
-  checkfollow:checkfollowed
+  checkfollow:checkfollowed,
+  follow_other:followother
 	
 }
 

@@ -23,7 +23,7 @@ var frineds_find =global.findfriends;
 login_infor_set.infor_setting(cookie);
 
 var data= {"username":cookie.get("username"),
-       "url":cookie.get("url"),
+       "url":cookie.get("userid"),
        "token":cookie.get("token"),
        "userphoto":"../static/image/Yu.jpg",
        "followers":"50",
