@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="/static/default.css">
 </head>
 
 
 
-
+<body id ="loginbody">
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -21,45 +22,42 @@
 {% endif %}
 
 
-<div style="margin-top: 20%; margin-left: 20%">
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<div id="loginbox" >
+<form id = "upload_form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
 {% csrf_token %}
 
-<h2>New User Registration</h2>
-<table >
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+<center><h2 >New User Registration</h2></center>
+
+<center><div id="in_text_put">{{ form.username.label_tag }}{{ form.username }}</div></center>
+<br/>
+<center><div id="in_text_put">{{ form.password.label_tag }} {{ form.password }}</div></center>
+<br/>
 
 
-<divstyle="margin-top: 20%; margin-left: 20%">
-<table>    
-<tr>
-    <a href="/signup" >Sign up</a>
-</tr>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<tr>
+
+<div>
+
+
+<a href="/signup" >Sign up</a>
 <input id="sub_btn" type="submit" value="login" />
 <!--<input type="hidden" name="next" value="{{ next }}" />-->
-</tr>
+</div>
 
-</table>
+
 
 </form>
 
 
+<script async="" type="text/javascript" src="/static/controlers/follower_friends_controler.js" ></script> 
+<script async="" type="text/javascript" src="/static/controlers/load_post_controler.js" ></script> 
 <script async="" type="text/javascript" src="/static/controlers/update_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/user_login_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/login.js" ></script>
 </div>
+</body>
 </html>
 
 

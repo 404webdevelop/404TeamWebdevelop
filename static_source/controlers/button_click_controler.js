@@ -3,6 +3,7 @@
 var cookie = global.cookie_setting;
 var check = global.findfriends;
 var update_and_post = global.update_and_post;
+var login_infor_set = global.login_setting;
 
 
 
@@ -10,6 +11,15 @@ var update_and_post = global.update_and_post;
 function button_click(cookie){
 
     $('#logoutbutton').click(function(){
+        cookie.clear("username");
+        cookie.clear("userid");
+        cookie.clear("url");
+        cookie.clear("github");
+        cookie.clear("firstname");
+        cookie.clear("lastname");
+
+
+
 
         setTimeout(function(){
           window.location.href = "logout";
@@ -18,11 +28,13 @@ function button_click(cookie){
     });
 
     $('#sub_btn').click(function(){
+        login_infor_set.infor_setting(cookie);
+        alert("login in");
 
         setTimeout(function(){
-          window.location.href = "home";
-        },0
-          );  
+          window.location.href = "posted";
+        },1000
+          );
     });
     $('#post_post').click(function(){
 
