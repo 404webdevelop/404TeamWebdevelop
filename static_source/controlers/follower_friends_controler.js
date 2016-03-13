@@ -1,7 +1,35 @@
 (function (global) {
 
 'use strict';
+function checkfollowed(cookie,callback){      
+        var url = "api/follow/"+cookie.get("userid")+"/followings";
+        
+        
+        $.getJSON(url,function(data){
+            console.log(data);
+            $.each(data,function (i,value){
+              console.log(data[i].followed.split("/")[5]);
 
+              console.log("just: "+cookie.get("click_id"));
+              if(data[i].followed.split("/")[5] == cookie.get("click_id")){
+                console.log("wo de tiam");
+                $('#follow_btn').text("UNFOLLOW");
+                $('#follow_btn').css("background","#FF6347");
+                return false;
+              }else{
+                $('#follow_btn').text("FOLLOW");
+                $('#follow_btn').css("background","lightgreen");
+              }
+            });     
+         });
+      }
+function followother(){
+
+};
+
+function unfollowother(){
+
+};
 
 
 
@@ -41,7 +69,8 @@ function findfriends(cookie,data,page){
 };
 
 global.findfriends= {
-  friends:findfriends
+  friends:findfriends,
+  checkfollow:checkfollowed
 	
 }
 
