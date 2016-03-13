@@ -5,6 +5,7 @@ function button_click(cookie){
 
     $('#list_post_view').delegate('li', 'click', function () {
          cookie.set("click_id",$(this).attr("value"));
+
          setTimeout(function(){
           window.location.href = "posted";
         },0
@@ -15,14 +16,16 @@ function button_click(cookie){
     $('.target').delegate('li', 'click', function () {
 
          cookie.set("click_id",$(this).attr("value"));
+         cookie.set("click_username",$(this).attr("id"));
          setTimeout(function(){
-          window.location.href = "posted";
+          window.location.href = "otherposted";
         },0
           );
      });
 
     $("#connect_friends").click(function(){
         cookie.clear("click_id");
+        cookie.clear("click_username");
         setTimeout(function(){
           window.location.href = "friends";
         },0
@@ -31,6 +34,7 @@ function button_click(cookie){
 
     $("#connect_home").click(function(){
         cookie.clear("click_id");
+        cookie.clear("click_username");
         setTimeout(function(){
           window.location.href = "home";
         },0
@@ -39,6 +43,7 @@ function button_click(cookie){
 
     $("#connect_net").click(function(){
         cookie.clear("click_id");
+        cookie.clear("click_username");
         setTimeout(function(){
           window.location.href = "network";
         },0
@@ -47,6 +52,7 @@ function button_click(cookie){
 
     $("#connect_prof").click(function(){
         cookie.clear("click_id");
+        cookie.clear("click_username");
         setTimeout(function(){
           window.location.href = "posted";
         },0

@@ -61,6 +61,20 @@ function setdynamic(img,tit,tex,date,author,type,id){
                         console.log(callback);
                      });
             }
+            if(page == "otherpost"){
+              $.each(postobj.posts, function (i, value) {
+                    if(data.username == postobj.posts[i].username){
+                        //console.log();
+
+                        var st= setdynamic("/static/image/Yu.jpg",postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
+                        //console.log(postobj.posts[0].author.github);
+                        $("#list_post_view").append(st);
+                    }
+                  });
+            }
+
+
+
 
          });
   request.fail(function (callback) {
