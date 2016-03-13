@@ -10,6 +10,7 @@ var login_infor_set = global.login_setting;
 var update_and_post = global.update_and_post;
 var frineds_find =global.findfriends;
 
+login_infor_set.infor_setting(cookie);
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -41,7 +42,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
   });
 
 
-  infor_nav.nav_inf_setting(data,page);
+  infor_nav.nav_inf_setting(cookie,data,page);
   clicks.clickbtn(cookie);
   frineds_find.friends(cookie,data,"friends");
 };

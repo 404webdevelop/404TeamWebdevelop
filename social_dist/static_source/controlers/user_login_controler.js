@@ -7,32 +7,30 @@ var cookie = global.cookie_setting;
 
 
 
-function getuserlogin(cookie,username,callback){
+function getuserlogin(cookie,callback){
+    
     var url = "api/author/me";
     var request = $.ajax({
             method: "GET",
             url: url,
           });
     request.done(function (callback) {
-              var userobj = callback;
-              cookie.set("username",userobj.username);
-           });
+        var userobj = callback;
+        cookie.set("username",userobj.username);
+        cookie.set("github", userobj.github);
+        cookie.set("userid",userobj.id);
+    })
     request.fail(function (callback) {
-              console.log(callback);
-           });
-
+            console.log(callback);
+         });
+    
 }
 
 
 
 
-
-
-
-
-
 global.login_setting = {
-	url_setting:getuserlogin,
+	infor_setting:getuserlogin,
 
 }
 

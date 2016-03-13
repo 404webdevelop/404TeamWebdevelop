@@ -15,9 +15,9 @@ function setdynamic(img,tit,tex,date,author,type,id){
   return string;
 };
 
-function getpost(data,page,cookie){
-  var url = "api/posts/";
-  var request = $.ajax({
+  function getpost(data,page,cookie){
+    var url = "api/posts/";
+    var request = $.ajax({
           method: "GET",
           url: url,
   });
@@ -49,7 +49,7 @@ function getpost(data,page,cookie){
                         var githubobj = callback;
                         $.each(githubobj, function (i, value) {
 
-                            if (cookie.get("click_id") == "" || cookie.get("click_id")== cookie.get("userid")){
+                            if (cookie.get("click_id") == "undefined" ||cookie.get("click_id") == "" || cookie.get("click_id")== cookie.get("userid")){
                                 var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("userid"));
                             }else{
                                 var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("click_id"));

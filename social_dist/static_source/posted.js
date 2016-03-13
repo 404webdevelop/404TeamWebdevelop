@@ -9,6 +9,8 @@ var update_and_post = global.update_and_post;
 var load_post = global.load_posts; 
 var cookie = global.cookie_setting;
 
+login_infor_set.infor_setting(cookie);
+
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
        "token":cookie.get("token"),
@@ -21,7 +23,7 @@ var data= {"username":cookie.get("username"),
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="posted";
     $('#post_post').click(function(){
-        update_and_post.post_posts(data.username);
+        update_and_post.post_posts(cookie,data.username);
     });
 
     $("#update_submit").click(function(){
@@ -32,7 +34,11 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
 
     $(document).ready(function () {
-        infor_nav.nav_inf_setting(data,page);
+
+
+
+
+        infor_nav.nav_inf_setting(cookie,data,page);
         clicks.clickbtn(cookie);
         var friends_list = [];
         load_post.posts_load(data,page,cookie);
@@ -41,7 +47,7 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
   };
 
-  setup(cookie,login_infor_set,infor_nav,clicks,data);
-
+      setup(cookie,login_infor_set,infor_nav,clicks,data);
+  
 
 })(this);

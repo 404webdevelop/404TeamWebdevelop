@@ -22,6 +22,7 @@ function button_click(cookie){
      });
 
     $("#connect_friends").click(function(){
+        cookie.clear("click_id");
         setTimeout(function(){
           window.location.href = "friends";
         },0
@@ -29,6 +30,7 @@ function button_click(cookie){
     });
 
     $("#connect_home").click(function(){
+        cookie.clear("click_id");
         setTimeout(function(){
           window.location.href = "home";
         },0
@@ -36,6 +38,7 @@ function button_click(cookie){
     });
 
     $("#connect_net").click(function(){
+        cookie.clear("click_id");
         setTimeout(function(){
           window.location.href = "network";
         },0
@@ -43,6 +46,7 @@ function button_click(cookie){
     });
 
     $("#connect_prof").click(function(){
+        cookie.clear("click_id");
         setTimeout(function(){
           window.location.href = "posted";
         },0

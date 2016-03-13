@@ -7,28 +7,11 @@ function setifor(img,username,followers, following, friends){
   return string;
 };
 
-function nav_inf_set(data,page){
-    var cookie = global.cookie_setting;
-    var url = "api/author/me";
-    var request = $.ajax({
-            method: "GET",
-            url: url,
-          });
-    request.done(function (callback) {
-              var userobj = callback;
-              var head = setifor(data.userphoto,userobj.username,data.following, data.followers, data.friends);
-              cookie.set("username",userobj.username);
-              cookie.set("github", userobj.github);
-              cookie.set("userid",userobj.id);
-              //console.log(userobj.id);
-              $("#loginbutton").html("<a href=\"posted\" id=\"user_name_input\">[ "+userobj.username+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;<a href=\"/logout/\"><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button></a>");
-              $("#info").html(head);
-              $("#connect-infor").html("<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>");
-           });
-    request.fail(function (callback) {
-              console.log(callback);
-           });
-
+function nav_inf_set(cookie,data,page){
+      var head = setifor(data.userphoto,data.username,data.following, data.followers, data.friends);
+      $("#loginbutton").html("<a href=\"posted\" id=\"user_name_input\">[ "+cookie.get("username")+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;<a href=\"/logout/\"><button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button></a>");
+      $("#info").html(head);
+      $("#connect-infor").html("<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>");
 }
 
 

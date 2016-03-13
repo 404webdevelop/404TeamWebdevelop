@@ -10,7 +10,7 @@ var update_and_post = global.update_and_post;
 var load_post = global.load_posts; 
 var frineds_find =global.findfriends;
 
-  
+login_infor_set.infor_setting(cookie);
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
        "token":cookie.get("token"),
@@ -22,7 +22,7 @@ var data= {"username":cookie.get("username"),
 
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="home";
-    infor_nav.nav_inf_setting(data);
+    infor_nav.nav_inf_setting(cookie,data);
 
     console.log(cookie.get("userid"));
 
