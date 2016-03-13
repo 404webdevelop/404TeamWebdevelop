@@ -1,3 +1,5 @@
+
+
 (function (global) {
 
 'use strict';
@@ -17,6 +19,12 @@ var frineds_find =global.findfriends;
 
 
 function setup(cookie,login_infor_set,infor_nav,clicks){
+
+    if (cookie.get("stf")=="1"){
+      console.log("sdfsfsdfffffffffffffffffff");
+      cookie.set("stf","2");
+      window.location.reload();
+    }
 
     var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),

@@ -29,12 +29,8 @@ function button_click(cookie){
 
     $('#sub_btn').click(function(){
         login_infor_set.infor_setting(cookie);
-        alert("login in");
 
-        setTimeout(function(){
-          window.location.href = "posted";
-        },1000
-          );
+        
     });
     $('#post_post').click(function(){
 
