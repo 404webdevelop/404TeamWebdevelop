@@ -11,8 +11,6 @@ function setup(data){
       global.findfriends.search($('#myFilter').val());
   });
 
-  
-
   global.nav_inf.nav_inf_setting(data,page);
   global.button_click.clickbtn();
   global.findfriends.friends(data,"friends");

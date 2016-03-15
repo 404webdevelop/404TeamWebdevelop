@@ -40,6 +40,11 @@ function button_click(){
 
 
         global.update_and_post.post_posts();
+        setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );  
+
 
     });
 

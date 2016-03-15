@@ -43,7 +43,8 @@ function patchProfile(firstName, lastName,email,git, callback) {
           data: data,
         });
   request.done(function (callback) {
-    console.log(callback)
+    console.log(callback);
+    alert("successfully post.");
     });
   
   request.fail(function (callback) {
