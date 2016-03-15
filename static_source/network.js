@@ -96,19 +96,20 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     
     
 
-
+$( document ).ready(function() {
     infor_nav.nav_inf_setting(cookie,data,page);
     clicks.clickbtn(cookie);
     frineds_find.friends(cookie,data,page);
     getfollowers(cookie,data);
     getfollowings(cookie,data);
+  });
 };
 
 
 
-
+$( document ).ready(function() {
 setup(cookie,login_infor_set,infor_nav,clicks,data);
-
+});
 })(this);
 
 

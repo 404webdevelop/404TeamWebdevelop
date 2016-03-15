@@ -40,8 +40,8 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
         console.log("target id is:"+cookie.get("click_id"));
     });
   };
-
+$( document ).ready(function() {
       setup(cookie,login_infor_set,infor_nav,clicks,data);
-  
+  });
 
 })(this);

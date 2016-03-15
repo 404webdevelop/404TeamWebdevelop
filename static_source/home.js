@@ -14,19 +14,34 @@ var frineds_find =global.findfriends;
 
 
 
+login_infor_set.infor_setting(cookie);
 
 
 
+function setup(data,cookie,login_infor_set,infor_nav,clicks){
 
-function setup(cookie,login_infor_set,infor_nav,clicks){
+    
 
-    if (cookie.get("stf")=="1"){
-      console.log("sdfsfsdfffffffffffffffffff");
-      cookie.set("stf","2");
-      window.location.reload();
-    }
+    
+    var page="home";
 
-    var data= {"username":cookie.get("username"),
+    $( document ).ready(function() {
+    infor_nav.nav_inf_setting(cookie,data);
+
+    console.log(cookie.get("userid"));
+
+
+   
+
+    //frineds_find.friends(data, page);
+    load_post.posts_load(data,page,cookie);
+    clicks.clickbtn(cookie);
+  });
+};
+
+
+$( document ).ready(function() {
+  var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
        "token":cookie.get("token"),
        "firstname":cookie.get("firstname"),
@@ -36,22 +51,9 @@ function setup(cookie,login_infor_set,infor_nav,clicks){
        "following":"77",
        "friends":"112"
        };
-    var page="home";
-    infor_nav.nav_inf_setting(cookie,data);
 
-    console.log(cookie.get("userid"));
-
-
-   
-
-    //frineds_find.friends(data, page);
-    update_and_post.post_posts();
-    load_post.posts_load(data,page,cookie);
-    clicks.clickbtn(cookie);
-};
-login_infor_set.infor_setting(cookie);
-setup(cookie,login_infor_set,infor_nav,clicks);
-
+setup(data,cookie,login_infor_set,infor_nav,clicks);
+});
 })(this);
 
 

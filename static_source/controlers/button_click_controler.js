@@ -33,13 +33,16 @@ function button_click(cookie){
         
     });
     $('#post_post').click(function(){
+        localStorage.setItem("lastname", "Smith");
+        console.log(localStorage.getItem("lastname"));
+
 
         update_and_post.post_posts();
 
-        setTimeout(function(){
+        /*setTimeout(function(){
           window.location.href = "posted";
         },0
-          );  
+          );  */
     });
 
     $("#update_submit").click(function(){
