@@ -17,12 +17,20 @@ function button_click(cookie){
         cookie.clear("github");
         cookie.clear("firstname");
         cookie.clear("lastname");
-
-
-
-
+        console.log("sfsfsfsfsfsfsfsfs");
         setTimeout(function(){
           window.location.href = "logout";
+        },0
+          );  
+    });
+
+
+
+    
+
+    $('#user_name_input').click(function(){
+        setTimeout(function(){
+          window.location.href = "posted";
         },0
           );  
     });

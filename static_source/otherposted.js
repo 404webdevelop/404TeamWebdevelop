@@ -22,17 +22,7 @@ function find_click_user(cookie){
     });
   });
 }
-find_click_user(cookie);
 
-var data= {"username":cookie.get("click_username"),
-       "token":cookie.get("token"),
-       "firstname":cookie.get("click_first_name"),
-       "lastname": cookie.get("click_last_name"),
-       "userphoto":"/static/image/no_image.jpg",
-       "followers":"50",
-       "following":"77",
-       "friends":"112"
-       };
 
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="otherpost";
@@ -42,7 +32,6 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
 
     
     $(document).ready(function () {
-
         infor_nav.nav_inf_setting(cookie,data,page);
         clicks.clickbtn(cookie);
         var friends_list = [];
@@ -53,6 +42,17 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
   };
 $( document ).ready(function() {
+      find_click_user(cookie);
+
+      var data= {"username":cookie.get("click_username"),
+                 "token":cookie.get("token"),
+                 "firstname":cookie.get("click_first_name"),
+                 "lastname": cookie.get("click_last_name"),
+                 "userphoto":"/static/image/no_image.jpg",
+                 "followers":"50",
+                 "following":"77",
+                 "friends":"112"
+                 };
       setup(cookie,login_infor_set,infor_nav,clicks,data);
   });
 

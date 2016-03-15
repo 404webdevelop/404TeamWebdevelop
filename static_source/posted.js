@@ -9,7 +9,6 @@ var update_and_post = global.update_and_post;
 var load_post = global.load_posts; 
 var cookie = global.cookie_setting;
 
-login_infor_set.infor_setting(cookie);
 
 var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
@@ -41,6 +40,16 @@ function setup(cookie,login_infor_set,infor_nav,clicks,data){
     });
   };
 $( document ).ready(function() {
+  var data= {"username":cookie.get("username"),
+       "url":cookie.get("url"),
+       "token":cookie.get("token"),
+       "firstname":cookie.get("firstname"),
+       "lastname": cookie.get("lastname"),
+       "userphoto":"/static/image/no_image.jpg",
+       "followers":"50",
+       "following":"77",
+       "friends":"112"
+       };
       setup(cookie,login_infor_set,infor_nav,clicks,data);
   });
 

@@ -14,33 +14,17 @@ var frineds_find =global.findfriends;
 
 
 
-login_infor_set.infor_setting(cookie);
-
-
-
 function setup(data,cookie,login_infor_set,infor_nav,clicks){
 
-    
-
-    
     var page="home";
-
-    $( document ).ready(function() {
-    infor_nav.nav_inf_setting(cookie,data);
-
-    console.log(cookie.get("userid"));
-
-
-   
-
-    //frineds_find.friends(data, page);
+    login_infor_set.infor_setting(clicks,infor_nav,cookie);
     load_post.posts_load(data,page,cookie);
     clicks.clickbtn(cookie);
-  });
 };
 
 
 $( document ).ready(function() {
+
   var data= {"username":cookie.get("username"),
        "url":cookie.get("url"),
        "token":cookie.get("token"),
@@ -51,7 +35,7 @@ $( document ).ready(function() {
        "following":"77",
        "friends":"112"
        };
-
+clicks.clickbtn(cookie);
 setup(data,cookie,login_infor_set,infor_nav,clicks);
 });
 })(this);

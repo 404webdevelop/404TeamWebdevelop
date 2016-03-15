@@ -20,18 +20,6 @@ var login_infor_set = global.login_setting;
 var update_and_post = global.update_and_post;
 var frineds_find =global.findfriends;
 
-login_infor_set.infor_setting(cookie);
-
-var data= {"username":cookie.get("username"),
-       "url":cookie.get("url"),
-       "token":cookie.get("token"),
-       "firstname":cookie.get("firstname"),
-       "lastname": cookie.get("lastname"),
-       "userphoto":"/static/image/no_image.jpg",
-       "followers":"50",
-       "following":"77",
-       "friends":"112"
-       };
 
 function getfollowings(cookie,data){
   var url = "api/follow/"+cookie.get("userid")+"/followings";
@@ -90,11 +78,6 @@ function getfollowers(cookie,data){
 function setup(cookie,login_infor_set,infor_nav,clicks,data){
     var page="network";
 
-    
-    
-
-    
-    
 
 $( document ).ready(function() {
     infor_nav.nav_inf_setting(cookie,data,page);
@@ -108,6 +91,17 @@ $( document ).ready(function() {
 
 
 $( document ).ready(function() {
+  var data= {"username":cookie.get("username"),
+       "url":cookie.get("url"),
+       "token":cookie.get("token"),
+       "firstname":cookie.get("firstname"),
+       "lastname": cookie.get("lastname"),
+       "userphoto":"/static/image/no_image.jpg",
+       "followers":"50",
+       "following":"77",
+       "friends":"112"
+       };
+
 setup(cookie,login_infor_set,infor_nav,clicks,data);
 });
 })(this);

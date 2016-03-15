@@ -4,10 +4,12 @@
 
 
 var cookie = global.cookie_setting;
+var infor_nav = global.nav_inf;
+var clicks = global.button_click;
 
 
 
-function getuserlogin(cookie,callback){
+function getuserlogin(clicks,infor_nav,cookie,callback){
     
     var url = "api/author/me";
     var request = $.ajax({
@@ -24,11 +26,24 @@ function getuserlogin(cookie,callback){
         console.log(userobj.first_name);
         cookie.set("lastname",userobj.last_name);
         console.log(userobj.last_name);
+        var data= {"username":cookie.get("username"),
+               "url":cookie.get("url"),
+               "token":cookie.get("token"),
+               "firstname":cookie.get("firstname"),
+               "lastname": cookie.get("lastname"),
+               "userphoto":"/static/image/no_image.jpg",
+               "followers":"50",
+               "following":"77",
+               "friends":"112"
+               };
+    infor_nav.nav_inf_setting(cookie,data,"home");
 
     })
     request.fail(function (callback) {
             console.log(callback);
          });
+
+    clicks.clickbtn(cookie);
     
 }
 
