@@ -1,8 +1,6 @@
 (function (global) {
 
 'use strict';
-var login_infor_set = global.login_setting;
-var check = global.findfriends;
 
 
 function setifor(img,firstname,lastname,followers, following, friends,page){
@@ -18,13 +16,20 @@ function setifor(img,firstname,lastname,followers, following, friends,page){
 
 };
 
-function nav_inf_set(cookie,data,page){
-      check.checkfollow(cookie);
-      var head = setifor(data.userphoto,data.firstname,data.lastname,data.following, data.followers, data.friends,page);
-      console.log(head);
-      $("#loginbutton").html("<a id=\"user_name_input\">[ "+cookie.get("username")+" ]</a>&nbsp &nbsp &nbsp<a href=\"#myProfileDialog\" data-rel=\"popup\" data-position-to=\"window\" data-transition=\"fade\" ><button id=\"edit\"onclick=\"signinbox()\"type=\"button\" class=\"btn btn-lg btn-default\">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;<button id=\"logoutbutton\" type=\"button\" class=\"btn btn-lg btn-warning\">Logout</button>");
-      $("#info").html(head);
-      $("#connect-infor").html("<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>");
+function nav_inf_set(data,page){
+
+
+
+
+
+      $( document ).ready(function() {
+          global.findfriends.checkfollow();
+          var head = setifor(data.userphoto,data.firstname,data.lastname,data.following, data.followers, data.friends,page);
+          console.log(head);
+          $("#user_name_input").text(global.cookie_setting.get("username"));
+          $("#info").html(head);
+          $("#connect-infor").html("<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>");
+      });
 }
 
 

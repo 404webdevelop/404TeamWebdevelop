@@ -1,22 +1,16 @@
 (function (global) {
 'use strict';
-var cookie = global.cookie_setting;
-var check = global.findfriends;
-var update_and_post = global.update_and_post;
-var login_infor_set = global.login_setting;
 
 
-
-
-function button_click(cookie){
+function button_click(){
 
     $('#logoutbutton').click(function(){
-        cookie.clear("username");
-        cookie.clear("userid");
-        cookie.clear("url");
-        cookie.clear("github");
-        cookie.clear("firstname");
-        cookie.clear("lastname");
+        global.cookie_setting.clear("username");
+        global.cookie_setting.clear("userid");
+        global.cookie_setting.clear("url");
+        global.cookie_setting.clear("github");
+        global.cookie_setting.clear("firstname");
+        global.cookie_setting.clear("lastname");
         console.log("sfsfsfsfsfsfsfsfs");
         setTimeout(function(){
           window.location.href = "logout";
@@ -36,7 +30,7 @@ function button_click(cookie){
     });
 
     $('#sub_btn').click(function(){
-        login_infor_set.infor_setting(cookie);
+        login_infor_set.infor_setting();
 
         
     });
@@ -45,7 +39,7 @@ function button_click(cookie){
         console.log(localStorage.getItem("lastname"));
 
 
-        update_and_post.post_posts();
+        global.update_and_post.post_posts();
 
         /*setTimeout(function(){
           window.location.href = "posted";
@@ -58,12 +52,12 @@ function button_click(cookie){
         var github_input = $("github-input").val();
         var firstname_input = $('#first-name-input').val();
         var lastname_input = $('#last-name-input').val();
-        //update_and_post.update_profile(cookie,firstname_input, lastname_input,email_input,github_input); 
+        //global.update_and_post.update_profile(cookie,firstname_input, lastname_input,email_input,github_input); 
     });
 
 
     $('#list_post_view').delegate('li', 'click', function () {
-         cookie.set("click_id",$(this).attr("value"));
+         global.cookie_setting.set("click_id",$(this).attr("value"));
 
          setTimeout(function(){
           window.location.href = "posted";
@@ -74,9 +68,9 @@ function button_click(cookie){
     $("#follow_btn").click(function(){
       console.log($('#follow_btn').text());
       if ($('#follow_btn').text() == "UNFOLLOW"){
-        check.unfollow_other(cookie);
+        global.findfriends.unfollow_other();
       }else{
-        check.follow_other(cookie);
+        global.findfriends.follow_other();
       }    
 
 
@@ -84,8 +78,8 @@ function button_click(cookie){
 
     $('.target').delegate('li', 'click', function () {
 
-         cookie.set("click_id",$(this).attr("value"));
-         cookie.set("click_username",$(this).attr("id"));
+         global.cookie_setting.set("click_id",$(this).attr("value"));
+         global.cookie_setting.set("click_username",$(this).attr("id"));
          setTimeout(function(){
           window.location.href = "otherposted";
         },0
@@ -93,8 +87,8 @@ function button_click(cookie){
      });
 
     $("#connect_friends").click(function(){
-        cookie.clear("click_id");
-        cookie.clear("click_username");
+        global.cookie_setting.clear("click_id");
+        global.cookie_setting.clear("click_username");
         setTimeout(function(){
           window.location.href = "friends";
         },0
@@ -102,8 +96,8 @@ function button_click(cookie){
     });
 
     $("#connect_home").click(function(){
-        cookie.clear("click_id");
-        cookie.clear("click_username");
+        global.cookie_setting.clear("click_id");
+        global.cookie_setting.clear("click_username");
         setTimeout(function(){
           window.location.href = "home";
         },0
@@ -111,8 +105,8 @@ function button_click(cookie){
     });
 
     $("#connect_net").click(function(){
-        cookie.clear("click_id");
-        cookie.clear("click_username");
+        global.cookie_setting.clear("click_id");
+        global.cookie_setting.clear("click_username");
         setTimeout(function(){
           window.location.href = "network";
         },0
@@ -120,8 +114,8 @@ function button_click(cookie){
     });
 
     $("#connect_prof").click(function(){
-        cookie.clear("click_id");
-        cookie.clear("click_username");
+        global.cookie_setting.clear("click_id");
+        global.cookie_setting.clear("click_username");
         setTimeout(function(){
           window.location.href = "posted";
         },0

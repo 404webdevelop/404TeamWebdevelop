@@ -23,7 +23,7 @@ function setdynamic(img,tit,tex,date,author,type,id){
   });
   request.done(function (callback) {
             var postobj = callback;
-            var github = cookie.get("github");
+            var github = global.cookie_setting.get("github");
             //console.log(github);
             if(page == "home"){
                 //console.log(postobj.posts[0].author.id);
@@ -49,10 +49,10 @@ function setdynamic(img,tit,tex,date,author,type,id){
                         var githubobj = callback;
                         $.each(githubobj, function (i, value) {
 
-                            if (cookie.get("click_id") == "undefined" ||cookie.get("click_id") == "" || cookie.get("click_id")== cookie.get("userid")){
-                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("userid"));
+                            if (global.cookie_setting.get("click_id") == "undefined" ||global.cookie_setting.get("click_id") == "" || global.cookie_setting.get("click_id")== global.cookie_setting.get("userid")){
+                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",global.cookie_setting.get("userid"));
                             }else{
-                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",cookie.get("click_id"));
+                                var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",global.cookie_setting.get("click_id"));
                             }
                             $("#list_post_view").append(st);
                         });

@@ -1,8 +1,7 @@
 (function (global) {
 
 'use strict';
-var cookie = global.cookie_setting;
-var update_and_post = global.update_and_post;
+
 
 function postPost(){
   var url = "api/posts/";  
@@ -30,8 +29,8 @@ function postPost(){
     });
 }
 
-function patchProfile(cookie,firstName, lastName,email,git, callback) {
-  var url = cookie.get("url");
+function patchProfile(firstName, lastName,email,git, callback) {
+  var url = global.cookie_setting.get("url");
   var data= {
     "email": firstName,
     "first_name": lastName,

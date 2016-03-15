@@ -1,17 +1,17 @@
 (function (global) {
 
 'use strict';
-function checkfollowed(cookie,callback){      
-        var url = "api/follow/"+cookie.get("userid")+"/followings";
+function checkfollowed(callback){      
+        var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
         $.getJSON(url,function(data){
             console.log(data);
             $.each(data,function (i,value){
 
               console.log(data[i].followed.split("/")[5]);
               
-              console.log("just: "+cookie.get("click_id"));
-              if(data[i].followed.split("/")[5] == cookie.get("click_id")){
-                cookie.set("follow_id",data[i].url);
+              console.log("just: "+global.cookie_setting.get("click_id"));
+              if(data[i].followed.split("/")[5] == global.cookie_setting.get("click_id")){
+                global.cookie_setting.set("follow_id",data[i].url);
                 console.log("wo de tiam");
                 $('#follow_btn').text("UNFOLLOW");
                 $('#follow_btn').css("background","#FF6347");
@@ -27,7 +27,7 @@ function followother(cookie){
 
   $.getJSON('api/author/',function(data){
     $.each(data.data,function (i , value){
-      if(data.data[i].username == cookie.get("click_username")){
+      if(data.data[i].username == global.cookie_setting.get("click_username")){
 
         var url = 'api/follow/';
         
@@ -36,7 +36,7 @@ function followother(cookie){
           url: url,
           data:{
           "followed":data.data[i].url,
-          "follower":cookie.get("url")
+          "follower":global.cookie_setting.get("url")
           } 
         });
         request.done(function (callback) {
@@ -59,16 +59,16 @@ function unfollowother(cookie){
 
   $.getJSON('api/author/',function(data){
     $.each(data.data,function (i , value){
-      if(data.data[i].username == cookie.get("click_username")){
+      if(data.data[i].username == global.cookie_setting.get("click_username")){
 
-        var url = cookie.get("follow_id"); 
+        var url = global.cookie_setting.get("follow_id"); 
         
        var request = $.ajax({
           method: "DELETE",
           url: url,
           data:{
           "followed":data.data[i].url,
-          "follower":cookie.get("url")
+          "follower":global.cookie_setting.get("url")
           } 
         });
         request.done(function (callback) {
@@ -90,11 +90,11 @@ function unfollowother(cookie){
 
 
 
-function findfriends(cookie,data,page){
+function findfriends(data,page){
   var load_post = global.load_posts; 
   console.log("yoyo");
-  console.log(cookie.get("userid"));
-  var url = "api/friends/"+cookie.get("userid");
+  console.log(global.cookie_setting.get("userid"));
+  var url = "api/friends/"+global.cookie_setting.get("userid");
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -125,7 +125,7 @@ function findfriends(cookie,data,page){
          });
 };
 
-function search_user(cookie,username){
+function search_user(username){
   $.getJSON('api/author/',function(data){
     $.each(data.data,function (i , value){
       console.log(data.data[i].username);

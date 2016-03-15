@@ -14,29 +14,30 @@ var frineds_find =global.findfriends;
 
 
 
-function setup(data,cookie,login_infor_set,infor_nav,clicks){
+function setup(data){
 
     var page="home";
-    login_infor_set.infor_setting(clicks,infor_nav,cookie);
-    load_post.posts_load(data,page,cookie);
-    clicks.clickbtn(cookie);
+    global.login_setting.infor_setting(cookie);
+    global.load_posts.posts_load(data,page,cookie);
+    global.button_click.clickbtn();
+    console.log("why");
 };
 
 
 $( document ).ready(function() {
 
-  var data= {"username":cookie.get("username"),
-       "url":cookie.get("url"),
-       "token":cookie.get("token"),
-       "firstname":cookie.get("firstname"),
-       "lastname": cookie.get("lastname"),
+  var data= {"username":global.cookie_setting.get("username"),
+       "url":global.cookie_setting.get("url"),
+       "token":global.cookie_setting.get("token"),
+       "firstname":global.cookie_setting.get("firstname"),
+       "lastname": global.cookie_setting.get("lastname"),
        "userphoto":"/static/image/no_image.jpg",
        "followers":"50",
        "following":"77",
        "friends":"112"
        };
-clicks.clickbtn(cookie);
-setup(data,cookie,login_infor_set,infor_nav,clicks);
+global.button_click.clickbtn();
+setup(data);
 });
 })(this);
 
