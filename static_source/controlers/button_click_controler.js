@@ -41,10 +41,6 @@ function button_click(){
 
         global.update_and_post.post_posts();
 
-        /*setTimeout(function(){
-          window.location.href = "posted";
-        },0
-          );  */
     });
 
     $("#update_submit").click(function(){
@@ -69,6 +65,7 @@ function button_click(){
       console.log($('#follow_btn').text());
       if ($('#follow_btn').text() == "UNFOLLOW"){
         global.findfriends.unfollow_other();
+        console.log("sddffffffffffffffffffff"+$('#follow_btn').text());
       }else{
         global.findfriends.follow_other();
       }    
