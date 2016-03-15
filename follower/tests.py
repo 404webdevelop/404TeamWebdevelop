@@ -23,6 +23,7 @@ class FriendTest(APITestCase):
 
                 request_a = factory.get('/author/', {'username': 'aaa'})
                 request_b = factory.get('/author/', {'username': 'bbb'})
+                #print request_a
                 a_url= UserSerializer(author_a, context={'request': request_a}).data['url']
                 b_url= UserSerializer(author_b, context={'request': request_b}).data['url']
 
@@ -43,19 +44,33 @@ class FriendTest(APITestCase):
 
         def test_get_follower(self):
                 url = reverse("follows-list")
-                factory = APIRequestFactory()
+                factory = APIRequestFactory()  
 
                 author_a = Author.objects.create(username="aaa", password='1')
                 author_b = Author.objects.create(username="bbb", email="b@404.com", password='0000')
-
                 self.client.force_authenticate(user=author_b)
-                Follows.objects.create(follower=author_b, followed=author_a).save()
+                Follows.objects.create(follower=author_b, followed=author_a).save()        
+                
+                request_b = factory.get('/author/', {'username': 'bbb'})
+                follow= Follows.objects.get(follower=author_b, followed=author_a)
+                request = factory.get('/follow/',  {'follower': author_b.id})
 
-                result = Follows.objects.getFollowers(author_a)
-                request = factory.get('/follow/'+ str(author_b.id))
-
-                print FollowSerializer(result, context={'request': request})
-
+                author_b_url= UserSerializer(author_b, context={'request': request_b}).data['url']
+                self.assertEqual(author_b_url, FollowSerializer(follow, context={'request': request}).data['follower'])
                 
 
+        def test_get_followed(self):
+                url = reverse("follows-list")
+                factory = APIRequestFactory()  
+
+                author_a = Author.objects.create(username="aaa", password='1')
+                author_b = Author.objects.create(username="bbb", email="b@404.com", password='0000')
+                self.client.force_authenticate(user=author_b)
+                Follows.objects.create(follower=author_b, followed=author_a).save()        
                 
+                request_a = factory.get('/author/', {'username': 'aaa'})
+                follow= Follows.objects.get(follower=author_b, followed=author_a)
+                request = factory.get('/follow/',  {'followed': author_a.id})
+
+                author_a_url= UserSerializer(author_a, context={'request': request_a}).data['url']
+                self.assertEqual(author_a_url, FollowSerializer(follow, context={'request': request}).data['followed'])
