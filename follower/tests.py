@@ -7,6 +7,7 @@ from author.models import Author
 from author.api.serializers import UserSerializer
 from follower.models import Follows
 from follower.serializers import FollowSerializer
+from rest_framework.test import APIClient
 import json
 
 class FriendTest(APITestCase):
@@ -23,6 +24,7 @@ class FriendTest(APITestCase):
 
                 request_a = factory.get('/author/', {'username': 'aaa'})
                 request_b = factory.get('/author/', {'username': 'bbb'})
+                print request_a
                 #print request_a
                 a_url= UserSerializer(author_a, context={'request': request_a}).data['url']
                 b_url= UserSerializer(author_b, context={'request': request_b}).data['url']
@@ -71,6 +73,31 @@ class FriendTest(APITestCase):
                 request_a = factory.get('/author/', {'username': 'aaa'})
                 follow= Follows.objects.get(follower=author_b, followed=author_a)
                 request = factory.get('/follow/',  {'followed': author_a.id})
-
+                print request.GET
                 author_a_url= UserSerializer(author_a, context={'request': request_a}).data['url']
                 self.assertEqual(author_a_url, FollowSerializer(follow, context={'request': request}).data['followed'])
+
+
+
+class FriendTest(APITestCase):
+
+    client = APIClient(enforce_csrf_checks=True)
+
+    def setUp(self):
+        u = Author.objects.create_superuser(username='apitest1', email='apitest1@apitest.com', password='apitest1')
+        u.save()
+        login = self.client.login(username = 'apitest1', password = 'apitest1')
+        self.assertTrue(login)
+
+    # test for POST on /service/friends/userid/
+    def test_friend_one(self):
+        response = self.client.post('/service/friends/67/', {"query": "friends", "author": "9de17f29c12e8f97bcbbd34cc908f1baba40658e", "authors": ["69", "68", "67"]}, format='json')
+        self.assertEqual(response.status_code, 200)
+
+    # test for GET on /service/friends/userid1/userid2/
+    def test_friend_two(self):
+        response = self.client.get('/service/friends/67/68/')
+        self.assertEqual(response.status_code, 200)
+
+    def tearDown(self):
+        self.client.logout()
