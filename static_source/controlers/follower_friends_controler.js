@@ -112,28 +112,6 @@ function getfollowings(data){
   request.fail(function (callback) {
             console.log(callback);
          });
-  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var followersobj = callback;
-            //console.log(callback);
-            $.each(followersobj, function (i, value) {
-             
-                $.getJSON(followersobj[i].followed,function(data){
-                    console.log("ffffffffffffgggggggggggggggggggggggg");
-                    
-                    $("#following_list_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
-                });
-            
-            });
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });*/
-
 }
 
 
@@ -152,9 +130,6 @@ function getfollowers(data){
 
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].follower,function(data){
-                    //console.log("sdfsf");
-                    //console.log(data.id);
-                    //console.log("------");
                     $("#follower_list_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
                 });
               
@@ -171,8 +146,6 @@ function getfollowers(data){
 
 function findfriends(data,page){
   var load_post = global.load_posts; 
-  //console.log("yoyo");
-  //console.log(global.cookie_setting.get("userid"));
   var url = "api/friends/"+global.cookie_setting.get("userid");
   var request = $.ajax({
           method: "GET",
@@ -181,14 +154,9 @@ function findfriends(data,page){
   request.done(function (callback) {
             console.log(callback);
             var friendsobj = callback;
-
             $.each(friendsobj.authors,function (i,value){
-              //console.log("sm++++");
-              //console.log(i);
               var auturl = "api/author/"+friendsobj.authors[i];
               $.getJSON(auturl,function(data){
-                    
-                    //console.log(data);
                     if(page == "network"){
                       $("#f2").append("<li id = \""+data.username+"\"value=\""+data.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
                     }

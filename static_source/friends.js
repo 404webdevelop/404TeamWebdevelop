@@ -6,12 +6,9 @@
 
 function setup(data){
   var page="friends";
-  
-
   $("#searchbutton").click(function(){
       global.findfriends.search($('#myFilter').val());
   });
-
   global.nav_inf.nav_inf_setting(data,page);
   global.button_click.clickbtn();
   global.findfriends.friends(data,"friends");
@@ -31,9 +28,9 @@ $( document ).ready(function() {
        "following":"77",
        "friends":"112"
        };
-  $('#folloer_list_view').hide();
-  $('#following_list_view').hide();
-  $('#f_f_list_view').hide();
+  $('#hide2').hide();
+  $('#hide3').hide();
+  //$('#f_f_list_view').hide();
   setup(data);
 });
 })(this);

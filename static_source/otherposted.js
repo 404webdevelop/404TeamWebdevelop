@@ -24,7 +24,6 @@ function setup(data){
     });
   };
 $( document ).ready(function() {
-      //find_click_user();
       var data= {"username":global.cookie_setting.get("click_username"),
                  "token":global.cookie_setting.get("token"),
                  "firstname":global.cookie_setting.get("click_first_name"),

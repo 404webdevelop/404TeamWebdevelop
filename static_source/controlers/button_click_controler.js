@@ -31,6 +31,29 @@ function button_click(){
 
         
     });
+
+    $('#friends_field').click(function(){
+          $('#hide1').show();
+          $('#hide2').hide();
+          $('#hide3').hide();
+
+        
+    });
+    $('#following_field').click(function(){
+          $('#hide2').show();
+          $('#hide1').hide();
+          $('#hide3').hide();
+    });
+    $('#follower_field').click(function(){
+          $('#hide3').show();
+          $('#hide1').hide();
+          $('#hide2').hide();
+
+        
+    });
+
+
+
     $('#post_post').click(function(){
         global.update_and_post.post_posts();
         setTimeout(function(){
