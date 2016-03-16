@@ -3,6 +3,7 @@
 'use strict';
 
 
+
 function setup(data){
   var page="friends";
   
@@ -14,7 +15,8 @@ function setup(data){
   global.nav_inf.nav_inf_setting(data,page);
   global.button_click.clickbtn();
   global.findfriends.friends(data,"friends");
-  
+  global.findfriends.get_follower(data);
+  global.findfriends.get_following(data);
 };
 
 

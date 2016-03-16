@@ -88,12 +88,91 @@ function unfollowother(cookie){
 
 };
 
+function getfollowings(data){
+  console.log(global.cookie_setting.get("userid"));
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var followersobj = callback;
+            
+
+            $.each(followersobj, function (i, value) {
+                $.getJSON(followersobj[i].follower,function(data){
+                    console.log("sdfsf");
+                    console.log(data.id);
+                    console.log("------***");
+                    $("#following_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                });
+              
+            }); 
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var followersobj = callback;
+            //console.log(callback);
+            $.each(followersobj, function (i, value) {
+             
+                $.getJSON(followersobj[i].followed,function(data){
+                    console.log("ffffffffffffgggggggggggggggggggggggg");
+                    
+                    $("#following_list_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
+                });
+            
+            });
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });*/
+
+}
+
+
+
+
+function getfollowers(data){
+  console.log(global.cookie_setting.get("userid"));
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followers";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var followersobj = callback;
+            
+
+            $.each(followersobj, function (i, value) {
+                $.getJSON(followersobj[i].follower,function(data){
+                    //console.log("sdfsf");
+                    //console.log(data.id);
+                    //console.log("------");
+                    $("#follower_list_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                });
+              
+            }); 
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+}
+
+
+
 
 
 function findfriends(data,page){
   var load_post = global.load_posts; 
-  console.log("yoyo");
-  console.log(global.cookie_setting.get("userid"));
+  //console.log("yoyo");
+  //console.log(global.cookie_setting.get("userid"));
   var url = "api/friends/"+global.cookie_setting.get("userid");
   var request = $.ajax({
           method: "GET",
@@ -147,7 +226,9 @@ global.findfriends= {
   checkfollow:checkfollowed,
   search:search_user,
   follow_other:followother,
-  unfollow_other:unfollowother
+  unfollow_other:unfollowother,
+  get_follower:getfollowers,
+  get_following:getfollowings,
 	
 }
 
