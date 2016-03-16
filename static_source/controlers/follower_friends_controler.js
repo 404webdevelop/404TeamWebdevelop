@@ -100,7 +100,7 @@ function getfollowings(data){
             
 
             $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].follower,function(data){
+                $.getJSON(followersobj[i].followed,function(data){
                     console.log("sdfsf");
                     console.log(data.id);
                     console.log("------***");
