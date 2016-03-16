@@ -18,35 +18,7 @@ function button_click(){
           );  
     });
 
-    /*$('#fiends_field').click(function(){
-      $('#show2').hide();
-      $('#show3').hide();
-      $('#show4').hide();
 
-
-    });
-    $('#following_field').click(function(){
-      $('#show1').hide();
-      $('#show3').hide();
-      $('#show4').hide();
-
-
-    });
-    $('#follower_field').click(function(){
-      $('#show1').hide();
-      $('#show2').hide();
-      $('#show4').hide();
-
-
-    });
-    $('#f_f_list_view').click(function(){
-      $('#show1').hide();
-      $('#show2').hide();
-      $('#show3').hide();
-
-
-    });
-*/
 
     
 
@@ -63,16 +35,11 @@ function button_click(){
         
     });
     $('#post_post').click(function(){
-        //localStorage.setItem("lastname", "Smith");
-        //console.log(localStorage.getItem("lastname"));
+        localStorage.setItem("lastname", "Smith");
+        console.log(localStorage.getItem("lastname"));
 
 
         global.update_and_post.post_posts();
-        setTimeout(function(){
-          window.location.href = "posted";
-        },0
-          );  
-
 
     });
 
@@ -152,6 +119,7 @@ function button_click(){
           );
     });
 
+    
 }
 
 

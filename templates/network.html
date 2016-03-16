@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="/static/default.css">
 <!-- Bootstrap core CSS -->
     <link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
@@ -16,21 +15,25 @@
 
 </head>
 <!-- this is the top nav bar -->
-  <link href="/static/Bootstrap_files/theme.css" rel="stylesheet">
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">            
-        </button>
-        <a class="navbar-brand" href="#">404 Web Project</a>
-        <a class="navbar-brand" href="about">About Us</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul id="welcomeitem" class="nav navbar-nav"></ul>
-        <ul id="loginbutton"class="nav navbar-nav"><a id="user_name_input">hfh</a>&nbsp &nbsp &nbsp<a href="#myProfileDialog" data-rel="popup" data-position-to="window" data-transition="fade" ><button id="edit\onclick=\signinbox()"type="button" class="btn btn-lg btn-default">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;<button id="logoutbutton" type="button" class="btn btn-lg btn-warning">Logout</button></ul>
-      </div><!--/.nav-collapse -->
-  </div>    
-</nav>
+    <link href="/static/Bootstrap_files/theme.css" rel="stylesheet">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">            
+          </button>
+          <a class="navbar-brand" href="#">404 Web Project</a>
+	  <a class="navbar-brand" href="about">About Us</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul id="welcomeitem" class="nav navbar-nav"></ul>
+         <ul id="loginbutton"class="nav navbar-nav">
+           <a id="user_name_input">hfh</a>&nbsp &nbsp &nbsp<a href="#myProfileDialog" data-rel="popup" data-position-to="window" data-transition="fade" ><button id="edit\onclick=\signinbox()"type="button" class="btn btn-lg btn-default">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;<button id="logoutbutton" type="button" class="btn btn-lg btn-warning">Logout</button>
+         </ul>
+        </div><!--/.nav-collapse -->
+      </div>    
+    </nav>
+
+
 
 
 
@@ -39,40 +42,28 @@
   <div data-role="page" id="onepage" >
    
     <div data-role="header" data-theme="f">
-      <h1>welcome</h1>
-    </div>
-    <div id="postbody">
-      <div data-role="content">
-        <div id="info"class="info">
-          <center><p>Looks like there isn't anything here.</p></center>
+    <h1>welcome</h1>
+  </div>
+  <div id="postbody">
+    <div data-role="content">
+            <div id="info"class="info">
+              <center><p>Looks like there isn't anything here.</p></center>
 
-        </div>
+          </div>
     </div>
+
+
+    
     <div id="connect-infor">
       
     </div>
 
-      <div id= "Following" class="divF1">
-  <center><h3>Following:</h3>
-    <ul id="f1"  class="target"data-role="listview"   data-inset="true" data-icon="user">
-     
-    </ul>
-  </div>
- <div id= "Friends" class="divF1">
-  <center><h3>Friends:</h3>
-    <ul id="f2"class="target" data-role="listview" data-inset="true" data-icon="check">
-      
-    </ul>
-  </div>
- <div id= "Followers" class="divF1">
-  <center><h3>Followers:</h3>
-    <ul id="f3" class="target"data-role="listview"   data-inset="true" data-icon="plus">
-      
-    </ul>
-  </div>
-  </div>
+        <div data-demo-html="true">
+        <ul id="list_post_view"class="ui-listview ui-listview-inset" data-role="listview" data-inset="true">
 
-    
+        </ul>
+      </div><!--/demo-html -->
+    </div>
 
  
   
@@ -113,7 +104,7 @@
         Update Lastname<input id="last-name-input"type="text" placeholder="Eg.  Doe">
         Update E-mail<input id="e-mail-input"type="text" placeholder="Eg. jdoe">
         Updata Github<input id="github-input"type="text" placeholder="Eg. jdoe">
-         <br>
+	       <br>
         <button id="update_submit"type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Update</button>
 
         <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left" data-rel="back">Cancel</a>
@@ -135,18 +126,6 @@
         <p>Post title:&nbsp;&nbsp;&nbsp;<input id = "title_input_style" name="text_title_input" type="textbox" > </p>
         
         <p>Your post content:</p><textarea id="content_input_style" name="text_content_input" cols="150" rows="3"></textarea>
-        Privacy level: 
-        <select id= "right">
-            <option value="pub">Public</option>
-            <option value="me">Private to me</option>
-            <option value="friends">Friends only</option>
-            <option value="fof">Friends of friends</option>
-        </select>
-        Do you want this post Pivacy host only> 
-        <select id = "host_only">
-            <option value="ture">YES</option>
-            <option value="false">NO</option>
-        </select>
         <form action="home.html">
         select the image that you want to post:<input type="file" name="img" multiple>
  
@@ -154,7 +133,7 @@
         <tr>
           <td>
 
-        <button type="submit"  id='post_post'class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Post</button></td>
+        <button type="submit" id='post_post' class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Post</button></td>
         <td>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -167,6 +146,7 @@
     </form>
       </div>
       
+
 
     </div>
 
@@ -193,6 +173,7 @@
 <script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/network.js" ></script>
+
 
 </body>
 </html>
