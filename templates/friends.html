@@ -161,11 +161,16 @@
         
         <p>Your post content:</p><textarea id="content_input_style" name="text_content_input" cols="150" rows="3"></textarea>
         Privacy level: 
-        <select>
-            <option value="Public">Public</option>
-            <option value="Private">Private to me</option>
-            <option value="Friends_only">Friends only</option>
-            <option value="Friends_friends">Friends of friends</option>
+        <select id= "right">
+            <option value="pub">Public</option>
+            <option value="me">Private to me</option>
+            <option value="friends">Friends only</option>
+            <option value="fof">Friends of friends</option>
+        </select>
+        Do you want this post Pivacy host only> 
+        <select id = "host_only">
+            <option value="ture">YES</option>
+            <option value="false">NO</option>
         </select>
         <form action="#">
         select the image that you want to post:<input type="file" name="img" multiple>

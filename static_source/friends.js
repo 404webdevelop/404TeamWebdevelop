@@ -14,9 +14,7 @@ function setup(data){
   global.nav_inf.nav_inf_setting(data,page);
   global.button_click.clickbtn();
   global.findfriends.friends(data,"friends");
-  $('#folloer_list_view').hide();
-  $('#following_list_view').hide();
-  $('#f_f_list_view').hide();
+  
 };
 
 

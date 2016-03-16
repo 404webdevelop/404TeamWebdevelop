@@ -7,17 +7,27 @@ function postPost(){
   var url = "api/posts/";  
   var post_post= $("#title_input_style").val();
   var post_content= $("#content_input_style").val();
-
+  var right = $("#right").val();
+  var host_only = $("#host_only").val();
+  if (host_only =="true"){
+      host_only = true;
+  }else{
+    host_only = false;
+  }
+  console.log(right);
   console.log(username);
   var data= {
     "title": post_post,
     "content": post_content,
+    "privacy_level":right,
+    "privacy_host_only":host_only,
   };
 
   var request = $.ajax({
           method: "POST",
           url: url,
           data: data,
+
         });
 
   request.done(function (callback) {

@@ -63,8 +63,8 @@ function button_click(){
         
     });
     $('#post_post').click(function(){
-        localStorage.setItem("lastname", "Smith");
-        console.log(localStorage.getItem("lastname"));
+        //localStorage.setItem("lastname", "Smith");
+        //console.log(localStorage.getItem("lastname"));
 
 
         global.update_and_post.post_posts();
