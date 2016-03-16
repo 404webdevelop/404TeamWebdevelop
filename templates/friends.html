@@ -53,11 +53,15 @@
     </div>
     
     <div id= "div1">
-      <table><tr><td><button>Friends</td><td><button>Following</td><td><button>Followers</td><td><button>Friends of Friends</td></tr></table>
+      <table><tr><td><button id="friends_field">Friends</td><td><button id = "following_field">Following</td><td><button id="follower_field">Followers</td><td><button id="F_F_field">Friends of Friends</td></tr></table>
       <ul class = "target"id = "friends_list_view"data-role="listview" data-autodividers="true" data-filter="true" data-inset="true"data-icon="user">
-        
-               
       </ul>
+      
+
+
+
+
+      
   </div>
   <div id= "div_space" class="alert alert-success">
       
@@ -158,10 +162,10 @@
         <p>Your post content:</p><textarea id="content_input_style" name="text_content_input" cols="150" rows="3"></textarea>
         Privacy level: 
         <select>
-            <option value="volvo">Public</option>
-            <option value="saab">Private to me</option>
-            <option value="opel">Friends only</option>
-            <option value="audi">Friends of friends</option>
+            <option value="Public">Public</option>
+            <option value="Private">Private to me</option>
+            <option value="Friends_only">Friends only</option>
+            <option value="Friends_friends">Friends of friends</option>
         </select>
         <form action="#">
         select the image that you want to post:<input type="file" name="img" multiple>

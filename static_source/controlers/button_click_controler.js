@@ -18,7 +18,35 @@ function button_click(){
           );  
     });
 
+    /*$('#fiends_field').click(function(){
+      $('#show2').hide();
+      $('#show3').hide();
+      $('#show4').hide();
 
+
+    });
+    $('#following_field').click(function(){
+      $('#show1').hide();
+      $('#show3').hide();
+      $('#show4').hide();
+
+
+    });
+    $('#follower_field').click(function(){
+      $('#show1').hide();
+      $('#show2').hide();
+      $('#show4').hide();
+
+
+    });
+    $('#f_f_list_view').click(function(){
+      $('#show1').hide();
+      $('#show2').hide();
+      $('#show3').hide();
+
+
+    });
+*/
 
     
 
