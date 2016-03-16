@@ -35,11 +35,11 @@ function button_click(){
         
     });
     $('#post_post').click(function(){
-        localStorage.setItem("lastname", "Smith");
-        console.log(localStorage.getItem("lastname"));
-
-
         global.update_and_post.post_posts();
+        setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
 
     });
 
