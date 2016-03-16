@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/default.css">
+</head>
+
+<script>
+document.cookie = "stf=1";
+</script>
+
+
+<body id ="loginbody">
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+
+<div id="loginbox" >
+<form id = "upload_form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+{% csrf_token %}
+
+<center><h2 >New User Registration</h2></center>
+
+<center><div id="in_text_put">{{ form.username.label_tag }}{{ form.username }}</div></center>
+<br/>
+<center><div id="in_text_put">{{ form.password.label_tag }} {{ form.password }}</div></center>
+<br/>
+
+
+
+<div>
+
+
+<a href="/signup" >Sign up</a>
+<input id="sub_btn" type="submit" value="login" />
+<!--<input type="hidden" name="next" value="{{ next }}" />-->
+</div>
+
+
+
+</form>
+
+
+<script async="" type="text/javascript" src="/static/controlers/follower_friends_controler.js" ></script> 
+<script async="" type="text/javascript" src="/static/controlers/load_post_controler.js" ></script> 
+<script async="" type="text/javascript" src="/static/controlers/update_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/user_login_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
+<script async="" type="text/javascript" src="/static/login.js" ></script>
+</div>
+</body>
+</html>
+
+
+
