@@ -17,9 +17,6 @@ function button_click(){
         },0
           );  
     });
-
-
-
     
 
     $('#user_name_input').click(function(){
@@ -34,12 +31,35 @@ function button_click(){
 
         
     });
+
+    $('#friends_field').click(function(){
+          $('#hide1').show();
+          $('#hide2').hide();
+          $('#hide3').hide();
+
+        
+    });
+    $('#following_field').click(function(){
+          $('#hide2').show();
+          $('#hide1').hide();
+          $('#hide3').hide();
+    });
+    $('#follower_field').click(function(){
+          $('#hide3').show();
+          $('#hide1').hide();
+          $('#hide2').hide();
+
+        
+    });
+
+
+
     $('#post_post').click(function(){
-        localStorage.setItem("lastname", "Smith");
-        console.log(localStorage.getItem("lastname"));
-
-
         global.update_and_post.post_posts();
+        setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
 
     });
 
@@ -87,6 +107,16 @@ function button_click(){
 
          global.cookie_setting.set("click_id",$(this).attr("value"));
          global.cookie_setting.set("click_username",$(this).attr("id"));
+           $.getJSON('api/author/',function(data){
+            $.each(data.data,function (i , value){
+              if(data.data[i].username == global.cookie_setting.get("click_username")){
+                global.cookie_setting.set("click_first_name",data.data[i].first_name);
+                global.cookie_setting.set("click_last_name",data.data[i].last_name);
+              }
+            });
+           });
+
+
          setTimeout(function(){
           window.location.href = "otherposted";
         },0
