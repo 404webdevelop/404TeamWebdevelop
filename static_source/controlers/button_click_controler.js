@@ -73,10 +73,9 @@ function button_click(){
 
 
     $('#list_post_view').delegate('li', 'click', function () {
-         global.cookie_setting.set("click_id",$(this).attr("value"));
-
+         global.cookie_setting.set("post_id",$(this).attr("value"));
          setTimeout(function(){
-          window.location.href = "posted";
+          window.location.href = "network";
         },0
           );
 

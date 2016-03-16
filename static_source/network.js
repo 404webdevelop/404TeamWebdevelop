@@ -20,6 +20,7 @@ var cookie = global.cookie_setting;
 
     $( document ).ready(function() {
       var data= {"username":global.cookie_setting.get("username"),
+           "postid":global.cookie_setting.get("post_id"),
            "url":global.cookie_setting.get("url"),
            "token":global.cookie_setting.get("token"),
            "firstname":global.cookie_setting.get("firstname"),
