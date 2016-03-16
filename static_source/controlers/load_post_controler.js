@@ -19,6 +19,11 @@ function setdynamic(img,tit,tex,date,author,type,id,url,comments){
   return string;
 };
 
+function makeComBox(id){
+    var string = "<li id=\"view_list_style\"value =\"commentbox\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><textarea type='textarea' cols='64' rows='5'></textarea><button style='position:relative;top:-40px;'>Submit New Comment</button></div>&nbsp;</div></li>";
+    return string;
+}
+
   function getpost(data,page,cookie){
     var url = "api/posts/";
     var request = $.ajax({
@@ -28,16 +33,21 @@ function setdynamic(img,tit,tex,date,author,type,id,url,comments){
   request.done(function (callback) {
             var postobj = callback;
             var github = global.cookie_setting.get("github");
+	    var count = 0;
             //console.log(github);
             if(page == "home"){
                 //console.log(postobj.posts[0].author.id);
-                $.each(postobj.posts, function (i, value) {             
-                        var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
-                        $("#list_post_view").append(st);
+                $.each(postobj.posts, function (i, value) { 
+			if(count < 100){
+				count++;            
+		                var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
+		                $("#list_post_view").append(st);
+			}
                 });
             }
 	    if(page == "network"){
-		var count = 0;
+		var st= makeComBox();
+		$("#list_post_view").append(st);
                 //console.log(postobj.posts[0].author.id);
                 $.each(postobj.posts, function (i, value) {    
 			count++;       
