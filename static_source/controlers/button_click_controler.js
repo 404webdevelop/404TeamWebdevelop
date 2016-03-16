@@ -81,6 +81,16 @@ function button_click(){
           );
 
      });
+
+ $('#list_combox_view').delegate('li', 'click', function () {
+         global.cookie_setting.set("click_id",$(this).attr("value"));
+
+         setTimeout(function(){
+          window.location.href = "network";
+        },0
+          );
+
+     });
     $("#follow_btn").click(function(){
       console.log($('#follow_btn').text());
       if ($('#follow_btn').text() == "UNFOLLOW"){

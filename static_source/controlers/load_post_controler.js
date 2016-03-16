@@ -9,11 +9,11 @@ function setdynamic(img,tit,tex,date,author,type,id,url,comments){
     return string;
   }
   if (type == "post"){
-    var string = "<li id=\"view_list_style\"value =\""+id+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p></a><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a><button class='commentnav' style='position:relative;float:right;top:-5px;' onClick='window.location.href=" + url + "'>" + comments.length+ " Comments</button></div>&nbsp;</div></li>"
+    var string = "<li id=\"view_list_style\"value =\""+id+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p></a><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a><button class='commentnav' style='position:relative;float:right;top:-5px;' onClick='window.location.href=" + url + "'>" + comments.length+ " Comments</button></div>&nbsp;</div></li>"
     return string;
   }
   if (type == "comment"){
-    var string = "<li id=\"view_list_style\"value =\""+id+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2></a><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
+    var string = "<li id=\"view_list_style\"value =\""+id+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2></a><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
     return string;
   }
   return string;
@@ -47,7 +47,7 @@ function makeComBox(id){
             }
 	    if(page == "network"){
 		var st= makeComBox();
-		$("#list_post_view").append(st);
+		$("#list_combox_view").append(st);
                 //console.log(postobj.posts[0].author.id);
                 $.each(postobj.posts, function (i, value) {    
 			count++;       

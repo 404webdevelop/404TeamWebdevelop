@@ -17,6 +17,8 @@ function setup(data){
 };
 
 
+
+
 $( document ).ready(function() {
   var data= {"username":global.cookie_setting.get("username"),
        "url":global.cookie_setting.get("url"),
