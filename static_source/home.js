@@ -10,7 +10,6 @@ function setup(data){
     var page="home";
     global.login_setting.infor_setting();
     global.load_posts.posts_load(data,page);
-    global.button_click.clickbtn();
     console.log("why");
 };
 
