@@ -42,7 +42,10 @@ function makeComBox(id){
     				count++;            
                 var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
                 $("#list_post_view").append(st);
-                //console.log(postobj.posts[i].url);
+
+
+
+                //trying for image load but not work yet.
                 var inner_request = $.ajax({
                       method: "GET",
                       url: "api/images/",
@@ -53,14 +56,15 @@ function makeComBox(id){
                     //console.log("image:::::::"+callback.images[j].parent_post );
                     //console.log("target:::::::"+postobj.posts[i].url);
                     if(callback.images[j].parent_post = postobj.posts[i].url){
-                        //console.log(callback.images[j].json_url)
+                        console.log(callback.images[j].json_url)
                         //console.log(JSON.parse(callback.images[j].json_url));
                         //var image = JSON.parse(callback.images[j].json_url);
-                        //var thiss = "http://127.0.0.1:8000/api/images/2/?format=api";
-                        //var image = $.getJSON(thiss, function(data){
-                           //console.log(JSON.parse(thiss));
+                        //var thiss = "http://127.0.0.1:8000/api/images/1/?format=json";
+                        $.getJSON(callback.images[j].json_url, function(data){
+                          console.log(data);
+         
 
-                        //});
+                        });
                         //var st= setdynamic(image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
                         //$("#list_post_view").append(st);
 
