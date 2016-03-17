@@ -22,11 +22,9 @@ function setifor(img,firstname,lastname,followers, following, friends,page){
 
 
 function nav_inf_set(data,page){
-
- 
           global.findfriends.checkfollow();
           var head = setifor(data.userphoto,data.firstname,data.lastname,data.following, data.followers, data.friends,page);
-          console.log(head);
+          //console.log(head);
           $("#user_name_input").text(global.cookie_setting.get("username"));
           $("#info").html(head);
           $("#connect-infor").html("<div id=\"connect-infor\" class=\"alert alert-success\" ><center><strong>Successfully loaded!</strong> You can view your friends' posts below.<br>if you want to see the most recent posts please click the refresh button or the load more button at the bottom<center></div>");

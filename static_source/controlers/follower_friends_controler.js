@@ -4,12 +4,8 @@
 function checkfollowed(callback){      
         var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
         $.getJSON(url,function(data){
-            console.log(data);
+            //console.log(data);
             $.each(data,function (i,value){
-
-              console.log(data[i].followed.split("/")[5]);
-              
-              console.log("just: "+global.cookie_setting.get("click_id"));
               if(data[i].followed.split("/")[5] == global.cookie_setting.get("click_id")){
                 global.cookie_setting.set("follow_id",data[i].url);
                 console.log("wo de tiam");
@@ -74,8 +70,6 @@ function unfollowother(cookie){
         request.done(function (callback) {
           $('#follow_btn').text("FOLLOW");
           $('#follow_btn').css("background","lightgreen");
-          //console.log(callback);
-
         });
         request.fail(function (callback) {
             console.log(callback);
@@ -100,7 +94,7 @@ function getfollowings(data){
             
 
             $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].follower,function(data){
+                $.getJSON(followersobj[i].followed,function(data){
                     console.log("sdfsf");
                     console.log(data.id);
                     console.log("------***");

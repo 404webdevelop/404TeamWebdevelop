@@ -40,14 +40,14 @@ function button_click(){
         
     });
     $('#following_field').click(function(){
-          $('#hide2').show();
-          $('#hide1').hide();
-          $('#hide3').hide();
-    });
-    $('#follower_field').click(function(){
           $('#hide3').show();
           $('#hide1').hide();
           $('#hide2').hide();
+    });
+    $('#follower_field').click(function(){
+          $('#hide2').show();
+          $('#hide1').hide();
+          $('#hide3').hide();
 
         
     });
