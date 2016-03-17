@@ -45,7 +45,7 @@ function makeComBox(id){
         $.each(postobj.posts, function (i, value) { 
     			if(count < 100){
     				count++;            
-                var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
+                var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                 $("#list_post_view").append(st);
 
 
@@ -104,7 +104,7 @@ function makeComBox(id){
         if(page == "posted"){
             $.each(postobj.posts, function (i, value) {
                 if(data.username == postobj.posts[i].username){
-                    var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].url, postobj.posts[i].comments);
+                    var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                     console.log(postobj.posts[0].author.github);
                     $("#list_post_view").append(st);
                 }
