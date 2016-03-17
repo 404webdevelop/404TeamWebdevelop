@@ -8,7 +8,9 @@ function setifor(img,firstname,lastname,followers, following, friends,page){
   		var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+firstname+"  "+lastname+"</h1><button class=\" ui-btn ui-shadow ui-corner-all\" id=\"follow_btn\" type=\"button\">FOLLOW</button></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
   	}
 	else if(page =="network"){
-		
+		 var combox = "<div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><center><textarea id='comment_content' type='textarea' cols='64' rows='5'></textarea><button class='btn btn-lg btn-default' id=\"list_combox_btn\" type=\"button\" style='position:relative;top:-40px;'>Submit New Comment</button></div>&nbsp;</div>";
+	    
+		$("#list_combox_view").append(combox);
 	}
   	else{
   		var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+firstname+"  "+lastname+"</h1></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";	
