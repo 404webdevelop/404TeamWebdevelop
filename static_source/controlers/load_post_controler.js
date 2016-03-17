@@ -13,14 +13,14 @@ function setdynamic(img,tit,tex,date,author,type,id,postid,comments){
     return string;
   }
   if (type == "comment"){
-    var string = "<li id=\"view_list_style\"value =\""+id+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2></a><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
+    var string = "<li id=\"view_com_style\"value =\""+postid+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2></a><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
     return string;
   }
   return string;
 };
 
 function makeComBox(id){
-    var string = "<li id=\"view_list_style\"value =\"commentbox\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><textarea type='textarea' cols='64' rows='5'></textarea><button style='position:relative;top:-40px;'>Submit New Comment</button></div>&nbsp;</div></li>";
+   
     return string;
 }
 
@@ -91,13 +91,12 @@ function makeComBox(id){
 	     if(page == "network"){
 		var head  = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+data.userphoto+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1><i>'"+postobj.title + "'</i> by "+ postobj.username+"</h1></div><div class=\"well\"><p>" + postobj.content+ "</p></div></td></tr></table>";
 		  $("#info").html(head);
-		var st= makeComBox();
-		$("#list_combox_view").append(st);
+	
                 //console.log(postobj.posts[0].author.id);
                 $.each(postobj.comments, function (i, value) {    
 			count++;       
                         var st= setdynamic(data.userphoto,"Comment #" + count,postobj.comments[i].content,postobj.comments[i].date_created,postobj.comments[i].local_author.username,"comment",postobj.comments[i].local_author.username);
-                        $("#list_post_view").append(st);
+                        $("#list_com_view").append(st);
                 });
             
         }
