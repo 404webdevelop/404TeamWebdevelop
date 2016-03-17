@@ -19,9 +19,9 @@ function getuserlogin(callback){
         global.cookie_setting.set("userid",userobj.id);
         global.cookie_setting.set("url",userobj.url);
         global.cookie_setting.set("firstname",userobj.first_name);
-        console.log(userobj.first_name);
+        //console.log(userobj.first_name);
         global.cookie_setting.set("lastname",userobj.last_name);
-        console.log(userobj.last_name);
+        //console.log(userobj.last_name);
         var data= {"username":global.cookie_setting.get("username"),
                    "url":global.cookie_setting.get("url"),
                    "token":global.cookie_setting.get("token"),

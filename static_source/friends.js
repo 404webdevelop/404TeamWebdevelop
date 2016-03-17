@@ -32,7 +32,6 @@ $( document ).ready(function() {
        };
   $('#hide2').hide();
   $('#hide3').hide();
-  //$('#f_f_list_view').hide();
   setup(data);
 });
 })(this);

@@ -171,12 +171,26 @@
         </select>
         Do you want this post Pivacy host only> 
         <select id = "host_only">
-            <option value="ture">YES</option>
+            <option value="true">YES</option>
             <option value="false">NO</option>
         </select>
-        <form action="#">
-        select the image that you want to post:<input type="file" name="img" multiple>
-        
+        <form action="home.html">
+        <table>
+          select the image that you want to post:
+          <tr>
+          <td>
+            <select id = "image_type">
+                <option value="JPG">JPG/JPEG</option>
+                <option value="PNG">PNG</option>
+                <option value="GIF">GIF</option>
+                <option value="BMP">BMP</option>
+            </select>
+
+          </td><td><input type="file" name="img" multiple>
+          </td>
+          
+        </tr>
+        <table>
         <center><table >
         <tr>
           <td>
@@ -193,7 +207,6 @@
     </table></center>
     </form>
       </div>
-      
     </div>
 
 <!-- this is the bottom nav bar -->
@@ -223,36 +236,6 @@
 <script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/friends.js" ></script>
 <script>
-
-function tabview(vw){
-    switch(vw){
-	case "fr":
-	    viewreset();
-	    document.getElementById("friends_list_view").display = "";
-	    break;
-	case "fe":
-	    viewreset();
-	    document.getElementById("followers_list_view").display = "";
-	    break;
-	case "fi":
-	    viewreset();
-	    document.getElementById("following_list_view").display = "";
-	    break;
-	case "ff":
-	    viewreset();
-	    document.getElementById("fof_list_view").display = "";
-	    break;
-    }
-}
-
-function viewreset(){
-	document.getElementById("friends_list_view").display = "None";
-	document.getElementById("followers_list_view").display = "None";
-	document.getElementById("following_list_view").display = "None";
-	document.getElementById("fof_list_view").display = "None";
-}
-
-tabview("fr");
 </script>
 </body>
 </html>

@@ -139,8 +139,22 @@
             <option value="false">NO</option>
         </select>
         <form action="home.html">
-        select the image that you want to post:<input type="file" name="img" multiple>
- 
+        <table>
+          select the image that you want to post:
+          <tr>
+          <td>
+            <select id = "image_type">
+                <option value="JPG">JPG/JPEG</option>
+                <option value="PNG">PNG</option>
+                <option value="GIF">GIF</option>
+                <option value="BMP">BMP</option>
+            </select>
+
+          </td><td><input type="file" name="img" multiple>
+          </td>
+          
+        </tr>
+        <table>
         <center><table >
         <tr>
           <td>
