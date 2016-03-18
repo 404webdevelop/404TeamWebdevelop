@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/default.css">
-</head>
-
+<!-- Bootstrap core CSS -->
+<link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap theme -->
+<link href="/static/Bootstrap_files/bootstrap-theme.min.css" rel="stylesheet">
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="/static/Bootstrap_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/styles/login.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script>
-document.cookie = "stf=1";
+  document.cookie = "stf=1";
 </script>
-
-
+</head>
 <body id ="loginbody">
+<div id="canvas">
+  <div>
+    <div class="light-box canvas-center">
+      <div id="login-pannel" class="content">
+        <div id="error-msg-cotainer">
+          {% if form.errors %}
+          <p>Your username and password didn't match. Please try again.</p>
+          {% endif %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
-
-
-<div id="loginbox" >
-<form id = "upload_form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-
-<center><h2 >New User Registration</h2></center>
-
-<center><div id="in_text_put">{{ form.username.label_tag }}{{ form.username }}</div></center>
-<br/>
-<center><div id="in_text_put">{{ form.password.label_tag }} {{ form.password }}</div></center>
-<br/>
-
-
-
-<div>
-
-
-<a href="/signup" >Sign up</a>
-<input id="sub_btn" type="submit" value="login" />
-<!--<input type="hidden" name="next" value="{{ next }}" />-->
+          {% if next %}
+            {% if user.is_authenticated %}
+            <p>Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+            {% else %}
+            <p>Please login to see this page.</p>
+            {% endif %}
+          {% endif %}
+        </div>
+        
+        <form id = "upload_form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+          {% csrf_token %}
+          <h2 >Author Login</h2>
+          <div id="in_text_put" class="form-group">
+            <!-- <label for="id_username">Username:</label> -->
+            <input id="id_username" class="form-control" maxlength="254" name="username" type="text" placeholder="Username">
+          </div>
+          <div id="in_text_put" class="form-group">
+            <!-- <label for="id_password">Password:</label> -->
+            <input id="id_password" class="form-control" name="password" type="password" placeholder="Password">
+          </div>
+          <div class="button-container">
+            <a id="signup-link" href="/signup">Sign up</a>
+            <button id="sub_btn" class="btn btn-default" type="submit">Signin</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+<script type="text/javascript">
+  function adjustLineHeight() {
+    var height = '' + $(window).height() + 'px';
+    $('body').css("line-height", height);
+  }
 
-
-
-</form>
-
-
-<script async="" type="text/javascript" src="/static/controlers/follower_friends_controler.js" ></script> 
-<script async="" type="text/javascript" src="/static/controlers/load_post_controler.js" ></script> 
-<script async="" type="text/javascript" src="/static/controlers/update_controler.js" ></script>
-<script async="" type="text/javascript" src="/static/controlers/user_login_controler.js" ></script>
-<script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
-<script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
-<script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
-<script async="" type="text/javascript" src="/static/login.js" ></script>
-</div>
+  $(document).ready(function () {
+    adjustLineHeight();
+    $(window).resize(function() {
+      adjustLineHeight();
+    });
+  });
+</script>
 </body>
 </html>
 
