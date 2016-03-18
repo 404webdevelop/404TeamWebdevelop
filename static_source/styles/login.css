@@ -1,0 +1,51 @@
+* {
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    box-sizing: content-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#canvas {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+.light-box {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.content {
+    display: block;
+}
+
+#login-pannel {
+    display: inline-block;
+    position: relative;
+    width: 410px;
+    height: 240px;
+    line-height: normal;
+    text-align: left;
+}
+
+.button-container {
+    text-align: right;
+    margin-right: -25px;
+}
+
+    #signup-link {
+        margin-right: 8px;
+    }
+
+#error-msg-cotainer{
+    color: red;
+}
