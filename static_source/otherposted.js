@@ -12,15 +12,16 @@ function setup(data){
     
     $(document).ready(function () {
         var friends_list = [];
-        
+        global.nav_inf.nav_inf_setting(data,page);
+        global.load_posts.posts_load(data,page);
+        global.button_click.clickbtn();
         console.log("user id is:"+global.cookie_setting.get("userid"));
         console.log("target id is:"+global.cookie_setting.get("click_id"));
         console.log("target id is:"+global.cookie_setting.get("click_username"));
         console.log("target fist name: "+global.cookie_setting.get("click_first_name"));
         console.log("target last name: "+global.cookie_setting.get("click_last_name"));
-        global.nav_inf.nav_inf_setting(data,page);
-        global.load_posts.posts_load(data,page);
-        global.button_click.clickbtn();
+
+
     });
   };
 $( document ).ready(function() {
