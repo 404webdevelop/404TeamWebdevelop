@@ -100,24 +100,13 @@ function button_click(){
       }    
 
 
+
     });
 
     $('.target').delegate('li', 'click', function () {
 
          global.cookie_setting.set("click_id",$(this).attr("value"));
          global.cookie_setting.set("click_username",$(this).attr("id"));
-           $.getJSON('api/author/',function(data){
-            console.log(data);
-            $.each(data.authors,function (i , value){
-              if(data.authors[i].username == global.cookie_setting.get("click_username")){
-                global.cookie_setting.set("click_first_name",data.authors[i].first_name);
-                global.cookie_setting.set("click_last_name",data.authors[i].last_name);
-                console.log(data.authors[i].first_name);
-                console.log(data.authors[i].last_name);
-              }
-            });
-           });
-
 
          setTimeout(function(){
           window.location.href = "otherposted";

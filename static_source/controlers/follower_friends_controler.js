@@ -19,11 +19,11 @@ function checkfollowed(callback){
             });     
          });
       }
-function followother(cookie){
+function followother(){
 
   $.getJSON('api/author/',function(data){
-    $.each(data.data,function (i , value){
-      if(data.data[i].username == global.cookie_setting.get("click_username")){
+    $.each(data.authors,function (i , value){
+      if(data.authors[i].username == global.cookie_setting.get("click_username")){
 
         var url = 'api/follow/';
         
@@ -31,7 +31,7 @@ function followother(cookie){
           method: "POST",
           url: url,
           data:{
-          "followed":data.data[i].url,
+          "followed":data.authors[i].url,
           "follower":global.cookie_setting.get("url")
           } 
         });
@@ -43,19 +43,20 @@ function followother(cookie){
         request.fail(function (callback) {
             console.log(callback);
          });
-        console.log("hoeee:  "+data.data[i].url);
+        console.log("hoeee:  "+data.authors[i].url);
       }
     })
     
   })
+  global.findfriends.checkfollow();
 
 };
 
-function unfollowother(cookie){
-
+function unfollowother(){
+  global.findfriends.checkfollow();
   $.getJSON('api/author/',function(data){
-    $.each(data.data,function (i , value){
-      if(data.data[i].username == global.cookie_setting.get("click_username")){
+    $.each(data.authors,function (i , value){
+      if(data.authors[i].username == global.cookie_setting.get("click_username")){
 
         var url = global.cookie_setting.get("follow_id"); 
         
@@ -63,7 +64,7 @@ function unfollowother(cookie){
           method: "DELETE",
           url: url,
           data:{
-          "followed":data.data[i].url,
+          "followed":data.authors[i].url,
           "follower":global.cookie_setting.get("url")
           } 
         });
