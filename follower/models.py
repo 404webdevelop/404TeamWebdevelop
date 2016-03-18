@@ -2,23 +2,20 @@ from django.db import models
 from author.models import Author
 
 class FollowManager(models.Manager):
-    # call this by Follows.objects.getFollowers(user id)
+    # call this by Follows.objects.getFollowers(author id)
 
     def getFollowers(self, user):
         return self.get_queryset().filter(followed=user)
 
+
     def getFollowing(self, user):
         return self.get_queryset().filter(follower=user)
 
-    def is_friends(self, user1, user2):
-        return False
-
-    def get_friends(self, user):
-        return []
 
     def mutualFollow(self, follower1, follower2):
         firstcase = self.isFollowing(follower1, follower2)
         reversecase = self.isFollowing(follower2, follower1)
+
 
         if not firstcase and not reversecase:
             self.follow(follower1, follower2)
@@ -29,6 +26,7 @@ class FollowManager(models.Manager):
             self.follow(follower2, follower1)
         else:
             print("dont add any")
+
 
     def mutualUnFollow(self, follower1, follower2):
         firstcase = self.isFollowing(follower1, follower2)
@@ -44,9 +42,11 @@ class FollowManager(models.Manager):
         else:
             print("dont add any")
 
+
     def follow(self, follower1, follower2):
         follow = self.create(followed=follower2, follower=follower1)
         return followes
+
 
     def unfollow(self, follower1, follower2):
         try:
@@ -54,6 +54,10 @@ class FollowManager(models.Manager):
             return True
         except:
             return False
+
+
+    def check_friend_request(self, friend_request):
+        pass
 
     def isFollowing(self, follower1, follower2):
         follow_exist = self.get_queryset().filter(followed=follower1, follower=follower2).exists()
