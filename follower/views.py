@@ -20,6 +20,10 @@ class FollowViewSet(viewsets.ModelViewSet):
     API endpoint that allows followers to be viewed by author
 
     Usage: \n
+      - `/follow/{author_id}`
+        - PUT: update current author's follow status
+        - PATCH: partial update current author's follow status
+        - DELETE: delete current author's follow
       - `/follow/{author_id}/followers`
         - GET: list all author's followers
         - you cannot POST to this url
@@ -39,15 +43,6 @@ class FollowViewSet(viewsets.ModelViewSet):
         return super(FollowViewSet, self).get_permissions()
 
 
-    def create(self, request, *args, **kwargs):
-        username = unicode(request.user)
-
-        me = Author.objects.get(username = request.user)
-
-        following = Author.objects.get(id= request.data["followed"].split("/")[-2])
-        follow = Follows.objects.follow(me, following)
-        follow_serializer = FollowSerializer(follow, context={'request': request})
-        return Response(follow_serializer.data)
 
 
     @detail_route(methods=["GET"])

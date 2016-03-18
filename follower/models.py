@@ -46,7 +46,7 @@ class FollowManager(models.Manager):
 
     def follow(self, follower1, follower2):
         follow = self.create(followed=follower2, follower=follower1)
-        return follow
+        return followes
 
     def unfollow(self, follower1, follower2):
         try:
@@ -67,6 +67,9 @@ class Follows(models.Model):
     
     followed = models.ForeignKey(Author, related_name='followed')
     follower = models.ForeignKey(Author, related_name='follower')
+    friend_request = models.BooleanField(default = False, blank=True)
+    remote_author_name = models.CharField(max_length = 100, default='', blank=True)
+    remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
     objects = FollowManager()
 
     class Meta:
@@ -74,7 +77,8 @@ class Follows(models.Model):
         verbose_name_plural = "Followers"
         unique_together = (('followed', 'follower'),)
 
-    def __unicode__(self):  # For Python 2, use __str__ on Python 3
+    def __unicode__(self):  
+        # For Python 2, use __str__ on Python 3
         try:
             return "{sender} is followed by {reciever}\n".format(sender=self.followed, reciever=self.follower)
         # return "{reciever\n}".format(reciever=self.reciever)
