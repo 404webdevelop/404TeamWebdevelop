@@ -26,8 +26,9 @@ class AuthorPagination(PageNumberPagination):
             ('size', len(data)),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
-            ('data', data)
+            ('authors', data)
         ]))
+
 
 # for rest framework
 class AuthorViewSet(viewsets.ModelViewSet):
