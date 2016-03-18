@@ -5,3 +5,5 @@ class CustomPermissions(permissions.IsAuthenticatedOrReadOnly):
     def has_object_permission(self, request, view, obj):
 		if obj.followed == request.user:
 			return True
+		elif obj.follower == request.user:
+			return True
