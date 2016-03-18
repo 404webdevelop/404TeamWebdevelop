@@ -4,6 +4,7 @@ from author.api.serializers import UserSerializer
 from django.http import HttpResponse
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from permissions import CustomPermissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework import generics
 from rest_framework import viewsets
@@ -36,6 +37,8 @@ class FollowViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             self.permission_classes = [IsAuthenticated, ]
+        if self.action == 'update':
+            self.permission_classes = [CustomPermissions,]
         return super(FollowViewSet, self).get_permissions()
 
 
