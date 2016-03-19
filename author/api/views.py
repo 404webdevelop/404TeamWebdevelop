@@ -64,6 +64,7 @@ class AuthorViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = Author.objects.all().filter(is_superuser=False).filter(is_active=True).order_by('-date_joined')
+        queryset = list(queryset)
 
         if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
             queryset += GetAllRemoteAuthors()
