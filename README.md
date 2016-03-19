@@ -17,6 +17,18 @@ REST Framework API Root: [127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
 * `python manage.py migrate`
 * `python manage.py createsuperuser`
 
+### Testing connecting the server to a local clone of itself
+
+* Copy+paste the entire project
+* `python manage.py runserver 127.0.0.1:8000` for one copy
+* `python manage.py runserver 127.0.0.1:8001` for the other copy
+* On both servers, use `/api/author` to create a **remote auth user**
+* On both server, use `/admin` to add a remote server
+  * Hostname: 127.0.0.1:8001/api or 127.0.0.1:8000/api
+  * Local user: [the **remote auth user** you created]
+  * Remote username & Remote password: credentials for the **remote auth user** on the other server
+* The two servers should now be connected and pulling posts from each other
+
 ### Run the tests
 
 * `python manage.py test`
