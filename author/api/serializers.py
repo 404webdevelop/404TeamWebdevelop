@@ -29,6 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context['request']
         data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args=(obj.id,)))
         data['displayName'] = data['username']
+        if data['picture'] is not None and len(data['picture']) > 0:
+            data['picture'] = data['url'] + 'profile_picture/'
         if data['github'].find('github.com/') == -1:
             data['github'] = 'https://api.github.com/users/' + data['github'] + '/events'
         data['host'] = request.get_host()
