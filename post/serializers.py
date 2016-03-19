@@ -3,14 +3,17 @@ import imghdr
 from rest_framework import serializers
 from permissions import *
 from rest_framework import exceptions
+import collections
+import json
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
+from remotes.models import *
 
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'published', 'privacy_level', 'privacy_host_only')
 
     def create(self, validated_data):
         author = self.context['request'].user
@@ -22,7 +25,7 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
         data = super(PostWriteSerializer, self).to_representation(obj)
 
         request = self.context['request']
-        queryset = Comment.objects.all().order_by('-date_created')
+        queryset = Comment.objects.all().order_by('-published')
         try:
             queryset = [comment for comment in queryset if comment.parent.id == obj.id]
         except:
@@ -44,12 +47,49 @@ class PostReadSerializer(PostWriteSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'author', 'date_created', 'last_modified', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'author', 'published', 'privacy_level', 'privacy_host_only')
+
+class RemotePostSerializer(serializers.Serializer):
+    data = serializers.CharField(max_length=None)
+    published = serializers.DateTimeField()
+
+    def to_representation(self, obj):
+        data = super(RemotePostSerializer, self).to_representation(obj)
+        jsonDict = json.loads(data['data'])
+        for key in jsonDict:
+            data[key] = jsonDict[key]
+        del data['data']
+        return data
+
+def SerializePosts(posts, request):
+    results = []
+    for post in posts:
+        if isinstance(post, Post):
+            serializer = PostReadSerializer(post, context={'request': request})
+            results.append(serializer.data)
+        elif isinstance(post, RemotePost):
+            serializer = RemotePostSerializer(post, context={'request': request})
+            results.append(serializer.data)
+        else:
+            raise Exception()
+    return results
+
+# class RemotePostSerializer(serializers.Serializer):
+#     def to_representation(self, obj):
+#         if isinstance(obj, Post):
+#             serializer = PostReadSerializer(obj, many=True, context={'request': self.context['request']})
+#             return serializer.data
+#         elif isinstance(obj, RemotePost):
+#             # d = (('published', obj.published), ('data', obj.data))
+#             d = (('a', 1),('b', 2))
+#             return collections.OrderedDict(d)
+#         else:
+#             raise Exception()
 
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'published')
 
     def create(self, validated_data):
         local_author = self.context['request'].user
@@ -67,12 +107,12 @@ class CommentReadSerializer(CommentWriteSerializer):
     local_author = UserSerializer()
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'published')
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'date_created', 'last_modified')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'published')
 
     def create(self, validated_data):
         post_id = self.context['parent']
@@ -113,7 +153,7 @@ class ImageCreateSerializer(serializers.HyperlinkedModelSerializer):
     image_data = serializers.ImageField()
     class Meta:
         model = Image
-        fields = ('url', 'parent_post', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'parent_post', 'file_type', 'image_data', 'published')
 
     def create(self, validated_data):
         uploader = self.context['request'].user
@@ -126,7 +166,7 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
     image_data = Base64Field()
     class Meta:
         model = Image
-        fields = ('url', 'uploader', 'parent_post', 'file_type', 'image_data', 'date_created')
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'image_data', 'published')
 
     def to_representation(self, obj):
         data = super(ImageSerializer, self).to_representation(obj)
@@ -139,7 +179,7 @@ class ImageSimpleSerializer(serializers.HyperlinkedModelSerializer):
     """
     class Meta:
         model = Image
-        fields = ('url', 'uploader', 'parent_post', 'file_type', 'date_created')
+        fields = ('url', 'uploader', 'parent_post', 'file_type', 'published')
 
     def to_representation(self, obj):
         data = super(ImageSimpleSerializer, self).to_representation(obj)

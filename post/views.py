@@ -17,6 +17,7 @@ from rest_framework import exceptions
 from .models import Post, Image, Comment
 from .serializers import *
 from .permissions import *
+from remotes.utils import *
 
 class PostPagination(PageNumberPagination):
     page_size = 10
@@ -112,7 +113,7 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
         except:
             serializer = PostReadSerializer([], many=True, context={'request': request})
             return Response(serializer.data)
-        queryset = Post.objects.all().order_by('-date_created').filter(author=user)
+        queryset = Post.objects.all().order_by('-published').filter(author=user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
         page = self.paginate_queryset(queryset)
@@ -135,7 +136,7 @@ class MyPosts(PostByAuthor):
     permission_classes = [permissions.IsAuthenticated, PostPermission]
 
     def list(self, request):
-        queryset = Post.objects.all().order_by('-date_created').filter(author=request.user)
+        queryset = Post.objects.all().order_by('-published').filter(author=request.user)
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
         page = self.paginate_queryset(queryset)
@@ -175,7 +176,7 @@ class PostViewSet(viewsets.ModelViewSet):
         - "friends": Friends only
         - "fof": Friends of friends
     """
-    queryset = Post.objects.all().order_by('-date_created')
+    queryset = Post.objects.all().order_by('-published')
     serializer_class = PostWriteSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [PostPermission]
@@ -187,16 +188,21 @@ class PostViewSet(viewsets.ModelViewSet):
         return super(PostViewSet, self).get_permissions()
 
     def list(self, request):
-        queryset = Post.objects.all().order_by('-date_created')
+        queryset = Post.objects.all().order_by('-published')
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = PostReadSerializer(page, many=True, context={'request': request})
-            return self.get_paginated_response(serializer.data)
+        if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
+            queryset += GetAllRemotePosts()
 
-        serializer = PostReadSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)
+        queryset.sort(key = lambda x: x.published, reverse=True)
+
+        page = self.paginate_queryset(queryset) # just truncates?
+        if page is not None:
+            data = SerializePosts(page, request)
+            return self.get_paginated_response(data)
+
+        data = SerializePosts(queryset, request)
+        return Response(data)
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
@@ -225,7 +231,7 @@ class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     pagination_class = CommentPagination
 
     def list(self, request, post_id):
-        queryset = Comment.objects.all().order_by('-date_created')
+        queryset = Comment.objects.all().order_by('-published')
         try:
             queryset = [comment for comment in queryset if comment.parent.id == Post.objects.get(pk=post_id).id]
         except:
@@ -274,7 +280,7 @@ class CommentViewSet(viewsets.ModelViewSet):
       - `remote_author_url`: url of remote comment author (optional)
       - `parent`: url of parent post
     """
-    queryset = Comment.objects.all().order_by('-date_created')
+    queryset = Comment.objects.all().order_by('-published')
     serializer_class = CommentWriteSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [CommentPermission]
@@ -286,7 +292,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return super(CommentViewSet, self).get_permissions()
 
     def list(self, request):
-        queryset = Comment.objects.all().order_by('-date_created')
+        queryset = Comment.objects.all().order_by('-published')
         queryset = [comment for comment in queryset if CanViewComment(comment, request.user)]
 
         page = self.paginate_queryset(queryset)
@@ -322,7 +328,7 @@ class ImageViewSet(viewsets.ModelViewSet, PagedViewMixin):
       - `file_type`: {'jpeg', 'png', 'gif', 'bmp'}
       - `image_data`: the image being uploaded
     """
-    queryset = Image.objects.all().order_by('-date_created')
+    queryset = Image.objects.all().order_by('-published')
     serializer_class = ImageCreateSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [ImagePermission]
