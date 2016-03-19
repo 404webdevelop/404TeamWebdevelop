@@ -1,4 +1,5 @@
 import json
+from django.utils.dateparse import parse_datetime
 
 from django.db import models
 from author.models import Author
@@ -21,8 +22,8 @@ class RemotePost(object):
     def __init__(self, data):
         self.data = json.dumps(data)
         if 'published' in data:
-            self.published = data['published']
+            self.published = parse_datetime(data['published'])
         elif 'pubDate' in data:
-            self.published = data['pubDate']
+            self.published = parse_datetime(data['pubDate'])
         else:
             raise BadDataException('No published date in RemotePost data')
