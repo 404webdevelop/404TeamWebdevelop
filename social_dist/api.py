@@ -35,7 +35,7 @@ class MyRouter(routers.DefaultRouter):
             ## [Friend](/api/friend) \n
             - list, delete: [`/friend/author_id`](/api/friend)
 
-            _Edit this documentation in `social_dist/social_dist/api.py`_
+            _Edit this documentation in `social_dist/api.py`_
 
             """
             pass

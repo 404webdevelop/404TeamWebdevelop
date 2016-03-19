@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'follower',
     'rest_framework',
     'rest_framework.authtoken',
+    'remotes',
 )
 
 AUTH_USER_MODEL = 'author.Author'
