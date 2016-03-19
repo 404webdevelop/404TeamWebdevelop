@@ -190,7 +190,9 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request):
         queryset = Post.objects.all().order_by('-published')
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
-        queryset += GetAllRemotePosts()
+
+        if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
+            queryset += GetAllRemotePosts()
 
         page = self.paginate_queryset(queryset) # just truncates?
         if page is not None:

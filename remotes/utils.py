@@ -12,6 +12,10 @@ def IsRemoteAuthUsername(localUsername):
     return len([server for server in RemoteServer.objects.all()
                 if server.local_user is not None and server.local_user.username == localUsername]) > 0
 
+def IsRemoteAuthUser(user):
+    return len([server for server in RemoteServer.objects.all()
+                if server.local_user is not None and server.local_user.id == user.id]) > 0
+
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
         self.host = 'http://' + host
