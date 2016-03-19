@@ -59,6 +59,15 @@ class RemotePostSerializer(serializers.Serializer):
         for key in jsonDict:
             data[key] = jsonDict[key]
         del data['data']
+        if 'url' not in data and 'origin' in data:
+            data['url'] = data['origin']
+        if 'url' not in data and 'source' in data:
+            data['url'] = data['source']
+        if 'username' not in data and 'author' in data:
+            if 'username' in data['author']:
+                data['username'] = data['author']['username']
+            if 'displayName' in data['author']:
+                data['username'] = data['author']['displayName']
         return data
 
 def SerializePosts(posts, request):
