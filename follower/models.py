@@ -45,7 +45,7 @@ class FollowManager(models.Manager):
 
     def follow(self, follower1, follower2):
         follow = self.create(followed=follower2, follower=follower1)
-        return followes
+        return follow
 
 
     def unfollow(self, follower1, follower2):
