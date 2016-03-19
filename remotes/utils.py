@@ -45,6 +45,19 @@ def GetRemoteServers(requestingUser):
         return _RemoteServer(row.hostname, credentials, requestingUser)
     return [MakeRemoteServer(row) for row in RemoteServer.objects.all()]
 
+def _ExtractData(json, name):
+    if name in json:
+        remoteDicts = json[name]
+    elif name + 's' in json:
+        remoteDicts = json[name + 's']
+    elif 'data' in json:
+        remoteDicts = json['data']
+    elif isinstance(json, list):
+        remoteDicts = json
+    else:
+        remoteDicts = []
+    return remoteDicts
+
 def GetAllRemotePosts(requestingUser = None):
     servers = GetRemoteServers(requestingUser)
     remotePosts = []
@@ -52,9 +65,25 @@ def GetAllRemotePosts(requestingUser = None):
         assert isinstance(server, _RemoteServer)
         r = server.Get('/posts')
         if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
-            for remotePostDict in r.json()['posts']:
+            remotePostDicts = _ExtractData(r.json(), 'post')
+            for remotePostDict in remotePostDicts:
                 try:
                     remotePosts.append(RemotePost(remotePostDict))
                 except BadDataException:
                     pass
     return remotePosts
+
+def GetAllRemoteAuthors(requestingUser = None):
+    servers = GetRemoteServers(requestingUser)
+    remoteAuthors = []
+    for server in servers:
+        assert isinstance(server, _RemoteServer)
+        r = server.Get('/author')
+        if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
+            remoteAuthorDicts = _ExtractData(r.json(), 'author')
+            for remoteAuthorDict in remoteAuthorDicts:
+                try:
+                    remoteAuthors.append(RemoteAuthor(remoteAuthorDict))
+                except BadDataException:
+                    pass
+    return remoteAuthors
