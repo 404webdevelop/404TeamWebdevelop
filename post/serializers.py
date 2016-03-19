@@ -4,6 +4,7 @@ from rest_framework import serializers
 from permissions import *
 from rest_framework import exceptions
 import collections
+import json
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
@@ -51,6 +52,14 @@ class PostReadSerializer(PostWriteSerializer):
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
+
+    def to_representation(self, obj):
+        data = super(RemotePostSerializer, self).to_representation(obj)
+        jsonDict = json.loads(data['data'])
+        for key in jsonDict:
+            data[key] = jsonDict[key]
+        del data['data']
+        return data
 
 def SerializePosts(posts, request):
     results = []
