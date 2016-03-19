@@ -31,13 +31,14 @@ function postPost(){
         });
 
   request.done(function (callback) {
-    console.log(callback)
+    console.log(callback.url);
     });
   
   request.fail(function (callback) {
     console.log(callback);
     });
 }
+
 
 function patchProfile(firstName, lastName,email,git, callback) {
   var url = global.cookie_setting.get("url");

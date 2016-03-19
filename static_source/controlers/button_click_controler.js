@@ -56,10 +56,10 @@ function button_click(){
 
     $('#post_post').click(function(){
         global.update_and_post.post_posts();
-        setTimeout(function(){
+        /*setTimeout(function(){
           window.location.href = "posted";
         },0
-          );
+          );*/
 
     });
 
