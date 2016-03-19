@@ -169,10 +169,10 @@ function findfriends(data,page){
 
 function search_user(username){
   $.getJSON('api/author/',function(data){
-    $.each(data.data,function (i , value){
-      console.log(data.data[i].username);
-      if(data.data[i].username == username){
-        var data_iner = data.data[i];
+    $.each(data.authors,function (i , value){
+      console.log(data.authors[i].username);
+      if(data.authors[i].username == username){
+        var data_iner = data.authors[i];
         $("#search_listview").append("<li id = \""+data_iner.username+"\"value=\""+data_iner.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\">"+data_iner.username+"</a></li>");
 
       }
