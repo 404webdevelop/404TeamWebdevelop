@@ -152,10 +152,40 @@ function makeComBox(id){
           $.each(postobj.posts, function (i, value) {
                 if(data.username == postobj.posts[i].username){
                     //console.log();
-                    var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id);
-                    console.log(postobj.posts[0].author.github);
-                    $("#list_post_view").append(st);
+                    console.log(postobj.posts[i].author.displayName);
+              if(postobj.posts[i].author.displayName==data.username){
+                if(count < 100){
+                  count++;
+                  var inner_request = $.ajax({
+                        method: "GET",
+                        url: "api/images/",
+                  });
+                  inner_request.done(function (callback) {
+                    var cont =0;
+                    var cont1 =0;
+
+                    $.each(callback.images, function (j, value) { 
+                      if(callback.images[j].parent_post == postobj.posts[i].url){
+                          $.getJSON(callback.images[j].json_url, function(data1){
+                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            $("#list_post_view").append(st);
+                            });
+                          cont =1;              
+                      }else{
+                          cont1 =2;
+                      }          
+                    });
+                      if (cont == 0 && cont1 == 2){
+                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            $("#list_post_view").append(st);
+                      }
+                  });
+                  inner_request.fail(function (callback) {
+                  });
+
+                 }
                 }
+              }
               });
         }
 
