@@ -194,6 +194,8 @@ class PostViewSet(viewsets.ModelViewSet):
         if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
             queryset += GetAllRemotePosts()
 
+        queryset.sort(key = lambda x: x.published, reverse=True)
+
         page = self.paginate_queryset(queryset) # just truncates?
         if page is not None:
             data = SerializePosts(page, request)
