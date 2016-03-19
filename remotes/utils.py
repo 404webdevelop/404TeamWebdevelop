@@ -10,28 +10,37 @@ def IsRemoteAuthUsername(localUsername):
                 if server.local_user is not None and server.local_user.username == localUsername]) > 0
 
 class _RemoteServer:
-    def __init__(self, host, credentials = None):
+    def __init__(self, host, credentials = None, requestingUser = None):
         self.host = host
         self.credentials = credentials
+        self.requestingUser = requestingUser
+
+    def _RequestingUser(self):
+        if self.requestingUser is not None:
+            return {'remote': self.requestingUser}
+        else:
+            return dict()
 
     def Get(self, relUrl):
-        return requests.get(self.host + relUrl, auth=self.credentials)
+        r = requests.get(self.host + relUrl, auth=self.credentials, params=self._RequestingUser())
+        return r.json(), r.status_code()
 
     def Post(self, relUrl, data):
-        return requests.post(self.host + relUrl, data)
+        r = requests.post(self.host + relUrl, data, auth=self.credentials, params=self._RequestingUser())
+        return r.json(), r.status_code()
 
-def GetRemoteServers():
+def GetRemoteServers(requestingUser):
     def MakeRemoteServer(row):
         if row.remote_username != '' and row.remote_password != '':
             credentials = (row.remote_username, row.remote_password)
         else:
             credentials = None
-        return _RemoteServer(row.hostname, credentials)
+        return _RemoteServer(row.hostname, credentials, requestingUser)
     return [MakeRemoteServer(row) for row in RemoteServer.objects.all()]
 
-def GetAllRemotePosts():
-    servers = GetRemoteServers()
+def GetAllRemotePosts(requestingUser = None):
+    servers = GetRemoteServers(requestingUser)
     for server in servers:
         assert isinstance(server, _RemoteServer)
-        server.Get('/posts')
+        json, status = server.Get('/posts')
         # TODO: now what?
