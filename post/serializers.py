@@ -3,9 +3,11 @@ import imghdr
 from rest_framework import serializers
 from permissions import *
 from rest_framework import exceptions
+import collections
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
+from remotes.models import *
 
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -45,6 +47,35 @@ class PostReadSerializer(PostWriteSerializer):
     class Meta:
         model = Post
         fields = ('id', 'url', 'title', 'content', 'author', 'published', 'privacy_level', 'privacy_host_only')
+
+class RemotePostSerializer(serializers.Serializer):
+    data = serializers.CharField(max_length=None)
+    published = serializers.DateTimeField()
+
+def SerializePosts(posts, request):
+    results = []
+    for post in posts:
+        if isinstance(post, Post):
+            serializer = PostReadSerializer(post, context={'request': request})
+            results.append(serializer.data)
+        elif isinstance(post, RemotePost):
+            serializer = RemotePostSerializer(post, context={'request': request})
+            results.append(serializer.data)
+        else:
+            raise Exception()
+    return results
+
+# class RemotePostSerializer(serializers.Serializer):
+#     def to_representation(self, obj):
+#         if isinstance(obj, Post):
+#             serializer = PostReadSerializer(obj, many=True, context={'request': self.context['request']})
+#             return serializer.data
+#         elif isinstance(obj, RemotePost):
+#             # d = (('published', obj.published), ('data', obj.data))
+#             d = (('a', 1),('b', 2))
+#             return collections.OrderedDict(d)
+#         else:
+#             raise Exception()
 
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

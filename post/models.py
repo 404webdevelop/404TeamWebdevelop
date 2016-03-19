@@ -20,13 +20,9 @@ class Post(models.Model):
     privacy_host_only = models.BooleanField(default = False, blank=True) # if True, only users on this host may view
     privacy_whitelist = models.ManyToManyField(Author, related_name = '+', blank=True) # Users on this list may always view
 
-    # TODO: one post one image? or just insert an embed code for the user maybe
-    # image = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL)
-
 
 class Image(models.Model):
     parent_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-
     uploader = models.ForeignKey(Author, on_delete = models.CASCADE)
 
     FILETYPE_CHOICES = (
@@ -35,7 +31,6 @@ class Image(models.Model):
         ('gif', 'GIF'),
         ('bmp', 'BMP'),
     )
-
     file_type = models.CharField(max_length = 50, choices = FILETYPE_CHOICES)
 
     image_data = models.BinaryField()

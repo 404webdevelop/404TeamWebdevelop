@@ -1,5 +1,8 @@
-from .models import RemoteServer
 import requests # http://docs.python-requests.org/en/master/
+import json
+
+from .models import RemoteServer, RemotePost
+from .serializers import *
 
 def IsRemoteAuthUsername(localUsername):
     """
@@ -11,7 +14,7 @@ def IsRemoteAuthUsername(localUsername):
 
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
-        self.host = host
+        self.host = 'http://' + host
         self.credentials = credentials
         self.requestingUser = requestingUser
 
@@ -23,11 +26,11 @@ class _RemoteServer:
 
     def Get(self, relUrl):
         r = requests.get(self.host + relUrl, auth=self.credentials, params=self._RequestingUser())
-        return r.json(), r.status_code()
+        return r
 
     def Post(self, relUrl, data):
         r = requests.post(self.host + relUrl, data, auth=self.credentials, params=self._RequestingUser())
-        return r.json(), r.status_code()
+        return r
 
 def GetRemoteServers(requestingUser):
     def MakeRemoteServer(row):
@@ -40,7 +43,14 @@ def GetRemoteServers(requestingUser):
 
 def GetAllRemotePosts(requestingUser = None):
     servers = GetRemoteServers(requestingUser)
+    remotePosts = []
     for server in servers:
         assert isinstance(server, _RemoteServer)
-        json, status = server.Get('/posts')
-        # TODO: now what?
+        r = server.Get('/posts')
+        if r.status_code == 200 and 'size' in r.json and r.json['size'] > 0:
+            for remotePostDict in r.json['posts']:
+                try:
+                    remotePosts.append(RemotePost(remotePostDict))
+                except BadDataException:
+                    pass
+    return remotePosts
