@@ -51,8 +51,8 @@ def GetAllRemotePosts(requestingUser = None):
     for server in servers:
         assert isinstance(server, _RemoteServer)
         r = server.Get('/posts')
-        if r.status_code == 200 and 'size' in r.json and r.json['size'] > 0:
-            for remotePostDict in r.json['posts']:
+        if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
+            for remotePostDict in r.json()['posts']:
                 try:
                     remotePosts.append(RemotePost(remotePostDict))
                 except BadDataException:
