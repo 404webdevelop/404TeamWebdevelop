@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from ..models import Author
 from django.core.urlresolvers import reverse
-
+from remotes.models import *
+from remotes.serializers import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +34,16 @@ class UserSerializer(serializers.ModelSerializer):
             data['github'] = 'https://api.github.com/users/' + data['github'] + '/events'
         data['host'] = request.get_host()
         return data
+
+def SerializeAuthors(authors, request):
+    results = []
+    for author in authors:
+        if isinstance(author, Author):
+            serializer = UserSerializer(author, context={'request': request})
+            results.append(serializer.data)
+        elif isinstance(author, RemoteAuthor):
+            serializer = RemoteAuthorSerializer(author, context={'request': request})
+            results.append(serializer.data)
+        else:
+            raise Exception()
+    return results

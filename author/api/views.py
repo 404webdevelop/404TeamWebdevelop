@@ -10,9 +10,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
 
 from permissions import IsAdminOrSelfOrReadOnly
-from serializers import UserSerializer
+from serializers import UserSerializer, SerializeAuthors
 from author.models import Author
 
+from remotes.utils import *
 
 class AuthorPagination(PageNumberPagination):
     page_size = 10
@@ -60,6 +61,20 @@ class AuthorViewSet(viewsets.ModelViewSet):
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
     pagination_class = AuthorPagination
+
+    def list(self, request):
+        queryset = Author.objects.all().filter(is_superuser=False).filter(is_active=True).order_by('-date_joined')
+
+        if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
+            queryset += GetAllRemoteAuthors()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            data = SerializeAuthors(page, request)
+            return self.get_paginated_response(data)
+
+        data = SerializeAuthors(queryset, request)
+        return Response(data)
 
     def get_permissions(self):
         if self.action == 'create':
