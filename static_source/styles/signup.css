@@ -30,11 +30,15 @@ body {
     text-align: left;
 }
 
-#login-pannel {
+#signup-pannel {
     display: inline-block;
     position: relative;
     width: 410px;
     text-align: left;
+}
+
+#post-signup-dialog {
+    display: none;
 }
 
 .button-container {
@@ -42,10 +46,14 @@ body {
     margin-right: -25px;
 }
 
-    #signup-link {
+    #login-link {
         margin-right: 8px;
     }
 
 #error-msg-container {
     color: red;
+}
+
+.align-right-container {
+    text-align: right;
 }

@@ -8,7 +8,7 @@ from api import router
 
 
 urlpatterns = [
-    url(r'^signup$', TemplateView.as_view(template_name='signup.html'), name="signup"),
+    url(r'^signup$', TemplateView.as_view(template_name='user/signup.html'), name="signup"),
     url(r'^login/.*', 'django.contrib.auth.views.login', kwargs={'template_name': 'user/login.html'}, name="login"),
     url(r'^logout/*', 'django.contrib.auth.views.logout', kwargs={'next_page': 'login'}, ),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset', name="reset_password"),
