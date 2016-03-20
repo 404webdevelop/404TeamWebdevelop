@@ -59,7 +59,7 @@ router.register(r'images', ImageViewSet)
 
 # Author views
 router.register(r'author', AuthorViewSet)
-router.register(r'remoteauthor/(?P<remote_url>[.*])', RemoteAuthorViewSet, base_name='remote_author')
+router.register(r'remoteauthor/(?P<remote_url>.+)', RemoteAuthorViewSet, base_name='remote_author') # (?P<remote_url>.+)
 
 # Friend views TODO
 router.register(r'follow', FollowViewSet)

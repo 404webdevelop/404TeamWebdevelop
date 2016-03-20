@@ -123,7 +123,10 @@ class AuthorViewSet(viewsets.ModelViewSet):
 class RemoteAuthorViewSet(viewsets.ViewSet):
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
 
-    def retrieve(self, request, remote_url):
+    def list(self, request, remote_url):
         remoteAuthorDict = GetOneRemoteAuthor(remote_url)
-        serializer = RemoteAuthorSerializer(remoteAuthorDict, context={'request': request})
-        return HttpResponse(serializer.data)
+        if remoteAuthorDict is not None:
+            serializer = RemoteAuthorSerializer(remoteAuthorDict, context={'request': request})
+            return Response(serializer.data)
+        else:
+            return Response({'Error': 'Could not fetch url'}, status=404)

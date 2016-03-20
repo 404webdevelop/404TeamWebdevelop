@@ -106,9 +106,15 @@ def GetOneRemoteAuthor(url, requestingUser = None):
         print('Warning: multiple servers matching {0}'.format(netloc))
     server = servers[0]
 
+    ind = url.find(server.host)
+    if ind == -1:
+        print('Error: problem with URL {0}'.format(url))
+        return None
+    path = url[ind+len(server.host):]
+
     # do the request
     try:
-        r = server.Get(parsedURL.path)
+        r = server.Get(path)
     except requests.exceptions.ConnectionError: # remote server down
         return None
 
@@ -122,6 +128,7 @@ def GetOneRemoteAuthor(url, requestingUser = None):
     return remoteAuthor
 
 def IsLocalURL(url, request):
-    parsedURL = urlparse(url)
-    parsedHostURL = urlparse(request.get_full_path())
-    return parsedHostURL.netloc in parsedURL
+    parsedHostURL = urlparse(request.build_absolute_uri())
+    print(parsedHostURL.netloc)
+    print(url)
+    return parsedHostURL.netloc in url

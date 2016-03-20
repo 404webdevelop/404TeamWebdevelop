@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.core.urlresolvers import reverse
 from ..models import Author
-from django.core.urlresolvers import reverse
 from remotes.models import *
 from remotes.utils import *
 
@@ -40,6 +39,7 @@ class RemoteAuthorSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
 
     def to_representation(self, obj):
+        request = self.context['request']
         data = super(RemoteAuthorSerializer, self).to_representation(obj)
         jsonDict = json.loads(data['data'])
         for key in jsonDict:
@@ -48,8 +48,8 @@ class RemoteAuthorSerializer(serializers.Serializer):
         if 'username' not in data and 'displayName' in data:
             data['username'] = data['displayName']
         if 'url' in data:
-            if not IsLocalURL(data['url']):
-                data['url'] = reverse('remoteauthors-detail', args=(data['url'],))
+            if not IsLocalURL(data['url'], request):
+                data['url'] = request.build_absolute_uri(reverse('remote_author-list', args=(data['url'],)))
         return data
 
 def SerializeAuthors(authors, request):
