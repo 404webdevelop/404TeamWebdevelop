@@ -6,4 +6,4 @@ class FollowSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Follows
-        fields = ('url', 'followed', 'follower', 'remote_author_name', 'remote_author_url', 'friend_request')
+        fields = ('url', 'followed', 'follower', 'remote_author_name', 'remote_author_url', 'remote_author_host')

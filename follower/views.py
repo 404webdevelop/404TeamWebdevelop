@@ -4,6 +4,7 @@ from author.api.serializers import UserSerializer
 from django.http import HttpResponse
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
 from permissions import CustomPermissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework import generics
@@ -156,3 +157,45 @@ class FriendlistViewSet(viewsets.ModelViewSet):
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+
+class FriendRequestAPIView(APIView):
+
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        author_id = request.data['author']['id']
+        print author_id
+        friend_id = request.data['friend']['id']
+        print friend_id
+
+        if friend_id is not None:
+            try:
+                friend = Author.objects.get(id=friend_id)
+                print friend
+            except:
+                return Response({
+                    'err': 'user not exist'
+                })
+
+        if author_id is not None:
+            try:
+                author = Author.objects.get(id=author_id)
+                return Response({
+                    'err': 'uuid duplicated, really?'
+                })
+            except:
+                author = request.data['author']
+                follow = Follows.objects.create(followed=friend)
+                follow.remote_author_host = author['host']
+                follow.remote_author_name = author['displayName']
+                follow.save()
+                print follow.remote_author_name
+                return Response({
+                    'success': True
+                })
+
+
+
+
+
