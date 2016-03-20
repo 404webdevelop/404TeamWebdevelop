@@ -40,16 +40,19 @@ function postPost(){
 }
 
 
-function patchProfile(firstName, lastName,email,git, callback) {
+function patchProfile(firstName, lastName,email,git,password,callback) {
   var url = global.cookie_setting.get("url");
   var data= {
-    "email": firstName,
-    "first_name": lastName,
-    "last_name":email,
-    "github":git
+    "username": global.cookie_setting.get("username"),
+    "email": email,
+    "password":password,
+    "first_name": firstName,
+    "last_name": lastName,
+    "github": git,
+    "picture": null,
   };
   var request = $.ajax({
-          method: "PATCH",
+          method: "PUT",
           url: url,
           data: data,
         });

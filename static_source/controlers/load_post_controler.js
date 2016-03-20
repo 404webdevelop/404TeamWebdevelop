@@ -68,6 +68,10 @@ function makeComBox(id){
                       var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                       $("#list_post_view").append(st);
                 }
+                if (cont == 0 && cont1 == 0){
+                      var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                      $("#list_post_view").append(st);
+                }
             });
             inner_request.fail(function (callback) {
             });
@@ -113,6 +117,10 @@ function makeComBox(id){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
+                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            $("#list_post_view").append(st);
+                      }
+                      if (cont == 0 && cont1 == 0){
                             var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                       }
@@ -176,6 +184,10 @@ function makeComBox(id){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
+                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            $("#list_post_view").append(st);
+                      }
+                      if (cont == 0 && cont1 == 0){
                             var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                       }
