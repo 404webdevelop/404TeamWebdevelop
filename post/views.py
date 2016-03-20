@@ -317,7 +317,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True, context={'request': request})
+            serializer =CommentReadSerializer(page, many=True, context={'request': request})
             return self.get_paginated_response(serializer.data)
 
         serializer = CommentReadSerializer(queryset, many=True, context={'request': request})
