@@ -1,5 +1,6 @@
 import requests # http://docs.python-requests.org/en/master/
 import json
+from urlparse import urlparse
 
 from .models import RemoteServer, RemotePost
 from .serializers import *
@@ -63,7 +64,10 @@ def GetAllRemotePosts(requestingUser = None):
     remotePosts = []
     for server in servers:
         assert isinstance(server, _RemoteServer)
-        r = server.Get('/posts')
+        try:
+            r = server.Get('/posts')
+        except requests.exceptions.ConnectionError: # remote server down
+            continue
         if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
             remotePostDicts = _ExtractData(r.json(), 'post')
             for remotePostDict in remotePostDicts:
@@ -78,7 +82,10 @@ def GetAllRemoteAuthors(requestingUser = None):
     remoteAuthors = []
     for server in servers:
         assert isinstance(server, _RemoteServer)
-        r = server.Get('/author')
+        try:
+            r = server.Get('/author')
+        except requests.exceptions.ConnectionError: # remote server down
+            continue
         if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
             remoteAuthorDicts = _ExtractData(r.json(), 'author')
             for remoteAuthorDict in remoteAuthorDicts:
@@ -87,3 +94,34 @@ def GetAllRemoteAuthors(requestingUser = None):
                 except BadDataException:
                     pass
     return remoteAuthors
+
+def GetOneRemoteAuthor(url, requestingUser = None):
+    # find server corresponding to this url
+    parsedURL = urlparse(url)
+    netloc = parsedURL.netloc
+    servers = [server for server in GetRemoteServers(requestingUser) if netloc in server.host]
+    if len(servers) < 1:
+        return None
+    elif len(servers) > 1:
+        print('Warning: multiple servers matching {0}'.format(netloc))
+    server = servers[0]
+
+    # do the request
+    try:
+        r = server.Get(parsedURL.path)
+    except requests.exceptions.ConnectionError: # remote server down
+        return None
+
+    if r.status_code != 200:
+        return None
+    try:
+        remoteAuthor = RemoteAuthor(r.json())
+    except BadDataException:
+        return None
+
+    return remoteAuthor
+
+def IsLocalURL(url, request):
+    parsedURL = urlparse(url)
+    parsedHostURL = urlparse(request.get_full_path())
+    return parsedHostURL.netloc in parsedURL

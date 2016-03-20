@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from django.core.urlresolvers import reverse
 from ..models import Author
 from django.core.urlresolvers import reverse
 from remotes.models import *
+from remotes.utils import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,6 +47,9 @@ class RemoteAuthorSerializer(serializers.Serializer):
         del data['data']
         if 'username' not in data and 'displayName' in data:
             data['username'] = data['displayName']
+        if 'url' in data:
+            if not IsLocalURL(data['url']):
+                data['url'] = reverse('remoteauthors-detail', args=(data['url'],))
         return data
 
 def SerializeAuthors(authors, request):

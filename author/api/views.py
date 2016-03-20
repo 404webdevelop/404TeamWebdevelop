@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
 
 from permissions import IsAdminOrSelfOrReadOnly
-from serializers import UserSerializer, SerializeAuthors
+from serializers import UserSerializer, SerializeAuthors, RemoteAuthorSerializer
 from author.models import Author
 
 from remotes.utils import *
@@ -119,3 +119,11 @@ class AuthorViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         else:
             return super(AuthorViewSet, self).update(request, **kwargs)
+
+class RemoteAuthorViewSet(viewsets.ViewSet):
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+
+    def retrieve(self, request, remote_url):
+        remoteAuthorDict = GetOneRemoteAuthor(remote_url)
+        serializer = RemoteAuthorSerializer(remoteAuthorDict, context={'request': request})
+        return HttpResponse(serializer.data)

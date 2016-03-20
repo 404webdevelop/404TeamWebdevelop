@@ -1,5 +1,5 @@
 from rest_framework import routers
-from author.api.views import AuthorViewSet
+from author.api.views import AuthorViewSet, RemoteAuthorViewSet
 from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost
 from follower.views import FollowViewSet, FriendViewSet, FriendlistViewSet
 
@@ -59,6 +59,7 @@ router.register(r'images', ImageViewSet)
 
 # Author views
 router.register(r'author', AuthorViewSet)
+router.register(r'remoteauthor/(?P<remote_url>[.*])', RemoteAuthorViewSet, base_name='remote_author')
 
 # Friend views TODO
 router.register(r'follow', FollowViewSet)
