@@ -57,6 +57,8 @@ class PostReadSerializer(PostWriteSerializer):
         data['count'] = len(data['comments'])
         data['size'] = len(data['comments'])
 
+        self['contentType'] = 'text/plain'
+
         # visibility: PUBLIC FOAF FRIENDS PRIVATE SERVERONLY
         if data['privacy_host_only']:
             data['visibility'] = 'SERVERONLY'
