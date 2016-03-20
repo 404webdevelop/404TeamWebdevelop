@@ -98,6 +98,10 @@ class AuthorViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['GET', 'POST'])
     def me(self, request, **kwargs):
+        if request.user.is_anonymous():
+            return Response({
+                "message": "No user logged in"
+            })
         if request.method == 'GET':
             serializer = UserSerializer(request.user, context={'request': request})
             return Response(serializer.data)
