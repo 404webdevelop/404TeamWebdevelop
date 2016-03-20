@@ -1,5 +1,6 @@
 import base64
 import imghdr
+from urlparse import urlparse
 from rest_framework import serializers
 from permissions import *
 from rest_framework import exceptions
@@ -49,6 +50,14 @@ class PostReadSerializer(PostWriteSerializer):
         model = Post
         fields = ('id', 'url', 'title', 'content', 'author', 'published', 'privacy_level', 'privacy_host_only')
 
+    def to_representation(self, obj):
+        data = super(PostReadSerializer, self).to_representation(obj)
+        data['description'] = ''
+        data['categories'] = []
+        data['count'] = len(data['comments'])
+        data['size'] = len(data['comments'])
+        return data
+
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
@@ -59,6 +68,15 @@ class RemotePostSerializer(serializers.Serializer):
         for key in jsonDict:
             data[key] = jsonDict[key]
         del data['data']
+        if 'url' not in data and 'origin' in data:
+            data['url'] = data['origin']
+        if 'url' not in data and 'source' in data:
+            data['url'] = data['source']
+        if 'username' not in data and 'author' in data:
+            if 'username' in data['author']:
+                data['username'] = data['author']['username']
+            if 'displayName' in data['author']:
+                data['username'] = data['author']['displayName']
         return data
 
 def SerializePosts(posts, request):
@@ -109,6 +127,24 @@ class CommentReadSerializer(CommentWriteSerializer):
         model = Comment
         fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'published')
 
+    def to_representation(self, obj):
+        data = super(CommentReadSerializer, self).to_representation(obj)
+        data['comment'] = data['content']
+        data['pubDate'] = data['published']
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif data['remote_author_name'] != '':
+            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
+            if data['remote_author_url'] != '':
+                data['author']['url'] = data['remote_author_url']
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+            data['author']['github'] = ''
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+        return data
+
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
@@ -125,6 +161,24 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
+
+    def to_representation(self, obj):
+        data = super(CommentByPostSerializer, self).to_representation(obj)
+        data['comment'] = data['content']
+        data['pubDate'] = data['published']
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif data['remote_author_name'] != '':
+            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
+            if data['remote_author_url'] != '':
+                data['author']['url'] = data['remote_author_url']
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+            data['author']['github'] = ''
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+        return data
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):

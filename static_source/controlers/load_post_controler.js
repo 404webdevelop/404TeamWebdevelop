@@ -56,7 +56,7 @@ function makeComBox(id){
               $.each(callback.images, function (j, value) { 
                 if(callback.images[j].parent_post == postobj.posts[i].url){
                     $.getJSON(callback.images[j].json_url, function(data1){
-                      var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                      var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                       $("#list_post_view").append(st);
                       });
                     cont =1;              
@@ -65,7 +65,7 @@ function makeComBox(id){
                 }          
               });
                 if (cont == 0 && cont1 == 2){
-                      var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                      var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                       $("#list_post_view").append(st);
                 }
             });
@@ -104,7 +104,7 @@ function makeComBox(id){
                     $.each(callback.images, function (j, value) { 
                       if(callback.images[j].parent_post == postobj.posts[i].url){
                           $.getJSON(callback.images[j].json_url, function(data1){
-                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                             });
                           cont =1;              
@@ -113,7 +113,7 @@ function makeComBox(id){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
-                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                       }
                   });
@@ -167,7 +167,7 @@ function makeComBox(id){
                     $.each(callback.images, function (j, value) { 
                       if(callback.images[j].parent_post == postobj.posts[i].url){
                           $.getJSON(callback.images[j].json_url, function(data1){
-                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                             });
                           cont =1;              
@@ -176,7 +176,7 @@ function makeComBox(id){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
-                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].date_created,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                            var st= setdynamic(data.userphoto,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
                             $("#list_post_view").append(st);
                       }
                   });

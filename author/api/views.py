@@ -10,9 +10,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
 
 from permissions import IsAdminOrSelfOrReadOnly
-from serializers import UserSerializer
+from serializers import UserSerializer, SerializeAuthors, RemoteAuthorSerializer
 from author.models import Author
 
+from remotes.utils import *
 
 class AuthorPagination(PageNumberPagination):
     page_size = 10
@@ -61,6 +62,21 @@ class AuthorViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrSelfOrReadOnly, ]
     pagination_class = AuthorPagination
 
+    def list(self, request):
+        queryset = Author.objects.all().filter(is_superuser=False).filter(is_active=True).order_by('-date_joined')
+        queryset = list(queryset)
+
+        if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
+            queryset += GetAllRemoteAuthors()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            data = SerializeAuthors(page, request)
+            return self.get_paginated_response(data)
+
+        data = SerializeAuthors(queryset, request)
+        return Response(data)
+
     def get_permissions(self):
         if self.action == 'create':
             self.permission_classes = [AllowAny, ]
@@ -107,3 +123,17 @@ class AuthorViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         else:
             return super(AuthorViewSet, self).update(request, **kwargs)
+
+class RemoteAuthorViewSet(viewsets.ViewSet):
+    """
+    This is a remote author's profile
+    """
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+
+    def list(self, request, remote_url):
+        remoteAuthorDict = GetOneRemoteAuthor(remote_url)
+        if remoteAuthorDict is not None:
+            serializer = RemoteAuthorSerializer(remoteAuthorDict, context={'request': request})
+            return Response(serializer.data)
+        else:
+            return Response({'Error': 'Could not fetch url'}, status=404)

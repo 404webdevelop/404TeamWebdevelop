@@ -107,6 +107,18 @@ function button_click(){
 
          global.cookie_setting.set("click_id",$(this).attr("value"));
          global.cookie_setting.set("click_username",$(this).attr("id"));
+         $.getJSON('api/author/',function(data1){
+          console.log(data1);
+          $.each(data1.authors,function (i , value){
+            if(data1.authors[i].username == global.cookie_setting.get("click_username")){
+              global.cookie_setting.set("click_first_name",data1.authors[i].first_name);
+              global.cookie_setting.set("click_last_name",data1.authors[i].last_name);
+              console.log(data1.authors[i].first_name);
+              console.log(data1.authors[i].last_name);
+              return false;
+            }
+          });
+         });
 
          setTimeout(function(){
           window.location.href = "otherposted";
