@@ -50,6 +50,14 @@ class PostReadSerializer(PostWriteSerializer):
         model = Post
         fields = ('id', 'url', 'title', 'content', 'author', 'published', 'privacy_level', 'privacy_host_only')
 
+    def to_representation(self, obj):
+        data = super(PostReadSerializer, self).to_representation(obj)
+        data['description'] = ''
+        data['categories'] = []
+        data['count'] = len(data['comments'])
+        data['size'] = len(data['comments'])
+        return data
+
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
