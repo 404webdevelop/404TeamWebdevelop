@@ -27,3 +27,7 @@ class RemotePost(object):
             self.published = parse_datetime(data['pubDate'])
         else:
             raise BadDataException('No published date in RemotePost data')
+
+class RemoteAuthor(object):
+    def __init__(self, data):
+        self.data = json.dumps(data)

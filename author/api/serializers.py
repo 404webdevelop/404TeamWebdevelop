@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from ..models import Author
 from django.core.urlresolvers import reverse
-
+from ..models import Author
+from remotes.models import *
+from remotes.utils import *
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +34,36 @@ class UserSerializer(serializers.ModelSerializer):
             data['github'] = 'https://api.github.com/users/' + data['github'] + '/events'
         data['host'] = request.get_host()
         return data
+
+class RemoteAuthorSerializer(serializers.Serializer):
+    data = serializers.CharField(max_length=None)
+
+    def to_representation(self, obj):
+        request = self.context['request']
+        data = super(RemoteAuthorSerializer, self).to_representation(obj)
+        jsonDict = json.loads(data['data'])
+        for key in jsonDict:
+            data[key] = jsonDict[key]
+        del data['data']
+        if 'username' not in data and 'displayName' in data:
+            data['username'] = data['displayName']
+        if 'url' in data:
+            if not IsLocalURL(data['url'], request):
+                data['url'] = request.build_absolute_uri(reverse('remote_author-list', args=(data['url'],)))
+        if 'posts' in data:
+            if not IsLocalURL(data['posts'], request):
+                data['posts'] = request.build_absolute_uri(reverse('remote_post-list', args=(data['posts'],)))
+        return data
+
+def SerializeAuthors(authors, request):
+    results = []
+    for author in authors:
+        if isinstance(author, Author):
+            serializer = UserSerializer(author, context={'request': request})
+            results.append(serializer.data)
+        elif isinstance(author, RemoteAuthor):
+            serializer = RemoteAuthorSerializer(author, context={'request': request})
+            results.append(serializer.data)
+        else:
+            raise Exception()
+    return results
