@@ -121,6 +121,8 @@ class CommentReadSerializer(CommentWriteSerializer):
 
     def to_representation(self, obj):
         data = super(CommentReadSerializer, self).to_representation(obj)
+        data['comment'] = data['content']
+        data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
         elif data['remote_author_name'] != '':
@@ -130,6 +132,9 @@ class CommentReadSerializer(CommentWriteSerializer):
                 parsedURL = urlparse(data['remote_author_url'])
                 data['author']['host'] = parsedURL.netloc
             data['author']['github'] = ''
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
         return data
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
@@ -151,6 +156,8 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
 
     def to_representation(self, obj):
         data = super(CommentByPostSerializer, self).to_representation(obj)
+        data['comment'] = data['content']
+        data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
         elif data['remote_author_name'] != '':
@@ -159,6 +166,10 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
                 data['author']['url'] = data['remote_author_url']
                 parsedURL = urlparse(data['remote_author_url'])
                 data['author']['host'] = parsedURL.netloc
+            data['author']['github'] = ''
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
         return data
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
