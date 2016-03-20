@@ -16,6 +16,7 @@ from follower.serializers import FollowSerializer
 from django.contrib.auth.models import User
 from models import Follows
 from collections import OrderedDict
+import os
 
 class FollowViewSet(viewsets.ModelViewSet):
     """
@@ -49,6 +50,23 @@ class FollowViewSet(viewsets.ModelViewSet):
         host = request.data["host"]
         if host is not None:
             # remote
+            followed_url = "http://" + host + '/author/' + followed 
+            reqData = {
+                "query":"friendrequest",
+                "author": {
+                    "id": me.id,
+                    "host": os.environ.get('HOSTNAME'),
+                    "displayName": me.username
+                },
+                "friend": {
+                    "id": followed,
+                    "host": host,
+                    "displayName": request.data['name'],
+                    "url":followed_url
+                }
+            }
+            print reqData
+            return Response(reqData)
         else:
             # local
             following = Author.objects.get(id=request.data["followed"].split("/")[-2])
