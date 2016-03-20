@@ -44,14 +44,17 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request, *args, **kwargs):
-        username = unicode(request.user)
-
-        me = Author.objects.get(username = request.user)
-
-        following = Author.objects.get(id= request.data["followed"].split("/")[-2])
-        follow = Follows.objects.follow(me, following)
-        follow_serializer = FollowSerializer(follow, context={'request': request})
-        return Response(follow_serializer.data)
+        me = Author.objects.get(username=unicode(request.user))
+        followed = request.data["followed"]
+        host = request.data["host"]
+        if host is not None:
+            # remote
+        else:
+            # local
+            following = Author.objects.get(id=request.data["followed"].split("/")[-2])
+            follow = Follows.objects.follow(me, following)
+            follow_serializer = FollowSerializer(follow, context={'request': request})
+            return Response(follow_serializer.data)
 
 
     @detail_route(methods=["GET"])
