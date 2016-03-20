@@ -1,5 +1,6 @@
 import base64
 import imghdr
+from urlparse import urlparse
 from rest_framework import serializers
 from permissions import *
 from rest_framework import exceptions
@@ -118,6 +119,19 @@ class CommentReadSerializer(CommentWriteSerializer):
         model = Comment
         fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'published')
 
+    def to_representation(self, obj):
+        data = super(CommentReadSerializer, self).to_representation(obj)
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif data['remote_author_name'] != '':
+            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
+            if data['remote_author_url'] != '':
+                data['author']['url'] = data['remote_author_url']
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+            data['author']['github'] = ''
+        return data
+
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
@@ -134,6 +148,18 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
+
+    def to_representation(self, obj):
+        data = super(CommentByPostSerializer, self).to_representation(obj)
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif data['remote_author_name'] != '':
+            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
+            if data['remote_author_url'] != '':
+                data['author']['url'] = data['remote_author_url']
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+        return data
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):
