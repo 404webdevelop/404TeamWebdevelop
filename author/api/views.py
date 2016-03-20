@@ -121,6 +121,9 @@ class AuthorViewSet(viewsets.ModelViewSet):
             return super(AuthorViewSet, self).update(request, **kwargs)
 
 class RemoteAuthorViewSet(viewsets.ViewSet):
+    """
+    This is a remote author's profile
+    """
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
 
     def list(self, request, remote_url):

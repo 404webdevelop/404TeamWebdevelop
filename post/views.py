@@ -124,6 +124,26 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
         serializer = PostReadSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
+class RemotePostsViewSet(viewsets.ViewSet, PagedViewMixin):
+    """
+    This is a set of remote posts (by one remote author)
+    """
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    pagination_class = PostPagination
+
+    def list(self, request, remote_url):
+        remotePostsDicts = GetRemotePostsAtUrl(remote_url, requestingUser = request.user)
+        if remotePostsDicts is not None:
+
+            page = self.paginate_queryset(remotePostsDicts)
+            if page is not None:
+                data = SerializePosts(page, request)
+                return self.get_paginated_response(data)
+
+            return Response({'Error': 'Failed to paginate'}, status=500)
+        else:
+            return Response({'Error': 'Could not fetch url'}, status=404)
+
 class MyPosts(PostByAuthor):
     """
     API endpoint for viewing Posts authored by current user

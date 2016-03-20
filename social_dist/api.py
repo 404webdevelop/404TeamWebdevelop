@@ -1,6 +1,6 @@
 from rest_framework import routers
 from author.api.views import AuthorViewSet, RemoteAuthorViewSet
-from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost
+from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost, RemotePostsViewSet
 from follower.views import FollowViewSet, FriendViewSet, FriendlistViewSet
 
 # http://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
@@ -49,6 +49,7 @@ router.register(r'author/posts', PostViewSet, base_name='visible_posts')
 router.register(r'author/myposts', MyPosts, base_name='my_posts') # not required by the spec
 router.register(r'posts', PostViewSet)
 router.register(r'author/(?P<author_id>[0-9a-f\-]+)/posts', PostByAuthor, base_name='post_by_author')
+router.register(r'remoteposts/(?P<remote_url>.+)', RemotePostsViewSet, base_name='remote_post')
 
 # Comment views
 router.register(r'posts/(?P<post_id>[0-9a-f\-]+)/comments', CommentByPost, base_name='comment_by_post')
@@ -59,7 +60,7 @@ router.register(r'images', ImageViewSet)
 
 # Author views
 router.register(r'author', AuthorViewSet)
-router.register(r'remoteauthor/(?P<remote_url>.+)', RemoteAuthorViewSet, base_name='remote_author') # (?P<remote_url>.+)
+router.register(r'remoteauthor/(?P<remote_url>.+)', RemoteAuthorViewSet, base_name='remote_author')
 
 # Friend views TODO
 router.register(r'follow', FollowViewSet)

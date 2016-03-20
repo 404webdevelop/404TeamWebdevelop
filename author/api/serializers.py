@@ -50,6 +50,9 @@ class RemoteAuthorSerializer(serializers.Serializer):
         if 'url' in data:
             if not IsLocalURL(data['url'], request):
                 data['url'] = request.build_absolute_uri(reverse('remote_author-list', args=(data['url'],)))
+        if 'posts' in data:
+            if not IsLocalURL(data['posts'], request):
+                data['posts'] = request.build_absolute_uri(reverse('remote_post-list', args=(data['posts'],)))
         return data
 
 def SerializeAuthors(authors, request):

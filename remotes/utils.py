@@ -21,7 +21,10 @@ class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
         self.host = 'http://' + host
         self.credentials = credentials
-        self.requestingUser = requestingUser
+        if requestingUser is not None and not requestingUser.is_anonymous():
+            self.requestingUser = requestingUser
+        else:
+            self.requestingUser = None
 
     def _RequestingUser(self):
         if self.requestingUser is not None:
@@ -95,13 +98,12 @@ def GetAllRemoteAuthors(requestingUser = None):
                     pass
     return remoteAuthors
 
-def GetOneRemoteAuthor(url, requestingUser = None):
-    # find server corresponding to this url
+def GetServerAndPathForUrl(url, requestingUser):
     parsedURL = urlparse(url)
     netloc = parsedURL.netloc
     servers = [server for server in GetRemoteServers(requestingUser) if netloc in server.host]
     if len(servers) < 1:
-        return None
+        return None, None
     elif len(servers) > 1:
         print('Warning: multiple servers matching {0}'.format(netloc))
     server = servers[0]
@@ -109,8 +111,13 @@ def GetOneRemoteAuthor(url, requestingUser = None):
     ind = url.find(server.host)
     if ind == -1:
         print('Error: problem with URL {0}'.format(url))
-        return None
+        return None, None
     path = url[ind+len(server.host):]
+
+    return server, path
+
+def GetOneRemoteAuthor(url, requestingUser = None):
+    server, path = GetServerAndPathForUrl(url, requestingUser)
 
     # do the request
     try:
@@ -126,6 +133,30 @@ def GetOneRemoteAuthor(url, requestingUser = None):
         return None
 
     return remoteAuthor
+
+def GetRemotePostsAtUrl(url, requestingUser = None):
+    server, path = GetServerAndPathForUrl(url, requestingUser)
+
+    if server is None:
+        return None
+
+    # do the request
+    try:
+        r = server.Get(path)
+    except requests.exceptions.ConnectionError: # remote server down
+        return None
+
+    if r.status_code != 200:
+        return None
+    remotePostDicts = _ExtractData(r.json(), 'post')
+    remotePosts = []
+    for remotePostDict in remotePostDicts:
+        try:
+            remotePosts.append(RemotePost(remotePostDict))
+        except BadDataException:
+            pass
+
+    return remotePosts
 
 def IsLocalURL(url, request):
     parsedHostURL = urlparse(request.build_absolute_uri())
