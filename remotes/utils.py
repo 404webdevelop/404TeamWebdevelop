@@ -47,7 +47,7 @@ def GetRemoteServers(requestingUser):
         else:
             credentials = None
         return _RemoteServer(row.hostname, credentials, requestingUser)
-    return [MakeRemoteServer(row) for row in RemoteServer.objects.all()]
+    return [MakeRemoteServer(row) for row in RemoteServer.objects.all() if row.active]
 
 def _ExtractData(json, name):
     if name in json:
