@@ -56,6 +56,7 @@ class PostReadSerializer(PostWriteSerializer):
         data['categories'] = []
         data['count'] = len(data['comments'])
         data['size'] = len(data['comments'])
+        data['contentType'] = 'text/plain'
 
         # visibility: PUBLIC FOAF FRIENDS PRIVATE SERVERONLY
         if data['privacy_host_only']:
@@ -143,6 +144,7 @@ class CommentReadSerializer(CommentWriteSerializer):
     def to_representation(self, obj):
         data = super(CommentReadSerializer, self).to_representation(obj)
         data['comment'] = data['content']
+        data['contentType'] = 'text/plain'
         data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
@@ -178,6 +180,7 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         data = super(CommentByPostSerializer, self).to_representation(obj)
         data['comment'] = data['content']
+        data['contentType'] = 'text/plain'
         data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
