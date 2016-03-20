@@ -10,7 +10,7 @@ function setup(data){
     });
 
     
-
+        console.log(global.cookie_setting.get("click_first_name"));
         var friends_list = [];
         
         console.log("user id is:"+global.cookie_setting.get("userid"));

@@ -119,11 +119,12 @@ function button_click(){
             }
           });
          });
-
+          
          setTimeout(function(){
           window.location.href = "otherposted";
-        },0
+        },100
           );
+
      });
 
     $("#connect_friends").click(function(){
