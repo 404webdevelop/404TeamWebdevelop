@@ -1,50 +1,58 @@
 (function () {
-
 'use strict';
 
-var url = 'api/authors/'
-
-function postAuthor(author) {
-    console.log(author)
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: JSON.stringify(author),
-      contentType:"application/json; charset=utf-8",
-      success: function(msg){
-        alert( "Data Saved: " + msg );
-      },
-      error: function(error) {
-        console.log(error.responseText);
-      }
-    });
+function adjustLineHeight() {
+  var height = '' + $(window).height() + 'px';
+  $('body').css("line-height", height);
 }
 
-function getAuthor() {
-    return {
-        "username": value('#username-input') || 'user_99',
-        "password": value('#password-input') || '0000',
-        "email": value('#email-input') || "u1@email.com",
-        "author": {
-            "github": value('#github-input') || "user1"
-        },
-        "first_name": value('#first-name-input') || "Yushi",
-        "last_name": value('#last-name-input') || "Wang"
-    };
+function findFormData(formData, name) {
+  return formData.find(function (data) {
+    return data.name === name;
+  });
 }
 
-function value(field) {
-    return $(field).val();
+function displayErrorMsg(message) {
+  $('#error-msg-container').append(message);
+}
+
+function validate(formData, jqForm, options) {
+  $('#error-msg-container').html('');
+  var pw = findFormData(formData, "password"),
+      repeat = findFormData(formData, "repeat-password");
+  if (pw.value !== repeat.value) {
+    displayErrorMsg("Please make sure your password are the same.")
+    return false;
+  }
+}
+
+function postSingup(responseText, statusText, xhr, $form) {
+  $('#post-signup-dialog').show();
+  $('#signup-form').hide();
+}
+
+function handleError(XMLHttpRequest, textStatus, errorThrown) {
+  for (var key in XMLHttpRequest.responseJSON) {
+    var message = XMLHttpRequest.responseJSON[key];
+    displayErrorMsg('<p>' + key + ': ' + message + '</p>');
+  }
 }
 
 function setup() {
-    $('#create-btn').click(function () {
-        var author = getAuthor();
-        postAuthor(author);        
+    adjustLineHeight();
+    $(window).resize(function() {
+      adjustLineHeight();
     });
+
+    $('#signup-form').ajaxForm({ 
+      beforeSubmit:   validate
+     ,success:        postSingup  // post-submit callback
+     ,error:          handleError
+    }); 
 }
 
-setup();
-
+$(document).ready(function () {
+  setup();
+});
 
 })();
