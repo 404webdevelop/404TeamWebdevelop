@@ -38,6 +38,11 @@
 	margin-top: 1%;
 	margin-bottom: 3%;
 }
+
+#host_div1,#host_div2{
+  display:inline;
+}
+
 #holder{
 
 	width: 20px;

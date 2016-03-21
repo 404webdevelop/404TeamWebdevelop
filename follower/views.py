@@ -4,6 +4,7 @@ from author.api.serializers import UserSerializer
 from django.http import HttpResponse
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
 from permissions import CustomPermissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication, SessionAuthentication
 from rest_framework import generics
@@ -15,6 +16,11 @@ from follower.serializers import FollowSerializer
 from django.contrib.auth.models import User
 from models import Follows
 from collections import OrderedDict
+from requests.auth import HTTPBasicAuth
+
+import json
+import requests
+import os
 
 class FollowViewSet(viewsets.ModelViewSet):
     """
@@ -43,14 +49,48 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request, *args, **kwargs):
-        username = unicode(request.user)
+        me = Author.objects.get(username=unicode(request.user))
+        followed = request.data["followed"]
 
-        me = Author.objects.get(username = request.user)
+        try:
+            host = request.data["host"]
+        except:
+            host = None
 
-        following = Author.objects.get(id= request.data["followed"].split("/")[-2])
-        follow = Follows.objects.follow(me, following)
-        follow_serializer = FollowSerializer(follow, context={'request': request})
-        return Response(follow_serializer.data)
+        current_domain = request.META['HTTP_HOST']
+        print request.META['HTTP_HOST']
+
+        if host is not None:
+
+            # remote
+            followed_url = "http://" + host + '/api/author/' + followed 
+            reqData = {
+                "query":"friendrequest",
+                "author": {
+                    "id": str(me.id),
+                    "host": current_domain,
+                    "displayName": me.username
+                },
+                "friend": {
+                    "id": followed,
+                    "host": host,
+                    "displayName": request.data['name'],
+                    "url":followed_url
+                }
+            }
+            headers = {'content-type': 'application/json'}
+            url = 'http://'+host+'/api/friendrequest'
+            data = json.dumps(reqData)
+
+            response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
+            return Response(response)
+        else:
+            # local
+            following = Author.objects.get(id=request.data["followed"].split("/")[-2])
+            follow = Follows.objects.follow(following, me)
+            follow_serializer = FollowSerializer(follow, context={'request': request})
+            print follow_serializer.data
+            return Response(follow_serializer.data)
 
 
     @detail_route(methods=["GET"])
@@ -63,7 +103,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["GET"])
     def followings(self, request, **kwargs):
         queryset = Follows.objects.getFollowing(self.kwargs['pk'])
-        print queryset
+        print kwargs['pk']
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -156,3 +196,43 @@ class FriendlistViewSet(viewsets.ModelViewSet):
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+
+class FriendRequestAPIView(APIView):
+
+
+    def post(self, request):
+        author_id = request.data['author']['id']
+        print author_id
+        friend_id = request.data['friend']['id']
+        print friend_id
+
+        if friend_id is not None:
+            try:
+                friend = Author.objects.get(id=friend_id)
+                print friend
+            except:
+                return Response({
+                    'err': 'user not exist'
+                })
+
+        if author_id is not None:
+            try:
+                author = Author.objects.get(id=author_id)
+                return Response({
+                    'err': 'uuid duplicated, really?'
+                })
+            except:
+                author = request.data['author']
+                follow = Follows.objects.create(followed=friend)
+                follow.remote_author_host = author['host']
+                follow.remote_author_name = author['displayName']
+                follow.save()
+                print follow.remote_author_name
+                return Response({
+                    'success': True
+                })
+
+
+
+
+

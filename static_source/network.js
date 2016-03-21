@@ -25,8 +25,8 @@ var cookie = global.cookie_setting;
            "token":global.cookie_setting.get("token"),
            "firstname":global.cookie_setting.get("firstname"),
            "lastname": global.cookie_setting.get("lastname"),
-	   
-           "userphoto":"/static/image/no_image.jpg",
+	         "no_image":"/static/image/no_image.jpg",
+           "userphoto":global.cookie_setting.get("picture"),
            "following":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamcoing laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
            "followers":"A Great Test Post",
            "friends":"112"
