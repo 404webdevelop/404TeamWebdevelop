@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+</head>
+<body>
+<form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
+  <div>
+      <input name="title" value="title1" type="text">
+  </div>
+  <div>
+      <input name="content" value="content1" type="text">
+  </div>
+  <div>
+    <select  name="privacy_level">
+      <option value="">--------</option>
+      <option value="pub" selected="">Public</option>
+      <option value="me">Private to me</option>
+      <option value="friends">Friends only</option>
+      <option value="fof">Friends of friends</option>
+    </select>
+  </div>
+  <div>
+    <label>Privacy host only</label>
+    <input name="privacy_host_only" value="true" type="checkbox">
+  </div>
+  <div>
+    <button class="btn btn-primary">POST</button>
+  </div>
+</form>
+
+<div> ----------------------------------------------------------------------------- </div>
+
+<form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
+  <div>
+    <select class="form-control" name="parent_post" hidden>    
+      <option value="http://localhost:8000/api/posts/5742ac1c-d3ff-41e2-a609-d72398a7afb8/">Post object</option>  
+    </select>
+  </div>
+
+  <div>
+    <select class="form-control" name="file_type">
+      <option value="jpeg">JPG/JPEG</option>
+      <option value="png">PNG</option>
+      <option value="gif">GIF</option>
+      <option value="bmp">BMP</option>
+    </select>
+  </div>
+  <div>
+    <input name="image_data" type="file">
+  </div>
+  <!-- <div>
+    <button class="btn btn-primary">Image</button>
+  </div> -->
+</form>
+<script type="text/javascript" src="/static/js/make-post.js"></script>
+</body>
+</html>
+
+<!-- http://localhost:8000/api/posts/8091a849-ff04-4ef7-a372-fc2d437592fc/ -->
+
+
+
