@@ -10,6 +10,7 @@ import json
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
 from remotes.models import *
+from remotes.utils import *
 
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -77,6 +78,7 @@ class RemotePostSerializer(serializers.Serializer):
     published = serializers.DateTimeField()
 
     def to_representation(self, obj):
+        request = self.context['request']
         data = super(RemotePostSerializer, self).to_representation(obj)
         jsonDict = json.loads(data['data'])
         for key in jsonDict:
@@ -91,6 +93,24 @@ class RemotePostSerializer(serializers.Serializer):
                 data['username'] = data['author']['username']
             if 'displayName' in data['author']:
                 data['username'] = data['author']['displayName']
+
+        # comments proxy
+        commentsURL = None
+        if 'url' in data and not IsLocalURL(data['url'], request):
+            if data['url'][-1] == '/'
+                commentsURL = data['url'] + 'comments/'
+            else:
+                commentsURL = data['url'] + 'comments'
+        elif 'origin' in data and not IsLocalURL(data['origin'], request):
+            if data['origin'][-1] == '/'
+                commentsURL = data['origin'] + 'comments/'
+            else:
+                commentsURL = data['origin'] + 'comments'
+
+        if commentsURL is not None:
+            data['comments_list'] = commentsURL
+            # TODO: actually proxy it
+
         return data
 
 def SerializePosts(posts, request):
