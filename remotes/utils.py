@@ -2,7 +2,7 @@ import requests # http://docs.python-requests.org/en/master/
 import json
 from urlparse import urlparse
 
-from .models import RemoteServer, RemotePost
+from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
 
 def IsRemoteAuthUsername(localUsername):

@@ -74,6 +74,19 @@ class PostReadSerializer(PostWriteSerializer):
 
         return data
 
+class RemoteCommentSerializer(serializers.Serializer):
+    data = serializers.CharField(max_length=None)
+    published = serializers.DateTimeField()
+
+    def to_representation(self, obj):
+        request = self.context['request']
+        data = super(RemoteCommentSerializer, self).to_representation(obj)
+        jsonDict = json.loads(data['data'])
+        for key in jsonDict:
+            data[key] = jsonDict[key]
+        del data['data']
+        return data
+
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()

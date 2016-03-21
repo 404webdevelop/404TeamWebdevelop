@@ -152,8 +152,17 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
     pagination_class = CommentPagination
 
     def list(self, request, remote_url):
-        # TODO: implement
-        return Response({'Error': 'Could not fetch url'}, status=404)
+        remoteCommentDicts = GetRemoteCommentsAtUrl(remote_url, requestingUser = request.user)
+        if remoteCommentDicts is not None:
+            page = self.paginate_queryset(remoteCommentDicts)
+            if page is not None:
+                # TODO
+                data = None
+                return self.get_paginated_response(data)
+
+            return Response({'Error': 'Failed to paginate'}, status=500)
+        else:
+            return Response({'Error': 'Could not fetch url'}, status=404)
 
 class MyPosts(PostByAuthor):
     """
