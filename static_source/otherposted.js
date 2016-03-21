@@ -29,7 +29,7 @@ $( document ).ready(function() {
                  "firstname":global.cookie_setting.get("click_first_name"),
                  "lastname": global.cookie_setting.get("click_last_name"),
                  "no_image":"/static/image/no_image.jpg",
-                 "userphoto":global.cookie_setting.get("picture"),
+                 "userphoto":global.cookie_setting.get("click_picture"),
                  "followers":"50",
                  "following":"77",
                  "friends":"112"
