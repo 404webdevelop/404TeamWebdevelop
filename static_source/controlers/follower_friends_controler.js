@@ -173,7 +173,7 @@ function search_user(username){
       console.log(data.authors[i].username);
       if(data.authors[i].username == username){
         var data_iner = data.authors[i];
-        $("#search_listview").append("<li id = \""+data_iner.username+"\"value=\""+data_iner.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\">"+data_iner.username+"</a></li>");
+        $("#search_listview").html("<li id = \""+data_iner.username+"\"value=\""+data_iner.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\">"+data_iner.username+"</a></li>");
 
       }
     })

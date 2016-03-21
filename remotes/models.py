@@ -1,5 +1,6 @@
 import json
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 
 from django.db import models
 from author.models import Author
@@ -27,6 +28,9 @@ class RemotePost(object):
             self.published = parse_datetime(data['pubDate'])
         else:
             raise BadDataException('No published date in RemotePost data')
+
+        if not timezone.is_aware(self.published):
+            self.published = timezone.make_aware(self.published, timezone.get_default_timezone())
 
 class RemoteAuthor(object):
     def __init__(self, data):

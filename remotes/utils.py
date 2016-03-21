@@ -47,7 +47,7 @@ def GetRemoteServers(requestingUser):
         else:
             credentials = None
         return _RemoteServer(row.hostname, credentials, requestingUser)
-    return [MakeRemoteServer(row) for row in RemoteServer.objects.all()]
+    return [MakeRemoteServer(row) for row in RemoteServer.objects.all() if row.active]
 
 def _ExtractData(json, name):
     if name in json:
@@ -62,6 +62,15 @@ def _ExtractData(json, name):
         remoteDicts = []
     return remoteDicts
 
+def IsGoodPostsResponse(r):
+    if r.status_code != 200:
+        return False
+    if ('size' in r.json() and r.json()['size'] > 0):
+        return True
+    if 'query' in r.json() and r.json()['query'] in ['posts', 'post', 'data']:
+        return True
+    return False
+
 def GetAllRemotePosts(requestingUser = None):
     servers = GetRemoteServers(requestingUser)
     remotePosts = []
@@ -71,7 +80,7 @@ def GetAllRemotePosts(requestingUser = None):
             r = server.Get('/posts')
         except requests.exceptions.ConnectionError: # remote server down
             continue
-        if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
+        if IsGoodPostsResponse(r):
             remotePostDicts = _ExtractData(r.json(), 'post')
             for remotePostDict in remotePostDicts:
                 try:
@@ -146,7 +155,7 @@ def GetRemotePostsAtUrl(url, requestingUser = None):
     except requests.exceptions.ConnectionError: # remote server down
         return None
 
-    if r.status_code != 200:
+    if not IsGoodPostsResponse(r):
         return None
     remotePostDicts = _ExtractData(r.json(), 'post')
     remotePosts = []

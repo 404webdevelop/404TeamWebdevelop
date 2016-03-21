@@ -68,7 +68,12 @@ function button_click(){
         var github_input = $("github-input").val();
         var firstname_input = $('#first-name-input').val();
         var lastname_input = $('#last-name-input').val();
-        //global.update_and_post.update_profile(cookie,firstname_input, lastname_input,email_input,github_input); 
+        var password_input = $('#password_input').val();
+        global.update_and_post.update_profile(firstname_input, lastname_input,email_input,github_input,password_input); 
+        setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
     });
 
 
@@ -98,9 +103,6 @@ function button_click(){
       }else{
         global.findfriends.follow_other();
       }    
-
-
-
     });
 
     $('.target').delegate('li', 'click', function () {
@@ -119,10 +121,10 @@ function button_click(){
             }
           });
          });
-
+          
          setTimeout(function(){
           window.location.href = "otherposted";
-        },0
+        },100
           );
      });
 

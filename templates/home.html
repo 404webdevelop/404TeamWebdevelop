@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
 <link rel="stylesheet" type="text/css" href="/static/default.css">
 <!-- Bootstrap core CSS -->
     <link href="/static/Bootstrap_files/bootstrap.min.css" rel="stylesheet">
@@ -52,8 +53,6 @@
           </div>
     </div>
 
-
-    
     <div id="connect-infor">
       
     </div>
@@ -100,6 +99,7 @@
       <div data-role="main" class="ui-content">
  
         <form >
+        Upate New PassWord<input id="password_input"type="text" placeholder="Eg. jdoe">
         Update Firstname<input id="first-name-input"type="text" placeholder="Eg. jdoe">
         Update Lastname<input id="last-name-input"type="text" placeholder="Eg.  Doe">
         Update E-mail<input id="e-mail-input"type="text" placeholder="Eg. jdoe">
@@ -135,27 +135,33 @@
         </select>
         Do you want this post Pivacy host only> 
         <select id = "host_only">
-            <option value="true">YES</option>
+            <option value=console.log(fr.result);"true">YES</option>
             <option value="false">NO</option>
         </select>
-        <form action="home.html">
+
+
+
+
+        <form id="image-form" action="/api/images/">
         <table>
           select the image that you want to post:
           <tr>
           <td>
             <select id = "image_type">
-                <option value="JPG/JPEG">JPG/JPEG</option>
+                <option value="jpeg">JPG/JPEG</option>
                 <option value="PNG">PNG</option>
                 <option value="GIF">GIF</option>
                 <option value="BMP">BMP</option>
             </select>
 
-          </td><td><input type="file" name="img" multiple>
+          </td><td><input id="myfile" type="file" name="img" >
+          <button id="sub_btn" class="btn btn-default" type="submit">Signup</button>
           </td>
           
         </tr>
         <table>
         <center><table >
+        </form>
         <tr>
           <td>
 
@@ -170,6 +176,7 @@
       </tr>
     </table></center>
     </form>
+
       </div>
       
 
