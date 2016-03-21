@@ -6,6 +6,7 @@ from permissions import *
 from rest_framework import exceptions
 import collections
 import json
+from django.core.urlresolvers import reverse
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
@@ -108,8 +109,7 @@ class RemotePostSerializer(serializers.Serializer):
                 commentsURL = data['origin'] + 'comments'
 
         if commentsURL is not None:
-            data['comments_list'] = commentsURL
-            # TODO: actually proxy it
+            data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))
 
         return data
 

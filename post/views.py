@@ -144,6 +144,17 @@ class RemotePostsViewSet(viewsets.ViewSet, PagedViewMixin):
         else:
             return Response({'Error': 'Could not fetch url'}, status=404)
 
+class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
+    """
+    This is a set of remote comments
+    """
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
+    pagination_class = CommentPagination
+
+    def list(self, request, remote_url):
+        # TODO: implement
+        return Response({'Error': 'Could not fetch url'}, status=404)
+
 class MyPosts(PostByAuthor):
     """
     API endpoint for viewing Posts authored by current user
