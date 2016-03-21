@@ -69,6 +69,19 @@ def IsGoodPostsResponse(r):
         return True
     if 'query' in r.json() and r.json()['query'] in ['posts', 'post', 'data']:
         return True
+    if isinstance(r.json(), list):
+        return True
+    return False
+
+def IsGoodAuthorsResponse(r):
+    if r.status_code != 200:
+        return False
+    if ('size' in r.json() and r.json()['size'] > 0):
+        return True
+    if 'query' in r.json() and r.json()['query'] in ['posts', 'post', 'data']:
+        return True
+    if isinstance(r.json(), list):
+        return True
     return False
 
 def GetAllRemotePosts(requestingUser = None):
@@ -98,7 +111,7 @@ def GetAllRemoteAuthors(requestingUser = None):
             r = server.Get('/author')
         except requests.exceptions.ConnectionError: # remote server down
             continue
-        if r.status_code == 200 and 'size' in r.json() and r.json()['size'] > 0:
+        if IsGoodAuthorsResponse(r):
             remoteAuthorDicts = _ExtractData(r.json(), 'author')
             for remoteAuthorDict in remoteAuthorDicts:
                 try:
