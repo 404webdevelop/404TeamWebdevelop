@@ -9,6 +9,7 @@ class FollowManager(models.Manager):
 
 
     def getFollowing(self, user):
+        print user
         return self.get_queryset().filter(follower=user)
 
 
@@ -43,8 +44,8 @@ class FollowManager(models.Manager):
             print("dont add any")
 
 
-    def follow(self, follower1, follower2):
-        follow = self.create(followed=follower2, follower=follower1)
+    def follow(self, followed, follower):
+        follow = self.create(followed=followed, follower=follower)
         return follow
 
 
@@ -69,11 +70,11 @@ class FollowManager(models.Manager):
 
 class Follows(models.Model):
     
-    followed = models.ForeignKey(Author, related_name='followed')
-    follower = models.ForeignKey(Author, related_name='follower')
-    friend_request = models.BooleanField(default = False, blank=True)
-    remote_author_name = models.CharField(max_length = 100, default='', blank=True)
-    remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
+    followed = models.ForeignKey(Author, related_name='followed', null=True, blank=True)
+    follower = models.ForeignKey(Author, related_name='follower', null=True, blank=True)
+    remote_author_host = models.CharField(max_length=1024, null=True, blank=True)
+    remote_author_name = models.CharField(max_length=1024, null=True, blank=True)
+    remote_author_url = models.CharField(max_length=1024, null=True, blank=True)
     objects = FollowManager()
 
     class Meta:

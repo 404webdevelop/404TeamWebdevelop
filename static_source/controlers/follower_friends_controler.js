@@ -32,16 +32,20 @@ function followother(){
           url: url,
           data:{
           "followed":data.authors[i].url,
-          "follower":global.cookie_setting.get("url")
+          "follower":global.cookie_setting.get("url"),
           } 
         });
         request.done(function (callback) {
           $('#follow_btn').text("UNFOLLOW");
           $('#follow_btn').css("background","#FF6347");
+          setTimeout(function(){
+                window.location.href = "otherposted";
+              },0
+                ); 
 
         });
         request.fail(function (callback) {
-            console.log(callback);
+            console.log(callback.responseText);
          });
         console.log("hoeee:  "+data.authors[i].url);
       }
