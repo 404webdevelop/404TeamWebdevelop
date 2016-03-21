@@ -25,6 +25,7 @@ $( document ).ready(function() {
        "following":"77",
        "friends":"112"
        };
+
 setup(data);
 });
 })(this);

@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
 
 <link rel="stylesheet" type="text/css" href="/static/default.css">
 <!-- Bootstrap core CSS -->
@@ -119,54 +120,54 @@
       </div>
 
       <div data-role="main" class="ui-content">
-        <form >
-        <p>Post title:&nbsp;&nbsp;&nbsp;<input id = "title_input_style" name="text_title_input" type="textbox" > </p>
-        
-        <p>Your post content:</p><textarea id="content_input_style" name="text_content_input" cols="150" rows="3"></textarea>
-        Privacy level: 
-        <select id= "right">
-            <option value="pub">Public</option>
+        <form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
+        Title:<div>
+            <input id="content_input_style" name="title"  type="text" placeholder = "enter the title">
+        </div>
+        Content:<div>
+            <input id="content_input_style" name="content"  type="text" placeholder = "enter the content">
+        </div>
+        <div>
+          <select  name="privacy_level">
+            <option value="">--------</option>
+            <option value="pub" selected="">Public</option>
             <option value="me">Private to me</option>
             <option value="friends">Friends only</option>
             <option value="fof">Friends of friends</option>
-        </select>
-        Do you want this post Pivacy host only> 
-        <select id = "host_only">
-            <option value="true">YES</option>
-            <option value="false">NO</option>
-        </select>
-        <form action="home.html">
-        <table>
-          select the image that you want to post:
-          <tr>
-          <td>
-            <select id = "image_type">
-                <option value="JPG/JPEG">JPG/JPEG</option>
-                <option value="PNG">PNG</option>
-                <option value="GIF">GIF</option>
-                <option value="BMP">BMP</option>
-            </select>
+          </select>
+        </div>
+        <div >
+          <label>Privacy host only</label><input name="privacy_host_only" value="true" type="checkbox">
+        </div>
+        <br/>
+        <div>
+          <button lass="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">POST</button>
 
-          </td><td><input type="file" name="img" multiple>
-          </td>
-          
-        </tr>
-        <table>
-        <center><table >
-        <tr>
-          <td>
+        </div>
+      </form>
 
-        <button type="submit" id='post_post' class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Post</button></td>
-        <td>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
+      <div> ----------------------------------------------------------------------------- </div>
 
-        <a href="#" class="ui-btn ui-corner-all ui-shadow  ui-btn-c ui-icon-back ui-btn-icon-left"data-theme="c" data-rel="back">Go Back</a>
-        </td>
-      </tr>
-    </table></center>
-    </form>
+      <form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
+        <div>
+          <select class="form-control" name="parent_post" hidden>    
+            <option value="http://localhost:8000/api/posts/5742ac1c-d3ff-41e2-a609-d72398a7afb8/">Post object</option>  
+          </select>
+        </div>
+
+        <div>
+          <select class="form-control" name="file_type">
+            <option value="jpeg">JPG/JPEG</option>
+            <option value="png">PNG</option>
+            <option value="gif">GIF</option>
+            <option value="bmp">BMP</option>
+          </select>
+        </div>
+        <div>
+          <input name="image_data" type="file">
+        </div>
+      </form>
+
       </div>
 
 
@@ -197,6 +198,7 @@
 <script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
 <script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
+<script type="text/javascript" src="/static/js/make-post.js"></script>
 <script async="" type="text/javascript" src="/static/posted.js" ></script>
 
 

@@ -21,6 +21,10 @@ function prepareImage(formData, jqForm, options) {
 
 function imageSuccess(res, statusText, xhr, $form) {
   console.log(res);
+  setTimeout(function(){
+      window.location.href = "posted";
+    },0
+  ); 
 }
 
 function postSuccess(res, statusText, xhr, $form) {
@@ -47,11 +51,12 @@ function setup() {
       success:        postSuccess  // post-submit callback
      ,error:          handleError
     });
+     
 }
 
 $(document).ready(function () {
   setup();
-  alert(123);
+  
 });
 
 })();
