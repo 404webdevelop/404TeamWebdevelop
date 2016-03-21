@@ -30,9 +30,9 @@ function getuserlogin(callback){
                    "firstname":global.cookie_setting.get("firstname"),
                    "lastname": global.cookie_setting.get("lastname"),
                    "userphoto":global.cookie_setting.get("picture"),
-                   "followers":"50",
-                   "following":"77",
-                   "friends":"112"
+                   "followers":"12",
+                   "following":"34",
+                   "friends":"55"
                    };
 
         $( document ).ready(function() {

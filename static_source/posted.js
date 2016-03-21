@@ -10,9 +10,9 @@ var data= {"username":global.cookie_setting.get("username"),
        "firstname":global.cookie_setting.get("firstname"),
        "lastname": global.cookie_setting.get("lastname"),
        "userphoto":"/static/image/no_image.jpg",
-       "followers":"50",
-       "following":"77",
-       "friends":"112"
+       "followers":global.findfriends.get_follower(),
+       "following":global.findfriends.get_following(),
+       "friends":"55"
        };
 
 function setup(data){
@@ -37,9 +37,9 @@ $( document ).ready(function() {
        "lastname": global.cookie_setting.get("lastname"),
        "no_image":"/static/image/no_image.jpg",
        "userphoto":global.cookie_setting.get("picture"),
-       "followers":"50",
-       "following":"77",
-       "friends":"112"
+      "followers":global.findfriends.get_follower(),
+       "following":global.findfriends.get_following(),
+       "friends":"55"
        };
       setup(data);
   });
