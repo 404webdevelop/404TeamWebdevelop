@@ -16,6 +16,10 @@ from follower.serializers import FollowSerializer
 from django.contrib.auth.models import User
 from models import Follows
 from collections import OrderedDict
+from requests.auth import HTTPBasicAuth
+
+import json
+import requests
 import os
 
 class FollowViewSet(viewsets.ModelViewSet):
@@ -47,15 +51,20 @@ class FollowViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         me = Author.objects.get(username=unicode(request.user))
         followed = request.data["followed"]
-        host = request.data["host"]
+        try:
+            host = request.data["host"]
+        except:
+            host = None
+        current_domain = request.META['HTTP_HOST']
+        print request.META['HTTP_HOST']
         if host is not None:
             # remote
-            followed_url = "http://" + host + '/author/' + followed 
+            followed_url = "http://" + host + '/api/author/' + followed 
             reqData = {
                 "query":"friendrequest",
                 "author": {
-                    "id": me.id,
-                    "host": os.environ.get('HOSTNAME'),
+                    "id": str(me.id),
+                    "host": current_domain,
                     "displayName": me.username
                 },
                 "friend": {
@@ -65,8 +74,12 @@ class FollowViewSet(viewsets.ModelViewSet):
                     "url":followed_url
                 }
             }
-            print reqData
-            return Response(reqData)
+            headers = {'content-type': 'application/json'}
+            url = 'http://'+host+'/api/friendrequest'
+            data = json.dumps(reqData)
+
+            response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
+            return Response(response)
         else:
             # local
             following = Author.objects.get(id=request.data["followed"].split("/")[-2])
@@ -181,8 +194,6 @@ class FriendlistViewSet(viewsets.ModelViewSet):
 
 class FriendRequestAPIView(APIView):
 
-    authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         author_id = request.data['author']['id']
