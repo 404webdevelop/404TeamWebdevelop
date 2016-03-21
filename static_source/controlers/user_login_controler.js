@@ -21,13 +21,15 @@ function getuserlogin(callback){
         global.cookie_setting.set("firstname",userobj.first_name);
         //console.log(userobj.first_name);
         global.cookie_setting.set("lastname",userobj.last_name);
+        global.cookie_setting.set("picture",userobj.picture);
+        //console.log(userobj.picture);
         //console.log(userobj.last_name);
         var data= {"username":global.cookie_setting.get("username"),
                    "url":global.cookie_setting.get("url"),
                    "token":global.cookie_setting.get("token"),
                    "firstname":global.cookie_setting.get("firstname"),
                    "lastname": global.cookie_setting.get("lastname"),
-                   "userphoto":"/static/image/no_image.jpg",
+                   "userphoto":global.cookie_setting.get("picture"),
                    "followers":"50",
                    "following":"77",
                    "friends":"112"

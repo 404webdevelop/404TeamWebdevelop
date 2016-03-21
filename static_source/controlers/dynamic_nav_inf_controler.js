@@ -4,6 +4,11 @@
 
 
 function setifor(img,firstname,lastname,followers, following, friends,page){
+  console.log(img);
+  if(img == "null"){
+    img = "/static/image/no_image.jpg";
+  }
+
 	if(page =="otherpost"){
   		var string = "<table><tr><td id = \"holder\"><center><img id = \"user_file_image\"src=\""+img+"\"height=\"150\" width=\"150\">  </center>  </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td id=\"userintroduction\"><div class=\"page-header\"><h1>"+firstname+"  "+lastname+"</h1><button class=\" ui-btn ui-shadow ui-corner-all\" id=\"follow_btn\" type=\"button\">FOLLOW</button></div><div class=\"well\"><p>Following: "+following+"   Followers: "+followers+"    Friends: "+friends+"</p></div></td></tr></table>";
   	}
