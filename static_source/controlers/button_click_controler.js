@@ -70,6 +70,10 @@ function button_click(){
         var lastname_input = $('#last-name-input').val();
         var password_input = $('#password_input').val();
         global.update_and_post.update_profile(firstname_input, lastname_input,email_input,github_input,password_input); 
+        setTimeout(function(){
+          window.location.href = "posted";
+        },0
+          );
     });
 
 
@@ -99,9 +103,6 @@ function button_click(){
       }else{
         global.findfriends.follow_other();
       }    
-
-
-
     });
 
     $('.target').delegate('li', 'click', function () {
@@ -125,7 +126,6 @@ function button_click(){
           window.location.href = "otherposted";
         },100
           );
-
      });
 
     $("#connect_friends").click(function(){

@@ -149,7 +149,7 @@ function makeComBox(id){
                         }else{
                             var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",global.cookie_setting.get("click_id"));
                         }
-                        $("#list_post_view").append(st);
+                        $("#list_git_view").append(st);
                     });
                  });
           request.fail(function (callback) {
