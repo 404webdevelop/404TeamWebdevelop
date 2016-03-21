@@ -51,13 +51,17 @@ class FollowViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         me = Author.objects.get(username=unicode(request.user))
         followed = request.data["followed"]
+
         try:
             host = request.data["host"]
         except:
             host = None
+
         current_domain = request.META['HTTP_HOST']
         print request.META['HTTP_HOST']
+
         if host is not None:
+
             # remote
             followed_url = "http://" + host + '/api/author/' + followed 
             reqData = {
@@ -83,8 +87,9 @@ class FollowViewSet(viewsets.ModelViewSet):
         else:
             # local
             following = Author.objects.get(id=request.data["followed"].split("/")[-2])
-            follow = Follows.objects.follow(me, following)
+            follow = Follows.objects.follow(following, me)
             follow_serializer = FollowSerializer(follow, context={'request': request})
+            print follow_serializer.data
             return Response(follow_serializer.data)
 
 
@@ -98,7 +103,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["GET"])
     def followings(self, request, **kwargs):
         queryset = Follows.objects.getFollowing(self.kwargs['pk'])
-        print queryset
+        print kwargs['pk']
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 

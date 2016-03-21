@@ -9,6 +9,7 @@ class FollowManager(models.Manager):
 
 
     def getFollowing(self, user):
+        print user
         return self.get_queryset().filter(follower=user)
 
 

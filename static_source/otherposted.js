@@ -28,7 +28,8 @@ $( document ).ready(function() {
                  "token":global.cookie_setting.get("token"),
                  "firstname":global.cookie_setting.get("click_first_name"),
                  "lastname": global.cookie_setting.get("click_last_name"),
-                 "userphoto":"/static/image/no_image.jpg",
+                 "no_image":"/static/image/no_image.jpg",
+                 "userphoto":global.cookie_setting.get("click_picture"),
                  "followers":"50",
                  "following":"77",
                  "friends":"112"
