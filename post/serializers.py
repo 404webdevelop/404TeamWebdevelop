@@ -111,12 +111,12 @@ class RemotePostSerializer(serializers.Serializer):
         # comments proxy
         commentsURL = None
         if 'url' in data and not IsLocalURL(data['url'], request):
-            if data['url'][-1] == '/'
+            if data['url'][-1] == '/':
                 commentsURL = data['url'] + 'comments/'
             else:
                 commentsURL = data['url'] + 'comments'
         elif 'origin' in data and not IsLocalURL(data['origin'], request):
-            if data['origin'][-1] == '/'
+            if data['origin'][-1] == '/':
                 commentsURL = data['origin'] + 'comments/'
             else:
                 commentsURL = data['origin'] + 'comments'
