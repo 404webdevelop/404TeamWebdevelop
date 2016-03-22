@@ -32,6 +32,19 @@ class RemotePost(object):
         if not timezone.is_aware(self.published):
             self.published = timezone.make_aware(self.published, timezone.get_default_timezone())
 
+class RemoteComment(object):
+    def __init__(self, data):
+        self.data = json.dumps(data)
+        if 'published' in data:
+            self.published = parse_datetime(data['published'])
+        elif 'pubDate' in data:
+            self.published = parse_datetime(data['pubDate'])
+        else:
+            raise BadDataException('No published date in RemoteComment data')
+
+        if not timezone.is_aware(self.published):
+            self.published = timezone.make_aware(self.published, timezone.get_default_timezone())
+
 class RemoteAuthor(object):
     def __init__(self, data):
         self.data = json.dumps(data)

@@ -2,7 +2,7 @@ import requests # http://docs.python-requests.org/en/master/
 import json
 from urlparse import urlparse
 
-from .models import RemoteServer, RemotePost
+from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
 
 def IsRemoteAuthUsername(localUsername):
@@ -78,7 +78,18 @@ def IsGoodAuthorsResponse(r):
         return False
     if ('size' in r.json() and r.json()['size'] > 0):
         return True
-    if 'query' in r.json() and r.json()['query'] in ['posts', 'post', 'data']:
+    if 'query' in r.json() and r.json()['query'] in ['author', 'authors', 'user', 'users', 'data']:
+        return True
+    if isinstance(r.json(), list):
+        return True
+    return False
+
+def IsGoodCommentsResponse(r):
+    if r.status_code != 200:
+        return False
+    if ('size' in r.json() and r.json()['size'] > 0):
+        return True
+    if 'query' in r.json() and r.json()['query'] in ['comments', 'comment', 'data']:
         return True
     if isinstance(r.json(), list):
         return True
@@ -179,6 +190,30 @@ def GetRemotePostsAtUrl(url, requestingUser = None):
             pass
 
     return remotePosts
+
+def GetRemoteCommentsAtUrl(url, requestingUser = None):
+    server, path = GetServerAndPathForUrl(url, requestingUser)
+
+    if server is None:
+        return None
+
+    # do the request
+    try:
+        r = server.Get(path)
+    except requests.exceptions.ConnectionError: # remote server down
+        return None
+
+    if not IsGoodCommentsResponse(r):
+        return None
+    remoteCommentDicts = _ExtractData(r.json(), 'comment')
+    remoteComments = []
+    for remoteCommentDict in remoteCommentDicts:
+        try:
+            remoteComments.append(RemoteComment(remoteCommentDict))
+        except BadDataException:
+            pass
+
+    return remoteComments
 
 def IsLocalURL(url, request):
     parsedHostURL = urlparse(request.build_absolute_uri())
