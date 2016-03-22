@@ -1,0 +1,25 @@
+
+li{
+	font-weight: bold;
+	color:white;
+}
+td {
+    padding: 12px;
+}
+#div1,#div2{
+	display:inline-block;
+}
+
+#div2{
+
+}
+
+hr {
+	border-top: 3px double #8c8b8b;
+}
+
+#posted_item{
+	background-color: grey;
+	color:white;
+}
+
