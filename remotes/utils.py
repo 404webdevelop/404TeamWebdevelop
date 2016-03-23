@@ -216,25 +216,28 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
-def PostRemoteCOmmentAtUrl(url, data, requestingUser = None):
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
     server, path = GetServerAndPathForUrl(url, requestingUser)
 
     if server is None:
-        return None
+        return 'Could not find a registered remote server corresponding to the POST url'
 
     # fill in remote user and pass
-    if data['remote_author_url'] == '' and data['remote_author_name'] == '' and requestingUser is not None and not requestingUser.is_anonymous():
-        data['remote_author_url'] = reverse('author-list', args=(requestingUser.id,))
-        data['remote_author_name'] = requestingUser.username
+    if data['remote_author_url'] == '' or data['remote_author_name'] == '':
+        if requestingUser is not None and not requestingUser.is_anonymous():
+            data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
+            data['remote_author_name'] = requestingUser.username
+        else:
+            return 'You need to either login (with a non-superuser account) or specify the remote_author_x stuff'
 
     # do the post
     try:
         r = server.Post(path, data)
     except requests.exceptions.ConnectionError: # remote server down
-        return None
+        return 'Failed to connect to the remote server'
 
     if r.status_code not in [200, 201]:
-        return None
+        return 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)
 
     return True
 

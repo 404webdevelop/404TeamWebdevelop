@@ -180,11 +180,11 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
         Post a remote comment by URL of its remote parent post
         """
         data = request.data
-        result = PostRemoteCOmmentAtUrl(remote_url, data, request.user)
-        if result:
+        result = PostRemoteCommentAtUrl(remote_url, data, request, request.user)
+        if result == True:
             return Response({'Result': 'Maybe posted your comment'})
         else:
-            return Response({'Error': 'Failed to POST'})
+            return Response({'Error': result})
 
 class MyPosts(PostByAuthor):
     """
