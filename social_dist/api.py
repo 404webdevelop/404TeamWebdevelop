@@ -30,10 +30,15 @@ class MyRouter(routers.DefaultRouter):
             - create, list, edit, delete: [`/author`](/api/author)
 
             ## [Follow](/api/follow) \n
+            - Internal use only 
             - create, list, delete: [`/follow`](/api/follow)
+            - get: get current author's following list `/api/follow/author_id/followings`
+            - get: get current author's follower list `/api/follow/author_id/followers`
 
-            ## [Friend](/api/friend) \n
-            - list, delete: [`/friend/author_id`](/api/friend)
+            ## `Friend` \n
+            - internal use only for project part 2
+            - list, delete: `/friend/author_id`
+            - list: `/friends/author_id/author_id`
 
             _Edit this documentation in `social_dist/api.py`_
 
