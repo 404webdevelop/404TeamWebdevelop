@@ -202,14 +202,12 @@ class FriendRequestAPIView(APIView):
 
     def post(self, request):
         author_id = request.data['author']['id']
-        print author_id
         friend_id = request.data['friend']['id']
-        print friend_id
 
         if friend_id is not None:
             try:
                 friend = Author.objects.get(id=friend_id)
-                print friend
+
             except:
                 return Response({
                     'err': 'user not exist'
@@ -223,11 +221,13 @@ class FriendRequestAPIView(APIView):
                 })
             except:
                 author = request.data['author']
+                remote_url = author['host'] + author['id']
                 follow = Follows.objects.create(followed=friend)
                 follow.remote_author_host = author['host']
                 follow.remote_author_name = author['displayName']
+
+                follow.remote_author_url = remote_url
                 follow.save()
-                print follow.remote_author_name
                 return Response({
                     'success': True
                 })
