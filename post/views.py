@@ -127,6 +127,10 @@ class PostByAuthor(viewsets.ViewSet, PagedViewMixin):
 class RemotePostsViewSet(viewsets.ViewSet, PagedViewMixin):
     """
     This is a set of remote posts (by one remote author)
+
+    Usage: \n
+      - GET to list
+      - (POST is not allowed)
     """
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     pagination_class = PostPagination
@@ -147,11 +151,19 @@ class RemotePostsViewSet(viewsets.ViewSet, PagedViewMixin):
 class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
     This is a set of remote comments
+
+    Usage: \n
+      - GET to list
+      - POST to create a remote comment
     """
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     pagination_class = CommentPagination
+    serializer_class = CommentByPostSerializer
 
     def list(self, request, remote_url):
+        """
+        List remote comments by URL of their remote parent post
+        """
         remoteCommentDicts = GetRemoteCommentsAtUrl(remote_url, requestingUser = request.user)
         if remoteCommentDicts is not None:
             page = self.paginate_queryset(remoteCommentDicts)
@@ -162,6 +174,17 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
             return Response({'Error': 'Failed to paginate'}, status=500)
         else:
             return Response({'Error': 'Could not fetch url'}, status=404)
+
+    def create(self, request, remote_url):
+        """
+        Post a remote comment by URL of its remote parent post
+        """
+        data = request.data
+        result = PostRemoteCOmmentAtUrl(remote_url, data, request.user)
+        if result:
+            return Response({'Result': 'Maybe posted your comment'})
+        else:
+            return Response({'Error': 'Failed to POST'})
 
 class MyPosts(PostByAuthor):
     """

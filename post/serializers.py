@@ -158,7 +158,7 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         local_author = self.context['request'].user
-        if not local_author.is_anonymous():
+        if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
@@ -205,7 +205,7 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
             raise exceptions.PermissionDenied('Attempted to create Comment with parent you cannot view')
         validated_data['parent'] = parent
         local_author = self.context['request'].user
-        if not local_author.is_anonymous():
+        if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment

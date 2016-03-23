@@ -1,6 +1,7 @@
 import requests # http://docs.python-requests.org/en/master/
 import json
 from urlparse import urlparse
+from django.core.urlresolvers import reverse
 
 from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
@@ -37,7 +38,7 @@ class _RemoteServer:
         return r
 
     def Post(self, relUrl, data):
-        r = requests.post(self.host + relUrl, data, auth=self.credentials, params=self._RequestingUser())
+        r = requests.post(self.host + relUrl, data=data, auth=self.credentials, params=self._RequestingUser())
         return r
 
 def GetRemoteServers(requestingUser):
@@ -214,6 +215,28 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
             pass
 
     return remoteComments
+
+def PostRemoteCOmmentAtUrl(url, data, requestingUser = None):
+    server, path = GetServerAndPathForUrl(url, requestingUser)
+
+    if server is None:
+        return None
+
+    # fill in remote user and pass
+    if data['remote_author_url'] == '' and data['remote_author_name'] == '' and requestingUser is not None and not requestingUser.is_anonymous():
+        data['remote_author_url'] = reverse('author-list', args=(requestingUser.id,))
+        data['remote_author_name'] = requestingUser.username
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return None
+
+    if r.status_code not in [200, 201]:
+        return None
+
+    return True
 
 def IsLocalURL(url, request):
     parsedHostURL = urlparse(request.build_absolute_uri())
