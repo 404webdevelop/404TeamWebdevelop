@@ -233,19 +233,25 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
-def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry = false):
+    if requestingUser is None or requestingUser.is_anonymous():
+        return 'You need to be logged in do make remote comments'
+
     server, path = GetServerAndPathForUrl(url, requestingUser)
 
     if server is None:
         return 'Could not find a registered remote server corresponding to the POST url'
 
     # fill in remote user and pass
-    if data['remote_author_url'] == '' or data['remote_author_name'] == '':
-        if requestingUser is not None and not requestingUser.is_anonymous():
-            data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
-            data['remote_author_name'] = requestingUser.username
-        else:
-            return 'You need to either login (with a non-superuser account) or specify the remote_author_x stuff'
+    data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
+    data['remote_author_name'] = requestingUser.username
+
+    if secondTry:
+        author = {'id': requestingUser.id, 'host': request.get_host(), 'displayName': data['remote_author_name']
+            , 'url': data['remote_author_url'], 'github': requestingUser.github}
+        newData = {'author': author, 'comment': data['content'], 'contentType': 'text/plain'}
+        data = newData
+
 
     # do the post
     try:
@@ -254,7 +260,10 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
         return 'Failed to connect to the remote server'
 
     if r.status_code not in [200, 201]:
-        return 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)
+        if secondTry:
+            return 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)
+        else:
+            return PostRemoteCommentAtUrl(url, data, request, requestingUser, secondTry=True)
 
     return True
 
