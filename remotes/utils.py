@@ -1,6 +1,7 @@
 import requests # http://docs.python-requests.org/en/master/
 import json
 from urlparse import urlparse
+from django.core.urlresolvers import reverse
 
 from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
@@ -16,6 +17,23 @@ def IsRemoteAuthUsername(localUsername):
 def IsRemoteAuthUser(user):
     return len([server for server in RemoteServer.objects.all()
                 if server.local_user is not None and server.local_user.id == user.id]) > 0
+
+def ContainsARemoteHostname(s):
+    if s[0:4] != 'http':
+        s = 'http://' + s
+    parsedURL = urlparse(s)
+    netloc = parsedURL.netloc
+    servers = [server for server in GetRemoteServers() if netloc in server.host]
+    if len(servers) < 1:
+        return False
+    else:
+        return True
+
+def GetRemoteHostContaining(s):
+    if s[0:7] == 'http://':
+        s = s[7:]
+    servers = [server for server in GetRemoteServers() if s in server.host]
+    return servers[0].host
 
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
@@ -37,10 +55,10 @@ class _RemoteServer:
         return r
 
     def Post(self, relUrl, data):
-        r = requests.post(self.host + relUrl, data, auth=self.credentials, params=self._RequestingUser())
+        r = requests.post(self.host + relUrl, data=data, auth=self.credentials, params=self._RequestingUser())
         return r
 
-def GetRemoteServers(requestingUser):
+def GetRemoteServers(requestingUser = None):
     def MakeRemoteServer(row):
         if row.remote_username != '' and row.remote_password != '':
             credentials = (row.remote_username, row.remote_password)
@@ -214,6 +232,31 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
             pass
 
     return remoteComments
+
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
+    server, path = GetServerAndPathForUrl(url, requestingUser)
+
+    if server is None:
+        return 'Could not find a registered remote server corresponding to the POST url'
+
+    # fill in remote user and pass
+    if data['remote_author_url'] == '' or data['remote_author_name'] == '':
+        if requestingUser is not None and not requestingUser.is_anonymous():
+            data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
+            data['remote_author_name'] = requestingUser.username
+        else:
+            return 'You need to either login (with a non-superuser account) or specify the remote_author_x stuff'
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return 'Failed to connect to the remote server'
+
+    if r.status_code not in [200, 201]:
+        return 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)
+
+    return True
 
 def IsLocalURL(url, request):
     parsedHostURL = urlparse(request.build_absolute_uri())
