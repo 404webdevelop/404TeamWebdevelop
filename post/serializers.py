@@ -110,16 +110,20 @@ class RemotePostSerializer(serializers.Serializer):
 
         # comments proxy
         commentsURL = None
-        if 'url' in data and not IsLocalURL(data['url'], request):
+        if 'url' in data and not IsLocalURL(data['url'], request) and ContainsARemoteHostname(data['url']):
             if data['url'][-1] == '/':
                 commentsURL = data['url'] + 'comments/'
             else:
                 commentsURL = data['url'] + 'comments'
-        elif 'origin' in data and not IsLocalURL(data['origin'], request):
+        elif 'origin' in data and not IsLocalURL(data['origin'], request) and ContainsARemoteHostname(data['origin']):
             if data['origin'][-1] == '/':
                 commentsURL = data['origin'] + 'comments/'
             else:
                 commentsURL = data['origin'] + 'comments'
+        elif 'author' in data and 'host' in data['author'] and ContainsARemoteHostname(data['author']['host']) and 'id' in data:
+            host = data['author']['host']
+            host = GetRemoteHostContaining(host)
+            commentsURL = host + '/posts/' + data['id'] + '/comments'
 
         if commentsURL is not None:
             data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))

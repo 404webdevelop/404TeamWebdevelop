@@ -18,6 +18,23 @@ def IsRemoteAuthUser(user):
     return len([server for server in RemoteServer.objects.all()
                 if server.local_user is not None and server.local_user.id == user.id]) > 0
 
+def ContainsARemoteHostname(s):
+    if s[0:4] != 'http':
+        s = 'http://' + s
+    parsedURL = urlparse(s)
+    netloc = parsedURL.netloc
+    servers = [server for server in GetRemoteServers() if netloc in server.host]
+    if len(servers) < 1:
+        return False
+    else:
+        return True
+
+def GetRemoteHostContaining(s):
+    if s[0:7] == 'http://':
+        s = s[7:]
+    servers = [server for server in GetRemoteServers() if s in server.host]
+    return servers[0].host
+
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
         self.host = 'http://' + host
@@ -41,7 +58,7 @@ class _RemoteServer:
         r = requests.post(self.host + relUrl, data=data, auth=self.credentials, params=self._RequestingUser())
         return r
 
-def GetRemoteServers(requestingUser):
+def GetRemoteServers(requestingUser = None):
     def MakeRemoteServer(row):
         if row.remote_username != '' and row.remote_password != '':
             credentials = (row.remote_username, row.remote_password)
