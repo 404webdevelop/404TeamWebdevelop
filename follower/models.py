@@ -4,13 +4,19 @@ from author.models import Author
 class FollowManager(models.Manager):
     # call this by Follows.objects.getFollowers(author id)
 
-    def getFollowers(self, user):
-        return self.get_queryset().filter(followed=user)
+    def getFollowers(self, id):
+        # filter(A, B) is AND relation
+        # filter(A).filter(B) is OR relation
+        # source:http://stackoverflow.com/questions/8164675/chaining-multiple-filter-in-django-is-this-a-bug
+
+        return self.get_queryset().filter(followed=id).filter(remote_author_id = id, followed = None)
 
 
-    def getFollowing(self, user):
-        print user
-        return self.get_queryset().filter(follower=user)
+    def getFollowing(self, id):
+        # filter(A, B) is AND relation
+        # filter(A).filter(B) is OR relation
+        # source:http://stackoverflow.com/questions/8164675/chaining-multiple-filter-in-django-is-this-a-bug
+        return self.get_queryset().filter(follower=id).filter(remote_author_id = id, follower = None)
 
 
     def mutualFollow(self, follower1, follower2):
@@ -73,6 +79,7 @@ class Follows(models.Model):
     followed = models.ForeignKey(Author, related_name='followed', null=True, blank=True)
     follower = models.ForeignKey(Author, related_name='follower', null=True, blank=True)
     remote_author_host = models.CharField(max_length=1024, null=True, blank=True)
+    remote_author_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     remote_author_name = models.CharField(max_length=1024, null=True, blank=True)
     remote_author_url = models.CharField(max_length=1024, null=True, blank=True)
     objects = FollowManager()
