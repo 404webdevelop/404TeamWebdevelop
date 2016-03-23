@@ -31,6 +31,9 @@ function set_post_on(){
 
 
 function setup(){
+
+
+	//-----------------------main pages-----------------------------------
 	$('#home_page').click(function(){
         $("#home").show(800);
 		$("#posted").hide();
@@ -39,6 +42,8 @@ function setup(){
 		$("#friends").hide();
 		$("#git").hide();
 		$("#profile").hide();
+		$("#comment").hide();
+
     });
     $('#posted_page').click(function(){
         $("#home").hide();
@@ -48,6 +53,8 @@ function setup(){
 		$("#friends").hide();
 		$("#git").hide();
 		$("#profile").hide();
+		$("#comment").hide();
+
     });
     $('#other_page').click(function(){
         $("#home").hide();
@@ -57,6 +64,8 @@ function setup(){
 		$("#friends").hide();
 		$("#git").hide();
 		$("#profile").hide();
+		$("#comment").hide();
+
     });
     $('#friends_page').click(function(){
         $("#home").hide();
@@ -66,6 +75,8 @@ function setup(){
 		$("#friends").show(800);
 		$("#git").hide();
 		$("#profile").hide();
+		$("#comment").hide();
+
     });
     $('#git_page').click(function(){
         $("#home").hide();
@@ -75,6 +86,8 @@ function setup(){
 		$("#friends").hide();
 		$("#git").show(800);
 		$("#profile").hide();
+		$("#comment").hide();
+
     });
     $('#profile_page').click(function(){
         $("#home").hide();
@@ -84,8 +97,24 @@ function setup(){
 		$("#friends").hide();
 		$("#git").hide();
 		$("#profile").show(800);
+		$("#comment").hide();
+
+    });
+    $('#comment_page').click(function(){
+        $("#home").hide();
+		$("#posted").hide();
+		$("#follow_btn").hide();
+		$("#other_posted").hide();
+		$("#friends").hide();
+		$("#git").hide();
+		$("#profile").hide();
+		$("#comment").show(800);
+
     });
 
+
+
+    //-------------------------in the friends page---------------------------
     $('#display_follower').click(function(){
     	$("#follower_list").show(800);
 		$("#following_list").hide();
@@ -148,6 +177,7 @@ $( document ).ready(function() {
 	$("#fof_list").hide();
 	$("#search_list").hide();
 	$("#search_result_fild").hide();
+	$("#comment").hide();
 
 
 	setup();
