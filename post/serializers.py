@@ -6,10 +6,12 @@ from permissions import *
 from rest_framework import exceptions
 import collections
 import json
+from django.core.urlresolvers import reverse
 
 from author.api.serializers import UserSerializer
 from .models import Post, Image, Comment
 from remotes.models import *
+from remotes.utils import *
 
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -72,11 +74,25 @@ class PostReadSerializer(PostWriteSerializer):
 
         return data
 
+class RemoteCommentSerializer(serializers.Serializer):
+    data = serializers.CharField(max_length=None)
+    published = serializers.DateTimeField()
+
+    def to_representation(self, obj):
+        request = self.context['request']
+        data = super(RemoteCommentSerializer, self).to_representation(obj)
+        jsonDict = json.loads(data['data'])
+        for key in jsonDict:
+            data[key] = jsonDict[key]
+        del data['data']
+        return data
+
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
 
     def to_representation(self, obj):
+        request = self.context['request']
         data = super(RemotePostSerializer, self).to_representation(obj)
         jsonDict = json.loads(data['data'])
         for key in jsonDict:
@@ -91,6 +107,27 @@ class RemotePostSerializer(serializers.Serializer):
                 data['username'] = data['author']['username']
             if 'displayName' in data['author']:
                 data['username'] = data['author']['displayName']
+
+        # comments proxy
+        commentsURL = None
+        if 'url' in data and not IsLocalURL(data['url'], request) and ContainsARemoteHostname(data['url']):
+            if data['url'][-1] == '/':
+                commentsURL = data['url'] + 'comments/'
+            else:
+                commentsURL = data['url'] + 'comments'
+        elif 'origin' in data and not IsLocalURL(data['origin'], request) and ContainsARemoteHostname(data['origin']):
+            if data['origin'][-1] == '/':
+                commentsURL = data['origin'] + 'comments/'
+            else:
+                commentsURL = data['origin'] + 'comments'
+        elif 'author' in data and 'host' in data['author'] and ContainsARemoteHostname(data['author']['host']) and 'id' in data:
+            host = data['author']['host']
+            host = GetRemoteHostContaining(host)
+            commentsURL = host + '/posts/' + data['id'] + '/comments'
+
+        if commentsURL is not None:
+            data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))
+
         return data
 
 def SerializePosts(posts, request):
@@ -125,7 +162,7 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         local_author = self.context['request'].user
-        if not local_author.is_anonymous():
+        if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
@@ -172,7 +209,7 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
             raise exceptions.PermissionDenied('Attempted to create Comment with parent you cannot view')
         validated_data['parent'] = parent
         local_author = self.context['request'].user
-        if not local_author.is_anonymous():
+        if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
         comment = Comment.objects.create(**validated_data)
         return comment
