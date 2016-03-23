@@ -156,9 +156,8 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
         if remoteCommentDicts is not None:
             page = self.paginate_queryset(remoteCommentDicts)
             if page is not None:
-                # TODO
-                data = None
-                return self.get_paginated_response(data)
+                serializer = RemoteCommentSerializer(page, many=True, context={'request': request})
+                return self.get_paginated_response(serializer.data)
 
             return Response({'Error': 'Failed to paginate'}, status=500)
         else:
