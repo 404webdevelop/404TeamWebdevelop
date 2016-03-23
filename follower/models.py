@@ -16,6 +16,7 @@ class FollowManager(models.Manager):
         # filter(A, B) is AND relation
         # filter(A).filter(B) is OR relation
         # source:http://stackoverflow.com/questions/8164675/chaining-multiple-filter-in-django-is-this-a-bug
+        
         return self.get_queryset().filter(follower=id).filter(remote_author_id = id, follower = None)
 
 
