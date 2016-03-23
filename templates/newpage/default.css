@@ -9,17 +9,17 @@ td {
 #div1,#div2{
 	display:inline-block;
 }
-
-#div2{
-
+#div_icon,#div_search,#div_button{
+	display:inline-block;
 }
 
-hr {
+
+#the_hr {
 	border-top: 3px double #8c8b8b;
 }
 
 #posted_item{
-	background-color: grey;
-	color:white;
+	background-color: white;
+	color:black;
 }
 
