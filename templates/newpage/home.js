@@ -3,10 +3,34 @@
 'use strict';
 
 
+function set_post_on(){
+	$('#home_page_list_view').append('<div class="panel panel-primary">\
+              <div class="panel-heading">Post Object</div>\
+              <div class="panel-body">\
+                <div class="row" id="posted_item">\
+                    <div class="col-md-5">\
+                        <a href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">\
+                            <img class="img-responsive" src="./1 Col Portfolio - Start Bootstrap Template_files/700x300" alt="">\
+                        </a>\
+                    </div>\
+                    <div class="col-md-7">\
+                        <h3>Project Four</h3>\
+                        <h4>Subheading</h4>\
+                        <p>\
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quidem, consectetur, officia rem officiis illum aliquam perspiciatis aspernatur quod modi hic nemo qui soluta aut eius fugit quam in suscipit?\
+                        </p>\
+                        <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Post <span class="glyphicon glyphicon-chevron-right"></span></a>\
+                    </div>\
+                </div>\
+              </div>\
+            </div>\
+            <hr>');
+}
 
-function setusername(){
-	
 
+
+
+function setup(){
 	$('#home_page').click(function(){
         $("#home").show(800);
 		$("#posted").hide();
@@ -104,12 +128,7 @@ function setusername(){
     });
     $('#search_button').click(function(){
         $("#search_result_fild").show(800);
-        
-
     });
-
-
-
 };
 
 
@@ -131,7 +150,9 @@ $( document ).ready(function() {
 	$("#search_result_fild").hide();
 
 
-	setusername();
+	setup();
+	set_post_on();
+
 
 });
 
