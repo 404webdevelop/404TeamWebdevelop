@@ -158,7 +158,7 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
     pagination_class = CommentPagination
-    serializer_class = CommentByPostSerializer
+    serializer_class = RemoteCommentByPostSerializer
 
     def list(self, request, remote_url):
         """

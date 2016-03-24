@@ -235,7 +235,7 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
-def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry = False):
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
     if requestingUser is None or requestingUser.is_anonymous():
         return 'You need to be logged in do make remote comments'
 
@@ -244,16 +244,14 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry 
     if server is None:
         return 'Could not find a registered remote server corresponding to the POST url'
 
-    # fill in remote user and pass
-    data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
-    data['remote_author_name'] = requestingUser.username
-
-    if secondTry:
-        author = {'id': str(requestingUser.id), 'host': request.get_host(), 'displayName': data['remote_author_name']
-            , 'url': data['remote_author_url'], 'github': requestingUser.github}
-        newData = {'author': author, 'comment': data['content'], 'contentType': 'text/plain'}
-        data = newData
-
+    # fill in author info from requestingUser
+    author = {}
+    author['id'] = str(requestingUser.id)
+    author['host'] = request.get_host()
+    author['displayName'] = requestingUser.username
+    author['url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
+    author['github'] = requestingUser.github
+    data.update({'author': author})
 
     # do the post
     try:
@@ -262,15 +260,11 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry 
         return 'Failed to connect to the remote server'
 
     if r.status_code not in [200, 201]:
-        if secondTry:
-            d = {'Error': 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)}
-            # d.update(data)
-            d['post_to_url'] = path
-            d['orig_url'] = url
-
-            return d
-        else:
-            return PostRemoteCommentAtUrl(url, data, request, requestingUser, secondTry=True)
+        d = {'Error': 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)}
+        # d.update(data)
+        d['post_to_url'] = path
+        d['orig_url'] = url
+        return d
 
     return True
 

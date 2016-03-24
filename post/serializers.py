@@ -271,6 +271,11 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
         data = serializer.data
         return CommentToRepresentation(data)
 
+class RemoteCommentByPostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('comment', 'contentType')
+
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):
     def to_internal_value(self, data):
