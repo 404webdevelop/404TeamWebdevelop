@@ -2,7 +2,7 @@
 <html>
 <head>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="http://malsup.github.com/jquery.form.js"></script>
 </head>
 <body>
 <form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
@@ -10,7 +10,7 @@
       <input name="title" value="title1" type="text">
   </div>
   <div>
-      <input name="content" value="content1" type="text">
+      <textarea name="content" value="content1" type="text"></textarea>
   </div>
   <div>
     <select  name="privacy_level">
@@ -34,8 +34,8 @@
 
 <form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
   <div>
-    <select class="form-control" name="parent_post" hidden>    
-      <option value="http://localhost:8000/api/posts/5742ac1c-d3ff-41e2-a609-d72398a7afb8/">Post object</option>  
+    <select class="form-control" name="parent_post" hidden>
+      <option value="http://localhost:8000/api/posts/5742ac1c-d3ff-41e2-a609-d72398a7afb8/">Post object</option>
     </select>
   </div>
 
@@ -59,6 +59,3 @@
 </html>
 
 <!-- http://localhost:8000/api/posts/8091a849-ff04-4ef7-a372-fc2d437592fc/ -->
-
-
-

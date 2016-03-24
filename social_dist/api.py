@@ -1,6 +1,6 @@
 from rest_framework import routers
 from author.api.views import AuthorViewSet, RemoteAuthorViewSet
-from post.views import PostViewSet, CommentViewSet, ImageViewSet, PostByAuthor, MyPosts, CommentByPost, RemotePostsViewSet
+from post.views import *
 from follower.views import FollowViewSet, FriendViewSet, FriendlistViewSet
 
 # http://stackoverflow.com/questions/17496249/in-django-restframework-how-to-change-the-api-root-documentation
@@ -30,10 +30,15 @@ class MyRouter(routers.DefaultRouter):
             - create, list, edit, delete: [`/author`](/api/author)
 
             ## [Follow](/api/follow) \n
+            - Internal use only 
             - create, list, delete: [`/follow`](/api/follow)
+            - get: get current author's following list `/api/follow/author_id/followings`
+            - get: get current author's follower list `/api/follow/author_id/followers`
 
-            ## [Friend](/api/friend) \n
-            - list, delete: [`/friend/author_id`](/api/friend)
+            ## `Friend` \n
+            - internal use only for project part 2
+            - list, delete: `/friend/author_id`
+            - list: `/friends/author_id/author_id`
 
             _Edit this documentation in `social_dist/api.py`_
 
@@ -54,6 +59,7 @@ router.register(r'remoteposts/(?P<remote_url>.+)', RemotePostsViewSet, base_name
 # Comment views
 router.register(r'posts/(?P<post_id>[0-9a-f\-]+)/comments', CommentByPost, base_name='comment_by_post')
 router.register(r'comments', CommentViewSet) # not required by the spec
+router.register(r'remotecomments/(?P<remote_url>.+)', RemoteCommentByPost, base_name='remote_comment_by_post')
 
 # Image views
 router.register(r'images', ImageViewSet)

@@ -1,0 +1,25 @@
+
+li{
+	font-weight: bold;
+	color:white;
+}
+td {
+    padding: 12px;
+}
+#div1,#div2{
+	display:inline-block;
+}
+#div_icon,#div_search,#div_button{
+	display:inline-block;
+}
+
+
+#the_hr {
+	border-top: 3px double #8c8b8b;
+}
+
+#posted_item{
+	background-color: white;
+	color:black;
+}
+
