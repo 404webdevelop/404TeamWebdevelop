@@ -253,7 +253,7 @@ class CommentReadSerializer(serializers.HyperlinkedModelSerializer):
         return CommentToRepresentation(data)
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
-    author = RemoteCommentAuthorSerializer(default=RemoteCommentAuthor())
+    author = RemoteCommentAuthorSerializer(default={'id': '', 'host': '', 'displayName': '', 'url': '', 'github': ''})
     class Meta:
         model = Comment
         fields = ('url', 'comment', 'contentType', 'author', 'published')
