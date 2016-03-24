@@ -172,19 +172,20 @@ def SerializePosts(posts, request):
 def CommentToRepresentation(data, request=None):
     data['content'] = data['comment']
     data['pubDate'] = data['published']
-    if 'local_author' in data and data['local_author'] is not None:
-        data['author'] = data['local_author']
-    elif data['remote_author_name'] != '' or data['remote_author_url'] != '' or data['remote_author_id'] != '':
-        data['author'] = { 'id': data['remote_author_id'], 'host': data['remote_author_host']
-                            ,'username': data['remote_author_name'], 'displayName': data['remote_author_name']
-                            , 'url': data['remote_author_url'], 'github': data['remote_author_github']}
+    if 'author' not in data:
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif 'remote_author_name' in data and (data['remote_author_name'] != '' or data['remote_author_url'] != '' or data['remote_author_id'] != ''):
+            data['author'] = { 'id': data['remote_author_id'], 'host': data['remote_author_host']
+                                ,'username': data['remote_author_name'], 'displayName': data['remote_author_name']
+                                , 'url': data['remote_author_url'], 'github': data['remote_author_github']}
 
-        if data['remote_author_url'] != '' and data['remote_author_host'] == '':
-            parsedURL = urlparse(data['remote_author_url'])
-            data['author']['host'] = parsedURL.netloc
-    else:
-        data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
-                          , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+            if data['remote_author_url'] != '' and data['remote_author_host'] == '':
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
     data.pop('remote_author_id', None)
     data.pop('remote_author_host', None)
     data.pop('remote_author_name', None)
@@ -193,6 +194,8 @@ def CommentToRepresentation(data, request=None):
 
     if 'local_author' in data and data['local_author'] is not None:
         data['local_author'] = True
+    else:
+        data['local_author'] = False
 
     return data
 

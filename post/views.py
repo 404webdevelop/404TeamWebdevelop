@@ -324,7 +324,7 @@ Permissions: \n
         serializer.save()
         return Response(serializer.data)
 
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     API endpoint that allows Comments to be listed/created
 
@@ -332,8 +332,8 @@ class CommentViewSet(viewsets.ModelViewSet):
       - `/comments/{comment_id}`
         - GET: get JSON for one comment
       - `/comments`
-        - POST: create a new comment (must specify parent post)
         - GET: list all comments (paginated)
+        - Don't POST here
 
     Usage (comments by parent post): \n
       - `/posts/{post_id}/comments`
