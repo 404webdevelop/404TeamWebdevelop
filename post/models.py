@@ -12,7 +12,6 @@ class Post(models.Model):
 
     CONTENT_TYPE_CHOICES = (
         ('text/plain', 'text/plain'),
-        ('text/markdown', 'text/markdown'),
         ('text/x-markdown', 'text/x-markdown')
     )
 
@@ -69,7 +68,6 @@ class Comment(models.Model):
 
     CONTENT_TYPE_CHOICES = (
         ('text/plain', 'text/plain'),
-        ('text/markdown', 'text/markdown'),
         ('text/x-markdown', 'text/x-markdown')
     )
 
