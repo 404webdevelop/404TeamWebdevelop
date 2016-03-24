@@ -183,8 +183,10 @@ class RemoteCommentByPost(viewsets.ViewSet, PagedViewMixin):
         result = PostRemoteCommentAtUrl(remote_url, data, request, request.user)
         if result == True:
             return Response({'Result': 'Maybe posted your comment'})
+        elif isinstance(result, dict):
+            return Response(result, status=500)
         else:
-            return Response({'Error': result})
+            return Response({'Error': result}, status=500)
 
 class MyPosts(PostByAuthor):
     """

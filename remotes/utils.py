@@ -55,7 +55,9 @@ class _RemoteServer:
         return r
 
     def Post(self, relUrl, data):
-        r = requests.post(self.host + relUrl, data=data, auth=self.credentials, params=self._RequestingUser())
+        if relUrl[-1] != '/':
+            relUrl = relUrl + '/'
+        r = requests.post(self.host + relUrl, json=data, auth=self.credentials, params=self._RequestingUser())
         return r
 
 def GetRemoteServers(requestingUser = None):
@@ -233,7 +235,7 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
-def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry = false):
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry = False):
     if requestingUser is None or requestingUser.is_anonymous():
         return 'You need to be logged in do make remote comments'
 
@@ -247,7 +249,7 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry 
     data['remote_author_name'] = requestingUser.username
 
     if secondTry:
-        author = {'id': requestingUser.id, 'host': request.get_host(), 'displayName': data['remote_author_name']
+        author = {'id': str(requestingUser.id), 'host': request.get_host(), 'displayName': data['remote_author_name']
             , 'url': data['remote_author_url'], 'github': requestingUser.github}
         newData = {'author': author, 'comment': data['content'], 'contentType': 'text/plain'}
         data = newData
@@ -261,7 +263,12 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry 
 
     if r.status_code not in [200, 201]:
         if secondTry:
-            return 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)
+            d = {'Error': 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)}
+            d.update(data)
+            d['post_to_url'] = path
+            d['orig_url'] = url
+
+            return d
         else:
             return PostRemoteCommentAtUrl(url, data, request, requestingUser, secondTry=True)
 
@@ -272,3 +279,23 @@ def IsLocalURL(url, request):
     print(parsedHostURL.netloc)
     print(url)
     return parsedHostURL.netloc in url
+
+# Example POST function
+def PostAtUrl(url, data, request):
+    """
+    Example:
+    PostAtUrl('http://remote.server.com/api/stuff/morestuff', {'name': 'logan'}, request)
+    """
+    server, path = GetServerAndPathForUrl(url, request.user)
+    if server is None:
+        return None # could not find remote server matching the url
+
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError:
+        return None # failed to connect to the remote server
+
+    if r.status_code not in [200, 201]:
+        return None # the POST failed somehow
+
+    return r.json()
