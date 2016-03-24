@@ -97,6 +97,8 @@ class RemoteCommentSerializer(serializers.Serializer):
         for key in jsonDict:
             data[key] = jsonDict[key]
         del data['data']
+        if 'author' in data and 'host' in data['author'] and data['author']['host'] in request.get_host():
+            data['local_author'] = True
         return data
 
 class RemotePostSerializer(serializers.Serializer):
