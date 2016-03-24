@@ -264,7 +264,7 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry 
     if r.status_code not in [200, 201]:
         if secondTry:
             d = {'Error': 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)}
-            d.update(data)
+            # d.update(data)
             d['post_to_url'] = path
             d['orig_url'] = url
 
@@ -298,4 +298,4 @@ def PostAtUrl(url, data, request):
     if r.status_code not in [200, 201]:
         return None # the POST failed somehow
 
-    return r.json()
+    return r.text
