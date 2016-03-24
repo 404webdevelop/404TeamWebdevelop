@@ -159,9 +159,12 @@ function findfriends(){
 
 function search_user(username){
   $.getJSON('api/author/',function(data){
+    console.log(data);
+    var cont =0;
     $.each(data.authors,function (i , value){
       console.log(data.authors[i].username);
       if(data.authors[i].username == username){
+        cont =1;
         var data_iner = data.authors[i];
         var image = data_iner.picture;
         if(image == undefined || image == 'undefined'){
@@ -187,6 +190,25 @@ function search_user(username){
                     </div>');
       }
     })
+    if (cont ==0){
+      $("#search_result_fild").html('<div class="panel panel-primary">\
+                      <div class="panel-heading">Search result</div>\
+                      <div class="panel-body">\
+                        <div class="row" id="posted_item">\
+                            <div class="col-md-5">\
+                                    <img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100" >\
+                                </a>\
+                            </div>\
+                            <div class="col-md-7">\
+                                <h3> NOT FIND</h3>\
+                                <h4> NOTHING IN THERE</h4>\
+                                <p></p>\
+                                <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>\
+                            </div>\
+                        </div>\
+                      </div>\
+                    </div>');
+    }
     
   })
 
