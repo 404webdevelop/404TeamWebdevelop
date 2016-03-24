@@ -16,7 +16,7 @@ from remotes.utils import *
 class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'published', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'contentType', 'published', 'privacy_level', 'privacy_host_only')
 
     def create(self, validated_data):
         author = self.context['request'].user
@@ -50,7 +50,7 @@ class PostReadSerializer(PostWriteSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'content', 'author', 'published', 'privacy_level', 'privacy_host_only')
+        fields = ('id', 'url', 'title', 'content', 'author', 'contentType', 'published', 'privacy_level', 'privacy_host_only')
 
     def to_representation(self, obj):
         data = super(PostReadSerializer, self).to_representation(obj)
@@ -58,7 +58,6 @@ class PostReadSerializer(PostWriteSerializer):
         data['categories'] = []
         data['count'] = len(data['comments'])
         data['size'] = len(data['comments'])
-        data['contentType'] = 'text/plain'
 
         # visibility: PUBLIC FOAF FRIENDS PRIVATE SERVERONLY
         if data['privacy_host_only']:
@@ -158,7 +157,7 @@ def SerializePosts(posts, request):
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'published')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'contentType', 'published')
 
     def create(self, validated_data):
         local_author = self.context['request'].user
@@ -175,7 +174,6 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         data = super(CommentWriteSerializer, self).to_representation(obj)
         data['comment'] = data['content']
-        data['contentType'] = 'text/plain'
         data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
@@ -199,12 +197,11 @@ class CommentReadSerializer(CommentWriteSerializer):
     local_author = UserSerializer()
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'published')
+        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'contentType', 'published')
 
     def to_representation(self, obj):
         data = super(CommentReadSerializer, self).to_representation(obj)
         data['comment'] = data['content']
-        data['contentType'] = 'text/plain'
         data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']
@@ -223,7 +220,7 @@ class CommentReadSerializer(CommentWriteSerializer):
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'published')
+        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'contentType', 'published')
 
     def create(self, validated_data):
         post_id = self.context['parent']
@@ -240,7 +237,6 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, obj):
         data = super(CommentByPostSerializer, self).to_representation(obj)
         data['comment'] = data['content']
-        data['contentType'] = 'text/plain'
         data['pubDate'] = data['published']
         if 'local_author' in data and data['local_author'] is not None:
             data['author'] = data['local_author']

@@ -10,13 +10,21 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete = models.CASCADE)
     published = models.DateTimeField(auto_now_add=True, blank=True)
 
+    CONTENT_TYPE_CHOICES = (
+        ('text/plain', 'text/plain'),
+        ('text/markdown', 'text/markdown'),
+        ('text/x-markdown', 'text/x-markdown')
+    )
+
+    contentType = models.CharField(max_length = 50, choices = CONTENT_TYPE_CHOICES, default='text/plain')
+
     PERMISSIONS_CHOICES = (
         ('pub', 'Public'),
         ('me', 'Private to me'),
         ('friends', 'Friends only'),
         ('fof', 'Friends of friends'),
     )
-    privacy_level = models.CharField(max_length = 10, choices = PERMISSIONS_CHOICES, default='pub', blank=True)
+    privacy_level = models.CharField(max_length = 10, choices = PERMISSIONS_CHOICES, default='pub')
     privacy_host_only = models.BooleanField(default = False, blank=True) # if True, only users on this host may view
     privacy_whitelist = models.ManyToManyField(Author, related_name = '+', blank=True) # Users on this list may always view
 
@@ -47,6 +55,14 @@ class Comment(models.Model):
     parent = models.ForeignKey(Post, on_delete=models.CASCADE) # post that this comment belongs to
     content = models.CharField(max_length = 1000)
     published = models.DateTimeField(auto_now_add=True, blank=True)
+
+    CONTENT_TYPE_CHOICES = (
+        ('text/plain', 'text/plain'),
+        ('text/markdown', 'text/markdown'),
+        ('text/x-markdown', 'text/x-markdown')
+    )
+
+    contentType = models.CharField(max_length = 50, choices = CONTENT_TYPE_CHOICES, default='text/plain')
 
 
 def get_post_for_author(author):
