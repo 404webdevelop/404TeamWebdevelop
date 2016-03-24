@@ -9,7 +9,7 @@ import json
 from django.core.urlresolvers import reverse
 
 from author.api.serializers import UserSerializer
-from .models import Post, Image, Comment
+from .models import Post, Image, Comment, RemoteCommentAuthor
 from remotes.models import *
 from remotes.utils import *
 
@@ -43,6 +43,7 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
         data['username'] = obj.author.username
         data['source'] = data['url']
         data['origin'] = data['url']
+        data['local_author'] = True
         return data
 
 class PostReadSerializer(PostWriteSerializer):
@@ -73,6 +74,18 @@ class PostReadSerializer(PostWriteSerializer):
 
         return data
 
+class RemoteCommentAuthorSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=1000, default='', allow_blank=True)
+    host = serializers.CharField(max_length=1000, default='', allow_blank=True)
+    displayName = serializers.CharField(max_length=1000, default='', allow_blank=True)
+    url = serializers.CharField(max_length=1000, default='', allow_blank=True)
+    github = serializers.CharField(max_length=1000, default='', allow_blank=True)
+
+    def to_representation(self, obj):
+        request = self.context['request']
+        data = super(RemoteCommentAuthorSerializer, self).to_representation(obj)
+        return data
+
 class RemoteCommentSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
@@ -84,6 +97,8 @@ class RemoteCommentSerializer(serializers.Serializer):
         for key in jsonDict:
             data[key] = jsonDict[key]
         del data['data']
+        if 'author' in data and 'host' in data['author'] and data['author']['host'] in request.get_host():
+            data['local_author'] = True
         return data
 
 class RemotePostSerializer(serializers.Serializer):
@@ -127,6 +142,8 @@ class RemotePostSerializer(serializers.Serializer):
         if commentsURL is not None:
             data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))
 
+        data['local_author'] = False
+
         return data
 
 def SerializePosts(posts, request):
@@ -154,15 +171,56 @@ def SerializePosts(posts, request):
 #         else:
 #             raise Exception()
 
+def CommentToRepresentation(data, request=None):
+    data['content'] = data['comment']
+    data['pubDate'] = data['published']
+    if 'author' not in data:
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif 'remote_author_name' in data and (data['remote_author_name'] != '' or data['remote_author_url'] != '' or data['remote_author_id'] != ''):
+            data['author'] = { 'id': data['remote_author_id'], 'host': data['remote_author_host']
+                                ,'username': data['remote_author_name'], 'displayName': data['remote_author_name']
+                                , 'url': data['remote_author_url'], 'github': data['remote_author_github']}
+
+            if data['remote_author_url'] != '' and data['remote_author_host'] == '':
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+    data.pop('remote_author_id', None)
+    data.pop('remote_author_host', None)
+    data.pop('remote_author_name', None)
+    data.pop('remote_author_url', None)
+    data.pop('remote_author_github', None)
+
+    if 'local_author' in data and data['local_author'] is not None:
+        data['local_author'] = True
+    else:
+        data['local_author'] = False
+
+    return data
+
+def CommentAdaptRemoteAuthor(validated_data):
+    validated_data['remote_author_name'] = validated_data['author']['displayName']
+    validated_data['remote_author_url'] = validated_data['author']['url']
+    validated_data['remote_author_github'] = validated_data['author']['github']
+    validated_data['remote_author_host'] = validated_data['author']['host']
+    validated_data['remote_author_id'] = validated_data['author']['id']
+    del validated_data['author']
+    return validated_data
+
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
+    author = RemoteCommentAuthorSerializer(default=RemoteCommentAuthor())
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'parent', 'contentType', 'published')
+        fields = ('url', 'comment', 'parent', 'contentType', 'author', 'published')
 
     def create(self, validated_data):
         local_author = self.context['request'].user
         if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
+        validated_data = CommentAdaptRemoteAuthor(validated_data)
         comment = Comment.objects.create(**validated_data)
         return comment
 
@@ -172,55 +230,33 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
         return value
 
     def to_representation(self, obj):
-        data = super(CommentWriteSerializer, self).to_representation(obj)
-        data['comment'] = data['content']
-        data['pubDate'] = data['published']
-        if 'local_author' in data and data['local_author'] is not None:
-            data['author'] = data['local_author']
-        elif data['remote_author_name'] != '':
-            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
-            if data['remote_author_url'] != '':
-                data['author']['url'] = data['remote_author_url']
-                parsedURL = urlparse(data['remote_author_url'])
-                data['author']['host'] = parsedURL.netloc
-            data['author']['github'] = ''
-        elif obj.local_author is not None:
+        # data = super(CommentWriteSerializer, self).to_representation(obj)
+        serializer = CommentReadSerializer(obj, context={'request': self.context['request']})
+        data = serializer.data
+        data = CommentToRepresentation(data)
+        if data['author']['url'] == '' and data['author']['id'] == '' and obj.local_author is not None:
             serializer = UserSerializer(obj.local_author, context={'request': self.context['request']})
             data['author']  = serializer.data
-            data['local_author'] = serializer.data
-        else:
-            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
-                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+            data['local_author'] = True
+
         return data
 
-class CommentReadSerializer(CommentWriteSerializer):
+class CommentReadSerializer(serializers.HyperlinkedModelSerializer):
     local_author = UserSerializer()
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'local_author', 'remote_author_name', 'remote_author_url', 'parent', 'contentType', 'published')
+        fields = ('url', 'comment', 'local_author', 'remote_author_name', 'remote_author_url', 'remote_author_github'
+                  , 'remote_author_host', 'remote_author_id', 'parent', 'contentType', 'published')
 
     def to_representation(self, obj):
         data = super(CommentReadSerializer, self).to_representation(obj)
-        data['comment'] = data['content']
-        data['pubDate'] = data['published']
-        if 'local_author' in data and data['local_author'] is not None:
-            data['author'] = data['local_author']
-        elif data['remote_author_name'] != '':
-            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
-            if data['remote_author_url'] != '':
-                data['author']['url'] = data['remote_author_url']
-                parsedURL = urlparse(data['remote_author_url'])
-                data['author']['host'] = parsedURL.netloc
-            data['author']['github'] = ''
-        else:
-            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
-                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
-        return data
+        return CommentToRepresentation(data)
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
+    author = RemoteCommentAuthorSerializer(default={'id': '', 'host': '', 'displayName': '', 'url': '', 'github': ''})
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'remote_author_name', 'remote_author_url', 'contentType', 'published')
+        fields = ('url', 'comment', 'contentType', 'author', 'published')
 
     def create(self, validated_data):
         post_id = self.context['parent']
@@ -231,30 +267,19 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
         local_author = self.context['request'].user
         if not local_author.is_anonymous() and not IsRemoteAuthUser(local_author):
             validated_data['local_author'] = local_author
+        validated_data = CommentAdaptRemoteAuthor(validated_data)
         comment = Comment.objects.create(**validated_data)
         return comment
 
     def to_representation(self, obj):
-        data = super(CommentByPostSerializer, self).to_representation(obj)
-        data['comment'] = data['content']
-        data['pubDate'] = data['published']
-        if 'local_author' in data and data['local_author'] is not None:
-            data['author'] = data['local_author']
-        elif data['remote_author_name'] != '':
-            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
-            if data['remote_author_url'] != '':
-                data['author']['url'] = data['remote_author_url']
-                parsedURL = urlparse(data['remote_author_url'])
-                data['author']['host'] = parsedURL.netloc
-            data['author']['github'] = ''
-        elif obj.local_author is not None:
-            serializer = UserSerializer(obj.local_author, context={'request': self.context['request']})
-            data['author']  = serializer.data
-            data['local_author'] = serializer.data
-        else:
-            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
-                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
-        return data
+        serializer = CommentReadSerializer(obj, context={'request': self.context['request']})
+        data = serializer.data
+        return CommentToRepresentation(data)
+
+class RemoteCommentByPostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('comment', 'contentType')
 
 # http://www.scriptscoop.net/t/7d698c5fe6de/using-django-rest-framework-how-can-i-upload-a-file-and-send-a-json-pa.html
 class Base64Field(serializers.Field):

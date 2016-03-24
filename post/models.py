@@ -12,7 +12,6 @@ class Post(models.Model):
 
     CONTENT_TYPE_CHOICES = (
         ('text/plain', 'text/plain'),
-        ('text/markdown', 'text/markdown'),
         ('text/x-markdown', 'text/x-markdown')
     )
 
@@ -44,21 +43,31 @@ class Image(models.Model):
     image_data = models.BinaryField()
     published = models.DateTimeField(auto_now_add=True, blank=True)
 
+class RemoteCommentAuthor(object):
+    def __init__(self, id='', host='', displayName='', url='', github=''):
+        self.id = id
+        self.host = host
+        self.displayName = displayName
+        self.url = url
+        self.github = github
 
 class Comment(models.Model):
     guid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     local_author = models.ForeignKey(Author, on_delete = models.CASCADE, null=True)
-    remote_author_name = models.CharField(max_length = 100, default='', blank=True)
-    remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
 
     parent = models.ForeignKey(Post, on_delete=models.CASCADE) # post that this comment belongs to
-    content = models.CharField(max_length = 1000)
+    comment = models.CharField(max_length = 1000)
     published = models.DateTimeField(auto_now_add=True, blank=True)
+
+    remote_author_name = models.CharField(max_length = 100, default='', blank=True)
+    remote_author_url = models.CharField(max_length = 1000, default='', blank=True)
+    remote_author_github = models.CharField(max_length = 500, default='', blank=True)
+    remote_author_host = models.CharField(max_length = 500, default='', blank=True)
+    remote_author_id = models.CharField(max_length = 500, default='', blank=True)
 
     CONTENT_TYPE_CHOICES = (
         ('text/plain', 'text/plain'),
-        ('text/markdown', 'text/markdown'),
         ('text/x-markdown', 'text/x-markdown')
     )
 
