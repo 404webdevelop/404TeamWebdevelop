@@ -43,6 +43,7 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
         data['username'] = obj.author.username
         data['source'] = data['url']
         data['origin'] = data['url']
+        data['local_author'] = True
         return data
 
 class PostReadSerializer(PostWriteSerializer):
@@ -138,6 +139,8 @@ class RemotePostSerializer(serializers.Serializer):
 
         if commentsURL is not None:
             data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))
+
+        data['local_author'] = False
 
         return data
 
