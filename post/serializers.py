@@ -172,6 +172,29 @@ class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
             raise exceptions.PermissionDenied('Attempted to create Comment with parent you cannot view')
         return value
 
+    def to_representation(self, obj):
+        data = super(CommentWriteSerializer, self).to_representation(obj)
+        data['comment'] = data['content']
+        data['contentType'] = 'text/plain'
+        data['pubDate'] = data['published']
+        if 'local_author' in data and data['local_author'] is not None:
+            data['author'] = data['local_author']
+        elif data['remote_author_name'] != '':
+            data['author'] = {'username': data['remote_author_name'], 'displayName': data['remote_author_name']}
+            if data['remote_author_url'] != '':
+                data['author']['url'] = data['remote_author_url']
+                parsedURL = urlparse(data['remote_author_url'])
+                data['author']['host'] = parsedURL.netloc
+            data['author']['github'] = ''
+        elif obj.local_author is not None:
+            serializer = UserSerializer(obj.local_author, context={'request': self.context['request']})
+            data['author']  = serializer.data
+            data['local_author'] = serializer.data
+        else:
+            data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
+                              , 'displayName': '', 'url': '', 'host': '', 'github': ''}
+        return data
+
 class CommentReadSerializer(CommentWriteSerializer):
     local_author = UserSerializer()
     class Meta:
@@ -228,6 +251,10 @@ class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
                 parsedURL = urlparse(data['remote_author_url'])
                 data['author']['host'] = parsedURL.netloc
             data['author']['github'] = ''
+        elif obj.local_author is not None:
+            serializer = UserSerializer(obj.local_author, context={'request': self.context['request']})
+            data['author']  = serializer.data
+            data['local_author'] = serializer.data
         else:
             data['author'] = {'ERROR': 'This comment has neither a local nor remote author', 'username': ''
                               , 'displayName': '', 'url': '', 'host': '', 'github': ''}
