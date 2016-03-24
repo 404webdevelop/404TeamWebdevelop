@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Case</title>
+  <title>404Webdevelopment</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.js"></script>
-  <link rel="stylesheet" href="
-https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.css">
-  <link rel="stylesheet" href="default.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.css">
+  <link rel="stylesheet" href="/static/social.css">
+  <script async="" type="text/javascript" src="/static/controlers/follower_friends_controler.js" ></script> 
+    <script async="" type="text/javascript" src="/static/controlers/load_post_controler.js" ></script> 
+    <script async="" type="text/javascript" src="/static/controlers/update_controler.js" ></script>
+    <script async="" type="text/javascript" src="/static/controlers/user_login_controler.js" ></script>
+    <script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
+    <script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
+    <script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
 </head>
 <body>
 
@@ -35,7 +41,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <li><a id="comment_page"href="#">Comment</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li id="userphoto"><a hRef="#"><img src="noiamge.gif"  width="20" height="20"> </a></li>
+        <li id="userphoto"><a href="#"><img src="/static/image/noiamge.gif"  width="20" height="20"> </a></li>
         <li><a id="profile_page" href="#"><span class="glyphicon glyphicon-user"></span> User_name</a></li>
         <li><a id="logout_btn"href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
@@ -47,7 +53,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
     <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
                 <strong><hr id="the_hr"></strong>
                 <h1 class="page-header">Post List
@@ -69,7 +75,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
                 <strong><hr id="the_hr"></strong>
                 <h1 class="page-header">Post List
@@ -81,25 +87,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
 
 
         <div id= "posted_page_list_view">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Post Object</div>
-              <div class="panel-body">
-                <div class="row" id="posted_item">
-
-                    <div class="col-md-5">
-                        <a href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">
-                            <img class="img-responsive" src="./1 Col Portfolio - Start Bootstrap Template_files/700x300" alt="">
-                        </a>
-                    </div>
-                    <div class="col-md-7">
-                        <h3>Project Four</h3>
-                        <h4>Subheading</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quidem, consectetur, officia rem officiis illum aliquam perspiciatis aspernatur quod modi hic nemo qui soluta aut eius fugit quam in suscipit?</p>
-                        <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Post <span class="glyphicon glyphicon-chevron-right"></span></a>
-                    </div>
-                </div>
-              </div>
-            </div>
+            
         </div>
 
 
@@ -111,7 +99,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif" class="img-circle" alt="Cinque Terre" width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre" width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
                 <br>
                 <br>
@@ -152,7 +140,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
 
 
@@ -177,34 +165,26 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
 
         <div id="follower_list" class="panel panel-primary">
           <div class="panel-heading">Followers</div>
-            <div class="list-group" >
-            <a href="#" class="list-group-item ">First item</a>
-            <a href="#" class="list-group-item ">Second item</a>
-            <a href="#" class="list-group-item">Third item</a>
+            <div class="list-group" id="follower_view">
             </div>
         </div>
 
         <div id="following_list" class="panel panel-primary">
           <div class="panel-heading">Followings</div>
-            <div class="list-group" >
-            <a href="#" class="list-group-item ">First item</a>
-            <a href="#" class="list-group-item ">Second item</a>
-            <a href="#" class="list-group-item">Third item</a>
+            <div class="list-group" id="following_view">
+            
             </div>
         </div>
 
         <div id="friends_list" class="panel panel-primary">
           <div class="panel-heading">Friends</div>
-            <div class="list-group" >
-            <a href="#" class="list-group-item ">First item</a>
-            <a href="#" class="list-group-item ">Second item</a>
-            <a href="#" class="list-group-item">Third item</a>
+            <div class="list-group" id="friends_view">
             </div>
         </div>
 
         <div id="fof_list" class="panel panel-primary">
           <div class="panel-heading">Friend of Friends</div>
-            <div class="list-group">
+            <div class="list-group" id="fof_view">
             <a href="#" class="list-group-item ">First item</a>
             <a href="#" class="list-group-item ">Second item</a>
             <a href="#" class="list-group-item">Third item</a>
@@ -214,12 +194,12 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         </div>
 
         <div id="search_list" >
-                <center><div ><img src="search_user.png"class="img-rounded" alt="Cinque Terre"  width="100" height="100"></div></center>
+                <center><div ><img src="/static/image/search_user.png"class="img-rounded" alt="Cinque Terre"  width="100" height="100"></div></center>
                 <br/>
 
                 <center><div id="div_icon" class="glyphicon glyphicon-search"></div>
                 <div id="div_search">
-                    <input type="search" class="form-control" placeholder="Search" />
+                    <input id="search_name" type="search" class="form-control" placeholder="Search" />
                 </div>
                 <div id="div_button"><button id ="search_button"type="button" class="btn btn-primary">Search</button></div></center>
                 <br/>
@@ -230,9 +210,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
                       <div class="panel-heading">Search result</div>
                       <div class="panel-body">
                         <div class="row" id="posted_item">
-
                             <div class="col-md-5">
-                                <a href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">
                                     <img class="img-responsive" src="./1 Col Portfolio - Start Bootstrap Template_files/700x300" alt="">
                                 </a>
                             </div>
@@ -245,6 +223,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
                         </div>
                       </div>
                     </div>
+                    
                 </div>
             </div>
     </div>
@@ -257,7 +236,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
                 <strong><hr id="the_hr"></strong>
                 <h1 class="page-header">GitHub Network
@@ -267,19 +246,8 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         </div>
 
         <!-- /.row -->
-        <div class="panel panel-success">
-          <div class="panel-heading"><strong>Git Activity</strong></div>
-          <div class="panel-body">
-            <div class="row" id="posted_item">
-
-                <div class="col-md-12">
-                    <h3>Project Four</h3>
-                    <h4>Subheading</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, quidem, consectetur, officia rem officiis illum aliquam perspiciatis aspernatur quod modi hic nemo qui soluta aut eius fugit quam in suscipit?</p>
-                    
-                </div>
-            </div>
-          </div>
+        <div id="git_page_list_view">
+        
         </div>
     </div>
 
@@ -287,7 +255,7 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div id="div1"><img src="noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
+                <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
 
 
@@ -350,7 +318,8 @@ https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.c
     </div>
 
 
+    
 
-  <script src="home.js"></script>
+    <script src="/static/social.js"></script>
 </body>
 </html>

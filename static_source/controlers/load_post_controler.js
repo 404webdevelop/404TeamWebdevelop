@@ -3,34 +3,62 @@
 'use strict';
 
 
-function setdynamic(img,tit,tex,date,author,type,id,postid,comments){
-  //console.log("this is chekck1111: "+global.cookie_setting.get("check"));
-  if (type == "git"){
-    var string = "<li id=\"view_list_style\" value =\""+id+"\"class=\"ui-btn ui-btn-b ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"#\"><img  style='height:4.5em;width:4em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:5em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"</a>&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
-    return string;
-  }
-  if (type == "post"){
-    var string = "<li id=\"view_list_style\"value =\""+postid+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:4.5em;width:4em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:5em'> by "+author+"</p></a><h2 style='display:inline;' class=\"ui-li-heading\">\""+tit+"\"&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a><button class='commentnav' style='position:relative;float:right;top:-5px;'>"+ " Comments</button></div>&nbsp;</div></li>"
-    return string;
-  }
-  if (type == "comment"){
-    var string = "<li id=\"view_com_style\"value =\""+postid+"\" class=\"ui-btn ui-li ui-li-has-thumb  ui-btn-up-c\"  ><div class=\"ui-btn-inner ui-li\"><div class=\"ui-btn-text\"><a class=\"ui-link-inherit\" href=\"posted\"><img  style='height:2em;width:2em;' id=\"imagetag\"class=\"ui-li-thumb\" src=\""+img+"\"><p style='display:inline;float:left;position:relative;left:3em'> by "+author+"</p><h2 style='display:inline;' class=\"ui-li-heading\">&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp<span id=\"test\">["+makedate(date)+"]</span></h2></a><p class=\"ui-li-desc\" style='white-space:normal;'>"+tex+"</p></a></div>&nbsp;</div></li>"
-    return string;
-  }
-  return string;
-};
+
 
 function makeComBox(id){
     return string;
 }
+function set_post_on(title,contant,username,img,page){
+  var html_st = '<div class="panel panel-primary">\
+              <div class="panel-heading">Post Object</div>\
+              <div class="panel-body">\
+                <div class="row" id="posted_item">\
+                    <div class="col-md-5">\
+                            <img class="img-responsive" src='+img+' alt="">\
+                        </a>\
+                    </div>\
+                    <div class="col-md-7">\
+                        <h3>'+title+'</h3>\
+                        <h4> by: '+username+'</h4>\
+                        <p>'+contant+'</p>\
+                        <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Post <span class="glyphicon glyphicon-chevron-right"></span></a>\
+                    </div>\
+                </div>\
+              </div>\
+            </div>\
+            <hr>';
+    var git_st='<div class="panel panel-success">\
+          <div class="panel-heading"><strong>Git Activity</strong></div>\
+          <div class="panel-body">\
+            <div class="row" id="posted_item">\
+                <div class="col-md-12">\
+                    <h3>'+title+'</h3>\
+                    <h4> by: '+username+'</h4>\
+                    <p>'+contant+'</p>\
+                </div>\
+            </div>\
+          </div>\
+        </div>';
 
-  function getpost(data,page,cookie){
+  if(page == 'home'){
+    $('#home_page_list_view').append(html_st);
+  }if(page == 'posted') {
+    $('#posted_page_list_view').append(html_st);
+  }if(page == 'git'){
+    $('#git_page_list_view').append(git_st);
+  }
+}
+
+
+
+
+function getpost(data,page,cookie){
     var url = "";
     if(page == "network"){
-	url = "api/posts/" + data.postid;
+  url = "api/posts/" + data.postid;
     } else {
-	url = "api/posts/";
-}
+  url = "api/posts/";
+  }
     var request = $.ajax({
           method: "GET",
           url: url,
@@ -38,13 +66,13 @@ function makeComBox(id){
   request.done(function (callback) {
       var postobj = callback;
       var github = global.cookie_setting.get("github");
-	    var count = 0;
+    var count = 0;
             //console.log(github);
       if(page == "home"){
         //console.log(postobj.posts[0].author.id);
         $.each(postobj.posts, function (i, value) { 
-    			if(count < 100){
-    				count++;
+          if(count < 100){
+            count++;
             var inner_request = $.ajax({
                   method: "GET",
                   url: "api/images/",
@@ -55,8 +83,8 @@ function makeComBox(id){
               $.each(callback.images, function (j, value) { 
                 if(callback.images[j].parent_post == postobj.posts[i].url){
                     $.getJSON(callback.images[j].json_url, function(data1){
-                      var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                      $("#list_post_view").append(st);
+                      //var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                       set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
                       });
                     cont =1;              
                 }else{
@@ -64,21 +92,21 @@ function makeComBox(id){
                 }          
               });
                 if (cont == 0 && cont1 == 2){
-                      var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                      $("#list_post_view").append(st);
+                      //var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                      set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page);
                 }
                 if (cont == 0 && cont1 == 0){
-                      var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                      $("#list_post_view").append(st);
+                      //var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
+                      set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page);
                 }
             });
             inner_request.fail(function (callback) {
             });
 
-	         }
+           }
         });
       }
-	     if(page == "network"){
+       if(page == "network"){
           var inner_request = $.ajax({
                   method: "GET",
                   url: "api/images/",
@@ -114,7 +142,7 @@ function makeComBox(id){
 
 
                 $.each(postobj.comments, function (i, value) {    
-			                 count++;       
+                       count++;       
                       var st= setdynamic(data.userphoto,"Comment #" + count,postobj.comments[i].content,postobj.comments[i].published,postobj.comments[i].local_author.username,"comment",postobj.comments[i].local_author.username);
                       $("#list_com_view").append(st);
                 });
@@ -138,8 +166,7 @@ function makeComBox(id){
                     $.each(callback.images, function (j, value) { 
                       if(callback.images[j].parent_post == postobj.posts[i].url){
                           $.getJSON(callback.images[j].json_url, function(data1){
-                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
                             });
                           cont =1;              
                       }else{
@@ -147,12 +174,12 @@ function makeComBox(id){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
-                            var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
+                            
                       }
                       if (cont == 0 && cont1 == 0){
-                            var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
+                            
                       }
                   });
                   inner_request.fail(function (callback) {
@@ -161,10 +188,9 @@ function makeComBox(id){
                  }
                  }
                 });
-              
+        }
 
-
-
+        if(page =="git"){
           var request = $.ajax({
                   method: "GET",
                   url: github,
@@ -173,23 +199,17 @@ function makeComBox(id){
                     console.log(callback)
                     var githubobj = callback;
                     $.each(githubobj, function (i, value) {
-
-                        if (global.cookie_setting.get("click_id") == "undefined" ||global.cookie_setting.get("click_id") == "" || global.cookie_setting.get("click_id")== global.cookie_setting.get("userid")){
-                            var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",global.cookie_setting.get("userid"));
-                        }else{
-                            var st= setdynamic("/static/image/git.png",githubobj[i].type,githubobj[i].repo.name,githubobj[i].created_at,"github user - "+githubobj[i].actor.login,"git",global.cookie_setting.get("click_id"));
-                        }
-                        $("#list_git_view").append(st);
+                        set_post_on(githubobj[i].repo.name,githubobj[i].type,githubobj[i].created_at,"",page);
                     });
                  });
           request.fail(function (callback) {
                     console.log(callback);
                  });
         }
+
         if(page == "otherpost"){
           $.each(postobj.posts, function (i, value) {
                 if(data.username == postobj.posts[i].username){
-                    //console.log();
                     console.log(postobj.posts[i].author.displayName);
               if(postobj.posts[i].author.displayName==data.username){
                 if(count < 100){
@@ -229,11 +249,7 @@ function makeComBox(id){
                 }
               }
               });
-        }
-
-
-
-
+          }
          });
   request.fail(function (callback) {
             console.log(callback);

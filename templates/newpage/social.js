@@ -43,6 +43,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").hide();
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#posted_page').click(function(){
@@ -54,6 +55,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").hide();
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#other_page').click(function(){
@@ -65,6 +67,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").hide();
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#friends_page').click(function(){
@@ -76,6 +79,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").hide();
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#git_page').click(function(){
@@ -87,6 +91,7 @@ function setup(){
 		$("#git").show(800);
 		$("#profile").hide();
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#profile_page').click(function(){
@@ -98,6 +103,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").show(800);
 		$("#comment").hide();
+		$("#search_result_fild").hide();
 
     });
     $('#comment_page').click(function(){
@@ -109,6 +115,7 @@ function setup(){
 		$("#git").hide();
 		$("#profile").hide();
 		$("#comment").show(800);
+		$("#search_result_fild").hide();
 
     });
 
@@ -121,6 +128,7 @@ function setup(){
 		$("#friends_list").hide();
 		$("#fof_list").hide();
 		$("#search_list").hide();
+		$("#search_result_fild").hide();
         
     });
     $('#display_following').click(function(){
@@ -129,6 +137,7 @@ function setup(){
 		$("#friends_list").hide();
 		$("#fof_list").hide();
 		$("#search_list").hide();
+		$("#search_result_fild").hide();
         
     });
     $('#display_friends').click(function(){
@@ -137,6 +146,7 @@ function setup(){
 		$("#friends_list").show(800);
 		$("#fof_list").hide();
 		$("#search_list").hide();
+		$("#search_result_fild").hide();
         
     });
     $('#display_fof').click(function(){
@@ -145,6 +155,7 @@ function setup(){
 		$("#friends_list").hide();
 		$("#fof_list").show(800);
 		$("#search_list").hide();
+		$("#search_result_fild").hide();
         
     });
     $('#display_search').click(function(){
@@ -153,9 +164,11 @@ function setup(){
 		$("#friends_list").hide();
 		$("#fof_list").hide();
 		$("#search_list").show(800);
+		$("#search_result_fild").hide();
         
     });
     $('#search_button').click(function(){
+    	$("#search_result_fild").hide();
         $("#search_result_fild").show(800);
     });
 };

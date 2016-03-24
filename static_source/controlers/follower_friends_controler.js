@@ -87,36 +87,7 @@ function unfollowother(){
 
 };
 
-function getfollowings(data){
-  console.log(global.cookie_setting.get("userid"));
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var followersobj = callback;
-            
-
-            $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].followed,function(data){
-                    console.log("sdfsf");
-                    console.log(data.id);
-                    console.log("------***");
-                    $("#following_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
-                });
-              
-            }); 
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-}
-
-
-
-
-function getfollowers(data){
+function getfollowers(){
   console.log(global.cookie_setting.get("userid"));
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/followers";
   var request = $.ajax({
@@ -129,7 +100,8 @@ function getfollowers(data){
 
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].follower,function(data){
-                    $("#follower_list_view").append("<li id = \""+data.username+"\" value=\""+data.id+"\" class=\"ui-last-child\" ><a id =\"click_target\" value=\""+data.id+"\"  class=\"ui-btn ui-btn-icon-right ui-icon-plus\" >"+data.username+"</a></li>");
+                    $("#follower_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');
+                    
                 });
               
             }); 
@@ -140,11 +112,28 @@ function getfollowers(data){
 }
 
 
+function getfollowings(){
+  console.log(global.cookie_setting.get("userid"));
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+                $.getJSON(followersobj[i].followed,function(data){
+                    $("#following_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');
+                });
+              
+            }); 
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+}
 
-
-
-function findfriends(data,page){
-  var load_post = global.load_posts; 
+function findfriends(){
   var url = "api/friends/"+global.cookie_setting.get("userid");
   var request = $.ajax({
           method: "GET",
@@ -156,20 +145,17 @@ function findfriends(data,page){
             $.each(friendsobj.authors,function (i,value){
               var auturl = "api/author/"+friendsobj.authors[i];
               $.getJSON(auturl,function(data){
-                    if(page == "network"){
-                      $("#f2").append("<li id = \""+data.username+"\"value=\""+data.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
-                    }
-                    if(page =="friends" ){
-                      $("#friends_list_view").append("<li id = \""+data.username+"\"value=\""+data.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-user\">"+data.username+"</a></li>");
-                    }           
+                    $("#friends_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');       
                 });
             }); 
-
          });
   request.fail(function (callback) {
             console.log(callback);
          });
 };
+
+
+
 
 function search_user(username){
   $.getJSON('api/author/',function(data){
@@ -177,8 +163,28 @@ function search_user(username){
       console.log(data.authors[i].username);
       if(data.authors[i].username == username){
         var data_iner = data.authors[i];
-        $("#search_listview").html("<li id = \""+data_iner.username+"\"value=\""+data_iner.id+"\" class=\"ui-last-child\" ><a  class=\"ui-btn ui-btn-icon-right ui-icon-plus\">"+data_iner.username+"</a></li>");
+        var image = data_iner.picture;
+        if(image == undefined || image == 'undefined'){
+          image = "/static/image/noiamge.gif"
 
+        };
+        $("#search_result_fild").html('<div class="panel panel-primary">\
+                      <div class="panel-heading">Search result</div>\
+                      <div class="panel-body">\
+                        <div class="row" id="posted_item">\
+                            <div class="col-md-5">\
+                                    <img src='+image+' class="img-circle" alt="Cinque Terre"  width="100" height="100" >\
+                                </a>\
+                            </div>\
+                            <div class="col-md-7">\
+                                <h3> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
+                                <h4> Username: '+data_iner.username+'</h4>\
+                                <p></p>\
+                                <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>\
+                            </div>\
+                        </div>\
+                      </div>\
+                    </div>');
       }
     })
     
