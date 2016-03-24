@@ -270,24 +270,32 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """
-    API endpoint that allows Comments to be listed/created by their parent post
+API endpoint that allows Comments to be listed/created by their parent post
 
-    Usage: \n
-      - `/posts/{post_id}/comments`
-        - GET: list all comments for one post
-        - POST: create a new comment (no need to specify parent post)
+Usage: \n
+  - `/posts/{post_id}/comments`
+    - GET: list all comments for one post
+    - POST: create a new comment (no need to specify parent post)
 
-    Permissions: \n
-      - Anyone can create a comment, even if not logged in
-      - Admin can edit/delete
-      - If comment is made by a local user, that user can edit/delete
-      - Remote commenters cannot edit/delete
+Permissions: \n
+  - Anyone can create a comment, even if not logged in
+  - Admin can edit/delete
+  - If comment is made by a local user, that user can edit/delete
+  - Remote commenters cannot edit/delete
 
-    Creation fields: \n
-      - `content`: text content of the comment
-      - `remote_author_name`: display name of remote comment author (optional)
-      - `remote_author_url`: url of remote comment author (optional)
-      - `parent`: url of parent post
+##**How to create a comment:** \n
+\t{
+    \t"comment": "words words words",
+    \t"contentType": "text/plain",
+    \t"author":
+    \t{
+    \t\t"id": "For local comments, leave all the stuff in author blank!",
+    \t\t"host": "For remote comments, fill all of it in.",
+    \t\t"displayName": "",
+    \t\t"url": "",
+    \t\t"github": ""
+    \t}
+\t}
     """
     serializer_class = CommentByPostSerializer
     authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
