@@ -324,7 +324,7 @@ Permissions: \n
         serializer.save()
         return Response(serializer.data)
 
-class CommentViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+class CommentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Comments to be listed/created
 

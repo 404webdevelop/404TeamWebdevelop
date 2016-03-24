@@ -9,7 +9,7 @@ import json
 from django.core.urlresolvers import reverse
 
 from author.api.serializers import UserSerializer
-from .models import Post, Image, Comment
+from .models import Post, Image, Comment, RemoteCommentAuthor
 from remotes.models import *
 from remotes.utils import *
 
@@ -211,7 +211,7 @@ def CommentAdaptRemoteAuthor(validated_data):
     return validated_data
 
 class CommentWriteSerializer(serializers.HyperlinkedModelSerializer):
-    author = RemoteCommentAuthorSerializer()
+    author = RemoteCommentAuthorSerializer(default=RemoteCommentAuthor())
     class Meta:
         model = Comment
         fields = ('url', 'comment', 'parent', 'contentType', 'author', 'published')
@@ -253,7 +253,7 @@ class CommentReadSerializer(serializers.HyperlinkedModelSerializer):
         return CommentToRepresentation(data)
 
 class CommentByPostSerializer(serializers.HyperlinkedModelSerializer):
-    author = RemoteCommentAuthorSerializer()
+    author = RemoteCommentAuthorSerializer(default=RemoteCommentAuthor())
     class Meta:
         model = Comment
         fields = ('url', 'comment', 'contentType', 'author', 'published')

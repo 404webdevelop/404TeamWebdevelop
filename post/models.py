@@ -44,7 +44,7 @@ class Image(models.Model):
     published = models.DateTimeField(auto_now_add=True, blank=True)
 
 class RemoteCommentAuthor(object):
-    def __init__(self, id, host, displayName, url, github):
+    def __init__(self, id='', host='', displayName='', url='', github=''):
         self.id = id
         self.host = host
         self.displayName = displayName
