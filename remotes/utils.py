@@ -1,6 +1,7 @@
 import requests # http://docs.python-requests.org/en/master/
 import json
 from urlparse import urlparse
+from django.core.urlresolvers import reverse
 
 from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
@@ -16,6 +17,23 @@ def IsRemoteAuthUsername(localUsername):
 def IsRemoteAuthUser(user):
     return len([server for server in RemoteServer.objects.all()
                 if server.local_user is not None and server.local_user.id == user.id]) > 0
+
+def ContainsARemoteHostname(s):
+    if s[0:4] != 'http':
+        s = 'http://' + s
+    parsedURL = urlparse(s)
+    netloc = parsedURL.netloc
+    servers = [server for server in GetRemoteServers() if netloc in server.host]
+    if len(servers) < 1:
+        return False
+    else:
+        return True
+
+def GetRemoteHostContaining(s):
+    if s[0:7] == 'http://':
+        s = s[7:]
+    servers = [server for server in GetRemoteServers() if s in server.host]
+    return servers[0].host
 
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
@@ -37,10 +55,12 @@ class _RemoteServer:
         return r
 
     def Post(self, relUrl, data):
-        r = requests.post(self.host + relUrl, data, auth=self.credentials, params=self._RequestingUser())
+        if relUrl[-1] != '/':
+            relUrl = relUrl + '/'
+        r = requests.post(self.host + relUrl, json=data, auth=self.credentials, params=self._RequestingUser())
         return r
 
-def GetRemoteServers(requestingUser):
+def GetRemoteServers(requestingUser = None):
     def MakeRemoteServer(row):
         if row.remote_username != '' and row.remote_password != '':
             credentials = (row.remote_username, row.remote_password)
@@ -215,8 +235,67 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
+def PostRemoteCommentAtUrl(url, data, request, requestingUser = None, secondTry = False):
+    if requestingUser is None or requestingUser.is_anonymous():
+        return 'You need to be logged in do make remote comments'
+
+    server, path = GetServerAndPathForUrl(url, requestingUser)
+
+    if server is None:
+        return 'Could not find a registered remote server corresponding to the POST url'
+
+    # fill in remote user and pass
+    data['remote_author_url'] = request.build_absolute_uri(reverse('author-detail', args=(requestingUser.id,)))
+    data['remote_author_name'] = requestingUser.username
+
+    if secondTry:
+        author = {'id': str(requestingUser.id), 'host': request.get_host(), 'displayName': data['remote_author_name']
+            , 'url': data['remote_author_url'], 'github': requestingUser.github}
+        newData = {'author': author, 'comment': data['content'], 'contentType': 'text/plain'}
+        data = newData
+
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return 'Failed to connect to the remote server'
+
+    if r.status_code not in [200, 201]:
+        if secondTry:
+            d = {'Error': 'POST-ed to the remote server but they returned status code {0}'.format(r.status_code)}
+            # d.update(data)
+            d['post_to_url'] = path
+            d['orig_url'] = url
+
+            return d
+        else:
+            return PostRemoteCommentAtUrl(url, data, request, requestingUser, secondTry=True)
+
+    return True
+
 def IsLocalURL(url, request):
     parsedHostURL = urlparse(request.build_absolute_uri())
     print(parsedHostURL.netloc)
     print(url)
     return parsedHostURL.netloc in url
+
+# Example POST function
+def PostAtUrl(url, data, request):
+    """
+    Example:
+    PostAtUrl('http://remote.server.com/api/stuff/morestuff', {'name': 'logan'}, request)
+    """
+    server, path = GetServerAndPathForUrl(url, request.user)
+    if server is None:
+        return None # could not find remote server matching the url
+
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError:
+        return None # failed to connect to the remote server
+
+    if r.status_code not in [200, 201]:
+        return None # the POST failed somehow
+
+    return r.text

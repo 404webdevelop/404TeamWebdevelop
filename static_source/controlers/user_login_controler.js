@@ -2,7 +2,16 @@
 
 'use strict';
 
-
+//--------------------------------done------------------
+function set_head_infor(img,firstname,lastname,username){
+  console.log(img);
+  if(img != undefined || img != 'undefined'){
+    $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+  }
+  $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>');
+  $("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
+  $("#profile_page").html('<span class="glyphicon glyphicon-user"></span>'+username +'');
+}
 
 
 function getuserlogin(callback){
@@ -19,39 +28,13 @@ function getuserlogin(callback){
         global.cookie_setting.set("userid",userobj.id);
         global.cookie_setting.set("url",userobj.url);
         global.cookie_setting.set("firstname",userobj.first_name);
-        //console.log(userobj.first_name);
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
-        //console.log(userobj.picture);
-        //console.log(userobj.last_name);
-        var data= {"username":global.cookie_setting.get("username"),
-                   "url":global.cookie_setting.get("url"),
-                   "token":global.cookie_setting.get("token"),
-                   "firstname":global.cookie_setting.get("firstname"),
-                   "lastname": global.cookie_setting.get("lastname"),
-                   "userphoto":global.cookie_setting.get("picture"),
-                   "followers":"50",
-                   "following":"77",
-                   "friends":"112"
-                   };
-
-        $( document ).ready(function() {
-             global.nav_inf.nav_inf_setting(data,"home");
+        set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.username);
         });
-        
-    
-
-    })
     request.fail(function (callback) {
             console.log(callback);
          });
-
-
-    $( document ).ready(function() {
-        
-        global.button_click.clickbtn();
-    });
-    
 }
 
 

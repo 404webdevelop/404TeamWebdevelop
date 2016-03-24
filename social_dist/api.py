@@ -35,10 +35,29 @@ class MyRouter(routers.DefaultRouter):
             - get: get current author's following list `/api/follow/author_id/followings`
             - get: get current author's follower list `/api/follow/author_id/followers`
 
-            ## `Friend` \n
+            ## [Friend]() \n
             - internal use only for project part 2
             - list, delete: `/friend/author_id`
             - list: `/friends/author_id/author_id`
+            - post: `/friendrequest/`
+            - post example:
+
+                \t{
+                        "query":"friendrequest",
+                        "author": {
+
+                            "id":"de305d54-75b4-431b-adb2-eb6b9e546013",
+                            "host":"http://127.0.0.1:5454/",
+                            "displayName":"Greg Johnson"
+                        },
+                        "friend": {
+                            "id":"de305d54-75b4-431b-adb2-eb6b9e637281",
+                            "host":"http://127.0.0.1:5454/",
+                            "displayName":"Lara Croft",
+                            "url":"http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e"
+                        }
+                \t}
+
 
             _Edit this documentation in `social_dist/api.py`_
 
@@ -74,4 +93,3 @@ router.register(r'follow', FollowViewSet)
 router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet)
 
 router.register(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet)
-

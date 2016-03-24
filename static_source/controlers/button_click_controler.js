@@ -4,14 +4,157 @@
 
 function button_click(){
 
-    $('#logoutbutton').click(function(){
+    //-----------------------main pages-----------------------------------
+  $('#home_page').click(function(){
+    $("#home").show(800);
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+    });
+  $('#posted_page').click(function(){
+    $("#home").hide();
+    $("#posted").show(800);
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+  });
+  $('#other_page').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").show(800);
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+  });
+  $('#friends_page').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").show(800);
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+  });
+  $('#git_page').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").show(800);
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+  });
+  $('#profile_page').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").show(800);
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+
+  });
+  $('#comment_page').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").show(800);
+    $("#search_result_fild").hide();
+
+  });
+
+
+
+  //-------------------------in the friends page---------------------------
+  $('#display_follower').click(function(){
+    $("#follower_list").show(800);
+    $("#following_list").hide();
+    $("#friends_list").hide();
+    $("#fof_list").hide();
+    $("#search_list").hide();
+    $("#search_result_fild").hide();
+      
+  });
+  $('#display_following').click(function(){
+    $("#follower_list").hide();
+    $("#following_list").show(800);
+    $("#friends_list").hide();
+    $("#fof_list").hide();
+    $("#search_list").hide();
+    $("#search_result_fild").hide();
+      
+  });
+  $('#display_friends').click(function(){
+    $("#follower_list").hide();
+    $("#following_list").hide();
+    $("#friends_list").show(800);
+    $("#fof_list").hide();
+    $("#search_list").hide();
+    $("#search_result_fild").hide();
+      
+  });
+  $('#display_fof').click(function(){
+    $("#follower_list").hide();
+    $("#following_list").hide();
+    $("#friends_list").hide();
+    $("#fof_list").show(800);
+    $("#search_list").hide();
+    $("#search_result_fild").hide();
+      
+  });
+  $('#display_search').click(function(){
+    $("#follower_list").hide();
+    $("#following_list").hide();
+    $("#friends_list").hide();
+    $("#fof_list").hide();
+    $("#search_list").show(800);
+    $("#search_result_fild").hide();
+      
+  });
+
+  $('#search_button').click(function(){
+    $("#search_result_fild").hide();
+    $("#search_result_fild").show(800);
+    var username = $('#search_name').val();
+    global.findfriends.search(username);
+    console.log("sdfsfsdfsfsd");
+  });
+
+
+    $('#logout_btn').click(function(){
         global.cookie_setting.clear("username");
         global.cookie_setting.clear("userid");
         global.cookie_setting.clear("url");
         global.cookie_setting.clear("github");
         global.cookie_setting.clear("firstname");
         global.cookie_setting.clear("lastname");
-        console.log("sfsfsfsfsfsfsfsfs");
         setTimeout(function(){
           window.location.href = "logout";
         },0
@@ -19,7 +162,7 @@ function button_click(){
     });
     
 
-    $('#user_name_input').click(function(){
+    /*$('#user_name_input').click(function(){
         setTimeout(function(){
           window.location.href = "posted";
         },0
@@ -61,7 +204,7 @@ function button_click(){
         },0
           );*/
 
-    });
+    /*});
 
     $("#update_submit").click(function(){
         var email_input = $("e-mail-input").val();
@@ -163,7 +306,7 @@ function button_click(){
           window.location.href = "posted";
         },0
           );
-    });
+    });*/
 
     
 }

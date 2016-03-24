@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^friends$', login_required(TemplateView.as_view(template_name='friends.html')), name="friends"),
     url(r'^profile$', login_required(TemplateView.as_view(template_name='profile.html')), name="profile"),
     url(r'^network$', login_required(TemplateView.as_view(template_name='network.html')), name='my-network'),
-
+    url(r'^social$', login_required(TemplateView.as_view(template_name='social.html')), name='my-social'),
     # url(r'^posts', login_required(TemplateView.as_view(template_name='post/post_list.html')), name='my-post'),
 
     url(r'^admin/', include(admin.site.urls)),

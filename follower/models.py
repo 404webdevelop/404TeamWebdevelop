@@ -80,7 +80,7 @@ class Follows(models.Model):
     followed = models.ForeignKey(Author, related_name='followed', null=True, blank=True)
     follower = models.ForeignKey(Author, related_name='follower', null=True, blank=True)
     remote_author_host = models.CharField(max_length=1024, null=True, blank=True)
-    remote_author_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    remote_author_id = models.CharField(max_length=1024, null=True, blank=True)
     remote_author_name = models.CharField(max_length=1024, null=True, blank=True)
     remote_author_url = models.CharField(max_length=1024, null=True, blank=True)
     objects = FollowManager()
