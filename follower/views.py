@@ -94,15 +94,30 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
     @detail_route(methods=["GET"])
-    def followers(self, request, **kwargs):
-        queryset = Follows.objects.getFollowers(self.kwargs['pk'])
+    def localAuthorsFollowers(self, request, **kwargs):
+        queryset = Follows.objects.getLocalFollowers(self.kwargs['pk'])
+        localSerializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(localSerializer.data)
+
+
+    @detail_route(methods=["GET"])
+    def remoteauthorsFollowers(self, request, **kwargs):
+        queryset = Follows.objects.getRemoteFollowers(self.kwargs['pk'])
+        remoteSerializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(remoteSerializer.data)
+
+
+    @detail_route(methods=["GET"])
+    def localAuthorFollowings(self, request, **kwargs):
+        queryset = Follows.objects.getLocalFollowing(self.kwargs['pk'])
+        print kwargs['pk']
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 
     @detail_route(methods=["GET"])
-    def followings(self, request, **kwargs):
-        queryset = Follows.objects.getFollowing(self.kwargs['pk'])
+    def remoteAuthorFollowings(self, request, **kwargs):
+        queryset = Follows.objects.getRemoteFollowing(self.kwargs['pk'])
         print kwargs['pk']
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
@@ -111,16 +126,19 @@ class FollowViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["GET"])
     def friends(self, request, **kwargs):
         #get all author follower
-        follower = Follows.objects.getFollowing(self.kwargs['pk'])
+        follower = Follows.objects.getLocalFollowing(self.kwargs['pk'])
         #get all author follower
-        followed = Follows.objects.getFollowers(self.kwargs['pk'])
+        followed = Follows.objects.getLocalFollowers(self.kwargs['pk'])
         print followed[0]
         friend_list = list()
-
+        
+        #local author is friend with another local author
         for i in range(len(followed)):
-            for j in range(len(follower)):  
+            for j in range(len(follower)):
                 if followed[i].follower.username == follower[j].followed.username:
                     friend_list.append(followed[i].follower.id)
+
+
         print friend_list
         return Response(OrderedDict([
             ('query', 'friends'),
