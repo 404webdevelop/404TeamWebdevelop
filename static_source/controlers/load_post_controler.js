@@ -214,6 +214,91 @@ function getpost(data,page,cookie){
          });
 }
 
+function load_other_posts(other){
+  var url = "api/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  var no_iamge="/static/image/no_image.jpg";
+  request.done(function (callback) {
+    console.log(callback);
+    var postobj = callback;
+    var count =0;
+            $.each(postobj.posts, function (i, value) { 
+              console.log(postobj.posts[i].author.displayName);
+              if(postobj.posts[i].author.displayName==other){
+                if(count < 100){
+                  count++;
+                  var inner_request = $.ajax({
+                        method: "GET",
+                        url: "api/images/",
+                  });
+                  inner_request.done(function (callback) {
+                    var cont =0;
+                    var cont1 =0;
+
+                    $.each(callback.images, function (j, value) { 
+                      if(callback.images[j].parent_post == postobj.posts[i].url){
+                          $.getJSON(callback.images[j].json_url, function(data1){
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,'others');
+                            });
+                          cont =1;              
+                      }else{
+                          cont1 =2;
+                      }          
+                    });
+                      if (cont == 0 && cont1 == 2){
+                           set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others');
+                            
+                      }
+                      if (cont == 0 && cont1 == 0){
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others');
+                            
+                      }
+                  });
+                  inner_request.fail(function (callback) {
+                  });
+
+                 }
+                 }
+            });
+
+    });
+  
+  request.fail(function (callback) {
+    console.log(callback);
+    });
+
+}
+
+
+
+function setother_header(url){
+  //var url = "api/friends/"+global.cookie_setting.get("userid");
+    var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+    request.done(function (callback) {
+    console.log(callback);
+    var img = callback.picture;
+    if(img != undefined || img != 'undefined'){
+        $('#other_div1').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+     }
+      $('#other_div2').html('<h1>'+callback.first_name+' '+callback.last_name+'<h1>');
+    //alert("successfully post.");
+    });
+  
+  request.fail(function (callback) {
+    console.log(callback);
+    });
+
+};
+
+
+
+
 function makedate(date){
 	date = date.replace("T"," ");
 	date = date.split(".")[0];
@@ -224,7 +309,9 @@ function makedate(date){
 
 global.load_posts= {
     posts_load:getpost,
-    set_on:set_post_on
+    posts_load_other:load_other_posts,
+    set_other:setother_header
+  
     
     
 

@@ -98,8 +98,7 @@ function getfollowers(){
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].follower,function(data){
-                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
-                    
+                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
                 });
               
             }); 
@@ -124,7 +123,7 @@ function getfollowings(){
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].followed,function(data){     
                   //console.log(data.url);
-                  $("#following_view").append('<li value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
+                  $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
                 });         
             }); 
          });
@@ -145,7 +144,7 @@ function findfriends(){
             $.each(friendsobj.authors,function (i,value){
               var auturl = "api/author/"+friendsobj.authors[i];
               $.getJSON(auturl,function(data){
-                    $("#friends_view").append('<li value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');       
+                    $("#friends_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');       
                 });
             }); 
          });

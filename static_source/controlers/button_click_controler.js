@@ -1,6 +1,19 @@
 (function (global) {
 'use strict';
 
+function click_jmp_other(url,othername){
+    global.load_posts.set_other(url);
+    global.load_posts.posts_load_other(othername);
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").show(800);
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+};
 
 function button_click(){
 
@@ -41,6 +54,15 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
+
+  $('.list-group').delegate('li', 'click', function () {
+        $('#others_page_list_view').empty();
+        var url = $(this).attr("value");
+        var othername= $(this).attr("id");
+        click_jmp_other(url,othername);
+        
+     });   
+
   $('#friends_page').click(function(){
     $("#home").hide();
     $("#posted").hide();
