@@ -28,6 +28,8 @@ $( document ).ready(function() {
 	global.findfriends.get_follower();
 	global.findfriends.get_following();
 
+
+
 });
 
 })(this);

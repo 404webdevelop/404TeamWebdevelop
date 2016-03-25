@@ -22,6 +22,8 @@ function click_jmp_other(url,othername){
 
 
 
+
+
 function button_click(){
 
     //-----------------------main pages-----------------------------------
@@ -54,8 +56,6 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
-
-
   $('.list-group').delegate('li', 'click', function () {
         $('#others_page_list_view').empty();
         var url = $(this).attr("value");
@@ -68,7 +68,24 @@ function button_click(){
         var id= url.split("/")[5];
         console.log(id);
         global.findfriends.checkfollow(id);
-     });   
+     }); 
+
+  $('.try').delegate('li', 'click', function () {
+        console.log($(this).attr("value"));
+        var posted_id = $(this).attr("value");
+        location.hash ='posted/'+posted_id+'/';
+        $("#home").hide();
+        $("#posted").hide();
+        $("#follow_btn").hide();
+        $("#other_posted").hide();
+        $("#friends").hide();
+        $("#git").hide();
+        $("#profile").hide();
+        $("#comment").show(800);
+        $("#search_result_fild").hide();
+
+        
+     });    
 
   $('#friends_page').click(function(){
     $("#home").hide();
@@ -110,19 +127,7 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
-  $('#comment_page').click(function(){
-    $("#home").hide();
-    $("#posted").hide();
-    $("#follow_btn").hide();
-    $("#other_posted").hide();
-    $("#friends").hide();
-    $("#git").hide();
-    $("#profile").hide();
-    $("#comment").show(800);
-    $("#search_result_fild").hide();
-
-  });
-
+  
 
 
   //-------------------------in the friends page---------------------------

@@ -3,26 +3,26 @@
 'use strict';
 
 function checkfollowed(id,callback){      
-        var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
-        $.getJSON(url,function(data){
-          console.log(data[0]);
-          if(data[0] == undefined ){
+    var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+    $.getJSON(url,function(data){
+      console.log(data[0]);
+      if(data[0] == undefined ){
+        $('#follow_btn').show(); 
+        $('#unfollow_btn').hide(); 
+      }
+        $.each(data,function (i,value){
+          if(data[i].followed.split("/")[5] == id){
+            global.cookie_setting.set("follow_id",data[i].url);
+            $('#follow_btn').hide(); 
+            $('#unfollow_btn').show();  
+            return false;
+          }else{
             $('#follow_btn').show(); 
             $('#unfollow_btn').hide(); 
           }
-            $.each(data,function (i,value){
-              if(data[i].followed.split("/")[5] == id){
-                global.cookie_setting.set("follow_id",data[i].url);
-                $('#follow_btn').hide(); 
-                $('#unfollow_btn').show();  
-                return false;
-              }else{
-                $('#follow_btn').show(); 
-                $('#unfollow_btn').hide(); 
-              }
-            });     
-         });
-      }
+        });     
+     });
+}
 
 function followother(username,user_url){
     var url = 'api/follow/';
