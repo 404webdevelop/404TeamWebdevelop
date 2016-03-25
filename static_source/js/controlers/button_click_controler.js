@@ -71,7 +71,6 @@ function button_click(){
      }); 
 
   $('.try').delegate('li', 'click', function () {
-        console.log($(this).attr("value"));
         var posted_id = $(this).attr("value");
         location.hash ='posted/'+posted_id+'/';
         $("#home").hide();

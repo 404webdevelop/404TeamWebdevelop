@@ -5,7 +5,6 @@
 function checkfollowed(id,callback){      
     var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
     $.getJSON(url,function(data){
-      console.log(data[0]);
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
         $('#unfollow_btn').hide(); 
