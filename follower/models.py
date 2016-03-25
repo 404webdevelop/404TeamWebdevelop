@@ -68,9 +68,15 @@ class FollowManager(models.Manager):
     def check_friend_request(self, friend_request):
         pass
 
-    def isFollowing(self, follower1, follower2):
-        follow_exist = self.get_queryset().filter(followed=follower1, follower=follower2).exists()
-        if follow_exist:
+    def isFollowing(self, id_1, id_2):
+        follow1_exist = self.get_queryset().filter(followed=id_1, follower=id_2).exists()
+        follow2_exist = self.get_queryset().filter(followed=id_1, remote_author_id=id_2).exists()
+        follow3_exist = self.get_queryset().filter(remote_author_id=id_1, follower=id_2).exists()
+        if follow1_exist:
+            return True
+        elif follow2_exist:
+            return True
+        elif follow3_exist:
             return True
         else:
             return False

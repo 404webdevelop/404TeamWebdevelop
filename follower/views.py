@@ -137,7 +137,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def friends(self, request, **kwargs):
-        
+
         #get all local author followings
         follower = Follows.objects.getLocalFollowings(self.kwargs['pk'])
         print 'local follower length: ' + str(len(follower))
@@ -192,19 +192,15 @@ class FriendViewSet(APIView):
       - `/friend/{author_id_1}/{author_id_2}}`
         - GET: result of two users are friends
     """
-
-
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
     def get(self, request, author_id_1, author_id_2):
         #set default result is false
         result = False
-        user_1 = Author.objects.get(pk = author_id_1)
-        user_2 = Author.objects.get(pk = author_id_2)
-
 
         #check if two user are friends
-        result_case_one = Follows.objects.isFollowing(user_1, user_2)
-        result_case_two = Follows.objects.isFollowing(user_2, user_1)
-
+        result_case_one = Follows.objects.isFollowing(author_id_1, author_id_2)
+        result_case_two = Follows.objects.isFollowing(author_id_2, author_id_1)
         authors = [author_id_1, author_id_2]
         if result_case_one and result_case_two:
             result = True
@@ -226,6 +222,9 @@ class FriendlistViewSet(APIView):
       - `/friends/{author_id}`
         - GET: result of two users are friends
     """
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, author_id):
         #get all local author followings followers
         follower = Follows.objects.getLocalFollowings(author_id)
@@ -268,7 +267,16 @@ class FriendlistViewSet(APIView):
             ]))
 
 class FriendRequestAPIView(APIView):
+    """
+    API endpoint that create a friend request to the target
 
+    Usage: \n
+      - `/friendrequest/`
+        - POST: post a friend request
+
+    """
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         author_id = request.data['author']['id']

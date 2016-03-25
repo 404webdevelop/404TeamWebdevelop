@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/friendrequest', FriendRequestAPIView.as_view()),
     url(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet.as_view()),
-    url(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet.as_view()),
+    url(r'friends/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet.as_view()),
 
     # demo
     url(r'^make_post/', login_required(TemplateView.as_view(template_name='post/make_post.html')), name='make-post'),
