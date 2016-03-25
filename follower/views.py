@@ -137,6 +137,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def friends(self, request, **kwargs):
+        
         #get all local author followings
         follower = Follows.objects.getLocalFollowings(self.kwargs['pk'])
         print 'local follower length: ' + str(len(follower))
@@ -183,7 +184,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
 
-class FriendViewSet(viewsets.ModelViewSet):
+class FriendViewSet(APIView):
     """
     API endpoint that checks two users relation
 
@@ -191,10 +192,9 @@ class FriendViewSet(viewsets.ModelViewSet):
       - `/friend/{author_id_1}/{author_id_2}}`
         - GET: result of two users are friends
     """
-    queryset = Follows.objects.all()
-    serializer_class = FollowSerializer
 
-    def list(self, request, author_id_1, author_id_2):
+
+    def get(self, request, author_id_1, author_id_2):
         #set default result is false
         result = False
         user_1 = Author.objects.get(pk = author_id_1)
@@ -218,7 +218,7 @@ class FriendViewSet(viewsets.ModelViewSet):
             ]))
 
 
-class FriendlistViewSet(viewsets.ModelViewSet):
+class FriendlistViewSet(APIView):
     """
     API endpoint that returns a list of friends.
 
@@ -226,10 +226,7 @@ class FriendlistViewSet(viewsets.ModelViewSet):
       - `/friends/{author_id}`
         - GET: result of two users are friends
     """
-    queryset = Follows.objects.all()
-    serializer_class = FollowSerializer
-
-    def list(self, request, author_id):
+    def get(self, request, author_id):
         #get all local author followings followers
         follower = Follows.objects.getLocalFollowings(author_id)
         print 'local follower length: ' + str(len(follower))
@@ -242,7 +239,6 @@ class FriendlistViewSet(viewsets.ModelViewSet):
         print 'remote followed length: ' + str(len(remote_followed))
         remote_follower = Follows.objects.getRemoteFollowings(author_id)
         print 'remote follower length: ' + str(len(remote_follower))
-
 
         friend_list = list()
 
@@ -270,6 +266,7 @@ class FriendlistViewSet(viewsets.ModelViewSet):
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+
 class FriendRequestAPIView(APIView):
 
 

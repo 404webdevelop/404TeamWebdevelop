@@ -37,7 +37,7 @@ class MyRouter(routers.DefaultRouter):
 
             ## [Friend]() \n
             - internal use only for project part 2
-            - list, delete: `/friend/author_id`
+            - list: `/friend/author_id`
             - list: `/friends/author_id/author_id`
             - post: `/friendrequest/`
             - post example:
@@ -90,6 +90,5 @@ router.register(r'remoteauthor/(?P<remote_url>.+)', RemoteAuthorViewSet, base_na
 # Friend views TODO
 router.register(r'follow', FollowViewSet)
 
-router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet)
 
-router.register(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet)
+
