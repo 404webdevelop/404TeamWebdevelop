@@ -58,6 +58,13 @@ class MyRouter(routers.DefaultRouter):
                         }
                 \t}
 
+            ## **Interoperating?**
+            - For `secret-inlet-51780.herokuapp.com/api`, please login with the following credentials:
+                - Username: `remoteuser`
+                - Password: `abc`
+            - You should login with these credentials while making requests from your app and while browsing the api in the browser
+            - Logging in as `remoteuser` ensures that you won't see any stuff that's not from our server (ie. only local posts)
+
             _Edit this documentation in `social_dist/api.py`_
 
             """

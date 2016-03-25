@@ -97,14 +97,17 @@ class CommentTest(APITestCase):
         post.save()
         commentByPostUrl = reverse('comment_by_post-list', args=(post.id,))
         self.client.force_authenticate(user=author)
-        args = {'content': 'my comment content'}
+        args = {'comment': 'my comment content', 'contentType': 'text/plain'}
         result = self.client.post(commentByPostUrl, args, format='json')
+        print('')
+        print(result.data)
+        print('')
         self.assertEqual(result.status_code, status.HTTP_200_OK)
 
         # list
         result = self.client.get(commentByPostUrl)
         self.assertEqual(result.data['count'], 1)
-        self.assertEqual(result.data['comments'][0]['content'], 'my comment content')
+        self.assertEqual(result.data['comments'][0]['comment'], 'my comment content')
 
         # delete
         commentUrl = result.data['comments'][0]['url']
@@ -120,15 +123,15 @@ class CommentTest(APITestCase):
         post.save()
         commentByPostUrl = reverse('comment_by_post-list', args=(post.id,))
         commentListUrl = reverse('comment-list')
-        Comment.objects.create(parent = post, content = 'my comment content')
+        Comment.objects.create(parent = post, comment = 'my comment content')
 
         self.client.force_authenticate(user=None)
 
         # cannot create comment for unauthorized post (try both comment creation methods)
-        args = {'content': 'my comment content'}
+        args = {'comment': 'my comment content'}
         result = self.client.post(commentByPostUrl, args, format='json')
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
-        args = {'content': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
+        args = {'comment': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
         result = self.client.post(commentListUrl, args, format='json')
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -139,10 +142,10 @@ class CommentTest(APITestCase):
         self.client.force_authenticate(user=other_author)
 
         # STILL cannot create comment for unauthorized post (try both comment creation methods)
-        args = {'content': 'my comment content'}
+        args = {'comment': 'my comment content'}
         result = self.client.post(commentByPostUrl, args, format='json')
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
-        args = {'content': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
+        args = {'comment': 'my comment content', 'parent': reverse('post-detail', args=[post.id])}
         result = self.client.post(commentListUrl, args, format='json')
         self.assertEqual(result.status_code, status.HTTP_403_FORBIDDEN)
 
