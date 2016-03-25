@@ -283,11 +283,13 @@ function setother_header(url){
     request.done(function (callback) {
     console.log(callback);
     var img = callback.picture;
-    if(img != undefined || img != 'undefined'){
+    console.log(img);
+    if(img == undefined || img == 'undefined' || img == null){
+        $('#other_div1').html('<img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+     }else{
         $('#other_div1').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
      }
       $('#other_div2').html('<h1>'+callback.first_name+' '+callback.last_name+'<h1>');
-    //alert("successfully post.");
     });
   
   request.fail(function (callback) {

@@ -5,7 +5,7 @@
 //--------------------------------done------------------
 function set_head_infor(img,firstname,lastname,username){
   console.log(img);
-  if(img != undefined || img != 'undefined'){
+  if(img != undefined || img != 'undefined' ||img != null){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
   }
   $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>');

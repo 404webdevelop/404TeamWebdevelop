@@ -166,6 +166,15 @@ function button_click(){
     global.findfriends.search(username);
     //console.log("sdfsfsdfsfsd");
   });
+  $('#follow_btn').click(function(){
+        $('#follow_btn').hide(); 
+        $('#unfollow_btn').show();  
+    });
+  $('#unfollow_btn').click(function(){
+        $('#follow_btn').show();  
+        $('#unfollow_btn').hide();
+    });
+
 
 
     $('#logout_btn').click(function(){

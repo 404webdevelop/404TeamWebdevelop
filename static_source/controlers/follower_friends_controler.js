@@ -19,6 +19,8 @@ function checkfollowed(callback){
             });     
          });
       }
+
+      
 function followother(){
 
   $.getJSON('api/author/',function(data){
