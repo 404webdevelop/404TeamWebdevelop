@@ -30,6 +30,11 @@ function button_click(){
     $("#search_result_fild").hide();
 
     });
+
+
+  
+
+
   $('#posted_page').click(function(){
     $("#home").hide();
     $("#posted").show(800);
@@ -42,18 +47,7 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
-  $('#other_page').click(function(){
-    $("#home").hide();
-    $("#posted").hide();
-    $("#follow_btn").hide();
-    $("#other_posted").show(800);
-    $("#friends").hide();
-    $("#git").hide();
-    $("#profile").hide();
-    $("#comment").hide();
-    $("#search_result_fild").hide();
 
-  });
 
   $('.list-group').delegate('li', 'click', function () {
         $('#others_page_list_view').empty();
@@ -75,6 +69,10 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
+
+  
+
+
   $('#git_page').click(function(){
     $("#home").hide();
     $("#posted").hide();
@@ -166,7 +164,7 @@ function button_click(){
     $("#search_result_fild").show(800);
     var username = $('#search_name').val();
     global.findfriends.search(username);
-    console.log("sdfsfsdfsfsd");
+    //console.log("sdfsfsdfsfsd");
   });
 
 
@@ -336,7 +334,8 @@ function button_click(){
 
 
 global.button_click = {
-	clickbtn:button_click
+	clickbtn:button_click,
+  jump:click_jmp_other
 
 }
 

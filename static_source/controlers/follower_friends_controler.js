@@ -110,8 +110,6 @@ function getfollowers(){
 
 
 function getfollowings(){
-  //var friends_list=[];
-  //console.log(global.cookie_setting.get("userid"));
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
   var request = $.ajax({
           method: "GET",
@@ -165,6 +163,7 @@ function search_user(username){
       if(data.authors[i].displayName == username){
         cont =1;
         var data_iner = data.authors[i];
+        console.log(data_iner);
         var image = data_iner.picture;
         if(image == undefined || image == 'undefined'){
           image = "/static/image/noiamge.gif"
@@ -179,18 +178,24 @@ function search_user(username){
                                 </a>\
                             </div>\
                             <div class="col-md-7">\
-                                <h3> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
-                                <h4> Username: '+data_iner.displayName+'</h4>\
+                                <h3 id="click_url" value="'+data_iner.url+'"> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
+                                <h4 id="click_username" value="'+data_iner.displayName+'"> Username: '+data_iner.displayName+'</h4>\
                                 <p></p>\
-                                <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>\
+                                <button  id="search_friend_button" class="btn btn-primary" >View Person <span class="glyphicon glyphicon-chevron-right"></span></button>\
                             </div>\
                         </div>\
                       </div>\
                     </div>');
       }
+      $('#search_friend_button').click(function(){
+        $('#others_page_list_view').empty();
+        var url = $('#click_url').attr("value");
+        var othername= $('#click_username').attr("value");
+        global.button_click.jump(url,othername);
+      });
     })
     if (cont ==0){
-      $("#search_result_fild").html('<div class="panel panel-primary">\
+      $("#search_result_fild").html('<div class="panel panel-danger">\
                       <div class="panel-heading">Search result</div>\
                       <div class="panel-body">\
                         <div class="row" id="posted_item">\
@@ -202,7 +207,6 @@ function search_user(username){
                                 <h3> NOT FIND</h3>\
                                 <h4> NOTHING IN THERE</h4>\
                                 <p></p>\
-                                <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>\
                             </div>\
                         </div>\
                       </div>\
