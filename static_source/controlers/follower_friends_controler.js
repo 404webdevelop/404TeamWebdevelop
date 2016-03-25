@@ -1,96 +1,89 @@
 (function (global) {
 
 'use strict';
-function checkfollowed(callback){      
+
+function checkfollowed(id,callback){      
         var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
         $.getJSON(url,function(data){
-            //console.log(data);
+          console.log(data[0]);
+          if(data[0] == undefined ){
+            $('#follow_btn').show(); 
+            $('#unfollow_btn').hide(); 
+          }
             $.each(data,function (i,value){
-              if(data[i].followed.split("/")[5] == global.cookie_setting.get("click_id")){
+              if(data[i].followed.split("/")[5] == id){
                 global.cookie_setting.set("follow_id",data[i].url);
-                console.log("wo de tiam");
-                $('#follow_btn').text("UNFOLLOW");
-                $('#follow_btn').css("background","#FF6347");
+                $('#follow_btn').hide(); 
+                $('#unfollow_btn').show();  
                 return false;
               }else{
-                $('#follow_btn').text("FOLLOW");
-                $('#follow_btn').css("background","lightgreen");
+                $('#follow_btn').show(); 
+                $('#unfollow_btn').hide(); 
               }
             });     
          });
       }
 
-      
-function followother(){
+function followother(username,user_url){
+    var url = 'api/follow/';
+    var request = $.ajax({
+      method: "POST",
+      url: url,
+      data:{
+      "followed":user_url,
+      "follower":global.cookie_setting.get("url"),
+      } 
+    });
+    request.done(function (callback) {
+      console.log(callback);
+      $('#follow_btn').hide(); 
+      $('#unfollow_btn').show();
+      $("#following_view").empty();
+      $("#friends_view").empty();
+      getfollowings();
+      findfriends();
 
-  $.getJSON('api/author/',function(data){
-    $.each(data.authors,function (i , value){
-      if(data.authors[i].displayName == global.cookie_setting.get("click_username")){
-
-        var url = 'api/follow/';
-        
-        var request = $.ajax({
-          method: "POST",
-          url: url,
-          data:{
-          "followed":data.authors[i].url,
-          "follower":global.cookie_setting.get("url"),
-          } 
-        });
-        request.done(function (callback) {
-          $('#follow_btn').text("UNFOLLOW");
-          $('#follow_btn').css("background","#FF6347");
-          setTimeout(function(){
-                window.location.href = "otherposted";
-              },0
-                ); 
-
-        });
-        request.fail(function (callback) {
-            console.log(callback.responseText);
-         });
-        console.log("hoeee:  "+data.authors[i].url);
-      }
-    })
-    
-  })
-  global.findfriends.checkfollow();
+    });
+    request.fail(function (callback) {
+        console.log(callback.responseText);
+     });
 
 };
 
-function unfollowother(){
-  global.findfriends.checkfollow();
-  $.getJSON('api/author/',function(data){
-    $.each(data.authors,function (i , value){
-      if(data.authors[i].displayName == global.cookie_setting.get("click_username")){
+function unfollowother(username,user_url){
+     var url = "/api/follow";
+     $.getJSON(url,function(data) {
+        $.each(data,function ( i,value ){
+            if(data[i].followed == user_url && data[i].follower ==global.cookie_setting.get("url")){
+              console.log("11111");
+              var new_url = data[i].url;
+              var request = $.ajax({
+                  method: "DELETE",
+                  url: new_url,
+                  data:{
+                  "followed":user_url,
+                  "follower":global.cookie_setting.get("url")
+                } 
+              });
+              request.done(function (callback) {
+                $('#follow_btn').show();  
+                $('#unfollow_btn').hide();
+                $("#following_view").empty();
+                $("#friends_view").empty();
+                getfollowings();
+                findfriends();
+              });
+              request.fail(function (callback) {
+                  console.log(callback);
+               });
+            }
+        })
+     });   
+}
+ 
 
-        var url = global.cookie_setting.get("follow_id"); 
-        
-       var request = $.ajax({
-          method: "DELETE",
-          url: url,
-          data:{
-          "followed":data.authors[i].url,
-          "follower":global.cookie_setting.get("url")
-          } 
-        });
-        request.done(function (callback) {
-          $('#follow_btn').text("FOLLOW");
-          $('#follow_btn').css("background","lightgreen");
-        });
-        request.fail(function (callback) {
-            console.log(callback);
-         });
-      }
-    })
-    
-  })
-
-
-};
 
 function getfollowers(){
-  //console.log(global.cookie_setting.get("userid"));
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/followers";
   var request = $.ajax({
           method: "GET",
@@ -122,7 +115,6 @@ function getfollowings(){
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].followed,function(data){     
-                  //console.log(data.url);
                   $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
                 });         
             }); 
@@ -139,7 +131,6 @@ function findfriends(){
           url: url,
         });
   request.done(function (callback) {
-            //console.log(callback);
             var friendsobj = callback;
             $.each(friendsobj.authors,function (i,value){
               var auturl = "api/author/"+friendsobj.authors[i];

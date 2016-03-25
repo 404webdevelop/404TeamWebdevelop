@@ -222,11 +222,11 @@ function load_other_posts(other){
         });
   var no_iamge="/static/image/no_image.jpg";
   request.done(function (callback) {
-    console.log(callback);
+    //console.log(callback);
     var postobj = callback;
     var count =0;
             $.each(postobj.posts, function (i, value) { 
-              console.log(postobj.posts[i].author.displayName);
+              //console.log(postobj.posts[i].author.displayName);
               if(postobj.posts[i].author.displayName==other){
                 if(count < 100){
                   count++;
@@ -281,9 +281,9 @@ function setother_header(url){
           url: url,
         });
     request.done(function (callback) {
-    console.log(callback);
+    //console.log(callback);
     var img = callback.picture;
-    console.log(img);
+    //console.log(img);
     if(img == undefined || img == 'undefined' || img == null){
         $('#other_div1').html('<img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100">');
      }else{

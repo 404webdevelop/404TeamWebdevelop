@@ -50,7 +50,7 @@ $( document ).ready(function() {
 	global.findfriends.friends();
 	global.findfriends.get_follower();
 	global.findfriends.get_following();
-	
+
     //console.log( data.username);       
     //console.log( data.url);    
     //console.log( data.firstname);    
