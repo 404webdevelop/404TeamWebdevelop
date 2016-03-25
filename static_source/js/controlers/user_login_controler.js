@@ -5,13 +5,16 @@
 //--------------------------------done------------------
 function set_head_infor(img,firstname,lastname,username){
   console.log(img);
-  if(img != undefined || img != 'undefined' ||img != null){
+  if( img != null ){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+    $("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
   }
   $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>');
-  $("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
+  
   $("#profile_page").html('<span class="glyphicon glyphicon-user"></span>'+username +'');
 }
+
+
 
 
 function getuserlogin(callback){
@@ -31,6 +34,25 @@ function getuserlogin(callback){
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
         set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
+
+        var data= {"username":global.cookie_setting.get("username"),
+           "url":global.cookie_setting.get("url"),
+           "token":global.cookie_setting.get("token"),
+           "firstname":global.cookie_setting.get("firstname"),
+           "lastname": global.cookie_setting.get("lastname"),
+           "no_image":"/static/image/no_image.jpg",
+           "userphoto":global.cookie_setting.get("picture"),
+           "followers":"50",
+           "following":"77",
+           "friends":"112"
+           };
+
+
+
+        global.load_posts.posts_load(data,"home");
+        //console.log(data);
+        global.load_posts.posts_load(data,"posted");
+        global.load_posts.posts_load(data,"git");
         });
     request.fail(function (callback) {
             console.log(callback);
