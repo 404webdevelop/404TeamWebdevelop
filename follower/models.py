@@ -13,11 +13,11 @@ class FollowManager(models.Manager):
         return self.get_queryset().filter(followed = id)
 
 
-    def getLocalFollowing(self, id):
+    def getLocalFollowings(self, id):
         return self.get_queryset().filter(follower=id)
 
 
-    def getRemoteFollowing(self, id):
+    def getRemoteFollowings(self, id):
         return self.get_queryset().filter(remote_author_id = id, follower = None)
 
 
