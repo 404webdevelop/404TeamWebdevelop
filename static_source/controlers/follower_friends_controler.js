@@ -23,7 +23,7 @@ function followother(){
 
   $.getJSON('api/author/',function(data){
     $.each(data.authors,function (i , value){
-      if(data.authors[i].username == global.cookie_setting.get("click_username")){
+      if(data.authors[i].displayName == global.cookie_setting.get("click_username")){
 
         var url = 'api/follow/';
         
@@ -60,7 +60,7 @@ function unfollowother(){
   global.findfriends.checkfollow();
   $.getJSON('api/author/',function(data){
     $.each(data.authors,function (i , value){
-      if(data.authors[i].username == global.cookie_setting.get("click_username")){
+      if(data.authors[i].displayName == global.cookie_setting.get("click_username")){
 
         var url = global.cookie_setting.get("follow_id"); 
         
@@ -88,7 +88,7 @@ function unfollowother(){
 };
 
 function getfollowers(){
-  console.log(global.cookie_setting.get("userid"));
+  //console.log(global.cookie_setting.get("userid"));
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/followers";
   var request = $.ajax({
           method: "GET",
@@ -96,11 +96,9 @@ function getfollowers(){
         });
   request.done(function (callback) {
             var followersobj = callback;
-            
-
             $.each(followersobj, function (i, value) {
                 $.getJSON(followersobj[i].follower,function(data){
-                    $("#follower_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');
+                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
                     
                 });
               
@@ -113,19 +111,21 @@ function getfollowers(){
 
 
 function getfollowings(){
-  console.log(global.cookie_setting.get("userid"));
+  //var friends_list=[];
+  //console.log(global.cookie_setting.get("userid"));
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
   var request = $.ajax({
           method: "GET",
           url: url,
         });
   request.done(function (callback) {
+            var friends_list=[];
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].followed,function(data){
-                    $("#following_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');
-                });
-              
+                $.getJSON(followersobj[i].followed,function(data){     
+                  //console.log(data.url);
+                  $("#following_view").append('<li value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
+                });         
             }); 
          });
   request.fail(function (callback) {
@@ -140,12 +140,12 @@ function findfriends(){
           url: url,
         });
   request.done(function (callback) {
-            console.log(callback);
+            //console.log(callback);
             var friendsobj = callback;
             $.each(friendsobj.authors,function (i,value){
               var auturl = "api/author/"+friendsobj.authors[i];
               $.getJSON(auturl,function(data){
-                    $("#friends_view").append('<a href="#" class="list-group-item ">'+data.username+'</a>');       
+                    $("#friends_view").append('<li value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');       
                 });
             }); 
          });
@@ -162,8 +162,8 @@ function search_user(username){
     console.log(data);
     var cont =0;
     $.each(data.authors,function (i , value){
-      console.log(data.authors[i].username);
-      if(data.authors[i].username == username){
+      //console.log(data.authors[i].username);
+      if(data.authors[i].displayName == username){
         cont =1;
         var data_iner = data.authors[i];
         var image = data_iner.picture;
@@ -181,7 +181,7 @@ function search_user(username){
                             </div>\
                             <div class="col-md-7">\
                                 <h3> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
-                                <h4> Username: '+data_iner.username+'</h4>\
+                                <h4> Username: '+data_iner.displayName+'</h4>\
                                 <p></p>\
                                 <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>\
                             </div>\

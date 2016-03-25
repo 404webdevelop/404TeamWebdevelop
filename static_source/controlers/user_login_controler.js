@@ -23,14 +23,14 @@ function getuserlogin(callback){
           });
     request.done(function (callback) {
         var userobj = callback;
-        global.cookie_setting.set("username",userobj.username);
+        global.cookie_setting.set("username",userobj.displayName);
         global.cookie_setting.set("github", userobj.github);
         global.cookie_setting.set("userid",userobj.id);
         global.cookie_setting.set("url",userobj.url);
         global.cookie_setting.set("firstname",userobj.first_name);
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
-        set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.username);
+        set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
         });
     request.fail(function (callback) {
             console.log(callback);
