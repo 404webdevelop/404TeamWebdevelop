@@ -1,6 +1,26 @@
 (function (global) {
 'use strict';
 
+function click_jmp_other(url,othername){
+    global.cookie_setting.set("click_username",othername);
+    global.cookie_setting.set("click_url",url);
+    global.load_posts.set_other(url);
+    global.load_posts.posts_load_other(othername);
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").show(800);
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#search_result_fild").hide();
+    var id = url.split("/")[5];
+    global.findfriends.checkfollow(id);
+};
+
+
+
 
 function button_click(){
 
@@ -17,6 +37,11 @@ function button_click(){
     $("#search_result_fild").hide();
 
     });
+
+
+  
+
+
   $('#posted_page').click(function(){
     $("#home").hide();
     $("#posted").show(800);
@@ -29,18 +54,22 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
-  $('#other_page').click(function(){
-    $("#home").hide();
-    $("#posted").hide();
-    $("#follow_btn").hide();
-    $("#other_posted").show(800);
-    $("#friends").hide();
-    $("#git").hide();
-    $("#profile").hide();
-    $("#comment").hide();
-    $("#search_result_fild").hide();
 
-  });
+
+  $('.list-group').delegate('li', 'click', function () {
+        $('#others_page_list_view').empty();
+        var url = $(this).attr("value");
+        
+        var othername= $(this).attr("id");
+        global.cookie_setting.set("click_username",othername);
+        global.cookie_setting.set("click_url",url);
+        click_jmp_other(url,othername);
+        console.log(url);
+        var id= url.split("/")[5];
+        console.log(id);
+        global.findfriends.checkfollow(id);
+     });   
+
   $('#friends_page').click(function(){
     $("#home").hide();
     $("#posted").hide();
@@ -53,6 +82,10 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
+
+  
+
+
   $('#git_page').click(function(){
     $("#home").hide();
     $("#posted").hide();
@@ -144,8 +177,21 @@ function button_click(){
     $("#search_result_fild").show(800);
     var username = $('#search_name').val();
     global.findfriends.search(username);
-    console.log("sdfsfsdfsfsd");
+    //console.log("sdfsfsdfsfsd");
   });
+
+
+  $('#follow_btn').click(function(){
+        global.findfriends.follow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+    });
+  $('#unfollow_btn').click(function(){
+        //console.log("this is : "+global.cookie_setting.get("click_username"));
+        //console.log("that is : "+global.cookie_setting.get("click_url"));
+        //$('#follow_btn').show();  
+        //$('#unfollow_btn').hide();
+        global.findfriends.unfollow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+    });
+
 
 
     $('#logout_btn').click(function(){
@@ -314,7 +360,8 @@ function button_click(){
 
 
 global.button_click = {
-	clickbtn:button_click
+	clickbtn:button_click,
+  jump:click_jmp_other
 
 }
 

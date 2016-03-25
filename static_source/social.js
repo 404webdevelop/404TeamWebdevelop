@@ -10,6 +10,8 @@ function setup(){
 	global.button_click.clickbtn();
 };
 
+
+
 $( document ).ready(function() {
 	var data= {"username":global.cookie_setting.get("username"),
        "url":global.cookie_setting.get("url"),
@@ -22,6 +24,7 @@ $( document ).ready(function() {
        "following":"77",
        "friends":"112"
        };
+
 
 
 	$("#home").show();
@@ -47,12 +50,13 @@ $( document ).ready(function() {
 	global.findfriends.friends();
 	global.findfriends.get_follower();
 	global.findfriends.get_following();
-    console.log( data.username);       
-    console.log( data.url);    
-    console.log( data.firstname);    
-    console.log( data.lastname);    
-    console.log( data.userphoto);    
-	console.log( global.cookie_setting.get("lastname"));
+
+    //console.log( data.username);       
+    //console.log( data.url);    
+    //console.log( data.firstname);    
+    //console.log( data.lastname);    
+    //console.log( data.userphoto);    
+	//console.log( global.cookie_setting.get("lastname"));
 });
 
 })(this);

@@ -5,7 +5,7 @@
 //--------------------------------done------------------
 function set_head_infor(img,firstname,lastname,username){
   console.log(img);
-  if(img != undefined || img != 'undefined'){
+  if(img != undefined || img != 'undefined' ||img != null){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
   }
   $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>');
@@ -23,14 +23,14 @@ function getuserlogin(callback){
           });
     request.done(function (callback) {
         var userobj = callback;
-        global.cookie_setting.set("username",userobj.username);
+        global.cookie_setting.set("username",userobj.displayName);
         global.cookie_setting.set("github", userobj.github);
         global.cookie_setting.set("userid",userobj.id);
         global.cookie_setting.set("url",userobj.url);
         global.cookie_setting.set("firstname",userobj.first_name);
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
-        set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.username);
+        set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
         });
     request.fail(function (callback) {
             console.log(callback);

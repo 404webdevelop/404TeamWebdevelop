@@ -46,6 +46,8 @@ function set_post_on(title,contant,username,img,page){
     $('#posted_page_list_view').append(html_st);
   }if(page == 'git'){
     $('#git_page_list_view').append(git_st);
+  }if(page == 'others'){
+    $('#others_page_list_view').append(html_st);
   }
 }
 
@@ -66,7 +68,7 @@ function getpost(data,page,cookie){
   request.done(function (callback) {
       var postobj = callback;
       var github = global.cookie_setting.get("github");
-    var count = 0;
+      var count = 0;
             //console.log(github);
       if(page == "home"){
         //console.log(postobj.posts[0].author.id);
@@ -151,7 +153,7 @@ function getpost(data,page,cookie){
         if(page == "posted"){
 
             $.each(postobj.posts, function (i, value) { 
-              console.log(postobj.posts[i].author.displayName);
+              //console.log(postobj.posts[i].author.displayName);
               if(postobj.posts[i].author.displayName==data.username){
                 if(count < 100){
                   count++;
@@ -174,11 +176,11 @@ function getpost(data,page,cookie){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
-                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page);
                             
                       }
                       if (cont == 0 && cont1 == 0){
-                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page);
                             
                       }
                   });
@@ -196,7 +198,7 @@ function getpost(data,page,cookie){
                   url: github,
           });
           request.done(function (callback) {
-                    console.log(callback)
+                    //console.log(callback)
                     var githubobj = callback;
                     $.each(githubobj, function (i, value) {
                         set_post_on(githubobj[i].repo.name,githubobj[i].type,githubobj[i].created_at,"",page);
@@ -206,12 +208,26 @@ function getpost(data,page,cookie){
                     console.log(callback);
                  });
         }
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+}
 
-        if(page == "otherpost"){
-          $.each(postobj.posts, function (i, value) {
-                if(data.username == postobj.posts[i].username){
-                    console.log(postobj.posts[i].author.displayName);
-              if(postobj.posts[i].author.displayName==data.username){
+function load_other_posts(other){
+  var url = "api/posts/";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  var no_iamge="/static/image/no_image.jpg";
+  request.done(function (callback) {
+    //console.log(callback);
+    var postobj = callback;
+    var count =0;
+            $.each(postobj.posts, function (i, value) { 
+              //console.log(postobj.posts[i].author.displayName);
+              if(postobj.posts[i].author.displayName==other){
                 if(count < 100){
                   count++;
                   var inner_request = $.ajax({
@@ -225,8 +241,7 @@ function getpost(data,page,cookie){
                     $.each(callback.images, function (j, value) { 
                       if(callback.images[j].parent_post == postobj.posts[i].url){
                           $.getJSON(callback.images[j].json_url, function(data1){
-                            var st= setdynamic(data1.url,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,'others');
                             });
                           cont =1;              
                       }else{
@@ -234,27 +249,57 @@ function getpost(data,page,cookie){
                       }          
                     });
                       if (cont == 0 && cont1 == 2){
-                            var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                           set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others');
+                            
                       }
                       if (cont == 0 && cont1 == 0){
-                            var st= setdynamic(data.no_image,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].published,postobj.posts[i].username,"post",postobj.posts[i].author.id, postobj.posts[i].id, postobj.posts[i].comments);
-                            $("#list_post_view").append(st);
+                            set_post_on(postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others');
+                            
                       }
                   });
                   inner_request.fail(function (callback) {
                   });
 
                  }
-                }
-              }
-              });
-          }
-         });
+                 }
+            });
+
+    });
+  
   request.fail(function (callback) {
-            console.log(callback);
-         });
+    console.log(callback);
+    });
+
 }
+
+
+
+function setother_header(url){
+  //var url = "api/friends/"+global.cookie_setting.get("userid");
+    var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+    request.done(function (callback) {
+    //console.log(callback);
+    var img = callback.picture;
+    //console.log(img);
+    if(img == undefined || img == 'undefined' || img == null){
+        $('#other_div1').html('<img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+     }else{
+        $('#other_div1').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
+     }
+      $('#other_div2').html('<h1>'+callback.first_name+' '+callback.last_name+'<h1>');
+    });
+  
+  request.fail(function (callback) {
+    console.log(callback);
+    });
+
+};
+
+
+
 
 function makedate(date){
 	date = date.replace("T"," ");
@@ -265,7 +310,10 @@ function makedate(date){
 
 
 global.load_posts= {
-    posts_load:getpost
+    posts_load:getpost,
+    posts_load_other:load_other_posts,
+    set_other:setother_header
+  
     
     
 

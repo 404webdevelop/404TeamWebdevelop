@@ -9,6 +9,10 @@ td {
 #div1,#div2{
 	display:inline-block;
 }
+
+#other_div1,#other_div2{
+	display:inline-block;
+}
 #div_icon,#div_search,#div_button{
 	display:inline-block;
 }
