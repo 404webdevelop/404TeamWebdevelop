@@ -89,7 +89,7 @@ class Follows(models.Model):
     class Meta:
         verbose_name = "Following"
         verbose_name_plural = "Followers"
-        unique_together = (('followed', 'follower'),)
+        unique_together = (('followed', 'follower'), ('remote_author_id', 'follower'), ('remote_author_id', 'followed'),)
 
     def __unicode__(self):  
         # For Python 2, use __str__ on Python 3
