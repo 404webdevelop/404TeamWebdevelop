@@ -1,7 +1,13 @@
 (function () {
 'use strict';
 
-var url = "/api/posts/49170ff5-ffa1-407b-b1b6-3144899f973c/",
+function notEmpty(str) {
+  return !!str && str.length > 0;
+}
+
+var hash = location.hash.substring(1, 999),
+    postID = hash.split('/').filter(notEmpty)[1],
+    url = "/api/posts/" + postID + "/",
     converter = new showdown.Converter();
 
 function handleError(XMLHttpRequest, textStatus, errorThrown) {
@@ -20,9 +26,17 @@ function fetchPost(postUrl) {
     console.log(data);
     var author   = data.username,
         title    = data.title,
+        type     = data.contentType,
         content  = data.content,
-        html     = converter.makeHtml(content),
+        html     = null,
         comments = data.comments;
+
+    if (contentType === 'text/plain') {
+
+    } 
+    else if (contentType === 'text/x-markdown') {
+
+    }
 
     $('#post-title').html(title);
     $('#post-author').html(author);
@@ -48,7 +62,7 @@ function addCommentToView(poster, content, date) {
 }
 
 function commentSuccess(res, statusText, xhr, $form) {
-  addCommentToView(res.author.displayName, res.content, '');
+  addCommentToView(res.author.displayName, res.comment, res.published);
   console.log(res);
 }
 
@@ -57,6 +71,10 @@ function setup() {
   $('#comment-form').ajaxForm({
     success:        commentSuccess  // post-submit callback
    ,error:          handleError
+  });
+
+  $('#add-url-button').click(function () {
+    location.hash += 'hello_world/';
   });
 }
 
