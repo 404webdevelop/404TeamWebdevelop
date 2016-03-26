@@ -9,14 +9,14 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.css">
-  <link rel="stylesheet" href="/static/social.css">
-  <script async="" type="text/javascript" src="/static/controlers/follower_friends_controler.js" ></script> 
-    <script async="" type="text/javascript" src="/static/controlers/load_post_controler.js" ></script> 
-    <script async="" type="text/javascript" src="/static/controlers/update_controler.js" ></script>
-    <script async="" type="text/javascript" src="/static/controlers/user_login_controler.js" ></script>
-    <script async="" type="text/javascript" src="/static/controlers/dynamic_nav_inf_controler.js" ></script>
-    <script async="" type="text/javascript" src="/static/controlers/button_click_controler.js" ></script>
-    <script async="" type="text/javascript" src="/static/controlers/cookie_controler.js" ></script>
+  <link rel="stylesheet" href="/static/styles/social.css">
+  <script type="text/javascript" src="/static/js/controlers/follower_friends_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/load_post_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/update_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/user_login_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/dynamic_nav_inf_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/button_click_controler.js" ></script>
+  <script type="text/javascript" src="/static/js/controlers/cookie_controler.js" ></script>
 </head>
 <body>
 
@@ -37,7 +37,6 @@
         <li><a id="posted_page" href="#">Posted</a></li>
         <li><a id="friends_page" href="#">Friends</a></li>
         <li><a id="git_page"href="#">GitHUB</a></li>
-        <li><a id="comment_page"href="#">Comment</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li id="userphoto"><a href="#"><img src="/static/image/noiamge.gif"  width="20" height="20"> </a></li>
@@ -61,12 +60,13 @@
             </div>
         </div>
         
-
+        <lu class = "try">
         <div id="home_page_list_view">
         <!-- Project Five -->
             
 
         </div> 
+      </lu>
 
     </div>
     <div class="container" id = "posted">
@@ -84,10 +84,11 @@
         </div>
         <!-- /.row -->
 
-
+        <lu class = "try">
         <div id= "posted_page_list_view">
             
         </div>
+        </lu>
 
 
 
@@ -112,9 +113,11 @@
             </div>
         </div>
         <!-- /.row -->
+        <lu class = "try">
        <div id= "others_page_list_view">
             
         </div>
+      </lu>
 
 
     </div>
@@ -187,23 +190,7 @@
                 <br/>
 
                 <div id="search_result_fild">
-                    <div class="panel panel-primary">
-                      <div class="panel-heading">Search result</div>
-                      <div class="panel-body">
-                        <div class="row" id="posted_item">
-                            <div class="col-md-5">
-                                    <img class="img-responsive" src="./1 Col Portfolio - Start Bootstrap Template_files/700x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-7">
-                                <h3>Firstname Lastname</h3>
-                                <h4>Username</h4>
-                                <p></p>
-                                <a class="btn btn-primary" href="http://blackrockdigital.github.io/startbootstrap-1-col-portfolio/#">View Person <span class="glyphicon glyphicon-chevron-right"></span></a>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
+                    
                     
                 </div>
             </div>
@@ -302,6 +289,6 @@
 
     
 
-    <script src="/static/social.js"></script>
+    <script src="/static/js/index.js"></script>
 </body>
 </html>

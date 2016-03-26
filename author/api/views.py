@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from collections import OrderedDict
 
 from rest_framework.response import Response
@@ -11,8 +12,6 @@ from rest_framework.pagination import PageNumberPagination
 
 from permissions import IsAdminOrSelfOrReadOnly
 from serializers import UserSerializer, SerializeAuthors, RemoteAuthorSerializer
-from author.models import Author
-
 from remotes.utils import *
 
 class AuthorPagination(PageNumberPagination):
@@ -94,12 +93,25 @@ class AuthorViewSet(viewsets.ModelViewSet):
             response = HttpResponse(FileWrapper(user.picture), content_type='image')
             return response
         else:
-            username = request.data.pop('user')[0]
+            username = unicode(request.user)
+            if username is None:
+                return Response({
+                    'error': 'login required'
+                })
+
             user = Author.objects.get_by_natural_key(username)
-            uploaded_file = request.data.pop('0')[0]
+            uploaded_file = request.data.get('picture', None)
+            if uploaded_file is None:
+                return Response({
+                    'error': 'no picture attached'
+                })
+            if not isinstance(uploaded_file, InMemoryUploadedFile):
+                return Response({
+                    'error': 'not a file'
+                })
             user.picture.save(uploaded_file.name, uploaded_file)
-            image_url = 'api/authors/%d/profile_picture/' % user.id
-            return Response({'url': image_url})
+            serializer = self.get_serializer(user, context={'request': request})
+            return Response(serializer.data)
 
     @detail_route(methods=['POST'])
     def change_password(self, request, **kwargs):
