@@ -19,8 +19,45 @@ function click_jmp_other(url,othername){
     global.findfriends.checkfollow(id);
 };
 
+function patchProfile(firstName, lastName,email,git,callback,img) {
+  console.log("sdfsdf"+img);
+  var data= {};
+  if (img == "undefined"){
+    data= {
+    "email": email,
+    "first_name": firstName,
+    "last_name": lastName,
+    "github": git,
+
+  };
+  }else{
+    var data= {
+    "email": email,
+    "first_name": firstName,
+    "last_name": lastName,
+    "github": git,
+    "picture":img
+  };
+
+  }
+  var url = global.cookie_setting.get("url");
+
+  var request = $.ajax({
+          method: "PATCH",
+          url: url,
+          data: data,
+        });
+  request.done(function (callback) {
+    console.log(callback);
+    alert("successfully post.");
+    });
+  
+  request.fail(function (callback) {
+    console.log(callback);
+    });
 
 
+}
 
 
 
@@ -98,8 +135,65 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
+  /*$('#profile_btn').click(function(){
+    console.log("sdffs---------");
+    console.log($('#firstname').val());
+    console.log($('#lastname').val());
+    console.log($('#email').val());
+    console.log($('#github').val());
+    console.log($('#imgInp').val());
+    var firstName = $('#firstname').val();
+    var lastName = $('#lastName').val();
+    var email = $('#email').val();
+    var git = $('#github').val();
+    var img = $('#imgInp').val();
 
-  
+    
+    
+    if($('#imgInp').val() == ""){
+      console.log("sfdsjohoho");
+      patchProfile(firstName, lastName,email,git,img);
+    }else{
+      console.log("enter");
+      var input = document.getElementById('imgInp');
+
+     if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            console.log(input.files[0]);
+            //patchProfile(firstName, lastName,email,git,e.target.result);
+            var data= {
+                "email": email,
+                "first_name": firstName,
+                "last_name": lastName,
+                "github": git,
+                "picture":input.files[0]
+              };
+              var url = global.cookie_setting.get("url");
+
+              var request = $.ajax({
+                      method: "PATCH",
+                      url: url,
+                      data: data,
+                    });
+              request.done(function (callback) {
+                console.log(callback);
+                alert("successfully post.");
+                });
+              
+              request.fail(function (callback) {
+                console.log(callback.responseText);
+                });
+
+
+        }
+        console.log(reader.readAsDataURL(input.files[0]));
+      }
+
+    }
+
+  });*/
 
 
   $('#git_page').click(function(){
