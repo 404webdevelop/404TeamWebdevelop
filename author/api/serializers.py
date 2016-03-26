@@ -19,9 +19,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        pw = validated_data["password"]
+        validated_data['email'] = validated_data.get('email', instance.email)
+        validated_data['first_name'] = validated_data.get('first_name', instance.first_name)
+        validated_data['last_name'] = validated_data.get('last_name', instance.last_name)
+        validated_data['github'] = validated_data.get('github', instance.github)
+        pw = validated_data.get('password', None)
         user = super(UserSerializer, self).update(instance, validated_data)
-        user.set_password(pw)
+        if pw is not None:
+            user.set_password(pw)
         user.save()
         return user
 
