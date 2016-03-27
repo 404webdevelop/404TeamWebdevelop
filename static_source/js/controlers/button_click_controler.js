@@ -77,10 +77,6 @@ function button_click(){
 
     });
 
-
-  
-
-
   $('#posted_page').click(function(){
     $("#home").hide();
     $("#posted").show(800);

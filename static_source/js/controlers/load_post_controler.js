@@ -19,8 +19,8 @@ function set_post_on(id,title,contant,username,img,page,have_image){
                         </a>\
                     </div>\
                     <div class="col-md-7">\
-                        <h3>'+title+'</h3>\
-                        <h4> by: '+username+'</h4>\
+                        <h3> Title: '+title+'</h3>\
+                        <h4> Post by: '+username+'</h4>\
                         <p>'+contant+'</p>\
                         <li value ='+id+' ><button class="btn btn-primary clicked_post" >View Post <span class="glyphicon glyphicon-chevron-right"></span></button></li>\
                     </div>\
@@ -34,8 +34,8 @@ function set_post_on(id,title,contant,username,img,page,have_image){
           <div class="panel-body">\
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
-                    <h3>'+title+'</h3>\
-                    <h4> by: '+username+'</h4>\
+                    <h3>Title: '+title+'</h3>\
+                    <h4>Post by: '+username+'</h4>\
                     <p>'+contant+'</p>\
                     <li value ='+id+' ><button class="btn btn-primary clicked_post" >View Post <span class="glyphicon glyphicon-chevron-right"></span></button></li>\
                 </div>\
@@ -49,8 +49,8 @@ function set_post_on(id,title,contant,username,img,page,have_image){
           <div class="panel-body">\
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
-                    <h3>'+title+'</h3>\
-                    <h4> by: '+username+'</h4>\
+                    <h3>Title: '+title+'</h3>\
+                    <h4> Post by: '+username+'</h4>\
                     <p>'+contant+'</p>\
                 </div>\
             </div>\

@@ -39,6 +39,7 @@ function followother(username,user_url){
       $('#unfollow_btn').show();
       $("#following_view").empty();
       $("#friends_view").empty();
+      
       getfollowings();
       findfriends();
 
