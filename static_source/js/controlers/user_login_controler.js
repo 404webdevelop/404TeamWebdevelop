@@ -34,6 +34,14 @@ function getuserlogin(callback){
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
         set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
+        console.log(userobj.first_name);
+        console.log(userobj.last_name);
+        console.log(userobj.emial);
+        $('#firstname').val(userobj.first_name);
+        $('#lastname').val(userobj.last_name);
+        $('#email').val(userobj.email);
+        $('#github').val(userobj.github);
+       
 
         var data= {"username":global.cookie_setting.get("username"),
            "url":global.cookie_setting.get("url"),
@@ -46,11 +54,7 @@ function getuserlogin(callback){
            "following":"77",
            "friends":"112"
            };
-
-
-
         global.load_posts.posts_load(data,"home");
-        //console.log(data);
         global.load_posts.posts_load(data,"posted");
         global.load_posts.posts_load(data,"git");
         });
