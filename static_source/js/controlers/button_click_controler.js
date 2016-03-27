@@ -135,7 +135,9 @@ function button_click(){
     $("#search_result_fild").hide();
 
   });
-  /*$('#profile_btn').click(function(){
+
+
+  $('#profile_btn').click(function(){
     console.log("sdffs---------");
     console.log($('#firstname').val());
     console.log($('#lastname').val());
@@ -143,7 +145,7 @@ function button_click(){
     console.log($('#github').val());
     console.log($('#imgInp').val());
     var firstName = $('#firstname').val();
-    var lastName = $('#lastName').val();
+    var lastName = $('#lastname').val();
     var email = $('#email').val();
     var git = $('#github').val();
     var img = $('#imgInp').val();
@@ -193,7 +195,7 @@ function button_click(){
 
     }
 
-  });*/
+  });
 
 
   $('#git_page').click(function(){
