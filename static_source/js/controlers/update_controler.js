@@ -2,14 +2,6 @@
 
 'use strict';
 
-
-
-
-function postPost(){
-  
-}
-
-
 function patchProfile(firstName, lastName,email,git,callback) {
   var url = global.cookie_setting.get("url");
   var data= {
@@ -26,15 +18,11 @@ function patchProfile(firstName, lastName,email,git,callback) {
   request.done(function (callback) {
     console.log(callback);
     alert("successfully post.");
-    });
-  
+    });  
   request.fail(function (callback) {
     console.log(callback);
     });
-
-
 }
-
 
 function postComment(){
     console.log("Comment?");
@@ -59,7 +47,6 @@ function postComment(){
     request.fail(function (callback) {
       console.log(callback);
     });
- 
 }
 
 global.update_and_post= {

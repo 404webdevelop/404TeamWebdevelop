@@ -9,16 +9,11 @@ function set_head_infor(img,firstname,lastname,username){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
     $("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
   }
-  $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>');
-  
+  $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>'); 
   $("#profile_page").html('<span class="glyphicon glyphicon-user"></span>'+username +'');
 }
 
-
-
-
-function getuserlogin(callback){
-    
+function getuserlogin(callback){ 
     var url = "api/author/me";
     var request = $.ajax({
             method: "GET",
@@ -41,8 +36,6 @@ function getuserlogin(callback){
         $('#lastname').val(userobj.last_name);
         $('#email').val(userobj.email);
         $('#github').val(userobj.github);
-       
-
         var data= {"username":global.cookie_setting.get("username"),
            "url":global.cookie_setting.get("url"),
            "token":global.cookie_setting.get("token"),
@@ -62,8 +55,6 @@ function getuserlogin(callback){
             console.log(callback);
          });
 }
-
-
 
 global.login_setting = {
 	infor_setting:getuserlogin,
