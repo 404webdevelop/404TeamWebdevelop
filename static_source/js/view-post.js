@@ -74,7 +74,7 @@ function setup() {
   });
 
   $('#add-url-button').click(function () {
-    location.hash += 'hello_world/';
+    location.hash += 'posted/dfsjf-dfsfksdjf-dfwe4234/';
   });
 }
 

@@ -1,0 +1,13 @@
+#post-form {
+	margin-bottom: 20px;
+	border: 2px solid #888;
+	padding: 20px;
+}
+	#post-form textarea {
+		width: 100%;
+	}
+
+#image-form {
+	border: 2px solid #888;
+	padding: 20px;
+}

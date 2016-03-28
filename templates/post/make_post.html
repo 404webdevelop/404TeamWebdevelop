@@ -3,18 +3,24 @@
 <head>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/post.css">
 </head>
 <body>
 <form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
   <div>
-      <input name="title" value="title1" type="text">
+    <input name="title" value="title1" type="text">
+  </div>
+  <div>
+    <select  name="privacy_level">
+      <option value="pub" selected="">Public</option>
+      <option value="me">Private to me</option>
+    </select>
   </div>
   <div>
       <textarea name="content" value="content1" type="text"></textarea>
   </div>
   <div>
     <select  name="privacy_level">
-      <option value="">--------</option>
       <option value="pub" selected="">Public</option>
       <option value="me">Private to me</option>
       <option value="friends">Friends only</option>
@@ -29,8 +35,6 @@
     <button class="btn btn-primary">POST</button>
   </div>
 </form>
-
-<div> ----------------------------------------------------------------------------- </div>
 
 <form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
   <div>
@@ -50,9 +54,6 @@
   <div>
     <input name="image_data" type="file">
   </div>
-  <!-- <div>
-    <button class="btn btn-primary">Image</button>
-  </div> -->
 </form>
 <script type="text/javascript" src="/static/js/make-post.js"></script>
 </body>
