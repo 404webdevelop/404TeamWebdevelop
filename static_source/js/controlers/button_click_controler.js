@@ -96,6 +96,8 @@ function button_click(){
 
   $('.try').delegate('li', 'click', function () {
         var posted_id = $(this).attr("value");
+    
+        global.load_posts.comment_load(posted_id);
         location.hash ='posted/'+posted_id+'/';
         $("#home").hide();
         $("#posted").hide();
