@@ -2,41 +2,27 @@
 
 'use strict';
 
-
-
-
-function postPost(){
-  
-}
-
-
-function patchProfile(firstName, lastName,email,git,password,callback) {
+function patchProfile(firstName, lastName,email,git,callback) {
   var url = global.cookie_setting.get("url");
   var data= {
-    "username": global.cookie_setting.get("username"),
     "email": email,
-    "password":password,
     "first_name": firstName,
     "last_name": lastName,
     "github": git,
   };
   var request = $.ajax({
-          method: "PUT",
+          method: "PATCH",
           url: url,
           data: data,
         });
   request.done(function (callback) {
     console.log(callback);
     alert("successfully post.");
-    });
-  
+    });  
   request.fail(function (callback) {
     console.log(callback);
     });
-
-
 }
-
 
 function postComment(){
     console.log("Comment?");
@@ -61,7 +47,6 @@ function postComment(){
     request.fail(function (callback) {
       console.log(callback);
     });
- 
 }
 
 global.update_and_post= {

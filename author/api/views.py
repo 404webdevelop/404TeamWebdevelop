@@ -1,6 +1,4 @@
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from collections import OrderedDict
 
 from rest_framework.response import Response
@@ -84,33 +82,23 @@ class AuthorViewSet(viewsets.ModelViewSet):
         return super(AuthorViewSet, self).get_permissions()
 
     def create(self, request, *args, **kwargs):
+        profile_picture = request.data.get('picture', None)
+        if profile_picture is None or len(profile_picture) is 0:
+            del request.data['picture']
         return super(AuthorViewSet, self).create(request, args, kwargs)
 
     @detail_route(methods=["GET", "POST"])
     def profile_picture(self, request, **kwargs):
         if request.method == "GET":
             user = Author.objects.get(id=kwargs['pk'])
-            response = HttpResponse(FileWrapper(user.picture), content_type='image')
+            response = HttpResponse(user.picture, content_type='image')
             return response
         else:
             username = unicode(request.user)
-            if username is None:
-                return Response({
-                    'error': 'login required'
-                })
-
             user = Author.objects.get_by_natural_key(username)
-            uploaded_file = request.data.get('picture', None)
-            if uploaded_file is None:
-                return Response({
-                    'error': 'no picture attached'
-                })
-            if not isinstance(uploaded_file, InMemoryUploadedFile):
-                return Response({
-                    'error': 'not a file'
-                })
-            user.picture.save(uploaded_file.name, uploaded_file)
-            serializer = self.get_serializer(user, context={'request': request})
+            serializer = self.get_serializer(user, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             return Response(serializer.data)
 
     @detail_route(methods=['POST'])

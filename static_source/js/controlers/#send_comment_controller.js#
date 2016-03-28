@@ -2,13 +2,8 @@
 
 'use strict';
 
-
-
 global.send_comment= {
     send:send_new_comment,
-	
 }
-
-
 
 })(this);

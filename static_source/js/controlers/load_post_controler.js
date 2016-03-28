@@ -2,9 +2,6 @@
 
 'use strict';
 
-
-
-
 function makeComBox(id){
     return string;
 }
@@ -19,8 +16,8 @@ function set_post_on(id,title,contant,username,img,page,have_image){
                         </a>\
                     </div>\
                     <div class="col-md-7">\
-                        <h3>'+title+'</h3>\
-                        <h4> by: '+username+'</h4>\
+                        <h3> Title: '+title+'</h3>\
+                        <h4> Post by: '+username+'</h4>\
                         <p>'+contant+'</p>\
                         <li value ='+id+' ><button class="btn btn-primary clicked_post" >View Post <span class="glyphicon glyphicon-chevron-right"></span></button></li>\
                     </div>\
@@ -34,29 +31,27 @@ function set_post_on(id,title,contant,username,img,page,have_image){
           <div class="panel-body">\
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
-                    <h3>'+title+'</h3>\
-                    <h4> by: '+username+'</h4>\
+                    <h3>Title: '+title+'</h3>\
+                    <h4>Post by: '+username+'</h4>\
                     <p>'+contant+'</p>\
                     <li value ='+id+' ><button class="btn btn-primary clicked_post" >View Post <span class="glyphicon glyphicon-chevron-right"></span></button></li>\
                 </div>\
             </div>\
           </div>\
         </div>';
-  }
-  
+    }
     var git_st='<div class="panel panel-success">\
           <div class="panel-heading"><strong>Git Activity</strong></div>\
           <div class="panel-body">\
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
-                    <h3>'+title+'</h3>\
-                    <h4> by: '+username+'</h4>\
+                    <h3>Title: '+title+'</h3>\
+                    <h4> Post by: '+username+'</h4>\
                     <p>'+contant+'</p>\
                 </div>\
             </div>\
           </div>\
         </div>';
-
   if(page == 'home'){
     $('#home_page_list_view').append(html_st);
   }if(page == 'posted') {
@@ -68,12 +63,8 @@ function set_post_on(id,title,contant,username,img,page,have_image){
   }
 }
 
-
-
-
 function getpost(data,page,cookie){
     var url = "api/posts/";
-
     var request = $.ajax({
           method: "GET",
           url: url,
@@ -88,11 +79,9 @@ function getpost(data,page,cookie){
                 url: "api/images/",
           });
           inner_request.done(function (callback) {
-
             var cont =0;
             var cont1 =0;
             $.each(callback.images, function (j, value) { 
-
               if(callback.images[j].parent_post == postobj.posts[i].url){
                   $.getJSON(callback.images[j].json_url, function(data1){
                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page,"yes");
@@ -112,10 +101,8 @@ function getpost(data,page,cookie){
           });
           inner_request.fail(function (callback) {
           });
-
         });
       }
-      
       if(page == "posted"){
           $.each(postobj.posts, function (i, value) { 
             if(postobj.posts[i].author.displayName==data.username){
@@ -151,7 +138,6 @@ function getpost(data,page,cookie){
              }
             });
       }
-
       if(page =="git"){
         var request = $.ajax({
                 method: "GET",
@@ -167,10 +153,10 @@ function getpost(data,page,cookie){
                   console.log(callback);
                });
       }
-       });
-      request.fail(function (callback) {
-          console.log(callback);
-       });
+   });
+  request.fail(function (callback) {
+      console.log(callback);
+   });
 }
 
 function load_other_posts(other){
@@ -215,28 +201,19 @@ function load_other_posts(other){
             });
            }
       });
-      
-
     });
-  
   request.fail(function (callback) {
     console.log(callback);
     });
-
 }
 
-
-
 function setother_header(url){
-  //var url = "api/friends/"+global.cookie_setting.get("userid");
     var request = $.ajax({
           method: "GET",
           url: url,
         });
     request.done(function (callback) {
-    //console.log(callback);
     var img = callback.picture;
-    //console.log(img);
     if(img == undefined || img == 'undefined' || img == null){
         $('#other_div1').html('<img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100">');
      }else{
@@ -244,7 +221,6 @@ function setother_header(url){
      }
       $('#other_div2').html('<h1>'+callback.first_name+' '+callback.last_name+'<h1>');
     });
-  
   request.fail(function (callback) {
     console.log(callback);
     });
@@ -261,15 +237,10 @@ function makedate(date){
 	return date
 }
 
-
 global.load_posts= {
     posts_load:getpost,
     posts_load_other:load_other_posts,
     set_other:setother_header
-  
-    
-    
-
 }
 
 

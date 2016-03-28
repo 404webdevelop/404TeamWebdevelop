@@ -41,7 +41,6 @@ function followother(username,user_url){
       $("#friends_view").empty();
       getfollowings();
       findfriends();
-
     });
     request.fail(function (callback) {
         console.log(callback.responseText);
@@ -94,7 +93,6 @@ function getfollowers(){
                 $.getJSON(followersobj[i].follower,function(data){
                     $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
                 });
-              
             }); 
          });
   request.fail(function (callback) {
@@ -143,15 +141,11 @@ function findfriends(){
          });
 };
 
-
-
-
 function search_user(username){
   $.getJSON('api/author/',function(data){
     console.log(data);
     var cont =0;
     $.each(data.authors,function (i , value){
-      //console.log(data.authors[i].username);
       if(data.authors[i].displayName == username){
         cont =1;
         var data_iner = data.authors[i];
@@ -203,12 +197,8 @@ function search_user(username){
                         </div>\
                       </div>\
                     </div>');
-    }
-    
+    }   
   })
-
-
-
 }
 
 global.findfriends= {

@@ -3,8 +3,11 @@ from django.core.urlresolvers import reverse
 from ..models import Author
 from remotes.models import *
 from remotes.utils import *
+from utils.base64_field import Base64Field
 
 class UserSerializer(serializers.ModelSerializer):
+    picture = serializers.ImageField(allow_empty_file=True, required=False)
+
     class Meta:
         model = Author
         fields = ('id', 'url', 'username', 'email', 'password', 'is_active', 'first_name', 'last_name',
@@ -13,6 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        profile_picture = validated_data.get('picture', None)
+        if profile_picture is not None:
+            validated_data['picture'] = profile_picture.file.read()
         user = Author.objects.create_user(**validated_data)
         user.is_active = False
         user.save()
@@ -23,6 +29,9 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data['first_name'] = validated_data.get('first_name', instance.first_name)
         validated_data['last_name'] = validated_data.get('last_name', instance.last_name)
         validated_data['github'] = validated_data.get('github', instance.github)
+        profile_picture = validated_data.get('picture', None)
+        if profile_picture is not None:
+            validated_data['picture'] = profile_picture.file.read()
         pw = validated_data.get('password', None)
         user = super(UserSerializer, self).update(instance, validated_data)
         if pw is not None:
@@ -35,12 +44,13 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context['request']
         data['posts'] = request.build_absolute_uri(reverse('post_by_author-list', args=(obj.id,)))
         data['displayName'] = data['username']
-        if data['picture'] is not None and len(data['picture']) > 0:
+        if obj.picture is not None and len(obj.picture) > 0:
             data['picture'] = data['url'] + 'profile_picture/'
         if data['github'].find('github.com/') == -1:
             data['github'] = 'https://api.github.com/users/' + data['github'] + '/events'
         data['host'] = request.get_host()
         return data
+
 
 class RemoteAuthorSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
