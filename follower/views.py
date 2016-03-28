@@ -266,20 +266,32 @@ class FriendlistViewSet(APIView):
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+    def post(self, request, author_id):
+        pending_list = list()
+        result_list = list()
+        pending_list = request.data['authors']
+        for id in pending_list:
+            print 'friend: '
+            print allFriend(id)
+            checking_list = allFriend(id)
+            if author_id in checking_list:
+                result_list.append(id)
+        return Response(OrderedDict([
+            ('query', 'friends'),
+            ('author', author_id),
+            # Array of Author UUIDs who are friends
+            ('authors', result_list)
+            ]))
 
 def allFriend(author_id):
     #get all local author followings followers
     follower = Follows.objects.getLocalFollowings(author_id)
-    #print 'local follower length: ' + str(len(follower))
     followed = Follows.objects.getLocalFollowers(author_id)
-    #print 'local followed length: ' + str(len(followed))
 
 
     #get all author remote followers followeds
-    remote_followed = Follows.objects.getRemoteFollowers(author_id)     
-    #print 'remote followed length: ' + str(len(remote_followed))
+    remote_followed = Follows.objects.getRemoteFollowers(author_id)
     remote_follower = Follows.objects.getRemoteFollowings(author_id)
-    #print 'remote follower length: ' + str(len(remote_follower))
 
     friend_list = list()
 
@@ -311,7 +323,7 @@ class FriendofFriendAPIView(APIView):
         friend_of_friend_list= list()
         # get this author firend list.
         friend_list = allFriend(author_id)
-
+        # based on the author friend list, finding all friend of friend list
         if len(friend_list) > 0:
             for i in range(len(friend_list)):
                 pendingID = friend_list[i]
@@ -319,8 +331,6 @@ class FriendofFriendAPIView(APIView):
                 for j in pendinglist:
                     friend_of_friend_list.append(j)
         friend_of_friend_list.remove(author_id)
-        print author_id
-        print friend_of_friend_list
         return Response(OrderedDict([
             ('query', 'friend of friend'),
             ('author', author_id),
