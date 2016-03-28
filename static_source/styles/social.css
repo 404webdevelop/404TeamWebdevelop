@@ -26,3 +26,17 @@ td {
 	color:black;
 }
 
+.btn-extra{
+    height:5em;
+ 
+}
+
+
+.vertical-center {
+  min-height: 10%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 10vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+//http://stackoverflow.com/questions/22196587/how-to-center-align-vertically-the-container-in-bootstrap
