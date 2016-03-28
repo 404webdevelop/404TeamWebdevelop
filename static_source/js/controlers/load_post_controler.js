@@ -7,8 +7,11 @@ function makeComBox(id){
 }
 
 function set_com_on(id,title,contant,username,img,page,have_image){
+if(have_image== "yes"){
+  var comment_st='  <div class="panel panel-primary"><div class="panel-heading">'+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">  <img  src='+img+' class="img-circle" alt="Cinque Terre" width="100" height="100">\ </div>  </div> </div>  </div>';
+} else {
   var comment_st='  <div class="panel panel-primary"><div class="panel-heading">'+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">    <img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre" width="100" height="100">  </div>  </div> </div>  </div>';
-
+}
 
     $('#comment_page_list_view').append(comment_st);
   
@@ -217,6 +220,7 @@ function load_other_posts(other){
     });
 }
 function load_comments(posted_id){
+  var no_iamge="/static/image/no_image.jpg";
       $('#comment_page_list_view').empty();
   var url = "api/posts/"+posted_id+"/";
   var request = $.ajax({
@@ -232,9 +236,23 @@ function load_comments(posted_id){
     //global.cookie_setting.set("com_hurl",postobj.author.host);
     set_com_header(postobj.title,postobj.username,postobj.content);
     set_com_image(posted_id, postobj);
-    $.each(postobj.comments, function (i, value) { 
-          set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,'others',"no");   
-         });
+;
+
+  $.each(postobj.comments, function (i, value) { 
+           if(postobj.comments[i].author.picture != null){
+                     set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,postobj.comments[i].author.picture,"comment","yes");
+           } else {
+	             set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,"comment","yes");
+	   }
+
+          });
+          inner_request.fail(function (callback) {
+          });
+
+
+  
+        
+       
     });
  request.fail(function (callback) {
     console.log(callback);
