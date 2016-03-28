@@ -246,8 +246,7 @@ function load_comments(posted_id){
 	   }
 
           });
-          inner_request.fail(function (callback) {
-          });
+   
 
 
   
