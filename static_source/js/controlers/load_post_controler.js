@@ -217,6 +217,7 @@ function load_other_posts(other){
     });
 }
 function load_comments(posted_id){
+      $('#comment_page_list_view').empty();
   var url = "api/posts/"+posted_id+"/";
   var request = $.ajax({
           method: "GET",
@@ -230,6 +231,7 @@ function load_comments(posted_id){
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
     set_com_header(postobj.title,postobj.username,postobj.content);
+    set_com_image(posted_id, postobj);
     $.each(postobj.comments, function (i, value) { 
           set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,'others',"no");   
          });
@@ -245,6 +247,27 @@ function set_com_header(title, author, content){
     $('#combody').html(content);
 }
     
+function set_com_image(post_id, postobj){
+   var request = $.ajax({
+                  method: "GET",
+                  url: "api/images/",
+            });
+ request.done(function (callback) {
+     var cont = 0;
+      $.each(callback.images, function (j, value) { 
+
+           if(callback.images[j].parent_post == postobj.url){
+	             cont = 1;
+                     $('#post_picture').attr("src", callback.images[j].url);
+	             $('#post_picture').attr("width", "50%");
+	             $('#post_picture').attr("left","25%");
+            }});
+     if(cont == 0){
+	 $('#compicdiv').hide();
+	 }
+});
+                
+}
   
 
 

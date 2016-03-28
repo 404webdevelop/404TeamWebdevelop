@@ -31,6 +31,10 @@ td {
  
 }
 
+.img-responsive{
+    width:50%;
+    left:25%;
+}
 
 .vertical-center {
   min-height: 10%;  /* Fallback for browsers do NOT support vh unit */
