@@ -96,7 +96,7 @@ function button_click(){
 
   $('.try').delegate('li', 'click', function () {
         var posted_id = $(this).attr("value");
-    
+        global.cookie_setting.set("post_id", posted_id)
         global.load_posts.comment_load(posted_id);
         location.hash ='posted/'+posted_id+'/';
         $("#home").hide();
@@ -122,6 +122,16 @@ function button_click(){
     $("#search_result_fild").hide();
   });
 
+  $('#list_combox_btn').click( function () {
+         console.log($('#list_combox_btn').text());
+         global.update_and_post.post_comment();
+         $('#comment_page_list_view').empty()
+      setTimeout(function(){
+         global.load_posts.comment_load(global.cookie_setting.get("post_id"));
+
+             },100);
+
+   });
 
   $('#profile_btn').click(function(){
     console.log("sdffs---------");

@@ -54,6 +54,7 @@ function postComment(){
     request.fail(function (callback) {
       console.log(callback);
     });
+    
 }
 
 global.update_and_post= {

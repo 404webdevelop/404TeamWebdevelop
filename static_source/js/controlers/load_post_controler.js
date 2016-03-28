@@ -225,6 +225,7 @@ function load_comments(posted_id){
   var no_iamge="/static/image/no_image.jpg";
   request.done(function (callback) {
     var postobj = callback;
+      set_com_header(postobj.title,postobj.username,postobj.content);
       $.each(postobj.comments, function (i, value) { 
                      set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,'others',"no");   
            });});
@@ -232,6 +233,11 @@ function load_comments(posted_id){
     console.log(callback);
     });
 };
+
+function set_com_header(title, author, content){
+    $('#comtitle').append(title + " - by " + author);
+    $('#combody').append(content);
+}
     
   
 
