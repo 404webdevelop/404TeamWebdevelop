@@ -62,7 +62,7 @@ class FollowViewSet(viewsets.ModelViewSet):
         current_domain = request.META['HTTP_HOST']
 
 
-        if remote_host is not None:
+        if len(remote_host) > 1:
 
             # remote
             remote_id = request.data['remote_author_id']
@@ -144,7 +144,7 @@ class FollowViewSet(viewsets.ModelViewSet):
         #get all local author followers
         followed = Follows.objects.getLocalFollowers(self.kwargs['pk'])
         serializer = FollowSerializer(followed, many=True, context={'request': request})
-        print serializer.data
+
         print 'local followed length: ' + str(len(followed))
 
         #get all remote author followers
@@ -174,7 +174,7 @@ class FollowViewSet(viewsets.ModelViewSet):
                 for j in range(len(remote_follower)): 
                     if remote_followed[i].follower.username == remote_follower[j].followed.username:
                         friend_list.append(remote_followed[i].follower.id)
-        print friend_list
+
         return Response(OrderedDict([
             ('query', 'friends'),
             ('author', self.kwargs['pk']),
@@ -225,19 +225,20 @@ class FriendlistViewSet(APIView):
     authentication_classes = [BasicAuthentication, ]
     permission_classes = (IsAuthenticated,)
 
+
     def get(self, request, author_id):
         #get all local author followings followers
         follower = Follows.objects.getLocalFollowings(author_id)
-        print 'local follower length: ' + str(len(follower))
+        #print 'local follower length: ' + str(len(follower))
         followed = Follows.objects.getLocalFollowers(author_id)
-        print 'local followed length: ' + str(len(followed))
+        #print 'local followed length: ' + str(len(followed))
 
 
         #get all author remote followers followeds
         remote_followed = Follows.objects.getRemoteFollowers(author_id)     
-        print 'remote followed length: ' + str(len(remote_followed))
+        #print 'remote followed length: ' + str(len(remote_followed))
         remote_follower = Follows.objects.getRemoteFollowings(author_id)
-        print 'remote follower length: ' + str(len(remote_follower))
+        #print 'remote follower length: ' + str(len(remote_follower))
 
         friend_list = list()
 
@@ -258,13 +259,49 @@ class FriendlistViewSet(APIView):
                 for j in range(len(remote_follower)): 
                     if remote_followed[i].follower.username == remote_follower[j].followed.username:
                         friend_list.append(remote_followed[i].follower.id)
-        print friend_list
+
         return Response(OrderedDict([
             ('query', 'friends'),
             ('author', author_id),
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+
+def allFriend(author_id):
+    #get all local author followings followers
+    follower = Follows.objects.getLocalFollowings(author_id)
+    #print 'local follower length: ' + str(len(follower))
+    followed = Follows.objects.getLocalFollowers(author_id)
+    #print 'local followed length: ' + str(len(followed))
+
+
+    #get all author remote followers followeds
+    remote_followed = Follows.objects.getRemoteFollowers(author_id)     
+    #print 'remote followed length: ' + str(len(remote_followed))
+    remote_follower = Follows.objects.getRemoteFollowings(author_id)
+    #print 'remote follower length: ' + str(len(remote_follower))
+
+    friend_list = list()
+
+    #local author is friend with another local author
+    if (len(followed) != 0 and len(follower) != 0):
+        for i in range(len(followed)):
+            for j in range(len(follower)):
+                try:
+                    if (followed[i].follower.username == follower[j].followed.username):
+                        friend_list.append(str(followed[i].follower.id))
+                except:
+                    if (followed[i].remote_author_id == follower[j].remote_author_id):
+                        friend_list.append(str(followed[i].remote_author_id))
+
+    #remote author is being friend with a local author
+    if (len(remote_followed) != 0 and len(remote_follower) != 0):
+        for i in range(len(remote_followed)):
+            for j in range(len(remote_follower)): 
+                if remote_followed[i].follower.username == remote_follower[j].followed.username:
+                    friend_list.append(str(remote_followed[i].follower.id))
+
+    return friend_list
 
 
 class FriendofFriendAPIView(APIView):
@@ -273,10 +310,17 @@ class FriendofFriendAPIView(APIView):
         friend_list = list()
         friend_of_friend_list= list()
         # get this author firend list.
-        friend_list = getAllFriend(author_id)
+        friend_list = allFriend(author_id)
+
         if len(friend_list) > 0:
             for i in range(len(friend_list)):
-                friend_of_friend_list.append(getAllFriend(friend_list[i]))
+                pendingID = friend_list[i]
+                pendinglist = allFriend(pendingID)
+                for j in pendinglist:
+                    friend_of_friend_list.append(j)
+        friend_of_friend_list.remove(author_id)
+        print author_id
+        print friend_of_friend_list
         return Response(OrderedDict([
             ('query', 'friend of friend'),
             ('author', author_id),
@@ -284,40 +328,8 @@ class FriendofFriendAPIView(APIView):
             ('authors', friend_of_friend_list)
             ]))
 
-    def getAllFriend(author_id):
-        #get all local author followings followers
-        follower = Follows.objects.getLocalFollowings(author_id)
-        print 'local follower length: ' + str(len(follower))
-        followed = Follows.objects.getLocalFollowers(author_id)
-        print 'local followed length: ' + str(len(followed))
 
 
-        #get all author remote followers followeds
-        remote_followed = Follows.objects.getRemoteFollowers(author_id)     
-        print 'remote followed length: ' + str(len(remote_followed))
-        remote_follower = Follows.objects.getRemoteFollowings(author_id)
-        print 'remote follower length: ' + str(len(remote_follower))
-
-        friend_list = list()
-
-        #local author is friend with another local author
-        if (len(followed) != 0 and len(follower) != 0):
-            for i in range(len(followed)):
-                for j in range(len(follower)):
-                    try:
-                        if (followed[i].follower.username == follower[j].followed.username):
-                            friend_list.append(followed[i].follower.id)
-                    except:
-                        if (followed[i].remote_author_id == follower[j].remote_author_id):
-                            friend_list.append(followed[i].remote_author_id)
-
-        #remote author is being friend with a local author
-        if (len(remote_followed) != 0 and len(remote_follower) != 0):
-            for i in range(len(remote_followed)):
-                for j in range(len(remote_follower)): 
-                    if remote_followed[i].follower.username == remote_follower[j].followed.username:
-                        friend_list.append(remote_followed[i].follower.id)
-        return friend_list
 
 class FriendRequestAPIView(APIView):
     """
