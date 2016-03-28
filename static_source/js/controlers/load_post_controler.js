@@ -222,23 +222,27 @@ function load_comments(posted_id){
           method: "GET",
           url: url,
         });
-  var no_iamge="/static/image/no_image.jpg";
+  var no_iamge="/static/image/noiamge.gif";
   request.done(function (callback) {
+
     var postobj = callback;
-       global.cookie_setting.set("com_lhost", postobj.local_author);
-      global.cookie_setting.set("com_hurl",postobj.author.host);
-      set_com_header(postobj.title,postobj.username,postobj.content);
-      $.each(postobj.comments, function (i, value) { 
-                     set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,'others',"no");   
-           });});
+    console.log(postobj);
+    //global.cookie_setting.set("com_lhost", postobj.local_author);
+    //global.cookie_setting.set("com_hurl",postobj.author.host);
+    set_com_header(postobj.title,postobj.username,postobj.content);
+    $.each(postobj.comments, function (i, value) { 
+          set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,'others',"no");   
+         });
+    });
  request.fail(function (callback) {
     console.log(callback);
     });
 };
 
 function set_com_header(title, author, content){
-    $('#comtitle').append(title + " - by " + author);
-    $('#combody').append(content);
+    $('#comment_big_title').text(title);
+    $('#comtitle').html( "Posted by " + author);
+    $('#combody').html(content);
 }
     
   
