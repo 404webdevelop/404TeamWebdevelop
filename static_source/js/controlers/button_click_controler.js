@@ -124,7 +124,10 @@ function button_click(){
 
   $('#list_combox_btn').click( function () {
          console.log($('#list_combox_btn').text());
-         global.update_and_post.post_comment();
+         var lhost =  global.cookie_setting.get("com_lhost");
+         var host =  global.cookie_setting.get("com_hurl");
+  
+         global.update_and_post.post_comment(lhost, host);
          $('#comment_page_list_view').empty()
       setTimeout(function(){
          global.load_posts.comment_load(global.cookie_setting.get("post_id"));

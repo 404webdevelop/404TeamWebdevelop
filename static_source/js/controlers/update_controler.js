@@ -28,10 +28,15 @@ function patchProfile(firstName, lastName,email,git,callback) {
     });
 }
 
-function postComment(){
+function postComment(lhost, host){
     console.log("Comment?");
 
-    var url = 'api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
+    var url = '';
+    if(lhost == true){
+	url = 'api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
+    } else {
+	url = host + '/api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
+  }
     var combody = $("#Comment_content").val();
  
     var user = global.cookie_setting.get("username");
@@ -54,6 +59,7 @@ function postComment(){
     request.fail(function (callback) {
       console.log(callback);
     });
+    
 }
 
 global.update_and_post= {
