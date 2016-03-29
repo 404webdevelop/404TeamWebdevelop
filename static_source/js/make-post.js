@@ -108,12 +108,18 @@ function prepareImage(formData, jqForm, options) {
 
 function imageSuccess(res, statusText, xhr, $form) {
   model.images.push(res);
-  var markdown = '\n![cotent_description](' + res.url + ')\n';
-  view.postCotnent.val(view.postCotnent.val() + markdown);
-  view.imageForm.resetForm();
-  updatePost(function (data) {
-    showMsg('Successfully uploaded the image and udpate post!');
-  });
+  if (model.post.contentType === "text/x-markdown") {
+    var markdown = '\n![cotent_description](' + res.url + ')\n';
+    view.postCotnent.val(view.postCotnent.val() + markdown);
+    view.imageForm.resetForm();
+    updatePost(function (data) {
+      showMsg('Successfully uploaded the image and udpate post!');
+    });
+  } else {
+    updatePost(function (data) {
+      showMsg('Your image is uploaded, but in plain text mode, your image may not link to your post');
+    });
+  }
 }
 
 function postSuccess(res, statusText, xhr, $form) {
