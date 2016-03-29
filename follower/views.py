@@ -50,20 +50,25 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         me = Author.objects.get(username=unicode(request.user))
-        followed = request.data["followed"]
+
+
 
         try:
-            host = request.data["host"]
+            followed = request.data["followed"]
+            remote_host = request.data['remote_author_host']
         except:
-            host = None
+            remote_host = None
 
         current_domain = request.META['HTTP_HOST']
-        print request.META['HTTP_HOST']
 
-        if host is not None:
+
+        if len(remote_host) > 1:
 
             # remote
-            followed_url = "http://" + host + '/api/author/' + followed 
+            remote_id = request.data['remote_author_id']
+            remote_name = request.data['remote_author_name']
+            remote_url = request.data['remote_author_url']
+            remote_url = "http://" + remote_host + '/api/author/' + followed 
             reqData = {
                 "query":"friendrequest",
                 "author": {
@@ -72,56 +77,104 @@ class FollowViewSet(viewsets.ModelViewSet):
                     "displayName": me.username
                 },
                 "friend": {
-                    "id": followed,
-                    "host": host,
-                    "displayName": request.data['name'],
-                    "url":followed_url
+                    "id": remote_id,
+                    "host": remote_host,
+                    "displayName": remote_name,
+                    "url":remote_url
                 }
             }
             headers = {'content-type': 'application/json'}
-            url = 'http://'+host+'/api/friendrequest'
+            url = 'http://'+remote_host+'/api/friendrequest'
             data = json.dumps(reqData)
 
-            response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
-            return Response(response)
+            #response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
+            # make same post to local server
+            follow = Follows.objects.create(follower=me)
+            follow.remote_author_host = remote_host
+            follow.remote_author_name = remote_name
+            follow.remote_author_id   = remote_id
+            follow.remote_author_url  = remote_url
+            follow.save()
+            return Response("response")
         else:
             # local
             following = Author.objects.get(id=request.data["followed"].split("/")[-2])
             follow = Follows.objects.follow(following, me)
             follow_serializer = FollowSerializer(follow, context={'request': request})
-            print follow_serializer.data
+
             return Response(follow_serializer.data)
 
 
     @detail_route(methods=["GET"])
-    def followers(self, request, **kwargs):
-        queryset = Follows.objects.getFollowers(self.kwargs['pk'])
+    def localAuthorsFollowers(self, request, **kwargs):
+        queryset = Follows.objects.getLocalFollowers(self.kwargs['pk'])
+        localSerializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(localSerializer.data)
+
+
+    @detail_route(methods=["GET"])
+    def remoteauthorsFollowers(self, request, **kwargs):
+        queryset = Follows.objects.getRemoteFollowers(self.kwargs['pk'])
+        remoteSerializer = FollowSerializer(queryset, many=True, context={'request': request})
+        return Response(remoteSerializer.data)
+
+
+    @detail_route(methods=["GET"])
+    def localAuthorFollowings(self, request, **kwargs):
+        queryset = Follows.objects.getLocalFollowing(self.kwargs['pk'])
+
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 
     @detail_route(methods=["GET"])
-    def followings(self, request, **kwargs):
-        queryset = Follows.objects.getFollowing(self.kwargs['pk'])
-        print kwargs['pk']
+    def remoteAuthorFollowings(self, request, **kwargs):
+        queryset = Follows.objects.getRemoteFollowing(self.kwargs['pk'])
+
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 
     @detail_route(methods=["GET"])
     def friends(self, request, **kwargs):
-        #get all author follower
-        follower = Follows.objects.getFollowing(self.kwargs['pk'])
-        #get all author follower
-        followed = Follows.objects.getFollowers(self.kwargs['pk'])
-        print followed[0]
+
+        #get all local author followings
+        follower = Follows.objects.getLocalFollowings(self.kwargs['pk'])
+        print 'local follower length: ' + str(len(follower))
+        #get all local author followers
+        followed = Follows.objects.getLocalFollowers(self.kwargs['pk'])
+        serializer = FollowSerializer(followed, many=True, context={'request': request})
+
+        print 'local followed length: ' + str(len(followed))
+
+        #get all remote author followers
+        remote_followed = Follows.objects.getRemoteFollowers(self.kwargs['pk'])     
+        print 'remote followed length: ' + str(len(remote_followed))
+
+        #get all remote author followeds
+        remote_follower = Follows.objects.getRemoteFollowings(self.kwargs['pk'])
+        print 'remote follower length: ' + str(len(remote_follower))
+
         friend_list = list()
 
-        for i in range(len(followed)):
-            for j in range(len(follower)):  
-                if followed[i].follower.username == follower[j].followed.username:
-                    friend_list.append(followed[i].follower.id)
-        print friend_list
+        #local author is friend with another local author
+        if (len(followed) != 0 and len(follower) != 0):
+            for i in range(len(followed)):
+                for j in range(len(follower)):
+                    try:
+                        if (followed[i].follower.username == follower[j].followed.username):
+                            friend_list.append(followed[i].follower.id)
+                    except:
+                        if (followed[i].remote_author_id == follower[j].remote_author_id):
+                            friend_list.append(followed[i].remote_author_id)
+
+        #remote author is being friend with a local author
+        if (len(remote_followed) != 0 and len(remote_follower) != 0):
+            for i in range(len(remote_followed)):
+                for j in range(len(remote_follower)): 
+                    if remote_followed[i].follower.username == remote_follower[j].followed.username:
+                        friend_list.append(remote_followed[i].follower.id)
+
         return Response(OrderedDict([
             ('query', 'friends'),
             ('author', self.kwargs['pk']),
@@ -131,7 +184,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
 
-class FriendViewSet(viewsets.ModelViewSet):
+class FriendViewSet(APIView):
     """
     API endpoint that checks two users relation
 
@@ -139,20 +192,15 @@ class FriendViewSet(viewsets.ModelViewSet):
       - `/friend/{author_id_1}/{author_id_2}}`
         - GET: result of two users are friends
     """
-    queryset = Follows.objects.all()
-    serializer_class = FollowSerializer
-
-    def list(self, request, author_id_1, author_id_2):
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, author_id_1, author_id_2):
         #set default result is false
         result = False
-        user_1 = Author.objects.get(pk = author_id_1)
-        user_2 = Author.objects.get(pk = author_id_2)
-
 
         #check if two user are friends
-        result_case_one = Follows.objects.isFollowing(user_1, user_2)
-        result_case_two = Follows.objects.isFollowing(user_2, user_1)
-
+        result_case_one = Follows.objects.isFollowing(author_id_1, author_id_2)
+        result_case_two = Follows.objects.isFollowing(author_id_2, author_id_1)
         authors = [author_id_1, author_id_2]
         if result_case_one and result_case_two:
             result = True
@@ -166,7 +214,7 @@ class FriendViewSet(viewsets.ModelViewSet):
             ]))
 
 
-class FriendlistViewSet(viewsets.ModelViewSet):
+class FriendlistViewSet(APIView):
     """
     API endpoint that returns a list of friends.
 
@@ -174,42 +222,145 @@ class FriendlistViewSet(viewsets.ModelViewSet):
       - `/friends/{author_id}`
         - GET: result of two users are friends
     """
-    queryset = Follows.objects.all()
-    serializer_class = FollowSerializer
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
 
-    def list(self, request, author_id):
-        #get all author follower
-        follower = Follows.objects.getFollowing(author_id)
-        #get all author follower
-        followed = Follows.objects.getFollowers(author_id)
-        print followed[0]
+
+    def get(self, request, author_id):
+        #get all local author followings followers
+        follower = Follows.objects.getLocalFollowings(author_id)
+        #print 'local follower length: ' + str(len(follower))
+        followed = Follows.objects.getLocalFollowers(author_id)
+        #print 'local followed length: ' + str(len(followed))
+
+
+        #get all author remote followers followeds
+        remote_followed = Follows.objects.getRemoteFollowers(author_id)     
+        #print 'remote followed length: ' + str(len(remote_followed))
+        remote_follower = Follows.objects.getRemoteFollowings(author_id)
+        #print 'remote follower length: ' + str(len(remote_follower))
+
         friend_list = list()
 
-        for i in range(len(followed)):
-            for j in range(len(follower)):  
-                if followed[i].follower.username == follower[j].followed.username:
-                    friend_list.append(followed[i].follower.id)
-        print friend_list
+        #local author is friend with another local author
+        if (len(followed) != 0 and len(follower) != 0):
+            for i in range(len(followed)):
+                for j in range(len(follower)):
+                    try:
+                        if (followed[i].follower.username == follower[j].followed.username):
+                            friend_list.append(followed[i].follower.id)
+                    except:
+                        if (followed[i].remote_author_id == follower[j].remote_author_id):
+                            friend_list.append(followed[i].remote_author_id)
+
+        #remote author is being friend with a local author
+        if (len(remote_followed) != 0 and len(remote_follower) != 0):
+            for i in range(len(remote_followed)):
+                for j in range(len(remote_follower)): 
+                    if remote_followed[i].follower.username == remote_follower[j].followed.username:
+                        friend_list.append(remote_followed[i].follower.id)
+
         return Response(OrderedDict([
             ('query', 'friends'),
             ('author', author_id),
             # Array of Author UUIDs who are friends
             ('authors', friend_list)
             ]))
+    def post(self, request, author_id):
+        pending_list = list()
+        result_list = list()
+        pending_list = request.data['authors']
+        for id in pending_list:
+            print 'friend: '
+            print allFriend(id)
+            checking_list = allFriend(id)
+            if author_id in checking_list:
+                result_list.append(id)
+        return Response(OrderedDict([
+            ('query', 'friends'),
+            ('author', author_id),
+            # Array of Author UUIDs who are friends
+            ('authors', result_list)
+            ]))
+
+def allFriend(author_id):
+    #get all local author followings followers
+    follower = Follows.objects.getLocalFollowings(author_id)
+    followed = Follows.objects.getLocalFollowers(author_id)
+
+
+    #get all author remote followers followeds
+    remote_followed = Follows.objects.getRemoteFollowers(author_id)
+    remote_follower = Follows.objects.getRemoteFollowings(author_id)
+
+    friend_list = list()
+
+    #local author is friend with another local author
+    if (len(followed) != 0 and len(follower) != 0):
+        for i in range(len(followed)):
+            for j in range(len(follower)):
+                try:
+                    if (followed[i].follower.username == follower[j].followed.username):
+                        friend_list.append(str(followed[i].follower.id))
+                except:
+                    if (followed[i].remote_author_id == follower[j].remote_author_id):
+                        friend_list.append(str(followed[i].remote_author_id))
+
+    #remote author is being friend with a local author
+    if (len(remote_followed) != 0 and len(remote_follower) != 0):
+        for i in range(len(remote_followed)):
+            for j in range(len(remote_follower)): 
+                if remote_followed[i].follower.username == remote_follower[j].followed.username:
+                    friend_list.append(str(remote_followed[i].follower.id))
+
+    return friend_list
+
+
+class FriendofFriendAPIView(APIView):
+
+    def get(self, request, author_id):
+        friend_list = list()
+        friend_of_friend_list= list()
+        # get this author firend list.
+        friend_list = allFriend(author_id)
+        # based on the author friend list, finding all friend of friend list
+        if len(friend_list) > 0:
+            for i in range(len(friend_list)):
+                pendingID = friend_list[i]
+                pendinglist = allFriend(pendingID)
+                for j in pendinglist:
+                    friend_of_friend_list.append(j)
+        friend_of_friend_list.remove(author_id)
+        return Response(OrderedDict([
+            ('query', 'friend of friend'),
+            ('author', author_id),
+            # Array of Author UUIDs who are friends
+            ('authors', friend_of_friend_list)
+            ]))
+
+
+
 
 class FriendRequestAPIView(APIView):
+    """
+    API endpoint that create a friend request to the target
 
+    Usage: \n
+      - `/friendrequest/`
+        - POST: post a friend request
+
+    """
+    authentication_classes = [BasicAuthentication, ]
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         author_id = request.data['author']['id']
-        print author_id
         friend_id = request.data['friend']['id']
-        print friend_id
 
         if friend_id is not None:
             try:
                 friend = Author.objects.get(id=friend_id)
-                print friend
+
             except:
                 return Response({
                     'err': 'user not exist'
@@ -223,11 +374,15 @@ class FriendRequestAPIView(APIView):
                 })
             except:
                 author = request.data['author']
+                remote_url = author['host'] + author['id']
                 follow = Follows.objects.create(followed=friend)
+                
                 follow.remote_author_host = author['host']
                 follow.remote_author_name = author['displayName']
+                follow.remote_author_id   = author_id
+                follow.remote_author_url  = remote_url
+
                 follow.save()
-                print follow.remote_author_name
                 return Response({
                     'success': True
                 })

@@ -3,18 +3,24 @@
 <head>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/styles/post.css">
 </head>
 <body>
 <form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
   <div>
-      <input name="title" value="title1" type="text">
+    <input id="post-title" name="title" value="title1" type="text">
   </div>
   <div>
-      <textarea name="content" value="content1" type="text"></textarea>
+    <select id="post-type" name="contentType">
+      <option value="text/plain">Plain Text</option>
+      <option value="text/x-markdown" selected="">Markdown</option>
+    </select>
   </div>
   <div>
-    <select  name="privacy_level">
-      <option value="">--------</option>
+      <textarea id="post-content" name="content" value="content1" type="text"></textarea>
+  </div>
+  <div>
+    <select id="post-privacy" name="privacy_level">
       <option value="pub" selected="">Public</option>
       <option value="me">Private to me</option>
       <option value="friends">Friends only</option>
@@ -23,19 +29,21 @@
   </div>
   <div>
     <label>Privacy host only</label>
-    <input name="privacy_host_only" value="true" type="checkbox">
+    <input id="post-local" name="privacy_host_only" value="true" type="checkbox">
   </div>
   <div>
-    <button class="btn btn-primary">POST</button>
+    <button id="post-btn" class="btn btn-primary">Save</button>
+    <span id="post-tips">Save the post, then you can upload images</span>
+    <button id="update-btn" type="button" class="btn btn-default">Update</button>
   </div>
 </form>
 
-<div> ----------------------------------------------------------------------------- </div>
+<div id="msg-feedback-displayer"></div>
 
 <form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
   <div>
     <select class="form-control" name="parent_post" hidden>
-      <option value="http://localhost:8000/api/posts/5742ac1c-d3ff-41e2-a609-d72398a7afb8/">Post object</option>
+      <option value="">Post object</option>
     </select>
   </div>
 
@@ -48,12 +56,12 @@
     </select>
   </div>
   <div>
-    <input name="image_data" type="file">
+    <input id="image-file" name="image_data" type="file">
   </div>
-  <!-- <div>
-    <button class="btn btn-primary">Image</button>
-  </div> -->
+  <button>Add an Image</button>
 </form>
+<script type="text/javascript" src="/static/js/libs/form.js"></script>
+<script type="text/javascript" src="/static/js/libs/validate.js"></script>
 <script type="text/javascript" src="/static/js/make-post.js"></script>
 </body>
 </html>

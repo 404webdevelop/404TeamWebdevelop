@@ -37,7 +37,7 @@ class MyRouter(routers.DefaultRouter):
 
             ## [Friend]() \n
             - internal use only for project part 2
-            - list, delete: `/friend/author_id`
+            - list: `/friend/author_id`
             - list: `/friends/author_id/author_id`
             - post: `/friendrequest/`
             - post example:
@@ -58,12 +58,14 @@ class MyRouter(routers.DefaultRouter):
                         }
                 \t}
 
+
             ## **Interoperating?**
             - For `secret-inlet-51780.herokuapp.com/api`, please login with the following credentials:
                 - Username: `remoteuser`
                 - Password: `abc`
             - You should login with these credentials while making requests from your app and while browsing the api in the browser
             - Logging in as `remoteuser` ensures that you won't see any stuff that's not from our server (ie. only local posts)
+
 
             _Edit this documentation in `social_dist/api.py`_
 
@@ -96,6 +98,5 @@ router.register(r'remoteauthor/(?P<remote_url>.+)', RemoteAuthorViewSet, base_na
 # Friend views TODO
 router.register(r'follow', FollowViewSet)
 
-router.register(r'friend/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet)
 
-router.register(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet)
+

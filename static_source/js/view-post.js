@@ -31,11 +31,11 @@ function fetchPost(postUrl) {
         html     = null,
         comments = data.comments;
 
-    if (contentType === 'text/plain') {
-
+    if (type === 'text/plain') {
+      html = content;
     } 
-    else if (contentType === 'text/x-markdown') {
-
+    else if (type === 'text/x-markdown') {
+      html = converter.makeHtml(content);
     }
 
     $('#post-title').html(title);
@@ -74,7 +74,7 @@ function setup() {
   });
 
   $('#add-url-button').click(function () {
-    location.hash += 'hello_world/';
+    location.hash += 'posted/dfsjf-dfsfksdjf-dfwe4234/';
   });
 }
 
