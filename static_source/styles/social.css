@@ -36,6 +36,16 @@ td {
     left:25%;
 }
 
+#post_icon{
+	position:fixed;
+    bottom:5px;
+    right:10px;
+
+}
+#post_icon_image:hover {
+    background-color: black;
+}
+
 .vertical-center {
   min-height: 10%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 10vh; /* These two lines are counted as one :-)       */
