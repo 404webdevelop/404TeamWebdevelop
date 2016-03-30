@@ -3,63 +3,79 @@
 <head>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/static/styles/post.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/js/fileinput.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.1/css/fileinput.css">
+  <!-- Latest compiled and minified CSS -->
+
 </head>
 <body>
-<form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
-  <div>
-    <input id="post-title" name="title" value="title1" type="text">
-  </div>
-  <div>
-    <select id="post-type" name="contentType">
-      <option value="text/plain">Plain Text</option>
-      <option value="text/x-markdown" selected="">Markdown</option>
-    </select>
-  </div>
-  <div>
-      <textarea id="post-content" name="content" value="content1" type="text"></textarea>
-  </div>
-  <div>
-    <select id="post-privacy" name="privacy_level">
-      <option value="pub" selected="">Public</option>
-      <option value="me">Private to me</option>
-      <option value="friends">Friends only</option>
-      <option value="fof">Friends of friends</option>
-    </select>
-  </div>
-  <div>
-    <label>Privacy host only</label>
-    <input id="post-local" name="privacy_host_only" value="true" type="checkbox">
-  </div>
-  <div>
-    <button id="post-btn" class="btn btn-primary">Save</button>
-    <span id="post-tips">Save the post, then you can upload images</span>
-    <button id="update-btn" type="button" class="btn btn-default">Update</button>
-  </div>
-</form>
+<br> 
+<div class="panel panel-primary">  
+  <div class="panel-heading">Post Object</div>
+    <div class="panel-body">
+      <form id="post-form" action="/api/posts/" method="POST" enctype="multipart/form-data">
+        <div>
+          <strong>Title:</strong> <input id="post-title" class="form-control" name="title" placeholder="enter the title" type="text">
+        </div>
+        <div>
+          <strong>Pick a content Type:</strong>
+          <select class="form-control"  id="post-type" name="contentType">
+            <option value="text/plain">Plain Text</option>
+            <option value="text/x-markdown" selected="">Markdown</option>
+          </select>
+        </div>
+        <div>
+          <strong>Content:</strong>
+            <textarea id="post-content" class="form-control" name="content" value="content1" type="text"></textarea>
+        </div>
+        <div>
+          <strong>Select privacy:</strong>
+          <select  class="form-control"  id="post-privacy" name="privacy_level">
+            <option value="pub" selected="">Public</option>
+            <option value="me">Private to me</option>
+            <option value="friends">Friends only</option>
+            <option value="fof">Friends of friends</option>
+          </select>
+        </div>
+        <div>
+          <label>Privacy host only</label>
+          <input id="post-local" name="privacy_host_only" value="true" type="checkbox">
+        </div>
+        <div>
+          <button id="post-btn" class="btn btn-primary">Save</button>
+          <span id="post-tips">Save the post, then you can upload images</span>
+          <button id="update-btn" type="button" class="btn btn-default">Update</button>
+        </div>
+      </form>
 
-<div id="msg-feedback-displayer"></div>
+      <div id="msg-feedback-displayer"></div>
 
-<form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
-  <div>
-    <select class="form-control" name="parent_post" hidden>
-      <option value="">Post object</option>
-    </select>
-  </div>
+      <form id="image-form" action="/api/images/" method="POST" enctype="multipart/form-data">
+        <div>
+          <select class="form-control" id="post_select" name="parent_post" hidden>
+            <option value="">Post object</option>
+          </select>
+        </div>
 
-  <div>
-    <select class="form-control" name="file_type">
-      <option value="jpeg">JPG/JPEG</option>
-      <option value="png">PNG</option>
-      <option value="gif">GIF</option>
-      <option value="bmp">BMP</option>
-    </select>
-  </div>
-  <div>
-    <input id="image-file" name="image_data" type="file">
-  </div>
-  <button>Add an Image</button>
-</form>
+        <div>
+          <strong>Select Image type:</strong>
+          <select  class="form-control"  name="file_type">
+            <option value="jpeg">JPG/JPEG</option>
+            <option value="png">PNG</option>
+            <option value="gif">GIF</option>
+            <option value="bmp">BMP</option>
+          </select>
+        </div>
+        <div>
+          <input id="image-file" class="file" name="image_data" type="file">
+        </div>
+        <button class="btn btn-primary">Add an Image</button>
+      </form>
+      <button class="btn btn-info" id="check_back" >Check Main Page</button>
+    </div>
+</div>
 <script type="text/javascript" src="/static/js/libs/form.js"></script>
 <script type="text/javascript" src="/static/js/libs/validate.js"></script>
 <script type="text/javascript" src="/static/js/make-post.js"></script>

@@ -83,7 +83,9 @@ function getpost(data,page,cookie){
           url: url,
     });
   request.done(function (callback) {
+
       var postobj = callback;
+
       var github = global.cookie_setting.get("github");
       if(page == "home"){
         $.each(postobj.posts, function (i, value) { 

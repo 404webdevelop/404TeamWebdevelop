@@ -78,6 +78,14 @@ function updateView() {
     bindModel();
   }
 }
+function back_btn(){
+  $("#check_back").click(function(){
+    setTimeout(function(){
+        window.location.href = "/";
+      },0
+        );  
+  });
+}
 
 function bindModel() {
   if (model.post === undefined) {
@@ -158,6 +166,8 @@ function updatePost(callback) {
 
 init();
 $(document).ready(function () {
+  $("#post_select").hide();
+  back_btn();
   setup();
 });
 
