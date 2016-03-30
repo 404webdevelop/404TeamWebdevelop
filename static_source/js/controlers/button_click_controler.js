@@ -109,7 +109,10 @@ function button_click(){
         $("#comment").show(800);
         $("#search_result_fild").hide();   
      });    
-
+  $('#delpostbutton').click(function(){
+      console.log("yeah");
+      global.load_posts.post_delete(global.cookie_setting.get("post_id"));
+});
   $('#friends_page').click(function(){
     $("#home").hide();
     $("#posted").hide();

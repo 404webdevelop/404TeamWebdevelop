@@ -222,6 +222,8 @@ function load_other_posts(other){
     });
 }
 function load_comments(posted_id){
+    $('#delpostbutton').hide();
+   
   var no_iamge="/static/image/no_image.jpg";
       $('#comment_page_list_view').empty();
   var url = "api/posts/"+posted_id+"/";
@@ -231,8 +233,11 @@ function load_comments(posted_id){
         });
   var no_iamge="/static/image/noiamge.gif";
   request.done(function (callback) {
-
+      
     var postobj = callback;
+    if(postobj.username == global.cookie_setting.get("username")){
+	    $('#delpostbutton').show();
+    }
     console.log(postobj);
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
@@ -311,7 +316,22 @@ function setother_header(url){
 };
 
 
-
+function deletepost(posted_id){
+    var url = "api/posts/"+posted_id+"/";
+    var request = $.ajax({
+          method: "DELETE",
+          url: url,
+        });
+ request.done(function (callback) {
+     setTimeout(function(){
+       $("#comment").hide();
+         $("#home").show(800);
+	} );
+});
+request.fail(function (callback) {
+    console.log(callback);
+    });
+}
 
 function makedate(date){
 	date = date.replace("T"," ");
@@ -322,6 +342,7 @@ function makedate(date){
 
 global.load_posts= {
     posts_load:getpost,
+    post_delete:deletepost,
     posts_load_other:load_other_posts,
     set_other:setother_header,
     comment_load:load_comments,
