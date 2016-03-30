@@ -106,14 +106,14 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
     @detail_route(methods=["GET"])
-    def localAuthorsFollowers(self, request, **kwargs):
+    def localAuthorFollowers(self, request, **kwargs):
         queryset = Follows.objects.getLocalFollowers(self.kwargs['pk'])
         localSerializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(localSerializer.data)
 
 
     @detail_route(methods=["GET"])
-    def remoteauthorsFollowers(self, request, **kwargs):
+    def remoteauthorFollowers(self, request, **kwargs):
         queryset = Follows.objects.getRemoteFollowers(self.kwargs['pk'])
         remoteSerializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(remoteSerializer.data)
@@ -121,7 +121,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def localAuthorFollowings(self, request, **kwargs):
-        queryset = Follows.objects.getLocalFollowing(self.kwargs['pk'])
+        queryset = Follows.objects.getLocalFollowings(self.kwargs['pk'])
 
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
@@ -129,7 +129,7 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=["GET"])
     def remoteAuthorFollowings(self, request, **kwargs):
-        queryset = Follows.objects.getRemoteFollowing(self.kwargs['pk'])
+        queryset = Follows.objects.getRemoteFollowings(self.kwargs['pk'])
 
         serializer = FollowSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)

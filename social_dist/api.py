@@ -30,17 +30,19 @@ class MyRouter(routers.DefaultRouter):
             - create, list, edit, delete: [`/author`](/api/author)
 
             ## [Follow](/api/follow) \n
-            - Internal use only 
+            - Internal use only, DO NOT make any remote request to these api
             - create, list, delete: [`/follow`](/api/follow)
             - get: get current author's following list `/api/follow/author_id/followings`
             - get: get current author's follower list `/api/follow/author_id/followers`
 
             ## [Friend]() \n
             - internal use only for project part 2
-            - list: `/friend/author_id`
-            - list: `/friends/author_id/author_id`
+            - get: `/friends/author_id`
+            - post: `/friends/author_id`
+            - get: `/friends/author_id/author_id`
             - post: `/friendrequest/`
-            - post example:
+
+            - /friendrequest/ POST example:
 
                 \t{
                         "query":"friendrequest",
@@ -58,6 +60,32 @@ class MyRouter(routers.DefaultRouter):
                         }
                 \t}
 
+            - friends/author_id POST example:
+
+                \t{
+                        "query":"friends",
+                        "author":"<authorid>",
+                        # Array of Author UUIDs
+                        "authors": [
+                            "de305d54-75b4-431b-adb2-eb6b9e546013",
+                            "ae345d54-75b4-431b-adb2-fb6b9e547891",
+                            "...",
+                            "...",
+                            "..."
+                            ]
+                \t}
+                
+            - reponds with
+
+                \t{
+                        "query":"friends",
+                        "author":"9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                        "authors": [
+                            "de305d54-75b4-431b-adb2-eb6b9e546013",
+                            "ae345d54-75b4-431b-adb2-fb6b9e547891",
+                            "..."
+                        ]
+                \t}
 
             ## **Interoperating?**
             - For `secret-inlet-51780.herokuapp.com/api`, please login with the following credentials:
