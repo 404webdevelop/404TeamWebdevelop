@@ -323,6 +323,23 @@ function deletepost(posted_id){
           url: url,
         });
  request.done(function (callback) {
+    var data= {"username":global.cookie_setting.get("username"),
+           "url":global.cookie_setting.get("url"),
+           "token":global.cookie_setting.get("token"),
+           "firstname":global.cookie_setting.get("firstname"),
+           "lastname": global.cookie_setting.get("lastname"),
+           "no_image":"/static/image/noiamge.jpg",
+           "userphoto":global.cookie_setting.get("picture"),
+           "followers":"50",
+           "following":"77",
+           "friends":"112"
+           };
+        $('#home_page_list_view').empty();
+        $('#posted_page_list_view').empty();
+        getpost(data,"home");
+        getpost(data,"posted");
+
+
      setTimeout(function(){
        $("#comment").hide();
          $("#home").show(800);
