@@ -68,7 +68,6 @@ class FollowViewSet(viewsets.ModelViewSet):
             remote_id = request.data['remote_author_id']
             remote_name = request.data['remote_author_name']
             remote_url = request.data['remote_author_url']
-            remote_url = "http://" + remote_host + '/api/author/' + followed 
             reqData = {
                 "query":"friendrequest",
                 "author": {
@@ -95,7 +94,8 @@ class FollowViewSet(viewsets.ModelViewSet):
             follow.remote_author_id   = remote_id
             follow.remote_author_url  = remote_url
             follow.save()
-            return Response("response")
+            follow_serializer = FollowSerializer(follow, context={'request': request})
+            return Response(follow_serializer.data)
         else:
             # local
             following = Author.objects.get(id=request.data["followed"].split("/")[-2])
@@ -314,6 +314,8 @@ def allFriend(author_id):
                     friend_list.append(str(remote_followed[i].follower.id))
 
     return friend_list
+
+    
 
 
 class FriendofFriendAPIView(APIView):
