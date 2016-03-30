@@ -20,7 +20,7 @@ function set_post_on(id,title,contant,username,img,page,have_image){
 
   if(have_image == "yes"){
     var html_st = '<div class="panel panel-primary">\
-              <div class="panel-heading">Post Object</div>\
+              <div class="panel-heading">\"'+ title + '\" by ' + username + '</div>\
               <div class="panel-body">\
                 <div class="row" id="posted_item">\
                     <div class="col-md-5">\
@@ -39,7 +39,7 @@ function set_post_on(id,title,contant,username,img,page,have_image){
             <hr>';
   }else{
     var html_st = '<div class="panel panel-primary">\
-          <div class="panel-heading"><strong>Post Object</strong></div>\
+          <div class="panel-heading">\"'+ title + '\" by ' + username + '</div>\
           <div class="panel-body">\
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
@@ -77,14 +77,14 @@ function set_post_on(id,title,contant,username,img,page,have_image){
   }
 }
 function doMark(content,type){
-  console.log(type);
+
     var converter = new showdown.Converter();
    if (type == 'text/x-markdown') {
 
       content = converter.makeHtml(content);
     
     }
-    console.log("Mark???" + content)
+
     return content;
 
 }
