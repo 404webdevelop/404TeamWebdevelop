@@ -57,7 +57,7 @@ function set_post_on(id,title,contant,username,img,page,have_image){
             <div class="row" id="posted_item">\
                 <div class="col-md-12">\
                     <h3>Title: '+title+'</h3>\
-                    <h4> Post by: '+username+'</h4>\
+                    <h4> Posted on: '+makedate(username)+'</h4>\
                     <p>'+contant+'</p>\
                 </div>\
             </div>\
@@ -334,6 +334,7 @@ request.fail(function (callback) {
 function makedate(date){
 	date = date.replace("T"," ");
 	date = date.split(".")[0];
+	date = date.replace(" ", " @ ");
        	date = date.replace("Z"," ");
 	return date
 }
