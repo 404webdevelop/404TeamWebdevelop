@@ -106,7 +106,6 @@ function showMsg(message) {
 
 function prepareImage(formData, jqForm, options) {
   if (model.post === undefined) {
-    // no post, no image
     return false;
   }
   var parent = formHelper.findData(formData, 'parent_post');
