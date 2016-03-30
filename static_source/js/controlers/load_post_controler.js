@@ -220,6 +220,8 @@ function load_other_posts(other){
     });
 }
 function load_comments(posted_id){
+    $('#delpostbutton').hide();
+   
   var no_iamge="/static/image/no_image.jpg";
       $('#comment_page_list_view').empty();
   var url = "api/posts/"+posted_id+"/";
@@ -229,8 +231,11 @@ function load_comments(posted_id){
         });
   var no_iamge="/static/image/noiamge.gif";
   request.done(function (callback) {
-
+      
     var postobj = callback;
+    if(postobj.username == global.cookie_setting.get("username")){
+	    $('#delpostbutton').show();
+    }
     console.log(postobj);
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
@@ -319,7 +324,7 @@ function deletepost(posted_id){
      setTimeout(function(){
        $("#comment").hide();
          $("#home").show(800);
-	 );
+	} );
 });
 request.fail(function (callback) {
     console.log(callback);
