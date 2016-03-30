@@ -32,8 +32,10 @@ class MyRouter(routers.DefaultRouter):
             ## [Follow](/api/follow) \n
             - Internal use only, DO NOT make any remote request to these api
             - create, list, delete: [`/follow`](/api/follow)
-            - get: get current author's following list `/api/follow/author_id/followings`
-            - get: get current author's follower list `/api/follow/author_id/followers`
+            - get: get current local author's follower list `/api/follow/author_id/localAuthorFollowers`
+            - get: get current remote author's follower list `/api/follow/author_id/remoteauthorFollowers`
+            - get: get current local author's following list `/api/follow/author_id/localAuthorFollowings`
+            - get: get current remote author's following list `/api/follow/author_id/remoteAuthorFollowings`
 
             ## [Friend]() \n
             - internal use only for project part 2

@@ -85,8 +85,9 @@ class FollowViewSet(viewsets.ModelViewSet):
             headers = {'content-type': 'application/json'}
             url = 'http://'+remote_host+'/api/friendrequest'
             data = json.dumps(reqData)
-
-            #response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
+            # POST request here to make a friendrequest to the remote user.
+            # example (hard code one):
+            # response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
             # make same post to local server
             follow = Follows.objects.create(follower=me)
             follow.remote_author_host = remote_host
@@ -315,7 +316,7 @@ def allFriend(author_id):
 
     return friend_list
 
-    
+
 
 
 class FriendofFriendAPIView(APIView):
@@ -332,6 +333,10 @@ class FriendofFriendAPIView(APIView):
                 pendinglist = allFriend(pendingID)
                 for j in pendinglist:
                     friend_of_friend_list.append(j)
+            # TODO: need a remote GET request here to get all remote users friend list
+            #       then compare this list with the author friend list. (friend of a friend
+            #       cannot be a friend of this author)
+
         friend_of_friend_list.remove(author_id)
         return Response(OrderedDict([
             ('query', 'friend of friend'),
