@@ -309,7 +309,22 @@ function setother_header(url){
 };
 
 
-
+function deletepost(posted_id){
+    var url = "api/posts/"+posted_id+"/";
+    var request = $.ajax({
+          method: "DELETE",
+          url: url,
+        });
+ request.done(function (callback) {
+     setTimeout(function(){
+       $("#comment").hide();
+         $("#home").show(800);
+	 );
+});
+request.fail(function (callback) {
+    console.log(callback);
+    });
+}
 
 function makedate(date){
 	date = date.replace("T"," ");
@@ -320,6 +335,7 @@ function makedate(date){
 
 global.load_posts= {
     posts_load:getpost,
+    post_delete:deletepost,
     posts_load_other:load_other_posts,
     set_other:setother_header,
     comment_load:load_comments,
