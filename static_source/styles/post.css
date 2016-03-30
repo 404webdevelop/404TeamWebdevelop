@@ -1,6 +1,9 @@
-#post-form {
- 
+#work-space {
+    width: 80%;
+    margin: 80px auto;
+}
 
+#post-form {
     padding: 20px;
 }
     #post-form textarea {
