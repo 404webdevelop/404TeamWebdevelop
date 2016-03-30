@@ -7,7 +7,7 @@ function notEmpty(str) {
 
 var hash = location.hash.substring(1, 999),
     postID = hash.split('/').filter(notEmpty)[1],
-    url = "/api/posts/" + postID + "/",
+    url = "/api/posts/3deb81c9-9beb-473e-adbf-abf53f44ba9b/",
     converter = new showdown.Converter();
 
 function handleError(XMLHttpRequest, textStatus, errorThrown) {

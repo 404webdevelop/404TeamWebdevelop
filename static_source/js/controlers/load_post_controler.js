@@ -17,6 +17,7 @@ if(have_image== "yes"){
   
 }
 function set_post_on(id,title,contant,username,img,page,have_image){
+
   if(have_image == "yes"){
     var html_st = '<div class="panel panel-primary">\
               <div class="panel-heading">Post Object</div>\
@@ -75,7 +76,18 @@ function set_post_on(id,title,contant,username,img,page,have_image){
     $('#others_page_list_view').append(html_st);
   }
 }
+function doMark(content,type){
+  console.log(type);
+    var converter = new showdown.Converter();
+   if (type == 'text/x-markdown') {
 
+      content = converter.makeHtml(content);
+    
+    }
+    console.log("Mark???" + content)
+    return content;
+
+}
 function getpost(data,page,cookie){
     var url = "api/posts/";
     var request = $.ajax({
@@ -99,7 +111,7 @@ function getpost(data,page,cookie){
             $.each(callback.images, function (j, value) { 
               if(callback.images[j].parent_post == postobj.posts[i].url){
                   $.getJSON(callback.images[j].json_url, function(data1){
-                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page,"yes");
+                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,page,"yes");
                     });
                   cont =1;              
               }else{
@@ -107,10 +119,10 @@ function getpost(data,page,cookie){
               }          
             });
               if (cont == 0 && cont1 == 2){
-                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page,"no");
+                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
               }
               if (cont == 0 && cont1 == 0){
-                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page,"no");
+                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
               }
 
           });
@@ -132,7 +144,7 @@ function getpost(data,page,cookie){
                   $.each(callback.images, function (j, value) { 
                     if(callback.images[j].parent_post == postobj.posts[i].url){
                         $.getJSON(callback.images[j].json_url, function(data1){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,page,"yes");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,page,"yes");
                           });
                         cont =1;              
                     }else{
@@ -140,11 +152,11 @@ function getpost(data,page,cookie){
                     }          
                   });
                     if (cont == 0 && cont1 == 2){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page,"no");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
                           
                     }
                     if (cont == 0 && cont1 == 0){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data.no_image,page,"no");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
                           
                     }
                 });
@@ -196,7 +208,7 @@ function load_other_posts(other){
               $.each(callback.images, function (j, value) { 
                 if(callback.images[j].parent_post == postobj.posts[i].url){
                     $.getJSON(callback.images[j].json_url, function(data1){
-                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,data1.url,'others',"yes");
+                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,'others',"yes");
                       });
                     cont =1;              
                 }else{
@@ -204,11 +216,11 @@ function load_other_posts(other){
                 }          
               });
                 if (cont == 0 && cont1 == 2){
-                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others',"no");
+                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,no_iamge,'others',"no");
                       
                 }
                 if (cont == 0 && cont1 == 0){
-                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,postobj.posts[i].content,postobj.posts[i].username,no_iamge,'others',"no");
+                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,no_iamge,'others',"no");
                       
                 }
             });
@@ -241,7 +253,7 @@ function load_comments(posted_id){
     console.log(postobj);
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
-    set_com_header(postobj.title,postobj.username,postobj.content);
+    set_com_header(postobj.title,postobj.username,postobj.content,postobj.contentType);
     set_com_image(posted_id, postobj);
 ;
 
@@ -265,9 +277,14 @@ function load_comments(posted_id){
     });
 };
 
-function set_com_header(title, author, content){
+function set_com_header(title, author, content, type){
     $('#comment_big_title').text(title);
     $('#comtitle').html( "Posted by " + author);
+     console.log(type);
+         var converter = new showdown.Converter();
+   if (type == 'text/x-markdown') {
+      content = converter.makeHtml(content);
+    }
     $('#combody').html(content);
 }
     
