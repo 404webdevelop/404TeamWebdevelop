@@ -21,6 +21,24 @@ function checkfollowed(id,callback){
           }
         });     
      });
+    var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
+    $.getJSON(url,function(data){
+      if(data[0] == undefined ){
+        $('#follow_btn').show(); 
+        $('#unfollow_btn').hide(); 
+      }
+        $.each(data,function (i,value){
+          if(data[i].followed.split("/")[5] == id){
+            global.cookie_setting.set("follow_id",data[i].url);
+            $('#follow_btn').hide(); 
+            $('#unfollow_btn').show();  
+            return false;
+          }else{
+            $('#follow_btn').show(); 
+            $('#unfollow_btn').hide(); 
+          }
+        });     
+     });
 }
 
 function followother(username,user_url){
@@ -102,11 +120,46 @@ function getfollowers(){
   request.fail(function (callback) {
             console.log(callback);
          });
+
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+                $.getJSON(followersobj[i].follower,function(data){
+                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
+                });
+            }); 
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
 }
 
 
 function getfollowings(){
   var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowings";
+  var request = $.ajax({
+          method: "GET",
+          url: url,
+        });
+  request.done(function (callback) {
+            var friends_list=[];
+            var followersobj = callback;
+            $.each(followersobj, function (i, value) {
+                $.getJSON(followersobj[i].followed,function(data){     
+                  $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
+                });         
+            }); 
+         });
+  request.fail(function (callback) {
+            console.log(callback);
+         });
+
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
   var request = $.ajax({
           method: "GET",
           url: url,
