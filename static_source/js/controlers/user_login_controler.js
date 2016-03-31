@@ -36,6 +36,7 @@ function getuserlogin(callback){
         $('#lastname').val(userobj.last_name);
         $('#email').val(userobj.email);
         $('#github').val(userobj.github);
+        $('#profile-picture-form').attr('action', userobj.url + 'profile_picture/');
         var data= {"username":global.cookie_setting.get("username"),
            "url":global.cookie_setting.get("url"),
            "token":global.cookie_setting.get("token"),
