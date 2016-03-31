@@ -50,7 +50,7 @@
   </div>
 </nav>
 
-  <a id="post_icon"  href="/make_post"><img id="post_icon_image" src="/static/image/18-512.png"class="img-circle" alt="Cinque Terre"  width="60" height="60" style="border:3px solid black;"></a>
+  <a id="post_icon"  href="/make_post"><img id="post_icon_image" src="/static/image/18-512.png"class="img-circle" alt="Cinque Terre"></a>
 
 <div class="container" id = "home">
     <!-- Page Heading -->
@@ -232,13 +232,14 @@
                     <input type="github" class="form-control" id="github" >
                   </div>
                 </div>
-                <div class="form-group"> 
-                    <label class="control-label col-sm-2" for="github">Upload Photo:</label>
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input id="imgInp" type="file" class="file">
-                    </div>
+
+                <form id="profile-picture-form" class="form-group" action="" method="POST" enctype="multipart/form-data">
+                  <label class="control-label col-sm-2" for="github">Upload Photo:</label>
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <input name="picture" type="file" class="file">
                   </div>
-                </div>
+                </form>
+
                 <div class="form-group">        
                   <div class="col-sm-offset-2 col-sm-10">
                     <button id ="profile_btn"type="submit" class="btn btn-default">Submit</button>
@@ -258,15 +259,21 @@
 	<div id="compicdiv">
 	 <img id="post_picture" class="img-responsive" src="./1 Col Portfolio - Start Bootstrap Template_files/700x300" alt=""></div>
 
-	<div class="vertical-center">
-		<textarea id="Comment_content" cols="100" rows="5"></textarea><button id="list_combox_btn" class="btn btn-primary btn-extra">Submit New Comment</button>
-        </div>
-          <div id="comment_page_list_view">
-	    
-            </div>
-</div>
+  <div id="comment-input-panel">
+    <div>
+      <textarea id="Comment_content" rows="5"></textarea>
+    </div>
+    <div>
+      <button id="list_combox_btn" class="btn btn-primary">Comment</button>
+    </div>
+  </div>
+
+
+  <div id="comment_page_list_view"></div>
+  </div>
     </div>
 
-    <script src="/static/js/index.js"></script>
+  <script src="/static/js/index.js"></script>
+  <script src="/static/js/profile.js"></script>
 </body>
 </html>

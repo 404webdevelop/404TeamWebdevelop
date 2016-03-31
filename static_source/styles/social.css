@@ -39,12 +39,27 @@ td {
 
 #post_icon{
 	position:fixed;
-    bottom:5px;
-    right:10px;
-
+  bottom: 20px;
+  right: 20px;
 }
+  #post_icon > img {
+    width: 80px;
+    height: 80px;
+  }
 #post_icon_image:hover {
     background-color: black;
+}
+
+#comment-input-panel {
+    padding-bottom: 60px;
+}
+
+#Comment_content {
+  width: 100%;
+}
+
+#list_combox_btn {
+  float: right;
 }
 
 .vertical-center {
