@@ -3,7 +3,7 @@
 'use strict';
 
 function checkfollowed(id,callback){      
-    var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+    var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowings";
     $.getJSON(url,function(data){
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
@@ -31,6 +31,10 @@ function followother(username,user_url){
       data:{
       "followed":user_url,
       "follower":global.cookie_setting.get("url"),
+      "remote_author_id": "",
+      "remote_author_name": "",
+      "remote_author_url": "",
+      "remote_author_host": ""
       } 
     });
     request.done(function (callback) {
@@ -82,7 +86,7 @@ function unfollowother(username,user_url){
 
 
 function getfollowers(){
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followers";
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowers";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -102,7 +106,7 @@ function getfollowers(){
 
 
 function getfollowings(){
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/followings";
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowings";
   var request = $.ajax({
           method: "GET",
           url: url,
