@@ -52,6 +52,9 @@ function getuserlogin(callback){
         global.load_posts.posts_load(data,"posted");
         global.load_posts.posts_load(data,"git");
         global.findfriends.f_request();
+        global.findfriends.friends();
+        global.findfriends.get_follower();
+        global.findfriends.get_following();
         });
     request.fail(function (callback) {
             console.log(callback);

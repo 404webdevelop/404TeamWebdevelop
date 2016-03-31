@@ -24,9 +24,7 @@ $( document ).ready(function() {
 	$("#requ").hide();
 	global.login_setting.infor_setting();
 	setup();
-	global.findfriends.friends();
-	global.findfriends.get_follower();
-	global.findfriends.get_following();
+
 
 });
 
