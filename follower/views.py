@@ -184,6 +184,32 @@ class FollowViewSet(viewsets.ModelViewSet):
             ]))
 
 
+    @list_route(methods=['GET', 'POST'])
+    def pendingRequest(self, request, **kwargs):
+        if request.user.is_anonymous():
+            return Response({
+                "message": "No user logged in"
+            })
+        if request.method == 'GET':
+            current_author_id = request.user.id
+            friend_list = allFriend(current_author_id)
+            follower_object = Follows.objects.getLocalFollowers(current_author_id)
+
+            follower_list = list()
+            for i in range(len(follower_object)):
+                try:
+                    id = str(follower_object[i].follower.id)
+                    follower_list.append(id)
+                except:
+                    follower_list.append(str(follower_object[i].remote_author_id))
+
+            print follower_list
+            for friend in friend_list:
+                if friend in follower_list:
+                    follower_list.remove(friend)
+            print follower_list
+            return Response('request')
+
 
 class FriendViewSet(APIView):
     """
