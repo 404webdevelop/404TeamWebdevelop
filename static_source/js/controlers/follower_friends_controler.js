@@ -1,6 +1,10 @@
 (function (global) {
 
 'use strict';
+function check_friend_request(){
+  var count=0;
+  $(".noti_bubble").text(count);
+}
 
 function checkfollowed(id,callback){      
     var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowings";
@@ -261,6 +265,7 @@ function search_user(username){
 global.findfriends= {
   friends:findfriends,
   checkfollow:checkfollowed,
+  f_request:check_friend_request,
   search:search_user,
   follow_other:followother,
   unfollow_other:unfollowother,

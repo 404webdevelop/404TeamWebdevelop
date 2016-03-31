@@ -14,6 +14,7 @@ function click_jmp_other(url,othername){
     $("#git").hide();
     $("#profile").hide();
     $("#comment").hide();
+    $("#requ").hide();
     $("#search_result_fild").hide();
     var id = url.split("/")[5];
     global.findfriends.checkfollow(id);
@@ -55,6 +56,7 @@ function button_click(){
     $("#profile").hide();
     $("#comment").hide();
     $("#search_result_fild").hide();
+    $("#requ").hide();
     });
 
   $('#posted_page').click(function(){
@@ -66,6 +68,7 @@ function button_click(){
     $("#git").hide();
     $("#profile").hide();
     $("#comment").hide();
+    $("#requ").hide();
     $("#search_result_fild").hide();
   });
 
@@ -96,6 +99,7 @@ function button_click(){
         $("#git").hide();
         $("#profile").hide();
         $("#comment").show(800);
+        $("#requ").hide();
         $("#search_result_fild").hide();   
      });    
   $('#delpostbutton').click(function(){
@@ -109,6 +113,7 @@ function button_click(){
     $("#other_posted").hide();
     $("#friends").show(800);
     $("#git").hide();
+    $("#requ").hide();
     $("#profile").hide();
     $("#comment").hide();
     $("#search_result_fild").hide();
@@ -154,6 +159,7 @@ function button_click(){
     $("#git").show(800);
     $("#profile").hide();
     $("#comment").hide();
+    $("#requ").hide();
     $("#search_result_fild").hide();
   });
 
@@ -166,6 +172,20 @@ function button_click(){
     $("#git").hide();
     $("#profile").show(800);
     $("#comment").hide();
+    $("#requ").hide();
+    $("#search_result_fild").hide();
+  });
+
+  $('#f_request').click(function(){
+    $("#home").hide();
+    $("#posted").hide();
+    $("#follow_btn").hide();
+    $("#other_posted").hide();
+    $("#friends").hide();
+    $("#git").hide();
+    $("#profile").hide();
+    $("#comment").hide();
+    $("#requ").show(800);
     $("#search_result_fild").hide();
   });
   //-------------------------in the friends page---------------------------

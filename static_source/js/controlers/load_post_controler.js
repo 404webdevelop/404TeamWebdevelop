@@ -8,9 +8,9 @@ function makeComBox(id){
 
 function set_com_on(id,title,contant,username,img,page,have_image){
 if(have_image== "yes"){
-  var comment_st='  <div class="panel panel-primary"><div class="panel-heading">'+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">  <img  src='+img+' class="img-circle" alt="Cinque Terre" width="100" height="100">\ </div>  </div> </div>  </div>';
+  var comment_st='  <div class="panel panel-primary"><div class="panel-heading"> Commented by: '+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">  <img  src='+img+' class="img-circle" alt="Cinque Terre" width="100" height="100">\ </div>  </div> </div>  </div>';
 } else {
-  var comment_st='  <div class="panel panel-primary"><div class="panel-heading">'+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">    <img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre" width="100" height="100">  </div>  </div> </div>  </div>';
+  var comment_st='  <div class="panel panel-primary"><div class="panel-heading"> Commented by: '+username+'</div><div class="panel-body"> <div class="row" id="posted_item"> <div class="col-md-10">  <p>'+contant+'</p> </div> <div class="col-md-2">    <img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre" width="100" height="100">  </div>  </div> </div>  </div>';
 }
 
     $('#comment_page_list_view').append(comment_st);

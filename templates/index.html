@@ -42,7 +42,13 @@
         <li><a id="git_page"href="#">GitHUB</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li id="userphoto"><a href="#"><img src="/static/image/noiamge.gif"  width="20" height="20"> </a></li>
+
+        <li >
+          <a  id ="f_request" href="#"><span id="noti_Container">
+          <div id="userphoto"><img src="/static/image/noiamge.gif" alt="profile" width="20" height="20" /></div>
+          <div class="noti_bubble">2</div></a>
+      </span>
+        </li>
         <li><a id="profile_page" href="#"><span class="glyphicon glyphicon-user"></span> User_name</a></li>
         <li><a id="logout_btn"href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
@@ -58,6 +64,7 @@
             <div class="col-lg-12">
                 <div id="div1"><img src="/static/image/noiamge.gif"class="img-circle" alt="Cinque Terre"  width="100" height="100"></div>
                 <div id ="div2"><h1>User Name<h1></div>
+
                 <strong><hr id="the_hr"></strong>
                 <h1 class="page-header">Post List
               
@@ -190,6 +197,41 @@
       
       </div>
     </div>
+
+    <div class="container" id = "requ">
+      <div class="row">
+        <div class="col-lg-12">
+          <div ><h1>Friends Request</h1></div>
+          <strong><hr id="the_hr"></strong>
+          
+        </div>
+      </div>
+
+      <!-- /.row -->
+      <div id="request_list_view">
+
+        <div class="panel panel-primary">
+                      <div class="panel-heading">Search result</div>
+                      <div class="panel-body">
+                        <div class="row" id="posted_item">
+                            <div class="col-md-5">
+                                    <img src='/static/image/noiamge.gif' class="img-circle" alt="Cinque Terre"  width="100" height="100" >
+                                </a>
+                            </div>
+                            <div class="col-md-7">
+                                <h3 id="click_url" value="'+data_iner.url+'"> User Name</h3>
+                                <h4 id="click_username" value="'+data_iner.displayName+'">sdfsd</h4>
+                                <p></p>
+                                <button  id="search_friend_button" class="btn btn-primary" >View Person <span class="glyphicon glyphicon-chevron-right"></span></button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+      
+      </div>
+    </div>
+
+
 
     <div class="container" id = "profile">
         <!-- Page Heading -->

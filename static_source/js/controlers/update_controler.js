@@ -2,9 +2,7 @@
 
 'use strict';
 
-function postPost(){
 
-}
 
 function patchProfile(firstName, lastName,email,git,callback) {
   var url = global.cookie_setting.get("url");
@@ -64,7 +62,6 @@ function postComment(lhost, host){
 
 global.update_and_post= {
 	update_profile:patchProfile,
-	post_posts:postPost,
   post_comment:postComment
 
 }

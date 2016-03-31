@@ -21,11 +21,13 @@ $( document ).ready(function() {
 	$("#search_list").hide();
 	$("#search_result_fild").hide();
 	$("#comment").hide();
+	$("#requ").hide();
 	global.login_setting.infor_setting();
 	setup();
 	global.findfriends.friends();
 	global.findfriends.get_follower();
 	global.findfriends.get_following();
+
 });
 
 })(this);

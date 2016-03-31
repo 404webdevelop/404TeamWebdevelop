@@ -51,6 +51,7 @@ function getuserlogin(callback){
         global.load_posts.posts_load(data,"home");
         global.load_posts.posts_load(data,"posted");
         global.load_posts.posts_load(data,"git");
+        global.findfriends.f_request();
         });
     request.fail(function (callback) {
             console.log(callback);
