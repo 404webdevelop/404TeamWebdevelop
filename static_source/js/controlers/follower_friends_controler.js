@@ -2,9 +2,47 @@
 
 'use strict';
 function check_friend_request(){
-  var count=0;
-  $(".noti_bubble").text(count);
+
+  var url="api/follow/pendingRequest/";
+  $.getJSON(url,function(data){
+    $(".noti_bubble").text(data.request.length);
+    $.each(data.request,function (i,value){
+      //console.log(data.request[i]);
+      $.getJSON('api/author',function(authorobj){
+        //console.log(authorobj);
+        $.each(authorobj.authors,function (j, value){
+          //console.log(authorobj.authors[j].id);
+          if(authorobj.authors[j].id == data.request[i]){
+            console.log("find it");
+            if(authorobj.authors[j].picture == null){
+              var img = '<img src="/static/image/noiamge.gif" class="img-circle" alt="Cinque Terre"  width="100" height="100" ></a>'
+            }else{
+              var img = '<img src="'+authorobj.authors[j].picture+'" class="img-circle" alt="Cinque Terre"  width="100" height="100" ></a>'
+            }
+            $('#request_list_view').append('<div class="panel panel-primary">\
+                      <div class="panel-heading"><strong>'+authorobj.authors[j].displayName+'</strong> want to add you as a friend</div>\
+                      <div class="panel-body">\
+                        <div class="row" id="posted_item">\
+                            <div class="col-md-5">'+img+'</div>\
+                            <div class="col-md-7">\
+                                <h3 id="click_url" >'+authorobj.authors[j].first_name+' '+authorobj.authors[j].last_name+'</h3>\
+                                <h4 id="click_username" >'+authorobj.authors[j].displayName+'</h4>\
+                                <p></p>\
+                                <li id="'+authorobj.authors[j].displayName+'" value="'+authorobj.authors[j].url+'"><button   class="btn btn-primary" >View Person <span class="glyphicon glyphicon-chevron-right"></span></button></li>\
+                            </div>\
+                        </div>\
+                      </div>\
+                    </div>');
+          }
+        })
+      });
+    });
+    //$(".noti_bubble").text(data.request.length);
+    //$.getJSON('api/author',function(authorobj){
+  });
 }
+
+
 
 function checkfollowed(id,callback){      
     var url = "api/follow/"+global.cookie_setting.get("userid")+"/localAuthorFollowings";
@@ -25,7 +63,7 @@ function checkfollowed(id,callback){
           }
         });     
      });
-    var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
+    /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
     $.getJSON(url,function(data){
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
@@ -42,7 +80,7 @@ function checkfollowed(id,callback){
             $('#unfollow_btn').hide(); 
           }
         });     
-     });
+     });*/
 }
 
 function followother(username,user_url){
@@ -65,8 +103,11 @@ function followother(username,user_url){
       $('#unfollow_btn').show();
       $("#following_view").empty();
       $("#friends_view").empty();
+      $('#request_list_view').empty();
       getfollowings();
       findfriends();
+      check_friend_request();
+
     });
     request.fail(function (callback) {
         console.log(callback.responseText);
@@ -94,8 +135,11 @@ function unfollowother(username,user_url){
                 $('#unfollow_btn').hide();
                 $("#following_view").empty();
                 $("#friends_view").empty();
+                $('#request_list_view').empty();
                 getfollowings();
                 findfriends();
+                check_friend_request();
+
               });
               request.fail(function (callback) {
                   console.log(callback);
@@ -125,7 +169,7 @@ function getfollowers(){
             console.log(callback);
          });
 
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
+  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -140,7 +184,30 @@ function getfollowers(){
          });
   request.fail(function (callback) {
             console.log(callback);
-         });
+         });*/
+}
+
+function getfof(){
+  var url = "api/friendoffriend/"+global.cookie_setting.get("userid");
+  $.getJSON(url,function(data){
+    $(".noti_bubble").text(data.fof.length);
+    $.each(data.fof,function (i,value){
+      //console.log(data.request[i]);
+      $.getJSON('api/author',function(authorobj){
+        //console.log(authorobj);
+        $.each(authorobj.authors,function (j, value){
+          //console.log(authorobj.authors[j].id);
+          if(authorobj.authors[j].id == data.fof[i]){
+            
+              console.log("hoho find it");
+              $("#fof_view").append('<li id= "'+authorobj.authors[j].displayName+'"value="'+authorobj.authors[j].url+'"><a href="#" class="list-group-item ">'+authorobj.authors[j].displayName+'</a></li>');
+            
+          }
+        })
+      });
+    });
+  });
+
 }
 
 
@@ -163,7 +230,7 @@ function getfollowings(){
             console.log(callback);
          });
 
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
+  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -179,7 +246,7 @@ function getfollowings(){
          });
   request.fail(function (callback) {
             console.log(callback);
-         });
+         });*/
 }
 
 
@@ -273,6 +340,7 @@ global.findfriends= {
   unfollow_other:unfollowother,
   get_follower:getfollowers,
   get_following:getfollowings,
+  get_fof:getfof
 	
 }
 

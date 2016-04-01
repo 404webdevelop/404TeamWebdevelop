@@ -4,10 +4,10 @@
 
 //--------------------------------done------------------
 function set_head_infor(img,firstname,lastname,username){
-  console.log(img);
+  //console.log(img);
   if( img != null ){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
-    $("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
+    //$("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
   }
   $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>'); 
   $("#profile_page").html('<span class="glyphicon glyphicon-user"></span>'+username +'');
@@ -29,9 +29,9 @@ function getuserlogin(callback){
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
         set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
-        console.log(userobj.first_name);
-        console.log(userobj.last_name);
-        console.log(userobj.emial);
+        //console.log(userobj.first_name);
+        //console.log(userobj.last_name);
+        //console.log(userobj.emial);
         $('#firstname').val(userobj.first_name);
         $('#lastname').val(userobj.last_name);
         $('#email').val(userobj.email);
@@ -55,6 +55,7 @@ function getuserlogin(callback){
         global.findfriends.friends();
         global.findfriends.get_follower();
         global.findfriends.get_following();
+        global.findfriends.get_fof();
         });
     request.fail(function (callback) {
             console.log(callback);

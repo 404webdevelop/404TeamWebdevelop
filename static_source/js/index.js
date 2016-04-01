@@ -6,6 +6,8 @@ function setup(){
 	global.button_click.clickbtn();
 };
 
+
+
 $( document ).ready(function() {
 	$("#home").show();
 	$("#posted").hide();

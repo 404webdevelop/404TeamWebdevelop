@@ -16,8 +16,10 @@ function click_jmp_other(url,othername){
     $("#comment").hide();
     $("#requ").hide();
     $("#search_result_fild").hide();
-    var id = url.split("/")[5];
-    global.findfriends.checkfollow(id);
+    $.getJSON(url,function(data){
+      console.log(data);
+      global.findfriends.checkfollow(data.id);
+    });
 };
 
 function patchProfile(firstName, lastName,email,git,callback) {
