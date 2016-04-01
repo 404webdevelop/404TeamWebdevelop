@@ -50,16 +50,19 @@ function checkfollowed(id,callback){
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
         $('#unfollow_btn').hide(); 
+        $('#rej').hide();
       }
         $.each(data,function (i,value){
           if(data[i].followed.split("/")[5] == id){
             global.cookie_setting.set("follow_id",data[i].url);
             $('#follow_btn').hide(); 
-            $('#unfollow_btn').show();  
+            $('#unfollow_btn').show(); 
+            $('#rej').hide(); 
             return false;
           }else{
             $('#follow_btn').show(); 
             $('#unfollow_btn').hide(); 
+            $('#rej').show();
           }
         });     
      });

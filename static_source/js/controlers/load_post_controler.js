@@ -299,7 +299,7 @@ function set_com_image(post_id, postobj){
 
            if(callback.images[j].parent_post == postobj.url){
 	             cont = 1;
-                     $('#post_picture').attr("src", callback.images[j].url);
+               $('#post_picture').attr("src", callback.images[j].url);
 	             $('#post_picture').attr("width", "50%");
 	             $('#post_picture').attr("left","25%");
             }});

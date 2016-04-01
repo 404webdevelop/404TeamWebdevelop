@@ -9,6 +9,10 @@ td {
 #div1,#div2{
 	display:inline-block;
 }
+#fo,#unfo,#rej{
+  display:inline-block;
+
+}
 
 #other_div1,#other_div2{
 	display:inline-block;
