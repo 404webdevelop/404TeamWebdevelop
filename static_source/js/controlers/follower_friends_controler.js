@@ -182,6 +182,8 @@ function getfollowings(){
          });
 }
 
+
+
 function findfriends(){
   var url = "api/friends/"+global.cookie_setting.get("userid");
   var request = $.ajax({

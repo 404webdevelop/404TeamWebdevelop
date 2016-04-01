@@ -208,7 +208,12 @@ class FollowViewSet(viewsets.ModelViewSet):
                 if friend in follower_list:
                     follower_list.remove(friend)
             print follower_list
-            return Response('request')
+            return Response(OrderedDict([
+            ('query', 'pending request'),
+            ('author', current_author_id),
+            # Array of Author UUIDs who are friends
+            ('request', follower_list)
+            ]))
 
 
 class FriendViewSet(APIView):
@@ -353,6 +358,7 @@ class FriendofFriendAPIView(APIView):
         # get this author firend list.
         friend_list = allFriend(author_id)
         # based on the author friend list, finding all friend of friend list
+        print friend_list
         if len(friend_list) > 0:
             for i in range(len(friend_list)):
                 pendingID = friend_list[i]
@@ -363,12 +369,12 @@ class FriendofFriendAPIView(APIView):
             #       then compare this list with the author friend list. (friend of a friend
             #       cannot be a friend of this author)
 
-        friend_of_friend_list.remove(author_id)
+            friend_of_friend_list.remove(author_id)
         return Response(OrderedDict([
             ('query', 'friend of friend'),
             ('author', author_id),
             # Array of Author UUIDs who are friends
-            ('authors', friend_of_friend_list)
+            ('fof', friend_of_friend_list)
             ]))
 
 
