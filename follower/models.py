@@ -90,6 +90,7 @@ class Follows(models.Model):
     remote_author_id = models.CharField(max_length=1024, null=True, blank=True)
     remote_author_name = models.CharField(max_length=1024, null=True, blank=True)
     remote_author_url = models.CharField(max_length=1024, null=True, blank=True)
+    hide = models.BooleanField(default = False, blank=True) # if true, this follow relation will be hide in the friend request.
     objects = FollowManager()
 
     class Meta:
