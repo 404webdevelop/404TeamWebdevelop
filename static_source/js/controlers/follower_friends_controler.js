@@ -5,6 +5,7 @@ function check_friend_request(){
 
   var url="api/follow/pendingRequest/";
   $.getJSON(url,function(data){
+    console.log(data.request.length);
     $(".noti_bubble").text(data.request.length);
     $.each(data.request,function (i,value){
       //console.log(data.request[i]);
@@ -193,13 +194,13 @@ function getfollowers(){
 function getfof(){
   var url = "api/friendoffriend/"+global.cookie_setting.get("userid");
   $.getJSON(url,function(data){
-    $(".noti_bubble").text(data.fof.length);
+ 
     $.each(data.fof,function (i,value){
-      //console.log(data.request[i]);
+   
       $.getJSON('api/author',function(authorobj){
-        //console.log(authorobj);
+
         $.each(authorobj.authors,function (j, value){
-          //console.log(authorobj.authors[j].id);
+
           if(authorobj.authors[j].id == data.fof[i]){
             
               console.log("hoho find it");
