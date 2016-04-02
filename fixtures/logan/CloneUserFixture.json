@@ -1,0 +1,62 @@
+[
+{
+    "fields": {
+        "username": "RemoteGuy",
+        "picture": null,
+        "first_name": "RemoteGuy",
+        "last_name": "Person",
+        "is_active": true,
+        "github": "GuyGithub",
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$5xGLG8F0XxSO$m+P4G/U+eCyLbYNTv8ozVi3WWliWdZh3P2r/Aqmi0vw=",
+        "email": "remoteguy@gmail.com",
+        "date_joined": "2016-04-02T02:23:03Z"
+    },
+    "model": "author.author",
+    "pk": "0ef6cede-2c96-4029-928a-15b759dd1d73"
+},
+{
+    "fields": {
+        "username": "admin",
+        "picture": null,
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "github": "",
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2016-04-02T02:21:53.863Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$Bx8MRwnawtsC$8KF/1mNHzxlAuQuqNJKpMeELgW5tF8/w60Kwyngei7Y=",
+        "email": "",
+        "date_joined": "2016-04-02T02:17:12.172Z"
+    },
+    "model": "author.author",
+    "pk": "8423c5a8-23f9-4c02-8542-be17859665fc"
+},
+{
+    "fields": {
+        "username": "remote",
+        "picture": null,
+        "first_name": "asdioj",
+        "last_name": "asdo",
+        "is_active": true,
+        "github": "asdasdasd",
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$u9jYY9bQtJzX$XRUdw5e3b15i+pJUZXgKMCX8fazehSHlT4VKeuTQJHo=",
+        "email": "remote@gmail.com",
+        "date_joined": "2016-04-02T02:24:17Z"
+    },
+    "model": "author.author",
+    "pk": "b8512615-f8c7-41bf-9775-10ddf97850aa"
+}
+]
