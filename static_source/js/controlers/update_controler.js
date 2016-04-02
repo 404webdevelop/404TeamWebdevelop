@@ -26,15 +26,11 @@ function patchProfile(firstName, lastName,email,git,callback) {
     });
 }
 
-function postComment(lhost, host){
+function postComment(){
     console.log("Comment?");
 
-    var url = '';
-    if(lhost == true){
-	url = 'api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
-    } else {
-	url = host + '/api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
-  }
+    var url = 'api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
+  
     var combody = $("#Comment_content").val();
  
     var user = global.cookie_setting.get("username");
