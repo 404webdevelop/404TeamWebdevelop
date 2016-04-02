@@ -3,9 +3,25 @@ from .models import Post, Image, Comment
 from django.contrib.auth.models import AnonymousUser
 from author.models import Author
 from follower.models import Follows
+from follower.views import allFriend
 
 def AreFriends(user, other_user):
     return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
+
+def AreFoaf(user, other_user):
+    """
+    This function is for LOCAL foaf check
+    """
+    if AreFriends(user, other_user):
+        return True
+
+    friends1 = set(allFriend(user.id))
+    friends2 = set(allFriend(other_user.id))
+    intersect = friends1.intersection(friends2)
+    if len(intersect) > 0:
+        return True
+
+    return False
 
 def CanViewPost(post, user):
     if user.is_superuser:
@@ -24,7 +40,9 @@ def CanViewPost(post, user):
             return False
         return AreFriends(post.author, user)
     if post.privacy_level == 'fof':
-        pass # TODO
+        if user.is_anonymous():
+            return False
+        return AreFoaf(post.author, user)
 
     return False
 
