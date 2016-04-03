@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from follower.views import FriendRequestAPIView, FriendlistViewSet, FriendViewSet, FriendofFriendAPIView
-
+from post.views import FOAFPostView;
 from api import router
 
 
@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'friends/(?P<author_id>[0-9a-f\-]+)', FriendlistViewSet.as_view()),
     url(r'friends/(?P<author_id_1>[0-9a-f\-]+)/(?P<author_id_2>[0-9a-f\-]+)', FriendViewSet.as_view()),
     url(r'friendoffriend/(?P<author_id>[0-9a-f\-]+)', FriendofFriendAPIView.as_view()),
+
+    url(r'api/getpost/', FOAFPostView.as_view()),
 
     # demo
     url(r'^make_post/', login_required(TemplateView.as_view(template_name='post/make_post.html')), name='make-post'),
