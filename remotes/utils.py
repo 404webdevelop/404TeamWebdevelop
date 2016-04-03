@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
+from django.http import QueryDict
 
 def IsRemoteAuthUsername(localUsername):
     """
@@ -248,7 +249,6 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
-from django.http import QueryDict
 def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
     if requestingUser is None or requestingUser.is_anonymous():
         return 'You need to be logged in do make remote comments'
