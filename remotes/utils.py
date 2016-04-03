@@ -258,7 +258,8 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
         return 'Could not find a registered remote server corresponding to the POST url'
 
     # fill in author info from requestingUser
-    data = dict(data)
+    if not isinstance(data, dict):
+        data = data.dict()
     author = {}
     author['id'] = str(requestingUser.id)
     author['host'] = request.get_host()
