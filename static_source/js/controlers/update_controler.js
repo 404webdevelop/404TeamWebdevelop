@@ -30,7 +30,11 @@ function postComment(){
     console.log("Comment?");
 
     var url = 'api/posts/' + global.cookie_setting.get("post_id") + '/comments/';
-  
+
+    //logan edits
+    $.get('/api/posts/' + global.cookie_setting.get("post_id") + '/', function(data){global.cookie_setting.set("comments_list", data['comments_list'])});
+    var url = global.cookie_setting.get("comments_list");
+
     var combody = $("#Comment_content").val();
  
     var user = global.cookie_setting.get("username");
