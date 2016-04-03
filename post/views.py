@@ -259,7 +259,7 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
         if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
-            queryset += [remotePost for remotePost in GetAllRemotePosts() if CanViewRemotePost(remotePost, request.user, RemotePostSerializer(post, context={'request': request}))]
+            queryset += [remotePost for remotePost in GetAllRemotePosts() if CanViewRemotePost(remotePost, request.user, RemotePostSerializer(remotePost, context={'request': request}))]
 
         queryset.sort(key = lambda x: x.published, reverse=True)
 
