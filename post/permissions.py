@@ -40,6 +40,11 @@ def CanViewRemotePost(post, user, serializer):
             return True
         else:
             return False
+
+    if post['visibility'] == 'FOAF':
+        myFriends = set([str(id).strip() for id in allFriend(user.id)])
+        if str(post['author']['id']).strip() in myFriends:
+            return True
     if post['visibility'] == 'FOAF':
         myFriends = list(set([str(id).strip() for id in allFriend(user.id)]))
         data = {'query': 'friends', 'author': str(post['author']['id']).strip(), 'authors': myFriends}
