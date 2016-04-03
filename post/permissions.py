@@ -5,6 +5,7 @@ from author.models import Author
 from follower.models import Follows
 from follower.views import allFriend
 from remotes.utils import *
+from serializers import RemotePostSerializer
 
 def AreFriends(user, other_user):
     return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
@@ -24,7 +25,10 @@ def AreFoaf(user, other_user):
 
     return False
 
-def CanViewRemotePost(post, user):
+def CanViewRemotePost(post, user, request):
+    serializer = RemotePostSerializer(post, context={'request': request})
+    post = serializer.data
+
     if post['visibility'] in ['PRIVATE', 'SERVERONLY']:
         return False
     if post['visibility'] == 'PUBLIC':
