@@ -140,7 +140,7 @@ class RemotePostsViewSet(viewsets.ViewSet, PagedViewMixin):
         remotePostsDicts = GetRemotePostsAtUrl(remote_url, requestingUser = request.user)
         if remotePostsDicts is not None:
 
-            remotePostsDicts = [post for post in remotePostsDicts if CanViewRemotePost(post, request.user, request)]
+            remotePostsDicts = [post for post in remotePostsDicts if CanViewRemotePost(post, request.user, RemotePostSerializer(post, context={'request': request}))]
 
             page = self.paginate_queryset(remotePostsDicts)
             if page is not None:
@@ -259,7 +259,7 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = [post for post in queryset if CanViewPost(post, request.user)]
 
         if request.user.is_anonymous() or (not IsRemoteAuthUser(request.user)):
-            queryset += [remotePost for remotePost in GetAllRemotePosts() if CanViewRemotePost(remotePost, request.user, request)]
+            queryset += [remotePost for remotePost in GetAllRemotePosts() if CanViewRemotePost(remotePost, request.user, RemotePostSerializer(post, context={'request': request}))]
 
         queryset.sort(key = lambda x: x.published, reverse=True)
 
