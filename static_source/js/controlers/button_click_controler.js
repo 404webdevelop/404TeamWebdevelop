@@ -17,7 +17,27 @@ function click_jmp_other(url,othername){
     $("#requ").hide();
     $("#search_result_fild").hide();
     $.getJSON(url,function(data){
-      console.log(data);
+      console.log(data.id);
+      
+
+      $.getJSON("api/follow/pendingRequest/",function(data1){
+        console.log(data1);
+        $.each(data1.request,function (i,value){
+          console.log(data1.request[i]);
+          console.log(data.id);
+          if(data1.request[i] == data.id ){
+            $("#rej").show();
+            console.log("laokoaj");
+            return false;
+          }else{
+            console.log("sdfsdfs");
+            $("#rej").hide();
+            console.log("sdfsdfs");
+          }
+        });
+      //  console.log(data1.host);
+
+      });
       global.findfriends.checkfollow(data.id);
     });
 };
@@ -84,7 +104,7 @@ function button_click(){
       click_jmp_other(url,othername);
       console.log(url);
       var id= url.split("/")[5];
-      console.log(id);
+      //console.log(id);
       global.findfriends.checkfollow(id);
    }); 
 
@@ -244,10 +264,12 @@ function button_click(){
 
   $('#follow_btn').click(function(){
         global.findfriends.follow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+        $("#rej").hide();
     });
 
   $('#unfollow_btn').click(function(){
         global.findfriends.unfollow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+        
     });
 
   $('#logout_btn').click(function(){

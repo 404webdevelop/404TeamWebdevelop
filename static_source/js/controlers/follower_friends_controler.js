@@ -63,7 +63,7 @@ function checkfollowed(id,callback){
           }else{
             $('#follow_btn').show(); 
             $('#unfollow_btn').hide(); 
-            $('#rej').show();
+            //$('#rej').show();
           }
         });     
      });
@@ -129,10 +129,7 @@ function unfollowother(username,user_url){
               var request = $.ajax({
                   method: "DELETE",
                   url: new_url,
-                  data:{
-                  "followed":user_url,
-                  "follower":global.cookie_setting.get("url")
-                } 
+                  
               });
               request.done(function (callback) {
                 $('#follow_btn').show();  
