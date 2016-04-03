@@ -32,6 +32,8 @@ def ContainsARemoteHostname(s):
 def GetRemoteHostContaining(s):
     if s[0:7] == 'http://':
         s = s[7:]
+    while s[-1] == '/':
+        s = s[:-1]
     servers = [server for server in GetRemoteServers() if s in server.host]
     return servers[0].host
 
