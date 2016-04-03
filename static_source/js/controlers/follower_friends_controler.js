@@ -142,11 +142,35 @@ function followother(id,host,username,user_url){
 
 };
 
-function unfollowother(username,user_url){
+function unfollowother(host,username,user_url){
      var url = "/api/follow";
      $.getJSON(url,function(data) {
         $.each(data,function ( i,value ){
             if(data[i].followed == user_url && data[i].follower ==global.cookie_setting.get("url")){
+              console.log("11111");
+              var new_url = data[i].url;
+              var request = $.ajax({
+                  method: "DELETE",
+                  url: new_url,
+                  
+              });
+              request.done(function (callback) {
+                $('#follow_btn').show();  
+                $('#unfollow_btn').hide();
+                $("#following_view").empty();
+                $("#friends_view").empty();
+                $('#request_list_view').empty();
+                getfollowings();
+                findfriends();
+                check_friend_request();
+
+              });
+              request.fail(function (callback) {
+                  console.log(callback);
+               });
+            }
+            //----------for remote user unfollow---------------
+            if(data[i].remote_author_url == user_url && data[i].follower ==global.cookie_setting.get("url")){
               console.log("11111");
               var new_url = data[i].url;
               var request = $.ajax({

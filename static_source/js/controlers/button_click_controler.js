@@ -272,7 +272,7 @@ function button_click(){
     });
 
   $('#unfollow_btn').click(function(){
-        global.findfriends.unfollow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+        global.findfriends.unfollow_other(global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
         
     });
 
