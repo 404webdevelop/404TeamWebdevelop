@@ -201,11 +201,12 @@ class FollowViewSet(viewsets.ModelViewSet):
 
             follower_list = list()
             for i in range(len(follower_object)):
-                try:
-                    id = str(follower_object[i].follower.id)
-                    follower_list.append(id)
-                except:
-                    follower_list.append(str(follower_object[i].remote_author_id))
+                if follower_object[i].hide == False:
+                    try:
+                        id = str(follower_object[i].follower.id)
+                        follower_list.append(id)
+                    except:
+                        follower_list.append(str(follower_object[i].remote_author_id))
 
             print follower_list
             for friend in friend_list:
@@ -258,7 +259,7 @@ class FriendlistViewSet(APIView):
       - `/friends/{author_id}`
         - GET: result of two users are friends
     """
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = (IsAuthenticated,)
 
 
@@ -393,7 +394,7 @@ class FriendRequestAPIView(APIView):
         - POST: post a friend request
 
     """
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
