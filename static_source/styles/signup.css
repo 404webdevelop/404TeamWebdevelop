@@ -30,10 +30,11 @@ body {
     text-align: left;
 }
 
-#signup-pannel {
+#signup-panel {
     display: inline-block;
     position: relative;
     width: 410px;
+    margin-top: 50px;
     text-align: left;
 }
 
