@@ -248,6 +248,7 @@ def GetRemoteCommentsAtUrl(url, requestingUser = None):
 
     return remoteComments
 
+from django.http import QueryDict
 def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
     if requestingUser is None or requestingUser.is_anonymous():
         return 'You need to be logged in do make remote comments'
@@ -258,7 +259,7 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
         return 'Could not find a registered remote server corresponding to the POST url'
 
     # fill in author info from requestingUser
-    if not isinstance(data, dict):
+    if isinstance(data, QueryDict):
         data = data.dict()
     author = {}
     author['id'] = str(requestingUser.id)
