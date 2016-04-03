@@ -84,8 +84,11 @@ class FriendTest(APITestCase):
 
         author_a.save()
         author_b.save()
-
         self.client.force_authenticate(user=author_a)
+        first_request= self.client.get('/friends/' + str(author_a.id)+ '/'+ str(author_b.id)+ '/')
+        first_result= first_request.data['friends']
+        self.assertEqual(first_result, False)
+
 
         follow_1= Follows.objects.create(follower=author_b, followed=author_a)
         follow_2= Follows.objects.create(follower=author_a, followed=author_b)
