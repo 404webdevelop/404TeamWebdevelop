@@ -97,15 +97,18 @@ function button_click(){
   $('.list-group').delegate('li', 'click', function () {
       $('#others_page_list_view').empty();
       var url = $(this).attr("value");
+      //var othername= $(this).attr("id");
+      $.getJSON(url,function(data){
+        console.log(data);
+        global.cookie_setting.set("click_username",data.displayName);
+        global.cookie_setting.set("click_url",data.url);
+        global.cookie_setting.set("click_host",data.host);
+        global.cookie_setting.set("click_id",data.id);
+        click_jmp_other(url,data.displayName);
+        global.findfriends.checkfollow(data.id);
+      });
+
       
-      var othername= $(this).attr("id");
-      global.cookie_setting.set("click_username",othername);
-      global.cookie_setting.set("click_url",url);
-      click_jmp_other(url,othername);
-      console.log(url);
-      var id= url.split("/")[5];
-      //console.log(id);
-      global.findfriends.checkfollow(id);
    }); 
 
   $('.try').delegate('li', 'click', function () {
@@ -263,7 +266,8 @@ function button_click(){
   });
 
   $('#follow_btn').click(function(){
-        global.findfriends.follow_other(global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
+        console.log(global.cookie_setting.get("click_host"));
+        global.findfriends.follow_other(global.cookie_setting.get("click_id"),global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
         $("#rej").hide();
     });
 

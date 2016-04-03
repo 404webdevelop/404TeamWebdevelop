@@ -87,22 +87,45 @@ function checkfollowed(id,callback){
      });*/
 }
 
-function followother(username,user_url){
-    var url = 'api/follow/';
-    var request = $.ajax({
-      method: "POST",
-      url: url,
-      data:{
+function followother(id,host,username,user_url){
+    //console.log(global.cookie_setting.get("me_user_host"));
+    console.log("$$$$$$$$$$$$$$");
+    console.log(id);
+    console.log(username);
+    console.log(user_url);
+    console.log(host);
+    var send_data = {};
+    if (global.cookie_setting.get("me_user_host") == host){
+      console.log("sdfdsfdsfdsffjahahahahahah");
+      send_data = {
       "followed":user_url,
       "follower":global.cookie_setting.get("url"),
       "remote_author_id": "",
       "remote_author_name": "",
       "remote_author_url": "",
       "remote_author_host": ""
-      } 
+      }; 
+    }else{
+        send_data = {
+        "followed":"",
+        "follower":global.cookie_setting.get("url"),
+        "remote_author_id": id,
+        "remote_author_name": username,
+        "remote_author_url": user_url,
+        "remote_author_host": host
+        }; 
+      }
+
+    
+    
+    var url = 'api/follow/';
+    var request = $.ajax({
+      method: "POST",
+      url: url,
+      data:send_data
     });
     request.done(function (callback) {
-      console.log(callback);
+      //console.log(callback);
       $('#follow_btn').hide(); 
       $('#unfollow_btn').show();
       $("#following_view").empty();

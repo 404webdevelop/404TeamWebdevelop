@@ -29,6 +29,7 @@ function getuserlogin(callback){
         global.cookie_setting.set("lastname",userobj.last_name);
         global.cookie_setting.set("picture",userobj.picture);
         global.cookie_setting.set("me_user_id",userobj.id);
+        global.cookie_setting.set("me_user_host",userobj.host);
         set_head_infor(userobj.picture,userobj.first_name,userobj.last_name,userobj.displayName);
         $('#firstname').val(userobj.first_name);
         $('#lastname').val(userobj.last_name);
