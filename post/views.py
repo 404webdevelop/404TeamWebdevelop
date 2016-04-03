@@ -13,8 +13,9 @@ from rest_framework import generics
 from collections import OrderedDict
 from author.models import Author
 from rest_framework import exceptions
-
+from rest_framework.views import APIView
 from .models import Post, Image, Comment
+from follower.views import allFriend
 from .serializers import *
 from .permissions import *
 from remotes.utils import *
@@ -449,3 +450,40 @@ def upload_image(request):
 #         return response
 #     else:
 #         return HttpResponse('not yet implemented')
+
+
+class FOAFPostView(APIView):
+
+    def post(self, request):
+        post_id = request.data['id']
+        viewer = request.data['author']
+        friends = request.data['friends']
+
+        post = Post.objects.get(pk=post_id)
+        if post is None:
+            return Response({
+                'is_foaf': False,
+                'message': 'post not exist'
+            })
+        author = post.author
+        author_friends = allFriend(author.id)
+
+        if viewer['id'] in author_friends:
+            return Response({
+                'is_foaf': False,
+                'error': 'they are friend'
+            })
+
+        comm = list(set(friends) & set(author_friends))
+        # remote check
+        if len(comm) is not 0:
+            serializer = PostReadSerializer(post, context={'request': request})
+            return Response({
+                'is_foaf': True,
+                'post': serializer.data
+            })
+        else:
+            return Response({
+                'is_foaf': False,
+                'post': None
+            })

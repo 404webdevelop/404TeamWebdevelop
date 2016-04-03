@@ -18,6 +18,38 @@ class MyRouter(routers.DefaultRouter):
             - list all the posts that I authored: [`/author/myposts`](/api/author/myposts)
             - list all the posts I can view: [`/author/posts`](/api/author/posts)
             - list by author: `/author/{author_id}/posts`
+            - POST: /getpost  example:
+
+                Remotely check whether a author has a permission to a post with permission type FOAF.
+
+                \t{
+                        "id":"9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                        "author":{
+                            "id":"de305d54-75b4-431b-adb2-eb6b9e546013",
+                            "host":"http://127.0.0.1:5454/",
+                            "displayName":"Greg Johnson",
+                            "url":"http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                            "github": "http://github.com/gjohnson"
+                        },
+                        "friends":[
+                            "7deee0684811f22b384ccb5991b2ca7e78abacde",
+                            "11c3783f15f7ade03430303573098f0d4d20797b",
+                        ]
+                \t}
+
+                If pass check, response with the post asked for.
+
+                    {
+                        "is_foaf": true,
+                        "post": ...
+                    }
+
+                If not pass, response with error message.
+
+                    {
+                        "is_foaf": false,
+                        "error": ...
+                    }
 
             ## [Comments](/api/comments) \n
             - create, list, edit, delete: [`/comments`](/api/comments)
