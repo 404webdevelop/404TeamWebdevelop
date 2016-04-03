@@ -29,8 +29,13 @@ class FriendTest(APITestCase):
 
         self.client.force_authenticate(user=author_a)
         data = {
-                "follower": a_url,
-                "followed": b_url}
+                    "followed": b_url,
+                    "follower": a_url,
+                    "remote_author_id": "",
+                    "remote_author_name": "",
+                    "remote_author_url": "",
+                    "remote_author_host": ""
+                }
         response= self.client.post(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -88,10 +93,9 @@ class FriendTest(APITestCase):
         follow_1.save()
         follow_2.save()
 
-        request= self.client.get('/api/friend/' + str(author_a.id)+ '/'+ str(author_b.id)+ '/')
+        request= self.client.get('/friends/' + str(author_a.id)+ '/'+ str(author_b.id)+ '/')
         result= request.data['friends']
         self.assertEqual(result, True)
-        #self.assertEqual(request.data['authors'][0], author_b.id)
 
 
     def test_friend_list(self):
