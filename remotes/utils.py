@@ -35,6 +35,17 @@ def GetRemoteHostContaining(s):
     servers = [server for server in GetRemoteServers() if s in server.host]
     return servers[0].host
 
+def GetRemoteHostForArbitraryUrl(s):
+    if s[0:4] != 'http':
+        s = 'http://' + s
+    parsedURL = urlparse(s)
+    netloc = parsedURL.netloc
+    servers = [server for server in GetRemoteServers() if netloc in server.host]
+    if len(servers) < 1:
+        return None
+    else:
+        return servers[0].host
+
 class _RemoteServer:
     def __init__(self, host, credentials = None, requestingUser = None):
         self.host = 'http://' + host
@@ -273,6 +284,83 @@ def IsLocalURL(url, request):
     print(parsedHostURL.netloc)
     print(url)
     return parsedHostURL.netloc in url
+
+def PostWithListOfFriends(data, postHint = None, authorHint = None):
+    """
+    data is {'query': 'friends', 'author': '<id>', 'authors': [<list of id>]}
+    postHint is a remote post dict
+    authorHint is a remote author dict
+
+    Returns (False, errorStr) on failure
+    Returns (True, dataDict) on success
+    """
+    assert postHint is not None or authorHint is not None
+
+    if postHint is not None and 'url' in postHint:
+        hint = postHint['url']
+    elif postHint is not None and 'origin' in postHint:
+        hint = postHint['origin']
+    elif postHint is not None and 'source' in postHint:
+        hint = postHint['source']
+    elif authorHint is not None and 'url' in authorHint:
+        hint = authorHint['url']
+    elif authorHint is not None and 'host' in authorHint:
+        hint = authorHint['host']
+    else:
+        return False, 'PostWithListOfFriends: No URL hint supplied'
+
+    host = GetRemoteHostForArbitraryUrl(hint)
+    if host is None:
+        return False, 'PostWithListOfFriends: Failed to find host for the URL'
+
+    url = host + '/friends/' + data['author']
+
+    server, path = GetServerAndPathForUrl(url, None)
+    if server is None:
+        return False, 'PostWithListOfFriends: Unexpected failure'
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return False, 'PostWithListOfFriends: Failed to connect to the remote server'
+
+    if r.status_code not in [200, 201]:
+        return False, 'PostWithListOfFriends: Bad status code {0}'.format(r.status_code)
+
+    return True, r.json()
+
+def PostFriendRequest(data, hints):
+    hints = [hint.strip() for hint in hints if hint.strip() != '']
+    if len(hints) == 0:
+        return False, 'No hints for PostFriendRequest'
+
+    foundHost = False
+    host = None
+    for hint in hints:
+        host = GetRemoteHostForArbitraryUrl(hint)
+        if host is not None:
+            foundHost = True
+            break
+    if not foundHost or host is None:
+        return False, 'PostFriendRequest: Failed to find host for the hint URL'
+
+    url = host + '/friendrequest'
+
+    server, path = GetServerAndPathForUrl(url, None)
+    if server is None:
+        return False, 'PostFriendRequest: Unexpected failure'
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return False, 'PostFriendRequest: Failed to connect to the remote server'
+
+    if r.status_code not in [200, 201]:
+        return False, 'PostFriendRequest: Bad status code {0}'.format(r.status_code)
+
+    return True, r.json()
 
 # Example POST function
 def PostAtUrl(url, data, request):
