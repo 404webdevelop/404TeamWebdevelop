@@ -5,7 +5,7 @@ from author.models import Author
 from follower.models import Follows
 from follower.views import allFriend
 from remotes.utils import *
-from serializers import RemotePostSerializer
+from .serializers import RemotePostSerializer
 
 def AreFriends(user, other_user):
     return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
