@@ -4,6 +4,7 @@ from django.contrib.auth.models import AnonymousUser
 from author.models import Author
 from follower.models import Follows
 from follower.views import allFriend
+from remotes.utils import *
 
 def AreFriends(user, other_user):
     return Follows.objects.isFollowing(user, other_user) and Follows.objects.isFollowing(other_user, user)
@@ -23,11 +24,42 @@ def AreFoaf(user, other_user):
 
     return False
 
+def CanViewRemotePost(post, user):
+    if post.visibility in ['PRIVATE', 'SERVERONLY']:
+        return False
+    if post.visibility == 'PUBLIC':
+        return True
+
+    if 'author' not in post:
+        return False
+    if post.visibility == 'FRIENDS':
+        myFriends = set([str(id).strip() for id in allFriend(user.id)])
+        if str(post['author']['id']).strip() in myFriends:
+            return True
+        else:
+            return False
+    if post.visibility == 'FOAF':
+        myFriends = list(set([str(id).strip() for id in allFriend(user.id)]))
+        data = {'query': 'friends', 'author': str(post['author']['id']).strip(), 'authors': myFriends}
+        success, result = PostWithListOfFriends(data, post, post['author'])
+        if not success:
+            print('Failed to get FOAF info for author {0} with url {1}, reason: {2}'.format(str(post['author']['id']), post['author']['url'], result))
+            return False
+        if len(result['authors']) > 0:
+            return True
+        else:
+            return False
+
+    return True # should never reach here
+
 def CanViewPost(post, user):
     if user.is_superuser:
         return True
     if post.author == user:
         return True
+
+    if not user.is_anonymous() and IsRemoteAuthUser(user) and not post.privacy_host_only and post.privacy_level != 'me':
+        return True # always allow for remote user
 
     if post.privacy_host_only and user.is_anonymous():
         return False
