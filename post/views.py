@@ -453,8 +453,15 @@ def upload_image(request):
 
 
 class FOAFPostView(APIView):
+    authentication_classes = [BasicAuthentication, TokenAuthentication, SessionAuthentication]
 
     def post(self, request):
+        if not IsRemoteAuthUser(request.user):
+            return Response({
+                'is_foaf': False,
+                'error': 'need to be a remote user to call this API'
+            })
+
         post_id = request.data['id']
         viewer = request.data['author']
         friends = request.data['friends']
@@ -475,7 +482,7 @@ class FOAFPostView(APIView):
             })
 
         comm = list(set(friends) & set(author_friends))
-        # remote check
+        # TODO: remote check
         if len(comm) is not 0:
             serializer = PostReadSerializer(post, context={'request': request})
             return Response({
