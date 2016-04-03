@@ -25,20 +25,20 @@ def AreFoaf(user, other_user):
     return False
 
 def CanViewRemotePost(post, user):
-    if post.visibility in ['PRIVATE', 'SERVERONLY']:
+    if post['visibility'] in ['PRIVATE', 'SERVERONLY']:
         return False
-    if post.visibility == 'PUBLIC':
+    if post['visibility'] == 'PUBLIC':
         return True
 
     if 'author' not in post:
         return False
-    if post.visibility == 'FRIENDS':
+    if post['visibility'] == 'FRIENDS':
         myFriends = set([str(id).strip() for id in allFriend(user.id)])
         if str(post['author']['id']).strip() in myFriends:
             return True
         else:
             return False
-    if post.visibility == 'FOAF':
+    if post['visibility'] == 'FOAF':
         myFriends = list(set([str(id).strip() for id in allFriend(user.id)]))
         data = {'query': 'friends', 'author': str(post['author']['id']).strip(), 'authors': myFriends}
         success, result = PostWithListOfFriends(data, post, post['author'])
