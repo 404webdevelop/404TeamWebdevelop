@@ -43,7 +43,7 @@ function postComment(){
     console.log("User " + user);
     console.log("Url " + userurl);
     var data = {
-  	 "comment":combody,
+  	 "comment":combody, "contentType": "text/plain"
   	};
     var request = $.ajax({
   	method: "POST",
