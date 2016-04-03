@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from models import Follows
 from collections import OrderedDict
 from requests.auth import HTTPBasicAuth
+from remotes.utils import PostFriendRequest
 
 import json
 import requests
@@ -86,6 +87,9 @@ class FollowViewSet(viewsets.ModelViewSet):
             url = 'http://'+remote_host+'/api/friendrequest'
             data = json.dumps(reqData)
             # POST request here to make a friendrequest to the remote user.
+            success, response = PostFriendRequest(reqData, hints = [remote_host, remote_url])
+            if not success:
+                print('PostFriendRequest failed, reason is {0}'.format(response))
             # example (hard code one):
             # response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
             # make same post to local server

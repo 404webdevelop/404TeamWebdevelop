@@ -323,10 +323,42 @@ def PostWithListOfFriends(data, postHint = None, authorHint = None):
     try:
         r = server.Post(path, data)
     except requests.exceptions.ConnectionError: # remote server down
-        return 'PostWithListOfFriends: Failed to connect to the remote server'
+        return False, 'PostWithListOfFriends: Failed to connect to the remote server'
 
     if r.status_code not in [200, 201]:
-        return False, 'PostWithListOfFriends: Bad status code'
+        return False, 'PostWithListOfFriends: Bad status code {0}'.format(r.status_code)
+
+    return True, r.json()
+
+def PostFriendRequest(data, hints):
+    hints = [hint.strip() for hint in hints if hint.strip() != '']
+    if len(hints) == 0:
+        return False, 'No hints for PostFriendRequest'
+
+    foundHost = False
+    host = None
+    for hint in hints:
+        host = GetRemoteHostForArbitraryUrl(hint)
+        if host is not None:
+            foundHost = True
+            break
+    if not foundHost or host is None:
+        return False, 'PostFriendRequest: Failed to find host for the hint URL'
+
+    url = host + '/friendrequest'
+
+    server, path = GetServerAndPathForUrl(url, None)
+    if server is None:
+        return False, 'PostFriendRequest: Unexpected failure'
+
+    # do the post
+    try:
+        r = server.Post(path, data)
+    except requests.exceptions.ConnectionError: # remote server down
+        return False, 'PostFriendRequest: Failed to connect to the remote server'
+
+    if r.status_code not in [200, 201]:
+        return False, 'PostFriendRequest: Bad status code {0}'.format(r.status_code)
 
     return True, r.json()
 
