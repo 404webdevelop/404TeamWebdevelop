@@ -1,10 +1,9 @@
 (function (global) {
 'use strict';
 
-function click_jmp_other(host,url,othername){
-   // global.cookie_setting.set("click_username",othername);
-   // global.cookie_setting.set("click_url",url);
-
+function click_jmp_other(host){
+    var url = global.cookie_setting.get("click_url");
+    var othername = global.cookie_setting.get("click_username");
     global.load_posts.set_other(url);
     global.load_posts.posts_load_other(othername);
     $("#home").hide();
@@ -18,27 +17,27 @@ function click_jmp_other(host,url,othername){
     $("#requ").hide();
     $("#search_result_fild").hide();
     $.getJSON(url,function(data){
-      console.log(data.id);
+      //console.log(data.id);
       
 
       $.getJSON("api/follow/pendingRequest/",function(data1){
-        console.log(data1.request[0]);
+        //console.log(data1.request[0]);
 
         if(data1.request[0] == undefined){
           $("#rej").hide();
         }
 
         $.each(data1.request,function (i,value){
-          console.log(data1.request[i]);
-          console.log(data.id);
+          //console.log(data1.request[i]);
+          //console.log(data.id);
           if(data1.request[i] == data.id ){
             $("#rej").show();
-            console.log("laokoaj");
+            //console.log("laokoaj");
             return false;
           }else{
-            console.log("sdfsdfs");
+            //console.log("sdfsdfs");
             $("#rej").hide();
-            console.log("sdfsdfs");
+            //console.log("sdfsdfs");
           }
         });
       //  console.log(data1.host);
@@ -51,14 +50,14 @@ function click_jmp_other(host,url,othername){
 
 function reject_request(){
   $.getJSON("api/follow/", function(data){
-    console.log(data);
-    console.log(global.cookie_setting.get("click_url"));
-    console.log(global.cookie_setting.get("url"));
+    //console.log(data);
+    //console.log(global.cookie_setting.get("click_url"));
+    //console.log(global.cookie_setting.get("url"));
     var click_url = global.cookie_setting.get("click_url");
     var own_url = global.cookie_setting.get("url");
      $.each(data,function (i,value){
       if(data[i].follower == click_url && data[i].followed == own_url){
-        console.log("oh hohoh hohho");
+        //console.log("oh hohoh hohho");
         var hide_url = data[i].url;
         var request = $.ajax({
           method: "PATCH",
@@ -78,7 +77,7 @@ function reject_request(){
 
       }
       if(data[i].remote_author_url == click_url && data[i].followed == own_url){
-        console.log("oh hohoh hohho");
+        //console.log("oh hohoh hohho");
         var hide_url = data[i].url;
         var request = $.ajax({
           method: "PATCH",
@@ -158,13 +157,13 @@ function button_click(){
       var url = $(this).attr("value");
       //var othername= $(this).attr("id");
       $.getJSON(url,function(data){
-        console.log(data);
+        //console.log(data);
         global.cookie_setting.set("click_username",data.displayName);
         global.cookie_setting.set("click_url",data.url);
         global.cookie_setting.set("click_host",data.host);
-        console.log(global.cookie_setting.get("click_host"));
+        //console.log(global.cookie_setting.get("click_host"));
         global.cookie_setting.set("click_id",data.id);
-        click_jmp_other(data.host,url,data.displayName);
+        click_jmp_other(data.host);
         global.findfriends.checkfollow(data.id);
       });
 
@@ -188,7 +187,7 @@ function button_click(){
         $("#search_result_fild").hide();   
      });    
   $('#delpostbutton').click(function(){
-      console.log("yeah");
+      //console.log("yeah");
       global.load_posts.post_delete(global.cookie_setting.get("post_id"));
 });
   $('#friends_page').click(function(){
@@ -208,7 +207,7 @@ function button_click(){
   });
 
   $('#list_combox_btn').click( function () {
-         console.log($('#list_combox_btn').text());
+         //console.log($('#list_combox_btn').text());
       
   
          global.update_and_post.post_comment();
@@ -221,12 +220,12 @@ function button_click(){
    });
 
   $('#profile_btn').click(function(){
-    console.log("sdffs---------");
-    console.log($('#firstname').val());
-    console.log($('#lastname').val());
-    console.log($('#email').val());
-    console.log($('#github').val());
-    console.log($('#imgInp').val());
+    //console.log("sdffs---------");
+    //console.log($('#firstname').val());
+    //console.log($('#lastname').val());
+    //console.log($('#email').val());
+    //console.log($('#github').val());
+    //console.log($('#imgInp').val());
     var firstName = $('#firstname').val();
     var lastName = $('#lastname').val();
     var email = $('#email').val();
@@ -317,7 +316,7 @@ function button_click(){
   });
 
   $('#follow_btn').click(function(){
-        console.log(global.cookie_setting.get("click_host"));
+        //console.log(global.cookie_setting.get("click_host"));
         global.findfriends.follow_other(global.cookie_setting.get("click_id"),global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
         $("#rej").hide();
     });

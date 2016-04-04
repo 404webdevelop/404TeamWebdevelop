@@ -90,13 +90,14 @@ function checkfollowed(id,callback){
 function followother(id,host,username,user_url){
     //console.log(global.cookie_setting.get("me_user_host"));
     console.log("$$$$$$$$$$$$$$");
-    console.log(id);
-    console.log(username);
-    console.log(user_url);
-    console.log(host);
+    console.log("followed id: "+id);
+    console.log("followed username: "+username);
+    console.log("followed userurl: "+user_url);
+    console.log("followed own url: "+global.cookie_setting.get("url"));
+    console.log("followed host: "+host);
     var send_data = {};
     if (global.cookie_setting.get("me_user_host") == host){
-      console.log("sdfdsfdsfdsffjahahahahahah");
+      //console.log("sdfdsfdsfdsffjahahahahahah");
       send_data = {
       "followed":user_url,
       "follower":global.cookie_setting.get("url"),
@@ -334,12 +335,17 @@ function search_user(username){
         $('#others_page_list_view').empty();
         var url = $('#click_url').attr("value");
         var othername= $('#click_username').attr("value");
+        console.log("clicked url: "+url);
+        console.log("clicked name: "+othername);
         var host = $('#click_host').attr("value");
         var id = $('#click_host').attr("class");
         global.cookie_setting.set("click_host",host);
-        global.cookie_setting.set("click_id",host);
+        global.cookie_setting.set("click_id",id);
+        global.cookie_setting.set("click_url",url);
+        
+        global.cookie_setting.set("click_username",othername);
 
-        global.button_click.jump(host,url,othername);
+        global.button_click.jump(host);
       });
     })
     if (cont ==0){
