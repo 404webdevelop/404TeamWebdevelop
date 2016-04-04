@@ -124,7 +124,9 @@ class RemotePostSerializer(serializers.Serializer):
 
         # comments proxy
         commentsURL = None
-        if 'url' in data and not IsLocalURL(data['url'], request) and ContainsARemoteHostname(data['url']):
+        if 'url' in data and 'cmput404-team-4b.herokuapp.com' in data['url'] and 'posts' not in data['url']: # SPECIAL CASE
+            commentsURL = 'http://cmput404-team-4b.herokuapp.com/api/posts/' + data['id'] + '/comments/'
+        elif 'url' in data and not IsLocalURL(data['url'], request) and ContainsARemoteHostname(data['url']):
             if data['url'][-1] == '/':
                 commentsURL = data['url'] + 'comments/'
             else:

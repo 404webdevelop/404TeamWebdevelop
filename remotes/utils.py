@@ -71,7 +71,11 @@ class _RemoteServer:
     def Post(self, relUrl, data):
         if relUrl[-1] != '/':
             relUrl = relUrl + '/'
-        r = requests.post(self.host + relUrl, json=data, auth=self.credentials, params=self._RequestingUser())
+        if 'blooming' in self.host: # SPECIAL CASE
+            headers = {'Bearer': 'sh3nr<7n,G<>ku.^Kibit0-_B(?)rawww.blooming-earth-129.heroku.com'}
+        else:
+            headers = {}
+        r = requests.post(self.host + relUrl, json=data, auth=self.credentials, params=self._RequestingUser(), headers=headers)
         return r
 
 def GetRemoteServers(requestingUser = None):
