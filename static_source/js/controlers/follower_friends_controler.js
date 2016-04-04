@@ -65,6 +65,17 @@ function checkfollowed(id,callback){
             $('#unfollow_btn').hide(); 
             //$('#rej').show();
           }
+          if(data[i].remote_author_id == id){
+            global.cookie_setting.set("follow_id",data[i].url);
+            $('#follow_btn').hide(); 
+            $('#unfollow_btn').show(); 
+            $('#rej').hide(); 
+            return false;
+          }else{
+            $('#follow_btn').show(); 
+            $('#unfollow_btn').hide(); 
+            //$('#rej').show();
+          }
         });     
      });
     /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
