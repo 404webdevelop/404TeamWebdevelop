@@ -44,6 +44,18 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
         data['source'] = data['url']
         data['origin'] = data['url']
         data['local_author'] = True
+
+        # visibility: PUBLIC FOAF FRIENDS PRIVATE SERVERONLY
+        if data['privacy_host_only']:
+            data['visibility'] = 'SERVERONLY'
+        elif data['privacy_level'] == 'pub':
+            data['visibility'] = 'PUBLIC'
+        elif data['privacy_level'] == 'me':
+            data['visibility'] = 'PRIVATE'
+        elif data['privacy_level'] == 'fof':
+            data['visibility'] = 'FOAF'
+        elif data['privacy_level'] == 'friends':
+            data['visibility'] = 'FRIENDS'
         return data
 
 class PostReadSerializer(PostWriteSerializer):
