@@ -9,6 +9,7 @@ function click_jmp_other(host){
     $("#home").hide();
     $("#posted").hide();
     $("#follow_btn").hide();
+    $("unfollow_btn").hide();
     $("#other_posted").show(800);
     $("#friends").hide();
     $("#git").hide();
