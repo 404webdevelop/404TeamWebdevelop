@@ -60,7 +60,11 @@ class FollowViewSet(viewsets.ModelViewSet):
         except:
             remote_host = None
 
-        current_domain = request.META['HTTP_HOST']
+        # edit for make testing files work.
+        if 'HTTP_HOST' in request.META:
+            current_domain = request.META['HTTP_HOST']
+        else:
+            current_domain = 'current domain not found'
 
 
         if len(remote_host) > 1:
@@ -86,12 +90,12 @@ class FollowViewSet(viewsets.ModelViewSet):
             headers = {'content-type': 'application/json'}
             url = 'http://'+remote_host+'/api/friendrequest'
             data = json.dumps(reqData)
+
             # POST request here to make a friendrequest to the remote user.
             success, response = PostFriendRequest(reqData, hints = [remote_host, remote_url])
             if not success:
                 print('PostFriendRequest failed, reason is {0}'.format(response))
-            # example (hard code one):
-            # response = requests.post(url, auth=HTTPBasicAuth('Qiang1', '1'), data=data, headers=headers)
+
             # make same post to local server
             follow = Follows.objects.create(follower=me)
             follow.remote_author_host = remote_host
@@ -201,11 +205,12 @@ class FollowViewSet(viewsets.ModelViewSet):
 
             follower_list = list()
             for i in range(len(follower_object)):
-                try:
-                    id = str(follower_object[i].follower.id)
-                    follower_list.append(id)
-                except:
-                    follower_list.append(str(follower_object[i].remote_author_id))
+                if follower_object[i].hide == False:
+                    try:
+                        id = str(follower_object[i].follower.id)
+                        follower_list.append(id)
+                    except:
+                        follower_list.append(str(follower_object[i].remote_author_id))
 
             print follower_list
             for friend in friend_list:
@@ -225,7 +230,7 @@ class FriendViewSet(APIView):
     API endpoint that checks two users relation
 
     Usage: \n
-      - `/friend/{author_id_1}/{author_id_2}}`
+      - `/friends/{author_id_1}/{author_id_2}}`
         - GET: result of two users are friends
     """
     authentication_classes = [BasicAuthentication, ]
@@ -258,11 +263,12 @@ class FriendlistViewSet(APIView):
       - `/friends/{author_id}`
         - GET: result of two users are friends
     """
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = (IsAuthenticated,)
 
 
     def get(self, request, author_id):
+
         #get all local author followings followers
         follower = Follows.objects.getLocalFollowings(author_id)
         #print 'local follower length: ' + str(len(follower))
@@ -393,7 +399,7 @@ class FriendRequestAPIView(APIView):
         - POST: post a friend request
 
     """
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -417,7 +423,8 @@ class FriendRequestAPIView(APIView):
                 })
             except:
                 author = request.data['author']
-                remote_url = author['host'] + author['id']
+                current_domain = request.META['HTTP_HOST']
+                remote_url = 'http://'+current_domain+ '/api/remoteauthor/http://' + author['host'] +'/api/author/'+ author['id']
                 follow = Follows.objects.create(followed=friend)
                 
                 follow.remote_author_host = author['host']

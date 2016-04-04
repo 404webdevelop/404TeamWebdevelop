@@ -3,7 +3,7 @@
 'use strict';
 
 function setifor(img,firstname,lastname,followers, following, friends,page){
-  console.log(img);
+  //console.log(img);
   if(img == "null"){
     img = "/static/image/no_image.jpg";
   }

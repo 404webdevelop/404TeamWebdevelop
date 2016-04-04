@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from .models import RemoteServer, RemotePost, RemoteComment
 from .serializers import *
+from django.http import QueryDict
 
 def IsRemoteAuthUsername(localUsername):
     """
@@ -258,6 +259,8 @@ def PostRemoteCommentAtUrl(url, data, request, requestingUser = None):
         return 'Could not find a registered remote server corresponding to the POST url'
 
     # fill in author info from requestingUser
+    if isinstance(data, QueryDict):
+        data = data.dict()
     author = {}
     author['id'] = str(requestingUser.id)
     author['host'] = request.get_host()

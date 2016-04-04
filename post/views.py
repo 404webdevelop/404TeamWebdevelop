@@ -19,6 +19,7 @@ from follower.views import allFriend
 from .serializers import *
 from .permissions import *
 from remotes.utils import *
+from django.http import Http404
 
 class PostPagination(PageNumberPagination):
     page_size = 50
@@ -270,6 +271,26 @@ class PostViewSet(viewsets.ModelViewSet):
 
         data = SerializePosts(queryset, request)
         return Response(data)
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        except:
+            pass
+
+        if not (request.user.is_anonymous() or (not IsRemoteAuthUser(request.user))):
+            raise Http404
+
+        queryset = GetAllRemotePosts()
+        posts = SerializePosts(queryset, request)
+        # lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        posts = [post for post in posts if post['id'] == kwargs['pk']]
+        if len(posts) < 1:
+            raise Http404
+
+        return Response(posts[0])
 
 class CommentByPost(viewsets.ViewSet, PagedViewMixin):
     """

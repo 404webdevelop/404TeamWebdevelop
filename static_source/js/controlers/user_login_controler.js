@@ -4,10 +4,8 @@
 
 //--------------------------------done------------------
 function set_head_infor(img,firstname,lastname,username){
-  //console.log(img);
   if( img != null ){
     $('div[id=div1]').html('<img src='+img+' class="img-circle" alt="Cinque Terre"  width="100" height="100">');
-    //$("#userphoto").html('<a href="#"><img src='+img+'  width="20" height="20"> </a>');
   }
   $('div[id=div2]').html('<h1>'+firstname+' '+lastname+'<h1>'); 
   $("#profile_page").html('<span class="glyphicon glyphicon-user"></span>'+username +'');
@@ -54,7 +52,6 @@ function getuserlogin(callback){
         global.findfriends.friends();
         global.findfriends.get_follower();
         global.findfriends.get_following();
-        global.findfriends.get_fof();
         });
     request.fail(function (callback) {
             console.log(callback);

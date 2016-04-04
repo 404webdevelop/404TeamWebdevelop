@@ -51,7 +51,7 @@ function checkfollowed(id,callback){
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
         $('#unfollow_btn').hide(); 
-        $('#rej').hide();
+        //$('#rej').hide();
       }
         $.each(data,function (i,value){
           if(data[i].followed.split("/")[5] == id){
@@ -90,13 +90,14 @@ function checkfollowed(id,callback){
 function followother(id,host,username,user_url){
     //console.log(global.cookie_setting.get("me_user_host"));
     console.log("$$$$$$$$$$$$$$");
-    console.log(id);
-    console.log(username);
-    console.log(user_url);
-    console.log(host);
+    console.log("followed id: "+id);
+    console.log("followed username: "+username);
+    console.log("followed userurl: "+user_url);
+    console.log("followed own url: "+global.cookie_setting.get("url"));
+    console.log("followed host: "+host);
     var send_data = {};
     if (global.cookie_setting.get("me_user_host") == host){
-      console.log("sdfdsfdsfdsffjahahahahahah");
+      //console.log("sdfdsfdsfdsffjahahahahahah");
       send_data = {
       "followed":user_url,
       "follower":global.cookie_setting.get("url"),
@@ -208,55 +209,23 @@ function getfollowers(){
   request.done(function (callback) {
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
+              if(followersobj[i].follower != null){
                 $.getJSON(followersobj[i].follower,function(data){
                     $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
                 });
+              }else{
+                $.getJSON(followersobj[i].remote_author_url,function(data){
+                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
+                });
+              }
             }); 
          });
   request.fail(function (callback) {
             console.log(callback);
          });
-
-  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var followersobj = callback;
-            $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].follower,function(data){
-                    $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
-                });
-            }); 
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });*/
 }
 
-function getfof(){
-  var url = "api/friendoffriend/"+global.cookie_setting.get("userid");
-  $.getJSON(url,function(data){
- 
-    $.each(data.fof,function (i,value){
-   
-      $.getJSON('api/author',function(authorobj){
 
-        $.each(authorobj.authors,function (j, value){
-
-          if(authorobj.authors[j].id == data.fof[i]){
-            
-              console.log("hoho find it");
-              $("#fof_view").append('<li id= "'+authorobj.authors[j].displayName+'"value="'+authorobj.authors[j].url+'"><a href="#" class="list-group-item ">'+authorobj.authors[j].displayName+'</a></li>');
-            
-          }
-        })
-      });
-    });
-  });
-
-}
 
 
 function getfollowings(){
@@ -269,16 +238,22 @@ function getfollowings(){
             var friends_list=[];
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
+              if(followersobj[i].followed != null){
                 $.getJSON(followersobj[i].followed,function(data){     
                   $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
                 });         
+              }else{
+                $.getJSON(followersobj[i].remote_author_url,function(data){     
+                  $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
+                }); 
+              }
             }); 
          });
   request.fail(function (callback) {
             console.log(callback);
          });
 
-  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -294,7 +269,7 @@ function getfollowings(){
          });
   request.fail(function (callback) {
             console.log(callback);
-         });*/
+         });
 }
 
 
@@ -308,10 +283,14 @@ function findfriends(){
   request.done(function (callback) {
             var friendsobj = callback;
             $.each(friendsobj.authors,function (i,value){
-              var auturl = "api/author/"+friendsobj.authors[i];
+              var auturl = "api/author/";
               $.getJSON(auturl,function(data){
-                    $("#friends_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');       
+                  $.each(data.authors, function (j,value){
+                    if(data.authors[j].id == friendsobj.authors[i]){
+                      $("#friends_view").append('<li id= "'+data.authors[j].displayName+'"value="'+data.authors[j].url+'"><a href="#" class="list-group-item ">'+data.authors[j].displayName+'</a></li>');       
+                  }
                 });
+              });
             }); 
          });
   request.fail(function (callback) {
@@ -344,7 +323,7 @@ function search_user(username){
                             <div class="col-md-7">\
                                 <h3 id="click_url" value="'+data_iner.url+'"> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
                                 <h4 id="click_username" value="'+data_iner.displayName+'"> Username: '+data_iner.displayName+'</h4>\
-                                <p></p>\
+                                <p id="click_host" value = "'+data_iner.host+'" class="'+data_iner.id+'"></p>\
                                 <button  id="search_friend_button" class="btn btn-primary" >View Person <span class="glyphicon glyphicon-chevron-right"></span></button>\
                             </div>\
                         </div>\
@@ -355,7 +334,17 @@ function search_user(username){
         $('#others_page_list_view').empty();
         var url = $('#click_url').attr("value");
         var othername= $('#click_username').attr("value");
-        global.button_click.jump(url,othername);
+        console.log("clicked url: "+url);
+        console.log("clicked name: "+othername);
+        var host = $('#click_host').attr("value");
+        var id = $('#click_host').attr("class");
+        global.cookie_setting.set("click_host",host);
+        global.cookie_setting.set("click_id",id);
+        global.cookie_setting.set("click_url",url);
+        
+        global.cookie_setting.set("click_username",othername);
+
+        global.button_click.jump(host);
       });
     })
     if (cont ==0){
@@ -388,7 +377,6 @@ global.findfriends= {
   unfollow_other:unfollowother,
   get_follower:getfollowers,
   get_following:getfollowings,
-  get_fof:getfof
 	
 }
 

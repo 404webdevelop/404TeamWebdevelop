@@ -1,14 +1,15 @@
 (function (global) {
 'use strict';
 
-function click_jmp_other(url,othername){
-    global.cookie_setting.set("click_username",othername);
-    global.cookie_setting.set("click_url",url);
+function click_jmp_other(host){
+    var url = global.cookie_setting.get("click_url");
+    var othername = global.cookie_setting.get("click_username");
     global.load_posts.set_other(url);
     global.load_posts.posts_load_other(othername);
     $("#home").hide();
     $("#posted").hide();
     $("#follow_btn").hide();
+    $("unfollow_btn").hide();
     $("#other_posted").show(800);
     $("#friends").hide();
     $("#git").hide();
@@ -17,22 +18,27 @@ function click_jmp_other(url,othername){
     $("#requ").hide();
     $("#search_result_fild").hide();
     $.getJSON(url,function(data){
-      console.log(data.id);
+      //console.log(data.id);
       
 
       $.getJSON("api/follow/pendingRequest/",function(data1){
-        console.log(data1);
+        //console.log(data1.request[0]);
+
+        if(data1.request[0] == undefined){
+          $("#rej").hide();
+        }
+
         $.each(data1.request,function (i,value){
-          console.log(data1.request[i]);
-          console.log(data.id);
+          //console.log(data1.request[i]);
+          //console.log(data.id);
           if(data1.request[i] == data.id ){
             $("#rej").show();
-            console.log("laokoaj");
+            //console.log("laokoaj");
             return false;
           }else{
-            console.log("sdfsdfs");
+            //console.log("sdfsdfs");
             $("#rej").hide();
-            console.log("sdfsdfs");
+            //console.log("sdfsdfs");
           }
         });
       //  console.log(data1.host);
@@ -41,6 +47,59 @@ function click_jmp_other(url,othername){
       global.findfriends.checkfollow(data.id);
     });
 };
+
+
+function reject_request(){
+  $.getJSON("api/follow/", function(data){
+    //console.log(data);
+    //console.log(global.cookie_setting.get("click_url"));
+    //console.log(global.cookie_setting.get("url"));
+    var click_url = global.cookie_setting.get("click_url");
+    var own_url = global.cookie_setting.get("url");
+     $.each(data,function (i,value){
+      if(data[i].follower == click_url && data[i].followed == own_url){
+        //console.log("oh hohoh hohho");
+        var hide_url = data[i].url;
+        var request = $.ajax({
+          method: "PATCH",
+          url: hide_url,
+          data: {"hide":true},
+        });
+        request.done(function (callback) {
+          console.log(callback);
+          $('#request_list_view').empty();
+            global.findfriends.f_request();
+          alert("successfully hide this user.");
+          });
+        
+        request.fail(function (callback) {
+          console.log(callback);
+          });
+
+      }
+      if(data[i].remote_author_url == click_url && data[i].followed == own_url){
+        //console.log("oh hohoh hohho");
+        var hide_url = data[i].url;
+        var request = $.ajax({
+          method: "PATCH",
+          url: hide_url,
+          data: {"hide":true},
+        });
+        request.done(function (callback) {
+          console.log(callback);
+          alert("successfully hide this user.");
+          });
+        
+        request.fail(function (callback) {
+          console.log(callback);
+          });
+
+      }
+     });
+    
+  })
+  
+}
 
 function patchProfile(firstName, lastName,email,git,callback) {
   var data= {};
@@ -99,12 +158,13 @@ function button_click(){
       var url = $(this).attr("value");
       //var othername= $(this).attr("id");
       $.getJSON(url,function(data){
-        console.log(data);
+        //console.log(data);
         global.cookie_setting.set("click_username",data.displayName);
         global.cookie_setting.set("click_url",data.url);
         global.cookie_setting.set("click_host",data.host);
+        //console.log(global.cookie_setting.get("click_host"));
         global.cookie_setting.set("click_id",data.id);
-        click_jmp_other(url,data.displayName);
+        click_jmp_other(data.host);
         global.findfriends.checkfollow(data.id);
       });
 
@@ -128,7 +188,7 @@ function button_click(){
         $("#search_result_fild").hide();   
      });    
   $('#delpostbutton').click(function(){
-      console.log("yeah");
+      //console.log("yeah");
       global.load_posts.post_delete(global.cookie_setting.get("post_id"));
 });
   $('#friends_page').click(function(){
@@ -143,9 +203,12 @@ function button_click(){
     $("#comment").hide();
     $("#search_result_fild").hide();
   });
+  $('#rej').click(function(){
+    reject_request();
+  });
 
   $('#list_combox_btn').click( function () {
-         console.log($('#list_combox_btn').text());
+         //console.log($('#list_combox_btn').text());
       
   
          global.update_and_post.post_comment();
@@ -158,12 +221,12 @@ function button_click(){
    });
 
   $('#profile_btn').click(function(){
-    console.log("sdffs---------");
-    console.log($('#firstname').val());
-    console.log($('#lastname').val());
-    console.log($('#email').val());
-    console.log($('#github').val());
-    console.log($('#imgInp').val());
+    //console.log("sdffs---------");
+    //console.log($('#firstname').val());
+    //console.log($('#lastname').val());
+    //console.log($('#email').val());
+    //console.log($('#github').val());
+    //console.log($('#imgInp').val());
     var firstName = $('#firstname').val();
     var lastName = $('#lastname').val();
     var email = $('#email').val();
@@ -217,7 +280,6 @@ function button_click(){
     $("#follower_list").show(800);
     $("#following_list").hide();
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide(); 
   });
@@ -226,7 +288,6 @@ function button_click(){
     $("#follower_list").hide();
     $("#following_list").show(800);
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide(); 
   });
@@ -235,25 +296,15 @@ function button_click(){
     $("#follower_list").hide();
     $("#following_list").hide();
     $("#friends_list").show(800);
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide();    
   });
 
-  $('#display_fof').click(function(){
-    $("#follower_list").hide();
-    $("#following_list").hide();
-    $("#friends_list").hide();
-    $("#fof_list").show(800);
-    $("#search_list").hide();
-    $("#search_result_fild").hide();
-  });
 
   $('#display_search').click(function(){
     $("#follower_list").hide();
     $("#following_list").hide();
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").show(800);
     $("#search_result_fild").hide();
   });
@@ -266,10 +317,11 @@ function button_click(){
   });
 
   $('#follow_btn').click(function(){
-        console.log(global.cookie_setting.get("click_host"));
+        //console.log(global.cookie_setting.get("click_host"));
         global.findfriends.follow_other(global.cookie_setting.get("click_id"),global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
         $("#rej").hide();
     });
+
 
   $('#unfollow_btn').click(function(){
         global.findfriends.unfollow_other(global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
