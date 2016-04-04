@@ -66,13 +66,13 @@ class RemoteAuthorSerializer(serializers.Serializer):
             data['username'] = data['displayName']
         if 'url' in data:
             if not IsLocalURL(data['url'], request):
-                remote_url = data['url']
+                remote_url = str(data['url'])
                 if not remote_url.startwith('http://') and not remote_url.startwith('https://'):
                     remote_url += 'http://'
                 data['url'] = request.build_absolute_uri(reverse('remote_author-list', args=(remote_url,)))
         if 'posts' in data:
             if not IsLocalURL(data['posts'], request):
-                remote_url = data['posts']
+                remote_url = str(data['posts'])
                 if not remote_url.startwith('http://') and not remote_url.startwith('https://'):
                     remote_url += 'http://'
                 data['posts'] = request.build_absolute_uri(reverse('remote_post-list', args=(remote_url,)))
