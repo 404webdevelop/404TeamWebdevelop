@@ -429,7 +429,7 @@ class FriendRequestAPIView(APIView):
                 follow.remote_author_host = author['host']
                 follow.remote_author_name = author['displayName']
                 follow.remote_author_id   = author_id
-                follow.remote_author_url  = remote_url
+                follow.remote_author_url  = author['url']
 
                 follow.save()
                 return Response({
