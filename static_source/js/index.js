@@ -24,6 +24,7 @@ $( document ).ready(function() {
 	$("#search_result_fild").hide();
 	$("#comment").hide();
 	$("#requ").hide();
+	//$("#rej").hide();
 	global.login_setting.infor_setting();
 	setup();
 

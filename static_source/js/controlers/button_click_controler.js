@@ -1,9 +1,10 @@
 (function (global) {
 'use strict';
 
-function click_jmp_other(url,othername){
+function click_jmp_other(host,url,othername){
     global.cookie_setting.set("click_username",othername);
     global.cookie_setting.set("click_url",url);
+
     global.load_posts.set_other(url);
     global.load_posts.posts_load_other(othername);
     $("#home").hide();
@@ -21,14 +22,19 @@ function click_jmp_other(url,othername){
       
 
       $.getJSON("api/follow/pendingRequest/",function(data1){
-        console.log(data1);
+        console.log(data1.request[0]);
+
+        if(data1.request[0] == undefined){
+          $("#rej").hide();
+        }
+
         $.each(data1.request,function (i,value){
           console.log(data1.request[i]);
           console.log(data.id);
           if(data1.request[i] == data.id ){
             $("#rej").show();
             console.log("laokoaj");
-            return false;
+            //return false;
           }else{
             console.log("sdfsdfs");
             $("#rej").hide();
@@ -103,8 +109,9 @@ function button_click(){
         global.cookie_setting.set("click_username",data.displayName);
         global.cookie_setting.set("click_url",data.url);
         global.cookie_setting.set("click_host",data.host);
+        console.log(global.cookie_setting.get("click_host"));
         global.cookie_setting.set("click_id",data.id);
-        click_jmp_other(url,data.displayName);
+        click_jmp_other(data.host,url,data.displayName);
         global.findfriends.checkfollow(data.id);
       });
 
@@ -268,7 +275,7 @@ function button_click(){
   $('#follow_btn').click(function(){
         console.log(global.cookie_setting.get("click_host"));
         global.findfriends.follow_other(global.cookie_setting.get("click_id"),global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
-        $("#rej").hide();
+        //$("#rej").hide();
     });
 
   $('#unfollow_btn').click(function(){

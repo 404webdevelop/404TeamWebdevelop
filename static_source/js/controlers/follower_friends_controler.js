@@ -51,7 +51,7 @@ function checkfollowed(id,callback){
       if(data[0] == undefined ){
         $('#follow_btn').show(); 
         $('#unfollow_btn').hide(); 
-        $('#rej').hide();
+        //$('#rej').hide();
       }
         $.each(data,function (i,value){
           if(data[i].followed.split("/")[5] == id){
@@ -344,7 +344,7 @@ function search_user(username){
                             <div class="col-md-7">\
                                 <h3 id="click_url" value="'+data_iner.url+'"> Name:'+data_iner.first_name+' '+data_iner.last_name+'</h3>\
                                 <h4 id="click_username" value="'+data_iner.displayName+'"> Username: '+data_iner.displayName+'</h4>\
-                                <p></p>\
+                                <p id="click_host" value = "'+data_iner.host+'" class="'+data_iner.id+'"></p>\
                                 <button  id="search_friend_button" class="btn btn-primary" >View Person <span class="glyphicon glyphicon-chevron-right"></span></button>\
                             </div>\
                         </div>\
@@ -355,7 +355,12 @@ function search_user(username){
         $('#others_page_list_view').empty();
         var url = $('#click_url').attr("value");
         var othername= $('#click_username').attr("value");
-        global.button_click.jump(url,othername);
+        var host = $('#click_host').attr("value");
+        var id = $('#click_host').attr("class");
+        global.cookie_setting.set("click_host",host);
+        global.cookie_setting.set("click_id",host);
+
+        global.button_click.jump(host,url,othername);
       });
     })
     if (cont ==0){
