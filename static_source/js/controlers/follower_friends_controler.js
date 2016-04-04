@@ -54,27 +54,30 @@ function checkfollowed(id,callback){
         //$('#rej').hide();
       }
         $.each(data,function (i,value){
-          if(data[i].followed.split("/")[5] == id){
-            global.cookie_setting.set("follow_id",data[i].url);
-            $('#follow_btn').hide(); 
-            $('#unfollow_btn').show(); 
-            $('#rej').hide(); 
-            return false;
+          if(data[i].followed != null){
+            if(data[i].followed.split("/")[5] == id){
+              global.cookie_setting.set("follow_id",data[i].url);
+              $('#follow_btn').hide(); 
+              $('#unfollow_btn').show(); 
+              $('#rej').hide(); 
+              return false;
+            }else{
+              $('#follow_btn').show(); 
+              $('#unfollow_btn').hide(); 
+              //$('#rej').show();
+            }
           }else{
-            $('#follow_btn').show(); 
-            $('#unfollow_btn').hide(); 
-            //$('#rej').show();
-          }
-          if(data[i].remote_author_id == id){
-            global.cookie_setting.set("follow_id",data[i].url);
-            $('#follow_btn').hide(); 
-            $('#unfollow_btn').show(); 
-            $('#rej').hide(); 
-            return false;
-          }else{
-            $('#follow_btn').show(); 
-            $('#unfollow_btn').hide(); 
-            //$('#rej').show();
+            if(data[i].remote_author_id == id){
+              global.cookie_setting.set("follow_id",data[i].url);
+              $('#follow_btn').hide(); 
+              $('#unfollow_btn').show(); 
+              $('#rej').hide(); 
+              return false;
+            }else{
+              $('#follow_btn').show(); 
+              $('#unfollow_btn').hide(); 
+              //$('#rej').show();
+            }
           }
         });     
      });
