@@ -423,13 +423,14 @@ class FriendRequestAPIView(APIView):
                 })
             except:
                 author = request.data['author']
-                remote_url = author['host'] + author['id']
+                current_domain = request.META['HTTP_HOST']
+                remote_url = 'http://'+current_domain+ '/api/remoteauthor/http://' + author['host'] +'/api/author/'+ author['id']
                 follow = Follows.objects.create(followed=friend)
                 
                 follow.remote_author_host = author['host']
                 follow.remote_author_name = author['displayName']
                 follow.remote_author_id   = author_id
-                follow.remote_author_url  = author['url']
+                follow.remote_author_url  = remote_url
 
                 follow.save()
                 return Response({
