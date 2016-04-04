@@ -217,7 +217,7 @@ function getfollowers(){
             console.log(callback);
          });
 
-  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -232,31 +232,10 @@ function getfollowers(){
          });
   request.fail(function (callback) {
             console.log(callback);
-         });*/
+         });
 }
 
-function getfof(){
-  var url = "api/friendoffriend/"+global.cookie_setting.get("userid");
-  $.getJSON(url,function(data){
- 
-    $.each(data.fof,function (i,value){
-   
-      $.getJSON('api/author',function(authorobj){
 
-        $.each(authorobj.authors,function (j, value){
-
-          if(authorobj.authors[j].id == data.fof[i]){
-            
-              console.log("hoho find it");
-              $("#fof_view").append('<li id= "'+authorobj.authors[j].displayName+'"value="'+authorobj.authors[j].url+'"><a href="#" class="list-group-item ">'+authorobj.authors[j].displayName+'</a></li>');
-            
-          }
-        })
-      });
-    });
-  });
-
-}
 
 
 function getfollowings(){
@@ -278,7 +257,7 @@ function getfollowings(){
             console.log(callback);
          });
 
-  /*var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
+  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteAuthorFollowings";
   var request = $.ajax({
           method: "GET",
           url: url,
@@ -294,7 +273,7 @@ function getfollowings(){
          });
   request.fail(function (callback) {
             console.log(callback);
-         });*/
+         });
 }
 
 
@@ -393,7 +372,6 @@ global.findfriends= {
   unfollow_other:unfollowother,
   get_follower:getfollowers,
   get_following:getfollowings,
-  get_fof:getfof
 	
 }
 

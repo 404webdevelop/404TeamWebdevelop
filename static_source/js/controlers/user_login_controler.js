@@ -52,7 +52,6 @@ function getuserlogin(callback){
         global.findfriends.friends();
         global.findfriends.get_follower();
         global.findfriends.get_following();
-        global.findfriends.get_fof();
         });
     request.fail(function (callback) {
             console.log(callback);

@@ -19,12 +19,12 @@ $( document ).ready(function() {
 	$("#follower_list").show();
 	$("#following_list").hide();
 	$("#friends_list").hide();
-	$("#fof_list").hide();
 	$("#search_list").hide();
 	$("#search_result_fild").hide();
 	$("#comment").hide();
 	$("#requ").hide();
 	//$("#rej").hide();
+
 	global.login_setting.infor_setting();
 	setup();
 

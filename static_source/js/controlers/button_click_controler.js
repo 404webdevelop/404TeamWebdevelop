@@ -2,8 +2,8 @@
 'use strict';
 
 function click_jmp_other(host,url,othername){
-    global.cookie_setting.set("click_username",othername);
-    global.cookie_setting.set("click_url",url);
+   // global.cookie_setting.set("click_username",othername);
+   // global.cookie_setting.set("click_url",url);
 
     global.load_posts.set_other(url);
     global.load_posts.posts_load_other(othername);
@@ -34,7 +34,7 @@ function click_jmp_other(host,url,othername){
           if(data1.request[i] == data.id ){
             $("#rej").show();
             console.log("laokoaj");
-            //return false;
+            return false;
           }else{
             console.log("sdfsdfs");
             $("#rej").hide();
@@ -47,6 +47,59 @@ function click_jmp_other(host,url,othername){
       global.findfriends.checkfollow(data.id);
     });
 };
+
+
+function reject_request(){
+  $.getJSON("api/follow/", function(data){
+    console.log(data);
+    console.log(global.cookie_setting.get("click_url"));
+    console.log(global.cookie_setting.get("url"));
+    var click_url = global.cookie_setting.get("click_url");
+    var own_url = global.cookie_setting.get("url");
+     $.each(data,function (i,value){
+      if(data[i].follower == click_url && data[i].followed == own_url){
+        console.log("oh hohoh hohho");
+        var hide_url = data[i].url;
+        var request = $.ajax({
+          method: "PATCH",
+          url: hide_url,
+          data: {"hide":true},
+        });
+        request.done(function (callback) {
+          console.log(callback);
+          $('#request_list_view').empty();
+            global.findfriends.f_request();
+          alert("successfully hide this user.");
+          });
+        
+        request.fail(function (callback) {
+          console.log(callback);
+          });
+
+      }
+      if(data[i].remote_author_url == click_url && data[i].followed == own_url){
+        console.log("oh hohoh hohho");
+        var hide_url = data[i].url;
+        var request = $.ajax({
+          method: "PATCH",
+          url: hide_url,
+          data: {"hide":true},
+        });
+        request.done(function (callback) {
+          console.log(callback);
+          alert("successfully hide this user.");
+          });
+        
+        request.fail(function (callback) {
+          console.log(callback);
+          });
+
+      }
+     });
+    
+  })
+  
+}
 
 function patchProfile(firstName, lastName,email,git,callback) {
   var data= {};
@@ -150,6 +203,9 @@ function button_click(){
     $("#comment").hide();
     $("#search_result_fild").hide();
   });
+  $('#rej').click(function(){
+    reject_request();
+  });
 
   $('#list_combox_btn').click( function () {
          console.log($('#list_combox_btn').text());
@@ -224,7 +280,6 @@ function button_click(){
     $("#follower_list").show(800);
     $("#following_list").hide();
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide(); 
   });
@@ -233,7 +288,6 @@ function button_click(){
     $("#follower_list").hide();
     $("#following_list").show(800);
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide(); 
   });
@@ -242,25 +296,15 @@ function button_click(){
     $("#follower_list").hide();
     $("#following_list").hide();
     $("#friends_list").show(800);
-    $("#fof_list").hide();
     $("#search_list").hide();
     $("#search_result_fild").hide();    
   });
 
-  $('#display_fof').click(function(){
-    $("#follower_list").hide();
-    $("#following_list").hide();
-    $("#friends_list").hide();
-    $("#fof_list").show(800);
-    $("#search_list").hide();
-    $("#search_result_fild").hide();
-  });
 
   $('#display_search').click(function(){
     $("#follower_list").hide();
     $("#following_list").hide();
     $("#friends_list").hide();
-    $("#fof_list").hide();
     $("#search_list").show(800);
     $("#search_result_fild").hide();
   });
@@ -275,8 +319,9 @@ function button_click(){
   $('#follow_btn').click(function(){
         console.log(global.cookie_setting.get("click_host"));
         global.findfriends.follow_other(global.cookie_setting.get("click_id"),global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
-        //$("#rej").hide();
+        $("#rej").hide();
     });
+
 
   $('#unfollow_btn').click(function(){
         global.findfriends.unfollow_other(global.cookie_setting.get("click_host"),global.cookie_setting.get("click_username"),global.cookie_setting.get("click_url"));
