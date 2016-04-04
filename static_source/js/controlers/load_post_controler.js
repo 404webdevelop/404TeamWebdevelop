@@ -80,7 +80,8 @@ function doMark(content,type){
 
     var converter = new showdown.Converter();
     if (type == 'text/x-markdown' || 
-        type == 'text/markdown') {
+        type == 'text/markdown' || 
+        type == 'x-markdown') {
       content = converter.makeHtml(content);
     }
     return content;
