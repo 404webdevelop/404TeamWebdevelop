@@ -209,26 +209,15 @@ function getfollowers(){
   request.done(function (callback) {
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
+              if(followersobj[i].follower != null){
                 $.getJSON(followersobj[i].follower,function(data){
                     $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
                 });
-            }); 
-         });
-  request.fail(function (callback) {
-            console.log(callback);
-         });
-
-  var url = "api/follow/"+global.cookie_setting.get("userid")+"/remoteauthorFollowers";
-  var request = $.ajax({
-          method: "GET",
-          url: url,
-        });
-  request.done(function (callback) {
-            var followersobj = callback;
-            $.each(followersobj, function (i, value) {
-                $.getJSON(followersobj[i].follower,function(data){
+              }else{
+                $.getJSON(followersobj[i].remote_author_url,function(data){
                     $("#follower_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>'); 
                 });
+              }
             }); 
          });
   request.fail(function (callback) {
@@ -249,9 +238,15 @@ function getfollowings(){
             var friends_list=[];
             var followersobj = callback;
             $.each(followersobj, function (i, value) {
+              if(followersobj[i].followed != null){
                 $.getJSON(followersobj[i].followed,function(data){     
                   $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
                 });         
+              }else{
+                $.getJSON(followersobj[i].remote_author_url,function(data){     
+                  $("#following_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');
+                }); 
+              }
             }); 
          });
   request.fail(function (callback) {
@@ -288,10 +283,14 @@ function findfriends(){
   request.done(function (callback) {
             var friendsobj = callback;
             $.each(friendsobj.authors,function (i,value){
-              var auturl = "api/author/"+friendsobj.authors[i];
+              var auturl = "api/author/";
               $.getJSON(auturl,function(data){
-                    $("#friends_view").append('<li id= "'+data.displayName+'"value="'+data.url+'"><a href="#" class="list-group-item ">'+data.displayName+'</a></li>');       
+                  $.each(data.authors, function (j,value){
+                    if(data.authors[j].id == friendsobj.authors[i]){
+                      $("#friends_view").append('<li id= "'+data.authors[j].displayName+'"value="'+data.authors[j].url+'"><a href="#" class="list-group-item ">'+data.authors[j].displayName+'</a></li>');       
+                  }
                 });
+              });
             }); 
          });
   request.fail(function (callback) {
