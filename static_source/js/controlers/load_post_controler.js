@@ -79,12 +79,10 @@ function set_post_on(id,title,contant,username,img,page,have_image){
 function doMark(content,type){
 
     var converter = new showdown.Converter();
-   if (type == 'text/x-markdown') {
-
+    if (type == 'text/x-markdown' || 
+        type == 'text/markdown') {
       content = converter.makeHtml(content);
-    
     }
-
     return content;
 
 }
