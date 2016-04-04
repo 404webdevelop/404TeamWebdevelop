@@ -253,15 +253,15 @@ function load_comments(posted_id){
     console.log(postobj);
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
-    set_com_header(postobj.title,postobj.username,postobj.content,postobj.contentType);
+    set_com_header(postobj.title,postobj.displayName,postobj.content,postobj.contentType);
     set_com_image(posted_id, postobj);
 ;
 
   $.each(postobj.comments, function (i, value) { 
            if(postobj.comments[i].author.picture != null){
-                     set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,postobj.comments[i].author.picture,"comment","yes");
+               set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].comment,postobj.comments[i].author.displayName,postobj.comments[i].author.picture,"comment","yes");
            } else {
-	             set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].content,postobj.comments[i].author.username,no_iamge,"comment","yes");
+	             set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].comment,postobj.comments[i].author.displayName,no_iamge,"comment","yes");
 	   }
 
           });
