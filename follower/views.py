@@ -424,7 +424,11 @@ class FriendRequestAPIView(APIView):
             except:
                 author = request.data['author']
                 current_domain = request.META['HTTP_HOST']
-                remote_url = 'http://'+current_domain+ '/api/remoteauthor/http://' + author['host'] +'/api/author/'+ author['id']
+
+                remote_url = author['host'] + '/api/author/' + author['id']
+                if not remote_url.startswith('http://'):
+                    remote_url = 'http://' + remote_url
+                remote_url = 'http://' + current_domain + '/api/remoteauthor/' + remote_url
                 follow = Follows.objects.create(followed=friend)
                 
                 follow.remote_author_host = author['host']
