@@ -100,6 +100,7 @@ function getpost(data,page,cookie){
       var github = global.cookie_setting.get("github");
       if(page == "home"){
         $.each(postobj.posts, function (i, value) { 
+          console.log(postobj.posts[i]);
           var inner_request = $.ajax({
                 method: "GET",
                 url: "api/images/",
@@ -110,7 +111,7 @@ function getpost(data,page,cookie){
             $.each(callback.images, function (j, value) { 
               if(callback.images[j].parent_post == postobj.posts[i].url){
                   $.getJSON(callback.images[j].json_url, function(data1){
-                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,page,"yes");
+                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data1.url,page,"yes");
                     });
                   cont =1;              
               }else{
@@ -118,10 +119,10 @@ function getpost(data,page,cookie){
               }          
             });
               if (cont == 0 && cont1 == 2){
-                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
+                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data.no_image,page,"no");
               }
               if (cont == 0 && cont1 == 0){
-                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
+                    set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data.no_image,page,"no");
               }
 
           });
@@ -143,7 +144,7 @@ function getpost(data,page,cookie){
                   $.each(callback.images, function (j, value) { 
                     if(callback.images[j].parent_post == postobj.posts[i].url){
                         $.getJSON(callback.images[j].json_url, function(data1){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,page,"yes");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data1.url,page,"yes");
                           });
                         cont =1;              
                     }else{
@@ -151,11 +152,11 @@ function getpost(data,page,cookie){
                     }          
                   });
                     if (cont == 0 && cont1 == 2){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data.no_image,page,"no");
                           
                     }
                     if (cont == 0 && cont1 == 0){
-                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data.no_image,page,"no");
+                          set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data.no_image,page,"no");
                           
                     }
                 });
@@ -207,7 +208,7 @@ function load_other_posts(other){
               $.each(callback.images, function (j, value) { 
                 if(callback.images[j].parent_post == postobj.posts[i].url){
                     $.getJSON(callback.images[j].json_url, function(data1){
-                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,data1.url,'others',"yes");
+                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,data1.url,'others',"yes");
                       });
                     cont =1;              
                 }else{
@@ -215,11 +216,11 @@ function load_other_posts(other){
                 }          
               });
                 if (cont == 0 && cont1 == 2){
-                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,no_iamge,'others',"no");
+                     set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,no_iamge,'others',"no");
                       
                 }
                 if (cont == 0 && cont1 == 0){
-                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].username,no_iamge,'others',"no");
+                      set_post_on(postobj.posts[i].id,postobj.posts[i].title,doMark(postobj.posts[i].content,postobj.posts[i].contentType),postobj.posts[i].author.displayName,no_iamge,'others',"no");
                       
                 }
             });
