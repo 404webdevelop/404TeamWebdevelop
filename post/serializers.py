@@ -28,6 +28,8 @@ class PostWriteSerializer(serializers.HyperlinkedModelSerializer):
         data = super(PostWriteSerializer, self).to_representation(obj)
 
         request = self.context['request']
+        serializer = UserSerializer(obj.author, context={'request': request})
+        data['author'] = serializer.data
         queryset = Comment.objects.all().order_by('-published')
         try:
             queryset = [comment for comment in queryset if comment.parent.id == obj.id]

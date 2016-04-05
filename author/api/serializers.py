@@ -69,6 +69,9 @@ class RemoteAuthorSerializer(serializers.Serializer):
                 remote_url = str(data['url'])
                 if not remote_url.startswith('http://') and not remote_url.startswith('https://'):
                     remote_url = 'http://' + remote_url
+                if '/api' not in remote_url:
+                    remote_url = hasAPIString(remote_url)
+
                 data['url'] = request.build_absolute_uri(reverse('remote_author-list', args=(remote_url,)))
         if 'posts' in data:
             if not IsLocalURL(data['posts'], request):
@@ -77,6 +80,12 @@ class RemoteAuthorSerializer(serializers.Serializer):
                     remote_url = 'http://' + remote_url
                 data['posts'] = request.build_absolute_uri(reverse('remote_post-list', args=(remote_url,)))
         return data
+
+
+def hasAPIString(str):
+    parts = str.split('/auhtor')
+    return parts[0] + '/api/author' + parts[1]
+
 
 def SerializeAuthors(authors, request):
     results = []
