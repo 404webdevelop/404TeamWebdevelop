@@ -83,8 +83,11 @@ class RemoteAuthorSerializer(serializers.Serializer):
 
 
 def hasAPIString(str):
-    parts = str.split('/auhtor')
-    return parts[0] + '/api/author' + parts[1]
+    parts = str.split('/author')
+    if len(parts) is 2:
+        return parts[0] + '/api/author' + parts[1]
+    else:
+        return str
 
 
 def SerializeAuthors(authors, request):
