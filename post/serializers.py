@@ -161,6 +161,12 @@ class RemotePostSerializer(serializers.Serializer):
             if 'displayname' in data['author']:
                 data['username'] = data['author']['displayname']
 
+        if 'author' in data:
+            if 'displayName' not in data['author'] and 'displayname' in data['author']:
+                data['author']['displayName'] = data['author']['displayname']
+            if 'username' not in data['author'] and 'displayName' in data['author']:
+                data['author']['username'] = data['author']['displayName']
+
         # comments proxy
         commentsURL = None
         if 'url' in data and 'cmput404-team-4b.herokuapp.com' in data['url'] and 'posts' not in data['url']: # SPECIAL CASE
