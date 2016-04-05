@@ -425,7 +425,10 @@ class FriendRequestAPIView(APIView):
                 author = request.data['author']
                 current_domain = request.META['HTTP_HOST']
 
-                remote_url = author['host'] + '/api/author/' + author['id']
+                host = author['host']
+                if not host.endswith('/'):
+                    host = '/' + host
+                remote_url = host + 'api/author/' + author['id']
                 if not remote_url.startswith('http://'):
                     remote_url = 'http://' + remote_url
                 remote_url = 'http://' + current_domain + '/api/remoteauthor/' + remote_url
