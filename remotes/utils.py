@@ -72,8 +72,9 @@ class _RemoteServer:
         if relUrl[-1] != '/':
             relUrl = relUrl + '/'
         if 'blooming' in self.host: # SPECIAL CASE
-            headers = {'Bearer': 'sh3nr<7n,G<>ku.^Kibit0-_B(?)ra' + 'www.blooming-earth-129.heroku.com'
-                       ,'Authorization': 'Bearer sh3nr<7n,G<>ku.^Kibit0-_B(?)ra' + 'www.blooming-earth-129.heroku.com'}
+            # headers = {'Bearer': 'sh3nr<7n,G<>ku.^Kibit0-_B(?)ra' + 'www.blooming-earth-129.heroku.com'
+            #            ,'Authorization': 'Bearer sh3nr<7n,G<>ku.^Kibit0-_B(?)ra' + 'www.blooming-earth-129.heroku.com'}
+            headers = {"Authorization": "Bearer sh3nr<7n,G<>ku.^Kibit0-_B(?)rahttp://secret-inlet-51780.herokuapp.com/api/"}
         else:
             headers = {}
         r = requests.post(self.host + relUrl, json=data, auth=self.credentials, params=self._RequestingUser(), headers=headers)
