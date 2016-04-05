@@ -101,6 +101,17 @@ class RemoteCommentSerializer(serializers.Serializer):
             data['local_author'] = True
         return data
 
+def SpecialCaseUrl(s, isURL=False): # SPECIAL CASES
+    if '/post/' in s:
+        s = s.replace('/post/', '/posts/')
+    if 'localhost:5000/' in s:
+        s = s.replace('localhost:5000/', 'blooming-earth-94594.herokuapp.com/api/')
+    if 'localhost:5000' in s:
+        s = s.replace('localhost:5000', 'blooming-earth-94594.herokuapp.com')
+    if isURL and s[-1] != '/':
+        s = s + '/'
+    return s
+
 class RemotePostSerializer(serializers.Serializer):
     data = serializers.CharField(max_length=None)
     published = serializers.DateTimeField()
@@ -114,13 +125,27 @@ class RemotePostSerializer(serializers.Serializer):
         del data['data']
         if 'url' not in data and 'origin' in data:
             data['url'] = data['origin']
-        if 'url' not in data and 'source' in data:
+        elif 'url' not in data and 'source' in data:
             data['url'] = data['source']
+
+        if 'url' in data:
+            data['url'] = SpecialCaseUrl(data['url'], True)
+        if 'origin' in data:
+            data['origin'] = SpecialCaseUrl(data['origin'], True)
+        if 'source' in data:
+            data['source'] = SpecialCaseUrl(data['source'], True)
+        if 'author' in data and 'host' in data['author']:
+            data['author']['host'] = SpecialCaseUrl(data['author']['host'])
+        if 'author' in data and 'url' in data['author']:
+            data['author']['url'] = SpecialCaseUrl(data['author']['url'], True)
+
         if 'username' not in data and 'author' in data:
             if 'username' in data['author']:
                 data['username'] = data['author']['username']
             if 'displayName' in data['author']:
                 data['username'] = data['author']['displayName']
+            if 'displayname' in data['author']:
+                data['username'] = data['author']['displayname']
 
         # comments proxy
         commentsURL = None
@@ -142,6 +167,8 @@ class RemotePostSerializer(serializers.Serializer):
             commentsURL = host + '/posts/' + data['id'] + '/comments'
 
         if commentsURL is not None:
+            if 'blooming' in commentsURL and commentsURL[-1] == '/': # SPECIAL CASE
+                commentsURL = commentsURL[:-1]
             data['comments_list'] = request.build_absolute_uri(reverse('remote_comment_by_post-list', args=(commentsURL,)))
 
         data['local_author'] = False
