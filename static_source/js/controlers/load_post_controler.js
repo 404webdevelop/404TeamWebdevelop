@@ -100,6 +100,7 @@ function getpost(data,page,cookie){
       var github = global.cookie_setting.get("github");
       if(page == "home"){
         $.each(postobj.posts, function (i, value) { 
+          console.log(postobj.posts[i]);
           var inner_request = $.ajax({
                 method: "GET",
                 url: "api/images/",
