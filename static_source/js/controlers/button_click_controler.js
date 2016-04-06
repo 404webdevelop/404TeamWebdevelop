@@ -216,7 +216,7 @@ function button_click(){
       setTimeout(function(){
          global.load_posts.comment_load(global.cookie_setting.get("post_id"));
 
-             },100);
+             },1000);
 
    });
 
