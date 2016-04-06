@@ -100,7 +100,7 @@ function getpost(data,page,cookie){
       var github = global.cookie_setting.get("github");
       if(page == "home"){
         $.each(postobj.posts, function (i, value) { 
-          console.log(postobj.posts[i]);
+          //console.log(postobj.posts[i]);
           var inner_request = $.ajax({
                 method: "GET",
                 url: "api/images/",
@@ -253,11 +253,12 @@ function load_comments(posted_id){
     console.log(postobj);
     //global.cookie_setting.set("com_lhost", postobj.local_author);
     //global.cookie_setting.set("com_hurl",postobj.author.host);
-    set_com_header(postobj.title,postobj.displayName,postobj.content,postobj.contentType);
+    set_com_header(postobj.title,postobj.author.displayName,postobj.content,postobj.contentType);
     set_com_image(posted_id, postobj);
 ;
 
   $.each(postobj.comments, function (i, value) { 
+           console.log(postobj.comments[i]);
            if(postobj.comments[i].author.picture != null){
                set_com_on(postobj.id,postobj.comments[i].title,postobj.comments[i].comment,postobj.comments[i].author.displayName,postobj.comments[i].author.picture,"comment","yes");
            } else {
